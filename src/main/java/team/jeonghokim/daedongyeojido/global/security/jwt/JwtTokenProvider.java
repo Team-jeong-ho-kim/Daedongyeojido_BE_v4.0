@@ -32,15 +32,20 @@ public class JwtTokenProvider {
     private final CustomUserDetailsService customUserDetailsService;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    private static final String CLAIM_TYPE = "type";
+    private static final String ACCESS_TYPE = "access";
+    private static final String REFRESH_TYPE = "refresh";
+    private static final int MILLISECONDS = 1000;
+
     //access token 생성
     public String createAccessToken(String accountId) {
         Date now = new Date(); //코드를 실행한 시점의 현재 날짜와 시간이 저장(일시적)
 
         return Jwts.builder()
                 .setSubject(accountId) //토큰의 소유자
-                .claim("type", "access") //액세스 토큰임을 나타냄
+                .claim(CLAIM_TYPE, ACCESS_TYPE) //액세스 토큰임을 나타냄
                 .setIssuedAt(now) //토큰 발행 시간 정보
-                .setExpiration(new Date(now.getTime() + jwtProperties.getAccessExpiration() * 1000)) //토큰의 만료 시간 설정
+                .setExpiration(new Date(now.getTime() + jwtProperties.getAccessExpiration() * MILLISECONDS)) //토큰의 만료 시간 설정
                 .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecretKey()) //HS512 알고리즘, 비밀 키를 Jwtproperties에서 가져옴
                 .compact();
 
@@ -51,9 +56,9 @@ public class JwtTokenProvider {
         Date now = new Date();
 
         String refreshToken = Jwts.builder()
-                .claim("type", "refresh")  //refresh 토큰임을 나타냄
+                .claim(CLAIM_TYPE, REFRESH_TYPE)  //refresh 토큰임을 나타냄
                 .setIssuedAt(now)
-                .setExpiration(new java.sql.Timestamp(now.getTime() + jwtProperties.getRefreshExpiration() * 1000))
+                .setExpiration(new java.sql.Timestamp(now.getTime() + jwtProperties.getRefreshExpiration() * MILLISECONDS))
                 .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecretKey()) //
                 .compact();
 
