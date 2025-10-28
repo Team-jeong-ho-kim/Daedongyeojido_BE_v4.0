@@ -36,7 +36,6 @@ public class User extends BaseIdEntity {
     @Column(length = 30)
     private String introduction;
 
-    @Column(length = 100)
     private List<String> links;
 
     @Column(length = 300)
