@@ -14,3 +14,7 @@ spring:
         format_sql: ${JPA_FORMAT_SQL}
         dialect: org.hibernate.dialect.MySQLDialect
     open-in-view: false
+
+redis:
+  host: ${REDIS_HOST}
+  port: ${REDIS_PORT}
