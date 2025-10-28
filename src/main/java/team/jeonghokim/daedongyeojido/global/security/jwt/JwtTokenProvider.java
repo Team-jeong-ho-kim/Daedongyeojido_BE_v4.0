@@ -59,7 +59,7 @@ public class JwtTokenProvider {
                 .setSubject(accountId)
                 .claim(CLAIM_TYPE, REFRESH_TYPE)  //refresh 토큰임을 나타냄
                 .setIssuedAt(now)
-                .setExpiration(new java.sql.Timestamp(now.getTime() + jwtProperties.getRefreshExpiration() * MILLISECONDS))
+                .setExpiration(new Date(now.getTime() + jwtProperties.getRefreshExpiration() * MILLISECONDS))
                 .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecretKey()) //
                 .compact();
 
