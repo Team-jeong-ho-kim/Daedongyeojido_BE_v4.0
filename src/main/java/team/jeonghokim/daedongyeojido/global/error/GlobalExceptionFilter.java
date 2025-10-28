@@ -15,13 +15,15 @@ import java.io.IOException;
 public class GlobalExceptionFilter extends OncePerRequestFilter {
 
     private final ObjectMapper objectMapper;
+    private static final String CONTENT_TYPE = "application/json";
+    private static final String CHARACTER_ENCODING = "UTF-8";
 
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain
-    )throws IOException {
+    ) throws IOException {
 
         try {
             filterChain.doFilter(request,response);
@@ -37,8 +39,8 @@ public class GlobalExceptionFilter extends OncePerRequestFilter {
 
     private void writerErrorResponse(HttpServletResponse response, int statusCode, ErrorResponse errorResponse) throws IOException{
         response.setStatus(statusCode);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType(CONTENT_TYPE);
+        response.setCharacterEncoding(CHARACTER_ENCODING);
         objectMapper.writeValue(response.getWriter(), errorResponse);
     }
 }
