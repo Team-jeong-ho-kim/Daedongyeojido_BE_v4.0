@@ -43,7 +43,6 @@ public class User extends BaseIdEntity {
     private String profileImage;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 10)
     private List<Major> majors;
 
     @Enumerated(EnumType.STRING)
