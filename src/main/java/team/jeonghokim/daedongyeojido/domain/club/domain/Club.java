@@ -9,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,12 +58,12 @@ public class Club extends BaseIdEntity {
     @Column(name = "is_opened", nullable = false)
     private boolean isOpened;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
-    private User user;
+    private User clubApplicant;
 
     @Builder
-    public Club(String clubName, String clubImage, String oneLiner, String introduction, List<Major> major, List<String> link, boolean isOpened, User user) {
+    public Club(String clubName, String clubImage, String oneLiner, String introduction, List<Major> major, List<String> link, boolean isOpened, User clubApplicant) {
         this.clubName = clubName;
         this.clubImage = clubImage;
         this.oneLiner = oneLiner;
@@ -69,6 +71,6 @@ public class Club extends BaseIdEntity {
         this.major = major;
         this.link = link;
         this.isOpened = isOpened;
-        this.user = user;
+        this.clubApplicant = clubApplicant;
     }
 }
