@@ -21,6 +21,9 @@ public enum ErrorCode {
     PASSWORD_MISMATCH(401, "비밀 번호가 일치 하지 않습니다."),
     INVALID_USER(401, "유효 하지 않은 사용자입니다."),
 
+    // club
+    ALREADY_EXISTS_CLUB(409, "해당 동아리가 이미 존재합니다."),
+
     // general
     BAD_REQUEST(400, "front fault"),
     INTERNAL_SERVER_ERROR(500, "server fault");
