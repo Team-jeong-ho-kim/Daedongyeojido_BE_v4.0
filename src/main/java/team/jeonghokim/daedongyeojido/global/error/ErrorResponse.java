@@ -32,5 +32,4 @@ public class ErrorResponse {
                 .description(description)
                 .build();
     }
-
 }
