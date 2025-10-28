@@ -66,7 +66,6 @@ public class JwtTokenProvider {
                 RefreshToken.builder()
                         .accountId(accountId)
                         .token(refreshToken)
-                        .timeToLive((jwtProperties.getRefreshExpiration()))
                         .build()
         );
 
