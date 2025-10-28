@@ -2,13 +2,11 @@ package team.jeonghokim.daedongyeojido.global.security.jwt;
 
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import java.util.Base64;
 
 @Getter
 @ConfigurationProperties(prefix = "jwt")
-@EnableConfigurationProperties(JwtProperties.class)
 public class JwtProperties {
     private final String header;  // Jwt 토큰이 포함될 HTTP 헤더 이름
     private final String prefix;  // Jwt 토큰 앞에 붙는 접두사
