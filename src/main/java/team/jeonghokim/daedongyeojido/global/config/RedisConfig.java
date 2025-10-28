@@ -1,6 +1,5 @@
 package team.jeonghokim.daedongyeojido.global.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +16,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
         enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP,
         keyspaceNotificationsConfigParameter = "" //Elasticache는 CONFIG 명령어를 제한 -> 우회
 )
-@RequiredArgsConstructor
 public class RedisConfig {
     @Value("${redis.host}")
     private String host;
