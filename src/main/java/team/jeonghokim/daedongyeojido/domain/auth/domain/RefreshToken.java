@@ -8,6 +8,8 @@ import org.springframework.data.redis.core.index.Indexed;
 
 @RedisHash
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RefreshToken {
 
@@ -19,11 +21,4 @@ public class RefreshToken {
 
     @TimeToLive
     private Long timeToLive;
-
-    @Builder
-    public RefreshToken(String accountId, String token) {
-        this.accountId = accountId;
-        this.token = token;
-        this.timeToLive = 3600L *2;
-    }
 }
