@@ -56,6 +56,7 @@ public class JwtTokenProvider {
         Date now = new Date();
 
         String refreshToken = Jwts.builder()
+                .setSubject(accountId)
                 .claim(CLAIM_TYPE, REFRESH_TYPE)  //refresh 토큰임을 나타냄
                 .setIssuedAt(now)
                 .setExpiration(new java.sql.Timestamp(now.getTime() + jwtProperties.getRefreshExpiration() * MILLISECONDS))
