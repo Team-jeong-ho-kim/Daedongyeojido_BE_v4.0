@@ -30,8 +30,8 @@ public class User extends BaseIdEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false,  length = 11)
-    private int phoneNumber;
+    @Column(nullable = false, length = 11)
+    private String phoneNumber;
 
     @Column(length = 30)
     private String introduction;
