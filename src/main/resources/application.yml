@@ -18,3 +18,10 @@ spring:
 redis:
   host: ${REDIS_HOST}
   port: ${REDIS_PORT}
+
+jwt:
+  header: ${JWT_HEADER}
+  prefix: ${JWT_PREFIX}
+  secret-key: ${JWT_SECRET_KEY}
+  access-expiration: ${JWT_ACCESS_EXP}
+  refresh-expiration: ${JWT_REFRESH_EXP}
