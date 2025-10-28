@@ -1,0 +1,74 @@
+package team.jeonghokim.daedongyeojido.domain.club.domain;
+
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
+import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
+
+import java.util.List;
+
+@Entity(name = "tbl_club")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Club extends BaseIdEntity {
+
+    @Column(name = "club_name", length = 20, nullable = false)
+    private String clubName;
+
+    @Column(name = "club_image", length = 200, nullable = false)
+    private String clubImage;
+
+    @Column(name = "one_liner", length = 30, nullable = false)
+    private String oneLiner;
+
+    @Column(name = "introduction", length = 500, nullable = false)
+    private String introduction;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+        name = "tbl_user_major",
+        joinColumns = @JoinColumn(name = "account_id")
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "major", length = 10, nullable = false)
+    private List<Major> major;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "tbl_user_link",
+            joinColumns = @JoinColumn(name = "account_id")
+    )
+    @Column(name = "link", length = 100)
+    private List<String> link;
+
+    @Column(name = "is_opened", nullable = false)
+    private boolean isOpened;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
+    private User user;
+
+    @Builder
+    public Club(String clubName, String clubImage, String oneLiner, String introduction, List<Major> major, List<String> link, boolean isOpened, User user) {
+        this.clubName = clubName;
+        this.clubImage = clubImage;
+        this.oneLiner = oneLiner;
+        this.introduction = introduction;
+        this.major = major;
+        this.link = link;
+        this.isOpened = isOpened;
+        this.user = user;
+    }
+}
