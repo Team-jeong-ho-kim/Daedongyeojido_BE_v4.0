@@ -21,10 +21,14 @@ public enum ErrorCode {
     PASSWORD_MISMATCH(401, "비밀 번호가 일치 하지 않습니다."),
     INVALID_USER(401, "유효 하지 않은 사용자입니다."),
 
+    //s3
+    IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
+    FAILED_UPLOAD(1001, "업로드 실패"),
+    FAILED_DELETE(1002, "삭제 실패"),
+
     // general
     BAD_REQUEST(400, "front fault"),
     INTERNAL_SERVER_ERROR(500, "server fault");
-
 
     private final int statusCode;
     private final String ErrorMessage;
