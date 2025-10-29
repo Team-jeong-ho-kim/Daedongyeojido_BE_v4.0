@@ -27,6 +27,12 @@ public enum ErrorCode {
     FAILED_DELETE(500, "삭제 실패"),
     INVALID_EXTENSION(400, "유효하지 않은 파일 확장자입니다."),
 
+    // club
+    ALREADY_EXISTS_CLUB(409, "해당 동아리가 이미 존재합니다."),
+    ALREADY_JOIN_CLUB(409, "이미 다른 동아리에 소속되어있습니다."),
+    ALREADY_APPLY_CLUB(409, "이미 동아리 개설 신청을 하였습니다."),
+
+
     // general
     BAD_REQUEST(400, "front fault"),
     INTERNAL_SERVER_ERROR(500, "server fault");

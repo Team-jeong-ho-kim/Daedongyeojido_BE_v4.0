@@ -31,3 +31,10 @@ cloud:
     credentials:
       accessKey: ${AWS_ACCESS_KEY_ID}
       secretKey: ${AWS_SECRET_ACCESS_KEY}
+
+jwt:
+  header: ${JWT_HEADER}
+  prefix: ${JWT_PREFIX}
+  secret-key: ${JWT_SECRET_KEY}
+  access-expiration: ${JWT_ACCESS_EXP}
+  refresh-expiration: ${JWT_REFRESH_EXP}
