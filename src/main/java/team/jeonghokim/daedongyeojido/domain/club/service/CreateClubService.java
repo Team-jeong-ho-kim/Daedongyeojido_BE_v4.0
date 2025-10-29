@@ -13,8 +13,6 @@ import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyJoinClubExcep
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.CreateClubRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.facade.UserFacade;
-import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
-import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,13 +23,11 @@ import java.util.stream.Collectors;
 public class CreateClubService {
 
     private final ClubRepository clubRepository;
-    private final UserRepository userRepository;
     private final UserFacade userFacade;
 
     @Transactional
     public void execute(CreateClubRequest request) {
-        User clubApplicant = userRepository.findByAccountId("user001")
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+        User clubApplicant = userFacade.getCurrentUser();
 
         if (clubRepository.existsByClubApplicant(clubApplicant)) {
             throw AlreadyApplyClubException.EXCEPTION;
