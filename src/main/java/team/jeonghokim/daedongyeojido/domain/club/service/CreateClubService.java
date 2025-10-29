@@ -11,6 +11,7 @@ import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyApplyClubExce
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyExistsClubException;
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyJoinClubException;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.CreateClubRequest;
+import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.facade.UserFacade;
 
@@ -24,22 +25,13 @@ public class CreateClubService {
 
     private final ClubRepository clubRepository;
     private final UserFacade userFacade;
+    private final CreateClubValidator createClubValidator;
 
     @Transactional
     public void execute(CreateClubRequest request) {
         User clubApplicant = userFacade.getCurrentUser();
 
-        if (clubRepository.existsByClubApplicant(clubApplicant)) {
-            throw AlreadyApplyClubException.EXCEPTION;
-        }
-
-        if (clubApplicant.getClub() != null) {
-            throw AlreadyJoinClubException.EXCEPTION;
-        }
-
-        if (clubRepository.existsByClubName(request.getClubName())) {
-            throw AlreadyExistsClubException.EXCEPTION;
-        }
+        createClubValidator.validate(request, clubApplicant);
 
         Club club = createClub(request, clubApplicant);
 
