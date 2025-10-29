@@ -41,14 +41,7 @@ public class CreateClubService {
             throw AlreadyExistsClubException.EXCEPTION;
         }
 
-        Club club = Club.builder()
-                .clubName(request.getClubName())
-                .clubImage(request.getClubImage())
-                .oneLiner(request.getOneLiner())
-                .introduction(request.getIntroduction())
-                .isOpened(false)
-                .clubApplicant(clubApplicant)
-                .build();
+        Club club = createClub(request, clubApplicant);
 
         List<ClubLink> clubLinks = new ArrayList<>();
         List<ClubMajor> clubMajors = createClubMajor(request, club);
@@ -61,6 +54,17 @@ public class CreateClubService {
         club.getLinks().addAll(clubLinks);
 
         clubRepository.save(club);
+    }
+
+    private Club createClub(CreateClubRequest request, User clubApplicant) {
+        return Club.builder()
+                .clubName(request.getClubName())
+                .clubImage(request.getClubImage())
+                .oneLiner(request.getOneLiner())
+                .introduction(request.getIntroduction())
+                .isOpened(false)
+                .clubApplicant(clubApplicant)
+                .build();
     }
 
     private List<ClubMajor> createClubMajor(CreateClubRequest request, Club club) {
