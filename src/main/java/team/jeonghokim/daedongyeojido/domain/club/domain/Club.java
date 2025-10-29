@@ -38,7 +38,7 @@ public class Club extends BaseIdEntity {
     private boolean isOpened;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false, unique = true)
     private User clubApplicant;
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
