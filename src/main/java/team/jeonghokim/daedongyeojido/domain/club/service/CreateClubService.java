@@ -13,9 +13,11 @@ import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyJoinClubExcep
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.CreateClubRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.facade.UserFacade;
+import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
+import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,11 +25,13 @@ import java.util.stream.Collectors;
 public class CreateClubService {
 
     private final ClubRepository clubRepository;
+    private final UserRepository userRepository;
     private final UserFacade userFacade;
 
     @Transactional
     public void execute(CreateClubRequest request) {
-        User clubApplicant = userFacade.getCurrentUser();
+        User clubApplicant = userRepository.findByAccountId("user001")
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         if (clubRepository.existsByClubApplicant(clubApplicant)) {
             throw AlreadyApplyClubException.EXCEPTION;
@@ -43,12 +47,8 @@ public class CreateClubService {
 
         Club club = createClub(request, clubApplicant);
 
-        List<ClubLink> clubLinks = new ArrayList<>();
         List<ClubMajor> clubMajors = createClubMajor(request, club);
-
-        if (request.getLink() != null && !request.getLink().isEmpty()) {
-            clubLinks = createClubLink(request, club);
-        }
+        List<ClubLink> clubLinks = createClubLink(request, club);
 
         club.getMajors().addAll(clubMajors);
         club.getLinks().addAll(clubLinks);
@@ -77,8 +77,10 @@ public class CreateClubService {
     }
 
     private List<ClubLink> createClubLink(CreateClubRequest request, Club club) {
-        return request.getLink().stream().map(link ->
-                ClubLink.builder()
+        return Optional.ofNullable(request.getLink())
+                .orElseGet(List::of)
+                .stream()
+                .map(link -> ClubLink.builder()
                         .club(club)
                         .link(link)
                         .build())
