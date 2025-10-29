@@ -22,7 +22,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class S3Service {
-    private final Set<String> FILE_EXTENSIONS = Set.of("jpg", "jpeg", "png", "webp");
+    private static final Set<String> FILE_EXTENSIONS = Set.of("jpg", "jpeg", "png", "webp");
 
     private final S3Client s3Client;
 
