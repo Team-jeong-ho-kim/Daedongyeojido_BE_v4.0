@@ -1,5 +1,6 @@
 package team.jeonghokim.daedongyeojido.domain.club.presentation;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class ClubController {
 
     @PostMapping("/create/apply")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createClub(@RequestBody CreateClubRequest request) {
+    public void createClub(@RequestBody @Valid CreateClubRequest request) {
         createClubService.execute(request);
     }
 }
