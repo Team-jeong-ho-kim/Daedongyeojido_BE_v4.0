@@ -17,10 +17,10 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 public class ClubLink extends BaseIdEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_id")
+    @JoinColumn(name = "club_id", nullable = false)
     private Club club;
 
-    @Column(name = "link", length = 100)
+    @Column(name = "link", length = 100, nullable = false)
     private String link;
 
     @Builder
