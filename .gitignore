@@ -37,4 +37,4 @@ out/
 .vscode/
 
 # QueryDSL QClass 무시
-/src/main/java/**/generated/
+/src/main/generated/team/jeonghokim
