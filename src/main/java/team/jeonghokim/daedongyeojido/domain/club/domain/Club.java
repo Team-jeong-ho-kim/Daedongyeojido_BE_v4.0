@@ -56,7 +56,7 @@ public class Club extends BaseIdEntity {
     private List<String> link;
 
     @Column(name = "is_opened", nullable = false)
-    private boolean isOpened;
+    private Boolean isOpened;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
