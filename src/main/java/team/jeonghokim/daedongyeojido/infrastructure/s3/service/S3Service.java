@@ -11,6 +11,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.FailedDeleteException;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.FailedUploadException;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.ImageNotFoundException;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.InvalidExtensionException;
 
 import java.net.URI;
 import java.net.URL;
@@ -77,7 +78,7 @@ public class S3Service {
 
         String extension = getExtension(fileName);
         if (!FILE_EXTENSIONS.contains(extension)) {
-            throw FailedUploadException.EXCEPTION;
+            throw InvalidExtensionException.EXCEPTION;
         }
     }
 
