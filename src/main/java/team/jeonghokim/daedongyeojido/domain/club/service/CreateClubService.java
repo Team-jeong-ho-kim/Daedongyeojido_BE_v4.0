@@ -10,7 +10,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubReposito
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.CreateClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.user.domain.facade.UserFacade;
+import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
 import java.util.List;
 import java.util.Optional;
