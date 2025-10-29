@@ -1,14 +1,10 @@
 package team.jeonghokim.daedongyeojido.domain.club.domain;
 
-import jakarta.persistence.CollectionTable;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
@@ -16,9 +12,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "tbl_club")
@@ -38,23 +34,6 @@ public class Club extends BaseIdEntity {
     @Column(name = "introduction", length = 500, nullable = false)
     private String introduction;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(
-        name = "tbl_user_major",
-        joinColumns = @JoinColumn(name = "account_id")
-    )
-    @Enumerated(EnumType.STRING)
-    @Column(name = "major", length = 10, nullable = false)
-    private List<Major> major;
-
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(
-            name = "tbl_user_link",
-            joinColumns = @JoinColumn(name = "account_id")
-    )
-    @Column(name = "link", length = 100)
-    private List<String> link;
-
     @Column(name = "is_opened", nullable = false)
     private Boolean isOpened;
 
@@ -62,14 +41,18 @@ public class Club extends BaseIdEntity {
     @JoinColumn(name = "account_id", nullable = false)
     private User clubApplicant;
 
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClubMajor> majors = new ArrayList<>();
+
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClubLink> links = new ArrayList<>();
+
     @Builder
-    public Club(String clubName, String clubImage, String oneLiner, String introduction, List<Major> major, List<String> link, boolean isOpened, User clubApplicant) {
+    public Club(String clubName, String clubImage, String oneLiner, String introduction, Boolean isOpened, User clubApplicant) {
         this.clubName = clubName;
         this.clubImage = clubImage;
         this.oneLiner = oneLiner;
         this.introduction = introduction;
-        this.major = major;
-        this.link = link;
         this.isOpened = isOpened;
         this.clubApplicant = clubApplicant;
     }
