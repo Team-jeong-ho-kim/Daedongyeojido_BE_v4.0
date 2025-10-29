@@ -21,6 +21,12 @@ public enum ErrorCode {
     PASSWORD_MISMATCH(401, "비밀 번호가 일치 하지 않습니다."),
     INVALID_USER(401, "유효 하지 않은 사용자입니다."),
 
+    //s3
+    IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
+    FAILED_UPLOAD(500, "업로드 실패"),
+    FAILED_DELETE(500, "삭제 실패"),
+    INVALID_EXTENSION(400, "유효하지 않은 파일 확장자입니다."),
+
     // club
     ALREADY_EXISTS_CLUB(409, "해당 동아리가 이미 존재합니다."),
     ALREADY_JOIN_CLUB(409, "이미 다른 동아리에 소속되어있습니다."),
@@ -29,7 +35,6 @@ public enum ErrorCode {
     // general
     BAD_REQUEST(400, "front fault"),
     INTERNAL_SERVER_ERROR(500, "server fault");
-
 
     private final int statusCode;
     private final String ErrorMessage;
