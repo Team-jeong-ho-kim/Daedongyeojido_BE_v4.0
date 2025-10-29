@@ -18,3 +18,16 @@ spring:
 redis:
   host: ${REDIS_HOST}
   port: ${REDIS_PORT}
+
+cloud:
+  aws:
+    s3:
+      bucket: ${BUCKET_NAME}
+      url-prefix: ${DAEDONG_IMAGE_FOLDER}
+    region:
+      static: ${AWS_REGION}
+    stack:
+      auto: false
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY_ID}
+      secretKey: ${AWS_SECRET_ACCESS_KEY}
