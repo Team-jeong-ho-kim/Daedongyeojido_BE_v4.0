@@ -36,5 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-### Q Class ###
-/src/main/generated/
+# QueryDSL QClass 무시
+/src/main/java/**/generated/
