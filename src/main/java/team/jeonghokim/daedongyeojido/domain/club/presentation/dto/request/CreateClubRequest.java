@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import org.hibernate.validator.constraints.URL;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.util.List;
@@ -29,5 +30,5 @@ public class CreateClubRequest {
     @NotNull(message = "전공 리스트는 필수입니다.")
     private List<Major> major;
 
-    private List<String> link;
+    private List<@URL(message = "유효한 URL 형식이어야 합니다.") String> link;
 }
