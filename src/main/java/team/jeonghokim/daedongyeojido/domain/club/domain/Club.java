@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Club extends BaseIdEntity {
 
-    @Column(name = "club_name", length = 20, nullable = false)
+    @Column(name = "club_name", length = 20, nullable = false, unique = true)
     private String clubName;
 
     @Column(name = "club_image", length = 200, nullable = false)
