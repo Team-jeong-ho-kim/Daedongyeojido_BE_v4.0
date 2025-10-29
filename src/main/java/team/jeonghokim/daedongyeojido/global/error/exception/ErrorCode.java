@@ -23,8 +23,8 @@ public enum ErrorCode {
 
     //s3
     IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
-    FAILED_UPLOAD(1001, "업로드 실패"),
-    FAILED_DELETE(1002, "삭제 실패"),
+    FAILED_UPLOAD(500, "업로드 실패"),
+    FAILED_DELETE(500, "삭제 실패"),
 
     // general
     BAD_REQUEST(400, "front fault"),
