@@ -35,14 +35,14 @@ public class User extends BaseIdEntity {
     @Column(length = 30)
     private String introduction;
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserLink> links = new ArrayList<>();
 
     @Column(length = 300)
     private String profileImage;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ClubMajor> majors =  new ArrayList<>();
+    private List<UserMajor> majors =  new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 11)
