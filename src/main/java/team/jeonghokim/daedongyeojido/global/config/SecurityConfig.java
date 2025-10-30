@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/user/**").permitAll()
                         .requestMatchers("/admin/**").hasRole(ADMIN)
+                        .requestMatchers("/club").permitAll()
                         .requestMatchers("/club/create/apply").hasAnyRole(STUDENT, ADMIN, TEACHER, CLUB_MEMBER)
                         .anyRequest().authenticated()
                 )
