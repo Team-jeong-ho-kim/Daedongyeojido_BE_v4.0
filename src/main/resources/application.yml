@@ -38,3 +38,6 @@ jwt:
   secret-key: ${JWT_SECRET_KEY}
   access-expiration: ${JWT_ACCESS_EXP}
   refresh-expiration: ${JWT_REFRESH_EXP}
+
+key:
+  login-api-url: ${XQUARE_URL}
