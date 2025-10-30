@@ -19,7 +19,7 @@ public class DecideClubCreationService {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
 
-        if (request.getIsOpen()) {
+        if (request.isOpen()) {
             club.clubOpen();
         }
     }
