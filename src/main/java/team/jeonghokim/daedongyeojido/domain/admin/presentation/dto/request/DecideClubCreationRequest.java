@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class DecideClubCreationRequest {
 
-    @NotNull
+    @NotNull(message = "개설 신청 수락 및 거절 여부는 null일 수 없습니다.")
     @JsonProperty("isOpen")
-    private boolean isOpen;
+    private Boolean isOpen;
 }
