@@ -56,4 +56,8 @@ public class Club extends BaseIdEntity {
         this.isOpened = isOpened;
         this.clubApplicant = clubApplicant;
     }
+
+    public void clubOpen() {
+        this.isOpened = true;
+    }
 }
