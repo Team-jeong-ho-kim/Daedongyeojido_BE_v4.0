@@ -18,6 +18,8 @@ public class QUser extends EntityPathBase<User> {
 
     private static final long serialVersionUID = -1994891311L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QUser user = new QUser("user");
 
     public final team.jeonghokim.daedongyeojido.global.entity.QBaseIdEntity _super = new team.jeonghokim.daedongyeojido.global.entity.QBaseIdEntity(this);
@@ -25,6 +27,8 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath accountId = createString("accountId");
 
     public final StringPath classNumber = createString("classNumber");
+
+    public final team.jeonghokim.daedongyeojido.domain.club.domain.QClub club;
 
     //inherited
     public final NumberPath<Long> id = _super.id;
@@ -46,15 +50,24 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath userName = createString("userName");
 
     public QUser(String variable) {
-        super(User.class, forVariable(variable));
+        this(User.class, forVariable(variable), INITS);
     }
 
     public QUser(Path<? extends User> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QUser(PathMetadata metadata) {
-        super(User.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QUser(PathMetadata metadata, PathInits inits) {
+        this(User.class, metadata, inits);
+    }
+
+    public QUser(Class<? extends User> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.club = inits.isInitialized("club") ? new team.jeonghokim.daedongyeojido.domain.club.domain.QClub(forProperty("club"), inits.get("club")) : null;
     }
 
 }
