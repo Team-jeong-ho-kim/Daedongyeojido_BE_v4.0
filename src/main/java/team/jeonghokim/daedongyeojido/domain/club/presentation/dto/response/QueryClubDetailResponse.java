@@ -19,8 +19,8 @@ public record QueryClubDetailResponse(ClubDto club) {
         public static QueryClubDetailResponse.ClubDto from(Club club) {
             return new QueryClubDetailResponse.ClubDto(
                     club.getClubName(),
-                    club.getClubImage(),
                     club.getIntroduction(),
+                    club.getClubImage(),
                     club.getMajors().stream().map(ClubMajor::getMajor).toList(),
                     club.getLinks().stream().map(ClubLink::getLink).toList()
             );
