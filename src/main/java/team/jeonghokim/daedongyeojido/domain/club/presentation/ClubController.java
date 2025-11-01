@@ -39,6 +39,7 @@ public class ClubController {
     }
 
     @GetMapping("/{club-id}")
+    @ResponseStatus(HttpStatus.OK)
     public QueryClubDetailResponse queryClubDetail(@PathVariable("club-id") Long clubId) {
         return queryClubDetailService.execute(clubId);
     }
