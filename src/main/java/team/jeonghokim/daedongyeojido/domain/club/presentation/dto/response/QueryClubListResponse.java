@@ -8,12 +8,6 @@ import java.util.List;
 
 public record QueryClubListResponse(List<ClubDto> clubs) {
 
-    public static QueryClubListResponse from(List<Club> clubs) {
-        return new QueryClubListResponse(
-                clubs.stream().map(ClubDto::from).toList()
-        );
-    }
-
     public record ClubDto(
             Long clubId,
             String clubName,
