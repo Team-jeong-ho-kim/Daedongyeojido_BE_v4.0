@@ -7,23 +7,21 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.util.List;
 
-public record QueryClubDetailResponse(ClubDto club) {
+public record QueryClubDetailResponse(
+        String clubName,
+        String introduction,
+        String clubImage,
+        List<Major> majors,
+        List<String> links
+) {
 
-    public record ClubDto(
-            String clubName,
-            String introduction,
-            String clubImage,
-            List<Major> majors,
-            List<String> links
-    ) {
-        public static QueryClubDetailResponse.ClubDto from(Club club) {
-            return new QueryClubDetailResponse.ClubDto(
-                    club.getClubName(),
-                    club.getIntroduction(),
-                    club.getClubImage(),
-                    club.getMajors().stream().map(ClubMajor::getMajor).toList(),
-                    club.getLinks().stream().map(ClubLink::getLink).toList()
-            );
-        }
+    public static QueryClubDetailResponse of(Club club) {
+        return new QueryClubDetailResponse(
+                club.getClubName(),
+                club.getIntroduction(),
+                club.getClubImage(),
+                club.getMajors().stream().map(ClubMajor::getMajor).toList(),
+                club.getLinks().stream().map(ClubLink::getLink).toList()
+        );
     }
 }
