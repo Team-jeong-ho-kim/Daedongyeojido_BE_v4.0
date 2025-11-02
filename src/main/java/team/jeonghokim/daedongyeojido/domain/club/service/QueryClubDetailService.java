@@ -19,6 +19,6 @@ public class QueryClubDetailService {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
 
-        return new QueryClubDetailResponse(QueryClubDetailResponse.ClubDto.from(club));
+        return QueryClubDetailResponse.of(club);
     }
 }
