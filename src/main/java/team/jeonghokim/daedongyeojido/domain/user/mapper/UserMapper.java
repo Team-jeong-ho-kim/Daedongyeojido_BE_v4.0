@@ -14,7 +14,9 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     public List<UserMajor> toUserMajors(MyInfoRequest request, User user) {
-        return request.majors().stream()
+        return Optional.ofNullable(request.majors())
+                .orElseGet(List::of)
+                .stream()
                 .map(major -> UserMajor.builder()
                         .user(user)
                         .major(major)
