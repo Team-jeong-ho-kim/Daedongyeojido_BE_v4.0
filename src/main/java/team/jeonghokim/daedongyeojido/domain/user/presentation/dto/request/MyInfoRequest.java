@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.URL;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.util.List;
@@ -18,6 +19,6 @@ public record MyInfoRequest(
 
         List<Major> majors,
 
-        List<String> links
+        List<@URL(message = "유효한 URL 형식이어야 합니다")String> links
 ) {
 }
