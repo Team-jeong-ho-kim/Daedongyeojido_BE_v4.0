@@ -10,7 +10,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import java.util.List;
 
 @Getter
-public class CreateClubRequest {
+public class ClubRequest {
     @NotBlank(message = "동아리 이름은 필수입니다.")
     @Size(max = 20, message = "동아리 이름은 최대 20자까지 작성할 수 있습니다.")
     private String clubName;

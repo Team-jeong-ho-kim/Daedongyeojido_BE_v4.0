@@ -7,7 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubLink;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
-import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.CreateClubRequest;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.facade.UserFacade;
@@ -25,7 +25,7 @@ public class CreateClubService {
     private final CreateClubValidator createClubValidator;
 
     @Transactional
-    public void execute(CreateClubRequest request) {
+    public void execute(ClubRequest request) {
         User clubApplicant = userFacade.getCurrentUser();
 
         createClubValidator.validate(request, clubApplicant);
@@ -41,7 +41,7 @@ public class CreateClubService {
         clubRepository.save(club);
     }
 
-    private Club createClub(CreateClubRequest request, User clubApplicant) {
+    private Club createClub(ClubRequest request, User clubApplicant) {
         return Club.builder()
                 .clubName(request.getClubName())
                 .clubImage(request.getClubImage())
@@ -52,7 +52,7 @@ public class CreateClubService {
                 .build();
     }
 
-    private List<ClubMajor> createClubMajor(CreateClubRequest request, Club club) {
+    private List<ClubMajor> createClubMajor(ClubRequest request, Club club) {
         return request.getMajor().stream().map(major ->
                 ClubMajor.builder()
                         .club(club)
@@ -61,7 +61,7 @@ public class CreateClubService {
                 .collect(Collectors.toList());
     }
 
-    private List<ClubLink> createClubLink(CreateClubRequest request, Club club) {
+    private List<ClubLink> createClubLink(ClubRequest request, Club club) {
         return Optional.ofNullable(request.getLink())
                 .orElseGet(List::of)
                 .stream()
