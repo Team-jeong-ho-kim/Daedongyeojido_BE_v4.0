@@ -9,6 +9,6 @@ public class FeignForbiddenException extends DaedongException {
     public static final DaedongException EXCEPTION = new FeignForbiddenException();
 
     private FeignForbiddenException(){
-        super(ErrorCode.FEIGN_FORBIDDDEN_EXCEPTION);
+        super(ErrorCode.FEIGN_FORBIDDEN_EXCEPTION);
     }
 }
