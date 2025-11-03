@@ -28,8 +28,8 @@ public enum ErrorCode {
     INVALID_EXTENSION(400, "유효하지 않은 파일 확장자입니다."),
 
     //feign
-    FEIGN_BAD_REQUEST(401, "Feign Bad Request"),
-    FEIGN_UNAUTHORIZED_EXCEPTION(402, "Feign Unauthorized Exception"),
+    FEIGN_BAD_REQUEST(400, "Feign Bad Request"),
+    FEIGN_UNAUTHORIZED_EXCEPTION(401, "Feign Unauthorized Exception"),
     FEIGN_FORBIDDDEN_EXCEPTION(403, "Feign Forbidden Exception"),
 
     // club
