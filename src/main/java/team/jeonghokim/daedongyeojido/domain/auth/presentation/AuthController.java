@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.request.LoginRequest;
+import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.TokenResponse;
 import team.jeonghokim.daedongyeojido.domain.auth.service.LoginService;
 
 @RestController
@@ -15,7 +16,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public void login(@RequestBody @Valid LoginRequest request) {
-        loginService.execute(request);
+    public TokenResponse login(@RequestBody @Valid LoginRequest request) {
+        return loginService.execute(request);
     }
 }
