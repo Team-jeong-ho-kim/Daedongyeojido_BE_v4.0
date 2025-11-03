@@ -8,9 +8,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
@@ -19,6 +21,8 @@ import java.util.List;
 
 @Entity(name = "tbl_club")
 @Getter
+@Builder(toBuilder = true)
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Club extends BaseIdEntity {
 
@@ -48,7 +52,14 @@ public class Club extends BaseIdEntity {
     private List<ClubLink> links = new ArrayList<>();
 
     @Builder
-    public Club(String clubName, String clubImage, String oneLiner, String introduction, Boolean isOpen, User clubApplicant) {
+    public Club(
+            String clubName,
+            String clubImage,
+            String oneLiner,
+            String introduction,
+            Boolean isOpen,
+            User clubApplicant
+    ) {
         this.clubName = clubName;
         this.clubImage = clubImage;
         this.oneLiner = oneLiner;
@@ -59,5 +70,28 @@ public class Club extends BaseIdEntity {
 
     public void clubOpen() {
         this.isOpen = true;
+    }
+
+    public void updateClub(ClubRequest request) {
+        this.clubName = request.getClubName();
+        this.clubImage = request.getClubImage();
+        this.oneLiner = request.getOneLiner();
+        this.introduction = request.getIntroduction();
+
+        this.majors.clear();
+        request.getMajor().stream()
+                .map(major -> ClubMajor.builder()
+                        .major(major)
+                        .club(this)
+                        .build())
+                .forEach(this.majors::add);
+
+        this.links.clear();
+        request.getLink().stream()
+                .map(link -> ClubLink.builder()
+                        .link(link)
+                        .club(this)
+                        .build())
+                .forEach(this.links::add);
     }
 }
