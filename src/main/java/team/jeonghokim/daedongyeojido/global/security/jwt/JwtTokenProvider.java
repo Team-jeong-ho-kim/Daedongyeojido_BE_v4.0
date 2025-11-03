@@ -62,7 +62,7 @@ public class JwtTokenProvider {
         refreshTokenRepository.save(
                 RefreshToken.builder()
                         .accountId(accountId)
-                        .token(refreshToken)
+                        .refreshToken(refreshToken)
                         .timeToLive((jwtProperties.getRefreshExpiration()))
                         .build()
         );
@@ -99,6 +99,21 @@ public class JwtTokenProvider {
                 .builder()
                 .accessToken(createAccessToken(accountId))
                 .refreshToken(createRefreshToken(accountId))
+                .build();
+    }
+
+    public TokenResponse reissueToken(String accountId) {
+
+        RefreshToken refreshToken = refreshTokenRepository.save(RefreshToken.builder()
+                .accountId(accountId)
+                .refreshToken(createRefreshToken(accountId))
+                .timeToLive((jwtProperties.getRefreshExpiration()))
+                .build());
+
+        return TokenResponse
+                .builder()
+                .accessToken(createAccessToken(accountId))
+                .refreshToken(refreshToken.getRefreshToken())
                 .build();
     }
 
