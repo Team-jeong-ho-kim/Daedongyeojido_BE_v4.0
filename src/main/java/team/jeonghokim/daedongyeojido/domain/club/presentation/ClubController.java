@@ -49,7 +49,7 @@ public class ClubController {
 
     @PatchMapping("/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateClub(@PathVariable("club-id") Long clubId, ClubRequest request) {
+    public void updateClub(@PathVariable("club-id") Long clubId, @RequestBody @Valid ClubRequest request) {
         updateClubService.execute(clubId, request);
     }
 }
