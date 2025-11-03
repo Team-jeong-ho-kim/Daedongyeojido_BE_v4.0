@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.mapper.UserMapper;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInfoRequest;
@@ -13,7 +12,6 @@ import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInf
 @RequiredArgsConstructor
 public class InputMyInfoService {
     private final UserFacade userFacade;
-    private final UserRepository userRepository;
     private final UserMapper userMapper;
 
     @Transactional
