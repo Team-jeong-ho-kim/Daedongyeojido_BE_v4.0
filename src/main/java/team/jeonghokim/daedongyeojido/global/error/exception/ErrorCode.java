@@ -30,7 +30,7 @@ public enum ErrorCode {
     //feign
     FEIGN_BAD_REQUEST(400, "Feign Bad Request"),
     FEIGN_UNAUTHORIZED_EXCEPTION(401, "Feign Unauthorized Exception"),
-    FEIGN_FORBIDDDEN_EXCEPTION(403, "Feign Forbidden Exception"),
+    FEIGN_FORBIDDEN_EXCEPTION(403, "Feign Forbidden Exception"),
 
     // club
     ALREADY_EXISTS_CLUB(409, "해당 동아리가 이미 존재합니다."),
