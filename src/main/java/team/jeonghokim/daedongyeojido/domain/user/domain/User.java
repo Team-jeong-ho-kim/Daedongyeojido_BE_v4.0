@@ -47,4 +47,11 @@ public class User extends BaseIdEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
+
+    public void inputMyInfo(String phoneNumber, String introduction, List<UserMajor> majors, List<UserLink> links) {
+        this.phoneNumber = phoneNumber;
+        this.introduction = introduction;
+        this.majors = majors;
+        this.links = links;
+    }
 }
