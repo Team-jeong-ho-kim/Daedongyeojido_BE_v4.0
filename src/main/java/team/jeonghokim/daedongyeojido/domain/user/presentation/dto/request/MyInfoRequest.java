@@ -20,8 +20,6 @@ public record MyInfoRequest(
 
         List<Major> majors,
 
-        List<@URL(message = "유효한 URL 형식이어야 합니다")String> links,
-
-        MultipartFile profileImage
-) {
+        List<@URL(message = "유효한 URL 형식이어야 합니다")String> links
+        ) {
 }
