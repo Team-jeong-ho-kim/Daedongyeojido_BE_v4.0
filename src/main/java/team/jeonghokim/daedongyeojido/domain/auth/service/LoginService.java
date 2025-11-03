@@ -30,12 +30,15 @@ public class LoginService {
             throw UserNotFoundException.EXCEPTION;
         }
 
-        userRepository.save(User.builder()
-                .accountId(xquareUser.accountId())
-                .password(passwordEncoder.encode(xquareUser.password()))
-                .userName(xquareUser.name())
-                .role(Role.STUDENT)
-                .build());
+        userRepository.findByAccountId(xquareUser.accountId())
+                .orElseGet(() -> userRepository.save(
+                        User.builder()
+                                .accountId(xquareUser.accountId())
+                                .password(passwordEncoder.encode(xquareUser.password()))
+                                .userName(xquareUser.name())
+                                .role(Role.STUDENT)
+                                .build()
+                ));
 
         return jwtTokenProvider.receiveToken(xquareUser.accountId());
     }
