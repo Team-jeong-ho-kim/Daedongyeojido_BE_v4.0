@@ -22,13 +22,10 @@ public class User extends BaseIdEntity {
     @Column(nullable = false, length = 4)
     private String userName;
 
-    @Column(nullable = false, length = 4)
-    private String classNumber;
-
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 11)
+    @Column(length = 11)
     private String phoneNumber;
 
     @Column(length = 30)

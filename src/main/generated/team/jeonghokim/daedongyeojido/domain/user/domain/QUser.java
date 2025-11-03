@@ -26,8 +26,6 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath accountId = createString("accountId");
 
-    public final StringPath classNumber = createString("classNumber");
-
     public final team.jeonghokim.daedongyeojido.domain.club.domain.QClub club;
 
     //inherited
