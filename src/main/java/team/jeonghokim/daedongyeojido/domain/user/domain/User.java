@@ -49,13 +49,14 @@ public class User extends BaseIdEntity {
     private Club club;
 
     public void inputMyInfo(String phoneNumber, String introduction,
-                            List<UserMajor> majors, List<UserLink> links) {
+                            List<UserMajor> majors, List<UserLink> links, String profileImage) {
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
         this.majors.clear();
         this.majors.addAll(majors);
         this.links.clear();
         this.links.addAll(links);
+        this.profileImage = profileImage;
     }
 
 }
