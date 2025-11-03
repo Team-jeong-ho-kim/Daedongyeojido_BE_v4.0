@@ -14,9 +14,6 @@ import org.springframework.util.StringUtils;
 import team.jeonghokim.daedongyeojido.domain.auth.domain.RefreshToken;
 import team.jeonghokim.daedongyeojido.domain.auth.domain.repository.RefreshTokenRepository;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.TokenResponse;
-import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
-import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.global.security.auth.CustomUserDetailsService;
 import team.jeonghokim.daedongyeojido.global.security.exception.ExpiredTokenException;
 import team.jeonghokim.daedongyeojido.global.security.exception.InvalidTokenException;
@@ -28,7 +25,6 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
-    private final UserRepository userRepository;
     private final CustomUserDetailsService customUserDetailsService;
     private final RefreshTokenRepository refreshTokenRepository;
 
@@ -98,9 +94,6 @@ public class JwtTokenProvider {
     }
 
     public TokenResponse receiveToken(String accountId) {
-
-        User user = userRepository.findByAccountId(accountId)
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         return TokenResponse
                 .builder()
