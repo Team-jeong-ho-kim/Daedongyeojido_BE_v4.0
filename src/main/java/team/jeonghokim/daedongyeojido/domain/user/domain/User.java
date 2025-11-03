@@ -48,10 +48,14 @@ public class User extends BaseIdEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
-    public void inputMyInfo(String phoneNumber, String introduction, List<UserMajor> majors, List<UserLink> links) {
+    public void inputMyInfo(String phoneNumber, String introduction,
+                            List<UserMajor> majors, List<UserLink> links) {
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
-        this.majors = majors;
-        this.links = links;
+        this.majors.clear();
+        this.majors.addAll(majors);
+        this.links.clear();
+        this.links.addAll(links);
     }
+
 }
