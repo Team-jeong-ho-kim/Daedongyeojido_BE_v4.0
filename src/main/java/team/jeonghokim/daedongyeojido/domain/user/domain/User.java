@@ -3,7 +3,6 @@ package team.jeonghokim.daedongyeojido.domain.user.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
-import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
