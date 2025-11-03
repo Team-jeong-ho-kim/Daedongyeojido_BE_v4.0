@@ -17,9 +17,9 @@ public class ReissueService {
 
     public TokenResponse execute(ReissueRequest request) {
 
-        jwtTokenProvider.getClaims(request.token());
+        jwtTokenProvider.getClaims(request.refreshToken());
 
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(request.token())
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(request.refreshToken())
                 .orElseThrow(() -> RefreshTokenNotFoundException.EXCEPTION);
 
         return jwtTokenProvider.receiveToken(refreshToken.getAccountId());
