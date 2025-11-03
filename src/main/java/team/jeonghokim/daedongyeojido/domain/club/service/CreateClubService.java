@@ -47,7 +47,7 @@ public class CreateClubService {
                 .clubImage(request.getClubImage())
                 .oneLiner(request.getOneLiner())
                 .introduction(request.getIntroduction())
-                .isOpened(false)
+                .isOpen(false)
                 .clubApplicant(clubApplicant)
                 .build();
     }

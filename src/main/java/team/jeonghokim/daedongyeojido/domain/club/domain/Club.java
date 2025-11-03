@@ -34,8 +34,8 @@ public class Club extends BaseIdEntity {
     @Column(name = "introduction", length = 500, nullable = false)
     private String introduction;
 
-    @Column(name = "is_opened", nullable = false)
-    private boolean isOpened;
+    @Column(name = "is_open", nullable = false)
+    private Boolean isOpen;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false, unique = true)
@@ -48,12 +48,16 @@ public class Club extends BaseIdEntity {
     private List<ClubLink> links = new ArrayList<>();
 
     @Builder
-    public Club(String clubName, String clubImage, String oneLiner, String introduction, boolean isOpened, User clubApplicant) {
+    public Club(String clubName, String clubImage, String oneLiner, String introduction, Boolean isOpen, User clubApplicant) {
         this.clubName = clubName;
         this.clubImage = clubImage;
         this.oneLiner = oneLiner;
         this.introduction = introduction;
-        this.isOpened = isOpened;
+        this.isOpen = isOpen;
         this.clubApplicant = clubApplicant;
+    }
+
+    public void clubOpen() {
+        this.isOpen = true;
     }
 }
