@@ -1,18 +1,12 @@
 package team.jeonghokim.daedongyeojido.domain.user.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
-import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "tbl_user")
@@ -40,13 +34,14 @@ public class User extends BaseIdEntity {
     @Column(length = 30)
     private String introduction;
 
-    private List<String> links;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserLink> links = new ArrayList<>();
 
     @Column(length = 300)
     private String profileImage;
 
-    @Enumerated(EnumType.STRING)
-    private List<Major> majors;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserMajor> majors =  new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 11)

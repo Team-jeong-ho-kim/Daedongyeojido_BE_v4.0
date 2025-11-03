@@ -35,9 +35,9 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath introduction = createString("introduction");
 
-    public final ListPath<String, StringPath> links = this.<String, StringPath>createList("links", String.class, StringPath.class, PathInits.DIRECT2);
+    public final ListPath<UserLink, QUserLink> links = this.<UserLink, QUserLink>createList("links", UserLink.class, QUserLink.class, PathInits.DIRECT2);
 
-    public final ListPath<team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major, EnumPath<team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major>> majors = this.<team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major, EnumPath<team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major>>createList("majors", team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major.class, EnumPath.class, PathInits.DIRECT2);
+    public final ListPath<UserMajor, QUserMajor> majors = this.<UserMajor, QUserMajor>createList("majors", UserMajor.class, QUserMajor.class, PathInits.DIRECT2);
 
     public final StringPath password = createString("password");
 
