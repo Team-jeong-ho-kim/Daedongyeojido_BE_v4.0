@@ -17,10 +17,10 @@ public class ReissueService {
 
     public TokenResponse execute(ReissueRequest request) {
 
+        jwtTokenProvider.getClaims(request.token());
+
         RefreshToken refreshToken = refreshTokenRepository.findByToken(request.token())
                 .orElseThrow(() -> RefreshTokenNotFoundException.EXCEPTION);
-
-        jwtTokenProvider.getClaims(refreshToken.getToken());
 
         return jwtTokenProvider.receiveToken(refreshToken.getAccountId());
     }
