@@ -15,7 +15,7 @@ public class UserController {
 
     @PatchMapping("/my-info")
     @ResponseStatus(HttpStatus.OK)
-    public void inputMyInfo(@RequestBody @Valid MyInfoRequest request) {
+    public void inputMyInfo(@ModelAttribute @Valid MyInfoRequest request) {
         inputMyInfoService.execute(request);
     }
 }
