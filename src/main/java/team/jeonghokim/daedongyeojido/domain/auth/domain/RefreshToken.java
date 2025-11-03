@@ -17,7 +17,7 @@ public class RefreshToken {
     private String accountId;
 
     @Indexed
-    private String token;
+    private String refreshToken;
 
     @TimeToLive
     private Long timeToLive;
