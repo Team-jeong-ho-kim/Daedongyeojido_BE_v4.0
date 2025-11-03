@@ -1,5 +1,6 @@
 package team.jeonghokim.daedongyeojido.global.xquare.dto;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 public record XquareResponse(
@@ -7,6 +8,12 @@ public record XquareResponse(
         String accountId,
         String password,
         String name,
-        Integer classNum
+        Integer grade,
+        Integer classNum,
+        Integer num,
+        String userRole,
+        LocalDate birth_day,
+        String profileImgUrl,
+        String clubName
 ) {
 }
