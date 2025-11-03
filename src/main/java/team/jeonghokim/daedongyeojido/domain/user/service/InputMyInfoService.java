@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+import team.jeonghokim.daedongyeojido.domain.user.mapper.UserMapper;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInfoRequest;
 
 @Service
@@ -13,11 +14,17 @@ import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInf
 public class InputMyInfoService {
     private final UserFacade userFacade;
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Transactional
     public void execute(MyInfoRequest request) {
         User user = userFacade.getCurrentUser();
 
-        user.inputMyInfo(request.phoneNumber(), request.introduction(), request.majors(), request.links());
+        user.inputMyInfo(
+                request.phoneNumber(),
+                request.introduction(),
+                userMapper.toUserMajors(request, user),
+                userMapper.toUserLinks(request, user)
+        );
     }
 }
