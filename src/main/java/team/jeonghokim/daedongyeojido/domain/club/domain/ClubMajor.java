@@ -32,4 +32,11 @@ public class ClubMajor extends BaseIdEntity {
         this.club = club;
         this.major = major;
     }
+
+    protected void setClub(Club club) {
+        if (this.club != null) {
+            return;
+        }
+        this.club = club;
+    }
 }
