@@ -26,7 +26,7 @@ import java.util.List;
     name = "tbl_club",
     uniqueConstraints = {
             @UniqueConstraint(
-                name = "uk_club",
+                name = "unique_idx_club",
                 columnNames = {"club_name", "account_id"}
             )
     }
