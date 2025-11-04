@@ -1,9 +1,11 @@
 package team.jeonghokim.daedongyeojido.domain.club.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,6 +14,9 @@ import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "tbl_club")
 @Getter
@@ -37,6 +42,12 @@ public class Club extends BaseIdEntity {
     @JoinColumn(name = "account_id", nullable = false, unique = true)
     private User clubApplicant;
 
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClubMajor> clubMajors = new ArrayList<>();
+
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClubLink> clubLinks = new ArrayList<>();
+
     @Builder
     public Club(
             String clubName,
@@ -44,7 +55,9 @@ public class Club extends BaseIdEntity {
             String oneLiner,
             String introduction,
             Boolean isOpen,
-            User clubApplicant
+            User clubApplicant,
+            List<ClubMajor> clubMajors,
+            List<ClubLink> clubLinks
     ) {
         this.clubName = clubName;
         this.clubImage = clubImage;
@@ -52,6 +65,22 @@ public class Club extends BaseIdEntity {
         this.introduction = introduction;
         this.isOpen = isOpen;
         this.clubApplicant = clubApplicant;
+        addClubMajor(clubMajors);
+        addClubLink(clubLinks);
+    }
+
+    private void addClubMajor(List<ClubMajor> clubMajors) {
+        clubMajors.forEach(major ->{
+            major.setClub(this);
+            this.clubMajors.add(major);
+        });
+    }
+
+    private void addClubLink(List<ClubLink> clubLinks) {
+        clubLinks.forEach(link ->{
+            link.setClub(this);
+            this.clubLinks.add(link);
+        });
     }
 
 
@@ -64,5 +93,21 @@ public class Club extends BaseIdEntity {
         this.clubImage = request.getClubImage();
         this.oneLiner = request.getOneLiner();
         this.introduction = request.getIntroduction();
+
+        this.clubMajors.clear();
+        request.getMajor().stream()
+                .map(major -> ClubMajor.builder()
+                        .major(major)
+                        .club(this)
+                        .build())
+                .forEach(this.clubMajors::add);
+
+        this.clubLinks.clear();
+        request.getLink().stream()
+                .map(link -> ClubLink.builder()
+                        .link(link)
+                        .club(this)
+                        .build())
+                .forEach(this.clubLinks::add);
     }
 }
