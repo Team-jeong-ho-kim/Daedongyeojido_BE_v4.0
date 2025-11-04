@@ -17,10 +17,10 @@ public class ClubCustomRepositoryImpl implements ClubCustomRepository {
     @Override
     public List<Club> findAllByIsOpenIsTrue() {
         return jpaQueryFactory
-                .selectFrom(club)
-                .leftJoin(club.majors, clubMajor).fetchJoin()
+                .selectDistinct(club)
+                .from(club)
+                .leftJoin(clubMajor).on(clubMajor.club.eq(club)).fetchJoin()
                 .where(club.isOpen.isTrue())
-                .distinct()
                 .fetch();
     }
 }
