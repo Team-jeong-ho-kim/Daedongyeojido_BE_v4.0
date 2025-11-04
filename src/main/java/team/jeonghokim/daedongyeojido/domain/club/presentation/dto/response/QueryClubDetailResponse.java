@@ -15,13 +15,13 @@ public record QueryClubDetailResponse(
         List<String> links
 ) {
 
-    public static QueryClubDetailResponse of(Club club) {
+    public static QueryClubDetailResponse of(Club club, List<ClubMajor> clubMajors, List<ClubLink> clubLinks) {
         return new QueryClubDetailResponse(
                 club.getClubName(),
                 club.getIntroduction(),
                 club.getClubImage(),
-                club.getMajors().stream().map(ClubMajor::getMajor).toList(),
-                club.getLinks().stream().map(ClubLink::getLink).toList()
+                clubMajors.stream().map(ClubMajor::getMajor).toList(),
+                clubLinks.stream().map(ClubLink::getLink).toList()
         );
     }
 }
