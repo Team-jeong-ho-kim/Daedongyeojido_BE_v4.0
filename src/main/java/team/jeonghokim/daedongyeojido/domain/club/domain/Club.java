@@ -7,6 +7,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,12 +20,21 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "tbl_club")
+@Entity
 @Getter
+@Table(
+    name = "tbl_club",
+    uniqueConstraints = {
+            @UniqueConstraint(
+                name = "uk_club",
+                columnNames = {"club_name", "account_id"}
+            )
+    }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Club extends BaseIdEntity {
 
-    @Column(name = "club_name", length = 20, nullable = false, unique = true)
+    @Column(name = "club_name", length = 20, nullable = false)
     private String clubName;
 
     @Column(name = "club_image", length = 200, nullable = false)
@@ -39,7 +50,7 @@ public class Club extends BaseIdEntity {
     private Boolean isOpen;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false, unique = true)
+    @JoinColumn(name = "account_id", nullable = false)
     private User clubApplicant;
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
