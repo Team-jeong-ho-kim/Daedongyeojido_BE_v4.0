@@ -30,18 +30,14 @@ public class CreateClubService {
 
         createClubValidator.validate(request, clubApplicant);
 
-        Club club = createClub(request, clubApplicant);
-
-        List<ClubMajor> clubMajors = createClubMajor(request, club);
-        List<ClubLink> clubLinks = createClubLink(request, club);
-
-        club.getMajors().addAll(clubMajors);
-        club.getLinks().addAll(clubLinks);
+        List<ClubMajor> clubMajors = createClubMajor(request);
+        List<ClubLink> clubLinks = createClubLink(request);
+        Club club = createClub(request, clubApplicant, clubMajors, clubLinks);
 
         clubRepository.save(club);
     }
 
-    private Club createClub(ClubRequest request, User clubApplicant) {
+    private Club createClub(ClubRequest request, User clubApplicant, List<ClubMajor> clubMajors, List<ClubLink> clubLinks) {
         return Club.builder()
                 .clubName(request.getClubName())
                 .clubImage(request.getClubImage())
@@ -49,24 +45,24 @@ public class CreateClubService {
                 .introduction(request.getIntroduction())
                 .isOpen(false)
                 .clubApplicant(clubApplicant)
+                .majors(clubMajors)
+                .links(clubLinks)
                 .build();
     }
 
-    private List<ClubMajor> createClubMajor(ClubRequest request, Club club) {
+    private List<ClubMajor> createClubMajor(ClubRequest request) {
         return request.getMajor().stream().map(major ->
                 ClubMajor.builder()
-                        .club(club)
                         .major(major)
                         .build())
                 .collect(Collectors.toList());
     }
 
-    private List<ClubLink> createClubLink(ClubRequest request, Club club) {
+    private List<ClubLink> createClubLink(ClubRequest request) {
         return Optional.ofNullable(request.getLink())
                 .orElseGet(List::of)
                 .stream()
                 .map(link -> ClubLink.builder()
-                        .club(club)
                         .link(link)
                         .build())
                 .collect(Collectors.toList());
