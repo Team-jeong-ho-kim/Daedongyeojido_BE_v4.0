@@ -31,14 +31,8 @@ public class User extends BaseIdEntity {
     @Column(length = 30)
     private String introduction;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserLink> links = new ArrayList<>();
-
     @Column(length = 300)
     private String profileImage;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserMajor> majors =  new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 11)
@@ -47,4 +41,11 @@ public class User extends BaseIdEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
+
+    public void inputMyInfo(String phoneNumber, String introduction, String profileImage) {
+        this.phoneNumber = phoneNumber;
+        this.introduction = introduction;
+        this.profileImage = profileImage;
+    }
+
 }
