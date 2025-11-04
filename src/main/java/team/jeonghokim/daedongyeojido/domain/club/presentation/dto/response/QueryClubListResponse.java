@@ -15,13 +15,13 @@ public record QueryClubListResponse(List<ClubDto> clubs) {
             String introduction,
             List<Major> majors
     ) {
-        public static ClubDto from(Club club, List<ClubMajor> clubMajors) {
+        public static ClubDto from(Club club) {
             return new ClubDto(
                     club.getId(),
                     club.getClubName(),
                     club.getClubImage(),
                     club.getIntroduction(),
-                    clubMajors.stream().map(ClubMajor::getMajor).toList()
+                    club.getClubMajors().stream().map(ClubMajor::getMajor).toList()
             );
         }
     }
