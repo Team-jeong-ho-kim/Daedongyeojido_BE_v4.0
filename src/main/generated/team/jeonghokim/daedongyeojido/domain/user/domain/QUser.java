@@ -33,10 +33,6 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath introduction = createString("introduction");
 
-    public final ListPath<UserLink, QUserLink> links = this.<UserLink, QUserLink>createList("links", UserLink.class, QUserLink.class, PathInits.DIRECT2);
-
-    public final ListPath<UserMajor, QUserMajor> majors = this.<UserMajor, QUserMajor>createList("majors", UserMajor.class, QUserMajor.class, PathInits.DIRECT2);
-
     public final StringPath password = createString("password");
 
     public final StringPath phoneNumber = createString("phoneNumber");
