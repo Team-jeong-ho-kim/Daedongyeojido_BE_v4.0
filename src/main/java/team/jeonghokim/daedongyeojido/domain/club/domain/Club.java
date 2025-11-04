@@ -65,18 +65,18 @@ public class Club extends BaseIdEntity {
         this.introduction = introduction;
         this.isOpen = isOpen;
         this.clubApplicant = clubApplicant;
-        addClubMajor(clubMajors);
-        addClubLink(clubLinks);
+        addClubMajors(clubMajors);
+        addClubLinks(clubLinks);
     }
 
-    private void addClubMajor(List<ClubMajor> clubMajors) {
+    private void addClubMajors(List<ClubMajor> clubMajors) {
         clubMajors.forEach(major ->{
             major.setClub(this);
             this.clubMajors.add(major);
         });
     }
 
-    private void addClubLink(List<ClubLink> clubLinks) {
+    private void addClubLinks(List<ClubLink> clubLinks) {
         clubLinks.forEach(link ->{
             link.setClub(this);
             this.clubLinks.add(link);
@@ -98,16 +98,24 @@ public class Club extends BaseIdEntity {
         request.getMajor().stream()
                 .map(major -> ClubMajor.builder()
                         .major(major)
-                        .club(this)
                         .build())
-                .forEach(this.clubMajors::add);
+                .forEach(this::addClubMajor);
 
         this.clubLinks.clear();
         request.getLink().stream()
                 .map(link -> ClubLink.builder()
                         .link(link)
-                        .club(this)
                         .build())
-                .forEach(this.clubLinks::add);
+                .forEach(this::addClubLink);
+    }
+
+    private void addClubMajor(ClubMajor clubMajor) {
+        clubMajor.setClub(this);
+        this.clubMajors.add(clubMajor);
+    }
+
+    private void addClubLink(ClubLink clubLink) {
+        clubLink.setClub(this);
+        this.clubLinks.add(clubLink);
     }
 }
