@@ -55,7 +55,9 @@ public class Club extends BaseIdEntity {
             String oneLiner,
             String introduction,
             Boolean isOpen,
-            User clubApplicant
+            User clubApplicant,
+            List<ClubMajor> majors,
+            List<ClubLink> links
     ) {
         this.clubName = clubName;
         this.clubImage = clubImage;
@@ -63,6 +65,22 @@ public class Club extends BaseIdEntity {
         this.introduction = introduction;
         this.isOpen = isOpen;
         this.clubApplicant = clubApplicant;
+        addClubMajor(majors);
+        addClubLink(links);
+    }
+
+    private void addClubMajor(List<ClubMajor> clubMajors) {
+        clubMajors.forEach(major ->{
+            major.setClub(this);
+            this.majors.add(major);
+        });
+    }
+
+    private void addClubLink(List<ClubLink> clubLinks) {
+        clubLinks.forEach(link ->{
+            link.setClub(this);
+            this.links.add(link);
+        });
     }
 
     public void clubOpen() {
