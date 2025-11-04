@@ -24,8 +24,7 @@ public class ClubLink extends BaseIdEntity {
     private String link;
 
     @Builder
-    public ClubLink(Club club, String link) {
-        this.club = club;
+    public ClubLink(String link) {
         this.link = link;
     }
 
