@@ -9,4 +9,6 @@ import java.util.List;
 public interface ClubMajorRepository extends JpaRepository<ClubMajor, Long> {
 
     List<ClubMajor> findAllByClub(Club club);
+
+    void deleteAllByClub(Club club);
 }
