@@ -3,7 +3,6 @@ package team.jeonghokim.daedongyeojido.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.mapper.UserMapper;
@@ -18,10 +17,10 @@ public class InputMyInfoService {
     private final S3Service s3Service;
 
     @Transactional
-    public void execute(MyInfoRequest request, MultipartFile file) {
+    public void execute(MyInfoRequest request) {
         User user = userFacade.getCurrentUser();
 
-        String profileImage = s3Service.upload(file);
+        String profileImage = s3Service.upload(request.profileImage());
 
         user.inputMyInfo(
                 request.phoneNumber(),
