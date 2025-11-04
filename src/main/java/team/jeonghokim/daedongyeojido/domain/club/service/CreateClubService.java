@@ -38,9 +38,9 @@ public class CreateClubService {
         List<ClubMajor> clubMajors = createClubMajor(request, club);
         List<ClubLink> clubLinks = createClubLink(request, club);
 
+        clubRepository.save(club);
         clubMajorRepository.saveAll(clubMajors);
         clubLinkRepository.saveAll(clubLinks);
-        clubRepository.save(club);
     }
 
     private Club createClub(ClubRequest request, User clubApplicant) {
