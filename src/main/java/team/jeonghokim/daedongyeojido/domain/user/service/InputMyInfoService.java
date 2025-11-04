@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserLink;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserMajor;
+import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserLinkRepository;
+import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserMajorRepository;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInfoRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 public class InputMyInfoService {
     private final UserFacade userFacade;
     private final S3Service s3Service;
+    private final UserMajorRepository userMajorRepository;
+    private final UserLinkRepository userLinkRepository;
 
     @Transactional
     public void execute(MyInfoRequest request) {
@@ -29,10 +33,14 @@ public class InputMyInfoService {
         user.inputMyInfo(
                 request.phoneNumber(),
                 request.introduction(),
-                createUserMajor(request, user),
-                createUserLink(request, user),
                 profileImage
         );
+
+        List<UserMajor> majors = createUserMajor(request, user);
+        List<UserLink> links = createUserLink(request, user);
+
+        userMajorRepository.saveAll(majors);
+        userLinkRepository.saveAll(links);
     }
 
     private List<UserMajor> createUserMajor(MyInfoRequest request, User user) {
