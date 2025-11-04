@@ -28,8 +28,7 @@ public class ClubMajor extends BaseIdEntity {
     private Major major;
 
     @Builder
-    public ClubMajor(Club club, Major major) {
-        this.club = club;
+    public ClubMajor(Major major) {
         this.major = major;
     }
 
