@@ -28,4 +28,11 @@ public class ClubLink extends BaseIdEntity {
         this.club = club;
         this.link = link;
     }
+
+    protected void setClub(Club club) {
+        if (this.club != null) {
+            return;
+        }
+        this.club = club;
+    }
 }
