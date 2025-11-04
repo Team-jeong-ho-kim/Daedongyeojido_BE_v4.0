@@ -7,6 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.test.domain.TestUser;
 import team.jeonghokim.daedongyeojido.domain.user.test.domain.TestUserLink;
 import team.jeonghokim.daedongyeojido.domain.user.test.domain.TestUserMajor;
+import team.jeonghokim.daedongyeojido.domain.user.test.domain.repository.TestUserDetailRepository;
 import team.jeonghokim.daedongyeojido.domain.user.test.domain.repository.UserLinkRepository;
 import team.jeonghokim.daedongyeojido.domain.user.test.domain.repository.UserMajorRepository;
 import team.jeonghokim.daedongyeojido.domain.user.test.dto.request.TestMyInfoRequest;
@@ -21,8 +22,7 @@ import java.util.stream.Collectors;
 public class TestInputService {
     private final UserFacade userFacade;
     private final S3Service s3Service;
-    private final UserMajorRepository userMajorRepository;
-    private final UserLinkRepository userLinkRepository;
+    private final TestUserDetailRepository testUserDetailRepository;
 
     @Transactional
     public void execute(TestMyInfoRequest request) {
@@ -39,10 +39,10 @@ public class TestInputService {
         List<TestUserMajor> majors = createUserMajor(request, testUser);
         List<TestUserLink> links = createUserLink(request, testUser);
 
-        userMajorRepository.saveAll(majors);
-        userLinkRepository.saveAll(links);
-    }
+        testUserDetailRepository.saveAll(testUser, majors, links);
 
+    }
+    
     private List<TestUserMajor> createUserMajor(TestMyInfoRequest request, TestUser user) {
         return Optional.ofNullable(request.majors())
                 .orElseGet(List::of)
