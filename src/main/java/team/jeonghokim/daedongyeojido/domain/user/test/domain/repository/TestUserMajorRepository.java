@@ -6,6 +6,6 @@ import team.jeonghokim.daedongyeojido.domain.user.test.domain.TestUserMajor;
 
 import java.util.List;
 
-public interface UserMajorRepository extends JpaRepository<TestUserMajor, Long> {
+public interface TestUserMajorRepository extends JpaRepository<TestUserMajor, Long> {
     List<TestUserMajor> findAllByUser(TestUser user);
 }

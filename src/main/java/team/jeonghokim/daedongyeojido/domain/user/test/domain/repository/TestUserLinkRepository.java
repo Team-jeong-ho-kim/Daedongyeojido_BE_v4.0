@@ -6,7 +6,7 @@ import team.jeonghokim.daedongyeojido.domain.user.test.domain.TestUserLink;
 
 import java.util.List;
 
-public interface UserLinkRepository extends JpaRepository<TestUserLink, Long> {
+public interface TestUserLinkRepository extends JpaRepository<TestUserLink, Long> {
 
     List<TestUserLink> findAllByUser(TestUser user);
 }

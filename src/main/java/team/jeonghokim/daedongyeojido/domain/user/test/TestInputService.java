@@ -8,8 +8,6 @@ import team.jeonghokim.daedongyeojido.domain.user.test.domain.TestUser;
 import team.jeonghokim.daedongyeojido.domain.user.test.domain.TestUserLink;
 import team.jeonghokim.daedongyeojido.domain.user.test.domain.TestUserMajor;
 import team.jeonghokim.daedongyeojido.domain.user.test.domain.repository.TestUserDetailRepository;
-import team.jeonghokim.daedongyeojido.domain.user.test.domain.repository.UserLinkRepository;
-import team.jeonghokim.daedongyeojido.domain.user.test.domain.repository.UserMajorRepository;
 import team.jeonghokim.daedongyeojido.domain.user.test.dto.request.TestMyInfoRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 
@@ -40,9 +38,8 @@ public class TestInputService {
         List<TestUserLink> links = createUserLink(request, testUser);
 
         testUserDetailRepository.saveAll(testUser, majors, links);
-
     }
-    
+
     private List<TestUserMajor> createUserMajor(TestMyInfoRequest request, TestUser user) {
         return Optional.ofNullable(request.majors())
                 .orElseGet(List::of)

@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class TestUserDetailRepository {
-    private final UserMajorRepository userMajorRepository;
-    private final UserLinkRepository userLinkRepository;
+    private final TestUserMajorRepository userMajorRepository;
+    private final TestUserLinkRepository userLinkRepository;
 
     @Transactional
     public void saveAll(TestUser user, List<TestUserMajor> majors, List<TestUserLink> links) {
