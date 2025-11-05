@@ -24,7 +24,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         user.classNumber,
                         user.phoneNumber,
                         user.introduction,
-                        user.club,
+                        user.club.clubName,
                         userMajor.major,
                         userLink.link,
                         user.profileImage))
