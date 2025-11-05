@@ -31,6 +31,9 @@ public class User extends BaseIdEntity {
     @Column(length = 30)
     private String introduction;
 
+    @Column(nullable = false, length = 4)
+    private Integer classNumber;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserLink> links = new ArrayList<>();
 
