@@ -30,16 +30,33 @@ public class LoginService {
             throw UserNotFoundException.EXCEPTION;
         }
 
-        userRepository.findByAccountId(xquareUser.accountId())
-                .orElseGet(() -> userRepository.save(
-                        User.builder()
-                                .accountId(xquareUser.accountId())
-                                .password(passwordEncoder.encode(xquareUser.password()))
-                                .userName(xquareUser.name())
-                                .role(Role.STUDENT)
-                                .build()
-                ));
+        User user = userRepository.findByAccountId(xquareUser.accountId())
+                .map(existingUser -> coverUserInfo(existingUser, xquareUser))
+                .orElseGet(() -> createUser(xquareUser));
 
-        return jwtTokenProvider.receiveToken(xquareUser.accountId());
+
+        return jwtTokenProvider.receiveToken(user.getAccountId());
+    }
+
+    private User createUser(XquareResponse xquareUser) {
+        return userRepository.save(
+                User.builder()
+                        .accountId(xquareUser.accountId())
+                        .password(passwordEncoder.encode(xquareUser.password()))
+                        .userName(xquareUser.name())
+                        .classNumber(xquareUser.classNum())
+                        .role(Role.STUDENT)
+                        .build()
+        );
+    }
+
+    private User coverUserInfo(User user, XquareResponse xquareUser) {
+         user.coverInfo(
+                xquareUser.accountId(),
+                passwordEncoder.encode(xquareUser.password()),
+                xquareUser.name(),
+                xquareUser.classNum()
+        );
+         return user;
     }
 }
