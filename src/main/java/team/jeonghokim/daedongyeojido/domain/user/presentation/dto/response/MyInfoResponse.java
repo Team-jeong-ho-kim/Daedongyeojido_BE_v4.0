@@ -9,10 +9,10 @@ import java.util.List;
 public record MyInfoResponse(
         String userName,
         Integer classNumber,
-        String club,
         String introduction,
-        List<Major> majors,
-        List<String> links,
+        String club,
+        List<Major> major,
+        List<String> link,
         String profileImage
 ) {
 }
