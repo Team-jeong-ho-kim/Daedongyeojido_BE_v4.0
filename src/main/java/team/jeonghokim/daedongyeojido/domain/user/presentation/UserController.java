@@ -22,9 +22,9 @@ public class UserController {
         inputMyInfoService.execute(request);
     }
 
-    @GetMapping("/{user-id}")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public MyInfoResponse queryMyInfo(@PathVariable("user-id") Long userId) {
-        return queryMyInfoService.execute(userId);
+    public MyInfoResponse queryMyInfo() {
+        return queryMyInfoService.execute();
     }
 }
