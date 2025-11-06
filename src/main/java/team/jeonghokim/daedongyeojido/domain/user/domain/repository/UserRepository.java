@@ -5,7 +5,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByAccountId(String accountId);
 }
