@@ -27,6 +27,11 @@ public enum ErrorCode {
     FAILED_DELETE(500, "삭제 실패"),
     INVALID_EXTENSION(400, "유효하지 않은 파일 확장자입니다."),
 
+    //feign
+    FEIGN_BAD_REQUEST(400, "Feign Bad Request"),
+    FEIGN_UNAUTHORIZED_EXCEPTION(401, "Feign Unauthorized Exception"),
+    FEIGN_FORBIDDEN_EXCEPTION(403, "Feign Forbidden Exception"),
+
     // club
     ALREADY_EXISTS_CLUB(409, "해당 동아리가 이미 존재합니다."),
     ALREADY_JOIN_CLUB(409, "이미 다른 동아리에 소속되어있습니다."),

@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.domain.user.domain.facade;
+package team.jeonghokim.daedongyeojido.domain.user.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,4 +17,5 @@ public class UserFacade {
         String accountId = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByAccountId(accountId).orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
+
 }

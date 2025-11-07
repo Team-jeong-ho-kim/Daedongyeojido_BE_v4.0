@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -30,6 +31,11 @@ public class SecurityConfig {
     private static final String CLUB_MEMBER = "CLUB_MEMBER";
 
     @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
@@ -38,7 +44,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user/**").permitAll()
+                        .requestMatchers("/user/**", "/auth/**").permitAll()
                         .requestMatchers("/admin/**").hasRole(ADMIN)
                         .requestMatchers(HttpMethod.GET, "/club/**").permitAll()
                         .requestMatchers("/club/create/apply").hasAnyRole(STUDENT, ADMIN, TEACHER, CLUB_MEMBER)

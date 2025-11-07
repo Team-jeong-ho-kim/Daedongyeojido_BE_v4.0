@@ -26,18 +26,12 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath accountId = createString("accountId");
 
-    public final StringPath classNumber = createString("classNumber");
-
     public final team.jeonghokim.daedongyeojido.domain.club.domain.QClub club;
 
     //inherited
     public final NumberPath<Long> id = _super.id;
 
     public final StringPath introduction = createString("introduction");
-
-    public final ListPath<String, StringPath> links = this.<String, StringPath>createList("links", String.class, StringPath.class, PathInits.DIRECT2);
-
-    public final ListPath<team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major, EnumPath<team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major>> majors = this.<team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major, EnumPath<team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major>>createList("majors", team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major.class, EnumPath.class, PathInits.DIRECT2);
 
     public final StringPath password = createString("password");
 
