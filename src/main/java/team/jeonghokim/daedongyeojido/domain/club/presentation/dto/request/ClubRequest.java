@@ -16,7 +16,7 @@ public class ClubRequest {
     @Size(max = 20, message = "동아리 이름은 최대 20자까지 작성할 수 있습니다.")
     private String clubName;
 
-    @NotBlank(message = "동아리 이미지는 필수입니다.")
+    @NotNull(message = "이미지는 필수입니다.")
     private MultipartFile clubImage;
 
     @NotBlank(message = "한 줄 소개는 필수입니다.")
