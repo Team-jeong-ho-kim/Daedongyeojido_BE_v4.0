@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.domain.user.facade;
+package team.jeonghokim.daedongyeojido.domain.user.domain.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
