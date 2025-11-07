@@ -62,10 +62,8 @@ public class User extends BaseIdEntity {
         this.profileImage = profileImage;
     }
 
-    public void coverInfo(String userName, String accountId, String password, Integer classNumber) {
-        this.accountId = accountId;
+    public void coverInfo(String userName, Integer classNumber) {
         this.userName = userName;
-        this.password = password;
         this.classNumber = classNumber;
     }
 }

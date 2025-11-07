@@ -53,8 +53,6 @@ public class LoginService {
     private User coverUserInfo(User user, XquareResponse xquareUser) {
          user.coverInfo(
                 xquareUser.name(),
-                 xquareUser.accountId(),
-                 passwordEncoder.encode(xquareUser.password()),
                  xquareUser.classNum()
         );
          return user;
