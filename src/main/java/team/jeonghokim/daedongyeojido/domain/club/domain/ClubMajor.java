@@ -24,7 +24,7 @@ public class ClubMajor extends BaseIdEntity {
     private Club club;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "major", nullable = false, length = 10)
+    @Column(nullable = false, length = 10)
     private Major major;
 
     @Builder
