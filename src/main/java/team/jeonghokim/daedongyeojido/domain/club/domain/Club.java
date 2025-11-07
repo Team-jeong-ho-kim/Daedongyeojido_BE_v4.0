@@ -34,19 +34,19 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Club extends BaseIdEntity {
 
-    @Column(name = "club_name", length = 20, nullable = false)
+    @Column(length = 20, nullable = false)
     private String clubName;
 
-    @Column(name = "club_image", length = 200, nullable = false)
+    @Column(length = 200, nullable = false)
     private String clubImage;
 
-    @Column(name = "one_liner", length = 30, nullable = false)
+    @Column(length = 30, nullable = false)
     private String oneLiner;
 
-    @Column(name = "introduction", length = 500, nullable = false)
+    @Column(length = 500, nullable = false)
     private String introduction;
 
-    @Column(name = "is_open", nullable = false)
+    @Column(nullable = false)
     private Boolean isOpen;
 
     @OneToOne(fetch = FetchType.LAZY)
