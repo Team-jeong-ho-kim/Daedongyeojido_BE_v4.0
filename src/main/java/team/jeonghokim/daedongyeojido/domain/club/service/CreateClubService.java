@@ -11,6 +11,7 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubR
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.facade.UserFacade;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,7 @@ public class CreateClubService {
     private final ClubRepository clubRepository;
     private final UserFacade userFacade;
     private final CreateClubValidator createClubValidator;
+    private final S3Service s3Service;
 
     @Transactional
     public void execute(ClubRequest request) {
@@ -41,7 +43,7 @@ public class CreateClubService {
     private Club createClub(ClubRequest request, User clubApplicant, List<ClubMajor> clubMajors, List<ClubLink> clubLinks) {
         return Club.builder()
                 .clubName(request.getClubName())
-                .clubImage(request.getClubImage())
+                .clubImage(s3Service.upload(request.getClubImage()))
                 .oneLiner(request.getOneLiner())
                 .introduction(request.getIntroduction())
                 .isOpen(false)
