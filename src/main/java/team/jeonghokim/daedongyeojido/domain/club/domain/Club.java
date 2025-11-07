@@ -99,9 +99,9 @@ public class Club extends BaseIdEntity {
         this.isOpen = true;
     }
 
-    public void updateClub(ClubRequest request) {
+    public void updateClub(ClubRequest request, String clubImage) {
         this.clubName = request.getClubName();
-        this.clubImage = request.getClubImage();
+        this.clubImage = clubImage;
         this.oneLiner = request.getOneLiner();
         this.introduction = request.getIntroduction();
 
