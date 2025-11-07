@@ -4,11 +4,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
@@ -31,7 +33,7 @@ public class ClubController {
 
     @PostMapping("/create/apply")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createClub(@RequestBody @Valid ClubRequest request) {
+    public void createClub(@ModelAttribute @Valid ClubRequest request) {
         createClubService.execute(request);
     }
 
@@ -49,7 +51,7 @@ public class ClubController {
 
     @PatchMapping("/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateClub(@PathVariable("club-id") Long clubId, @RequestBody @Valid ClubRequest request) {
+    public void updateClub(@PathVariable("club-id") Long clubId, @ModelAttribute @Valid ClubRequest request) {
         updateClubService.execute(clubId, request);
     }
 }
