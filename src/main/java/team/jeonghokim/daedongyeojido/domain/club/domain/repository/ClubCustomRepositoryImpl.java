@@ -8,7 +8,6 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.Quer
 import java.util.List;
 
 import static team.jeonghokim.daedongyeojido.domain.club.domain.QClub.club;
-import static team.jeonghokim.daedongyeojido.domain.club.domain.QClubMajor.clubMajor;
 
 @RequiredArgsConstructor
 public class ClubCustomRepositoryImpl implements ClubCustomRepository {
