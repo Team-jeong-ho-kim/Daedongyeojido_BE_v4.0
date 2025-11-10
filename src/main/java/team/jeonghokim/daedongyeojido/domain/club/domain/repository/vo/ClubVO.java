@@ -15,4 +15,5 @@ public class ClubVO {
     private final String clubImage;
     private final String introduction;
     private final List<Major> majors;
+    private final List<String> links;
 }
