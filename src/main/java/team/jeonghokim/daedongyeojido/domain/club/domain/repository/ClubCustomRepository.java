@@ -1,10 +1,10 @@
 package team.jeonghokim.daedongyeojido.domain.club.domain.repository;
 
-import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
+import team.jeonghokim.daedongyeojido.domain.club.domain.repository.vo.ClubVO;
 
 import java.util.List;
 
 public interface ClubCustomRepository {
 
-    List<QueryClubListResponse.ClubDto> findAllByIsOpenIsTrue();
+    List<ClubVO> findAllByIsOpenIsTrue();
 }
