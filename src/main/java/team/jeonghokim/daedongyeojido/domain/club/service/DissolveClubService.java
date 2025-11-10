@@ -7,7 +7,6 @@ import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.AlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
-import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
@@ -15,14 +14,13 @@ import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 @RequiredArgsConstructor
 public class DissolveClubService {
 
-    private final ClubFacade clubFacade;
     private final UserFacade userFacade;
     private final AlarmRepository alarmRepository;
 
     @Transactional
-    public void execute(Long clubId) {
-        Club club = clubFacade.getClubById(clubId);
+    public void execute() {
         User receiver = userFacade.getCurrentUser();
+        Club club = receiver.getClub();
 
         // sms 알림 기능 로직 추가 해야 함.
 
