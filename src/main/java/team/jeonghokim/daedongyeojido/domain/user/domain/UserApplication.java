@@ -12,11 +12,9 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserApplication extends BaseIdEntity {
 
-    @Column(nullable = false)
-    private String userName;
-
-    @Column(nullable = false)
-    private Integer classNumber;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id", nullable = false)
