@@ -29,7 +29,7 @@ public class Alarm extends BaseIdEntity {
     private Club club;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private User receiver;
 
     @Builder
