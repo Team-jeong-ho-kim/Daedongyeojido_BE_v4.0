@@ -71,13 +71,11 @@ public class S3Service {
         }
     }
 
-    public String update(MultipartFile oldFile, MultipartFile file) {
-
-        String oldFileName = oldFile.getOriginalFilename();
+    public String update(String oldFile, MultipartFile file) {
 
         if (oldFile != null) {
             try {
-                delete(oldFileName);
+                delete(oldFile);
             } catch (Exception e) {
                 System.err.println("파일 삭제에 실패했습니다: " + e.getMessage());
             }
