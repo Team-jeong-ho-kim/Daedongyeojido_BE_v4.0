@@ -55,9 +55,9 @@ public class ClubController {
         updateClubService.execute(clubId, request);
     }
 
-    @PostMapping("/dissolution/{club-id}")
+    @PostMapping("/dissolution")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void dissolveClub(@PathVariable("club-id") Long clubId) {
-        dissolveClubService.execute(clubId);
+    public void dissolveClub() {
+        dissolveClubService.execute();
     }
 }
