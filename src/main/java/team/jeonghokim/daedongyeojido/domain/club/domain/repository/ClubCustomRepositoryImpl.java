@@ -8,12 +8,8 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.QClub;
 import team.jeonghokim.daedongyeojido.domain.club.domain.QClubLink;
 import team.jeonghokim.daedongyeojido.domain.club.domain.QClubMajor;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.vo.ClubVO;
-import team.jeonghokim.daedongyeojido.domain.club.domain.repository.vo.QQueryClubVO;
-import team.jeonghokim.daedongyeojido.domain.club.domain.repository.vo.QueryClubVO;
 
 import java.util.List;
-
-import static team.jeonghokim.daedongyeojido.domain.club.domain.QClub.club;
 
 @RequiredArgsConstructor
 public class ClubCustomRepositoryImpl implements ClubCustomRepository {
