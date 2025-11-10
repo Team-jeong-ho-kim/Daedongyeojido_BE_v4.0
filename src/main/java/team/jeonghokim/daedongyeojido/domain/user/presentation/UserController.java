@@ -20,7 +20,7 @@ public class UserController {
     private final UpdateMyInfoService updateMyInfoService;
 
     @PatchMapping("/my-info")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inputMyInfo(@ModelAttribute @Valid MyInfoRequest request) {
         inputMyInfoService.execute(request);
     }
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PatchMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateMyInfo(@ModelAttribute @Valid UpdateMyInfoRequest request) {
         updateMyInfoService.execute(request);
     }
