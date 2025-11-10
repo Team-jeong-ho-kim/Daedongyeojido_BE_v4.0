@@ -26,8 +26,7 @@ public class ApplyTeamMemberService {
                         .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         userApplicationRepository.save(UserApplication.builder()
-                .userName(userApplication.getUserName())
-                .classNumber(userApplication.getClassNumber())
+                .user(userApplication)
                 .isApproved(false)
                 .club(user.getClub())
                 .build());
