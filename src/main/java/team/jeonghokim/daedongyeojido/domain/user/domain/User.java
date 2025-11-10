@@ -66,4 +66,13 @@ public class User extends BaseIdEntity {
         this.userName = userName;
         this.classNumber = classNumber;
     }
+
+    public void update(String introduction, List<UserMajor> majors, List<UserLink> links, String profileImage) {
+        this.introduction = introduction;
+        this.majors.clear();
+        this.majors.addAll(majors);
+        this.links.clear();
+        this.links.addAll(links);
+        this.profileImage = profileImage;
+    }
 }

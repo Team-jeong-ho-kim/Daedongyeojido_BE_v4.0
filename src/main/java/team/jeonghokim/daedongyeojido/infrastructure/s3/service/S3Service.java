@@ -71,6 +71,23 @@ public class S3Service {
         }
     }
 
+    public String update(String oldFile, MultipartFile file) {
+
+        if (file == null || file.isEmpty()) {
+            return oldFile;
+        }
+
+        if (oldFile != null) {
+            try {
+                delete(oldFile);
+            } catch (Exception e) {
+                System.err.println("파일 삭제에 실패했습니다: " + e.getMessage());
+            }
+        }
+
+        return upload(file);
+    }
+
     private void validate(String fileName) {
         if (fileName == null || fileName.isEmpty()) {
             throw ImageNotFoundException.EXCEPTION;
