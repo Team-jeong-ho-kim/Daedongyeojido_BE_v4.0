@@ -20,12 +20,18 @@ public class ClubLink extends BaseIdEntity {
     @JoinColumn(name = "club_id", nullable = false)
     private Club club;
 
-    @Column(name = "link", length = 100, nullable = false)
+    @Column(length = 100, nullable = false)
     private String link;
 
     @Builder
-    public ClubLink(Club club, String link) {
-        this.club = club;
+    public ClubLink(String link) {
         this.link = link;
+    }
+
+    protected void setClub(Club club) {
+        if (this.club != null) {
+            return;
+        }
+        this.club = club;
     }
 }

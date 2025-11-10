@@ -6,7 +6,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubReposito
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyApplyClubException;
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyExistsClubException;
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyJoinClubException;
-import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.CreateClubRequest;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 
 @Component
@@ -15,7 +15,7 @@ public class CreateClubValidator {
 
     private final ClubRepository clubRepository;
 
-    public void validate(CreateClubRequest request, User clubApplicant) {
+    public void validate(ClubRequest request, User clubApplicant) {
         if (clubRepository.existsByClubApplicant(clubApplicant)) {
             throw AlreadyApplyClubException.EXCEPTION;
         }

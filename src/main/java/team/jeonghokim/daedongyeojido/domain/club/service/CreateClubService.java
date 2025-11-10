@@ -7,10 +7,11 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubLink;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
-import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.CreateClubRequest;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,50 +24,48 @@ public class CreateClubService {
     private final ClubRepository clubRepository;
     private final UserFacade userFacade;
     private final CreateClubValidator createClubValidator;
+    private final S3Service s3Service;
 
     @Transactional
-    public void execute(CreateClubRequest request) {
+    public void execute(ClubRequest request) {
         User clubApplicant = userFacade.getCurrentUser();
 
         createClubValidator.validate(request, clubApplicant);
 
-        Club club = createClub(request, clubApplicant);
+        List<ClubMajor> clubMajors = createClubMajor(request);
+        List<ClubLink> clubLinks = createClubLink(request);
 
-        List<ClubMajor> clubMajors = createClubMajor(request, club);
-        List<ClubLink> clubLinks = createClubLink(request, club);
-
-        club.getMajors().addAll(clubMajors);
-        club.getLinks().addAll(clubLinks);
+        Club club = createClub(request, clubApplicant, clubMajors, clubLinks);
 
         clubRepository.save(club);
     }
 
-    private Club createClub(CreateClubRequest request, User clubApplicant) {
+    private Club createClub(ClubRequest request, User clubApplicant, List<ClubMajor> clubMajors, List<ClubLink> clubLinks) {
         return Club.builder()
                 .clubName(request.getClubName())
-                .clubImage(request.getClubImage())
+                .clubImage(s3Service.upload(request.getClubImage()))
                 .oneLiner(request.getOneLiner())
                 .introduction(request.getIntroduction())
                 .isOpen(false)
                 .clubApplicant(clubApplicant)
+                .clubMajors(clubMajors)
+                .clubLinks(clubLinks)
                 .build();
     }
 
-    private List<ClubMajor> createClubMajor(CreateClubRequest request, Club club) {
+    private List<ClubMajor> createClubMajor(ClubRequest request) {
         return request.getMajor().stream().map(major ->
                 ClubMajor.builder()
-                        .club(club)
                         .major(major)
                         .build())
                 .collect(Collectors.toList());
     }
 
-    private List<ClubLink> createClubLink(CreateClubRequest request, Club club) {
+    private List<ClubLink> createClubLink(ClubRequest request) {
         return Optional.ofNullable(request.getLink())
                 .orElseGet(List::of)
                 .stream()
                 .map(link -> ClubLink.builder()
-                        .club(club)
                         .link(link)
                         .build())
                 .collect(Collectors.toList());

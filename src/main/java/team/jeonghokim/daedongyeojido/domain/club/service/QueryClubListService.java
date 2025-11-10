@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
+import team.jeonghokim.daedongyeojido.domain.club.domain.repository.vo.ClubVO;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
 
 import java.util.List;
@@ -16,10 +17,7 @@ public class QueryClubListService {
 
     @Transactional(readOnly = true)
     public QueryClubListResponse execute() {
-        List<QueryClubListResponse.ClubDto> clubs = clubRepository.findAllByIsOpenIsTrue().stream()
-                .map(QueryClubListResponse.ClubDto::from)
-                .toList();
-
+        List<ClubVO> clubs = clubRepository.findAllByIsOpenIsTrue();
         return new QueryClubListResponse(clubs);
     }
 }

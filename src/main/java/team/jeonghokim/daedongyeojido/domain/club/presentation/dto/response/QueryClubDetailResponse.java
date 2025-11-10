@@ -10,6 +10,7 @@ import java.util.List;
 public record QueryClubDetailResponse(
         String clubName,
         String introduction,
+        String oneLiner,
         String clubImage,
         List<Major> majors,
         List<String> links
@@ -19,9 +20,10 @@ public record QueryClubDetailResponse(
         return new QueryClubDetailResponse(
                 club.getClubName(),
                 club.getIntroduction(),
+                club.getOneLiner(),
                 club.getClubImage(),
-                club.getMajors().stream().map(ClubMajor::getMajor).toList(),
-                club.getLinks().stream().map(ClubLink::getLink).toList()
+                club.getClubMajors().stream().map(ClubMajor::getMajor).toList(),
+                club.getClubLinks().stream().map(ClubLink::getLink).toList()
         );
     }
 }

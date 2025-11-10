@@ -24,12 +24,18 @@ public class ClubMajor extends BaseIdEntity {
     private Club club;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "major", nullable = false, length = 10)
+    @Column(nullable = false, length = 10)
     private Major major;
 
     @Builder
-    public ClubMajor(Club club, Major major) {
-        this.club = club;
+    public ClubMajor(Major major) {
         this.major = major;
+    }
+
+    protected void setClub(Club club) {
+        if (this.club != null) {
+            return;
+        }
+        this.club = club;
     }
 }
