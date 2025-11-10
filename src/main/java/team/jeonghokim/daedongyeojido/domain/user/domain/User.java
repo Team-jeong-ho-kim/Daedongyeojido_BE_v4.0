@@ -75,4 +75,9 @@ public class User extends BaseIdEntity {
         this.links.addAll(links);
         this.profileImage = profileImage;
     }
+
+    public void approvedClub(Club club) {
+        this.role = Role.CLUB_MEMBER;
+        this.club = club;
+    }
 }
