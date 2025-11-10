@@ -14,7 +14,7 @@ public enum AlarmType {
     private final String title;
     private final String content;
 
-    public String format(Object... args) {
-        return content.formatted(args);
+    public String contentFormat(String content) {
+        return content.formatted(content);
     }
 }
