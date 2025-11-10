@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 @Entity
+@Table(name = "tbl_alarm")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Alarm extends BaseIdEntity {
