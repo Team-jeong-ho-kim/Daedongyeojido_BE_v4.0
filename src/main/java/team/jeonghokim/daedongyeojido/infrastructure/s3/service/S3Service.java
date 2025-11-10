@@ -73,6 +73,10 @@ public class S3Service {
 
     public String update(String oldFile, MultipartFile file) {
 
+        if (file == null || file.isEmpty()) {
+            return oldFile;
+        }
+
         if (oldFile != null) {
             try {
                 delete(oldFile);
