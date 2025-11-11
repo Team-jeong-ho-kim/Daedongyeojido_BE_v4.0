@@ -20,6 +20,7 @@ public enum ErrorCode {
     USER_MISMATCH(401, "유저가 일치 하지 않습니다."),
     PASSWORD_MISMATCH(401, "비밀 번호가 일치 하지 않습니다."),
     INVALID_USER(401, "유효 하지 않은 사용자입니다."),
+    USER_APPLICATION_NOT_FOUND(404, "팀원 신청 기록을 찾을 수 없습니다."),
 
     //s3
     IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
@@ -37,7 +38,7 @@ public enum ErrorCode {
     ALREADY_JOIN_CLUB(409, "이미 다른 동아리에 소속되어있습니다."),
     ALREADY_APPLY_CLUB(409, "이미 동아리 개설 신청을 하였습니다."),
     CLUB_NOT_FOUND(404, "동아리를 찾을 수 없습니다."),
-    CLUB_APPLICATION_NOT_FOUND(404, "동아리 생성 신청 기록을 찾을 수 없습니다"),
+    CLUB_APPLICATION_NOT_FOUND(404, "동아리 생성 신청 기록을 찾을 수 없습니다."),
 
     // general
     BAD_REQUEST(400, "front fault"),
