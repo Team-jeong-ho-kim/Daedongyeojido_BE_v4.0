@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideClubCreationRequest;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubCreationService;
+import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubDissolveService;
 
 @RestController
 @RequestMapping("/admin")
@@ -18,10 +20,17 @@ import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubCreationServ
 public class AdminController {
 
     private final DecideClubCreationService decideClubCreationService;
+    private final DecideClubDissolveService decideClubDissolveService;
 
     @PatchMapping("/club/create/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void decideClubCreation(@PathVariable("club-id") Long clubId, @RequestBody @Valid DecideClubCreationRequest request) {
         decideClubCreationService.execute(clubId, request);
+    }
+
+    @PatchMapping("/dissolution/{club-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void decideClubDissolve(@PathVariable("club-id") Long clubId, @RequestBody @Valid DecideClubDissolveRequest request) {
+        decideClubDissolveService.execute(clubId, request);
     }
 }
