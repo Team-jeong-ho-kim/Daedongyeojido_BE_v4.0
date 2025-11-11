@@ -7,6 +7,6 @@ public class ClubApplicationNotFoundException extends DaedongException {
     public static final DaedongException EXCEPTION = new ClubApplicationNotFoundException();
 
     private ClubApplicationNotFoundException() {
-        super(ErrorCode);
+        super(ErrorCode.CLUB_APPLICATION_NOT_FOUND);
     }
 }
