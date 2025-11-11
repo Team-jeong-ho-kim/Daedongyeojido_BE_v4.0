@@ -41,7 +41,7 @@ public class UserController {
         updateMyInfoService.execute(request);
     }
 
-    @PatchMapping
+    @PatchMapping("/member/decision")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void approveTeamMember(@RequestBody @Valid DecideTeamMemberApplicationRequest request) {
         decideTeamMemberApplicationService.execute(request);
