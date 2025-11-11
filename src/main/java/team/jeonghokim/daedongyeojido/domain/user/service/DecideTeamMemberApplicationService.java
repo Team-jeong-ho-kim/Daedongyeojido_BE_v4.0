@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserApplication;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserApplicationRepository;
-import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
+import team.jeonghokim.daedongyeojido.domain.user.exception.UserApplicationNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideTeamMemberApplicationRequest;
 
@@ -21,7 +21,7 @@ public class DecideTeamMemberApplicationService {
         User user = userFacade.getCurrentUser();
 
         UserApplication userApplication = userApplicationRepository.findByUserId(user.getId())
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+                .orElseThrow(() -> UserApplicationNotFoundException.EXCEPTION);
 
         if (request.getIsApproved()) {
             user.approvedTeamMember(userApplication.getClub());
