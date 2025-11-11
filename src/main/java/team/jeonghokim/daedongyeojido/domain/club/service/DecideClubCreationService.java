@@ -27,7 +27,7 @@ public class DecideClubCreationService {
                 .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
 
         ClubApplication clubApplication = clubApplicationRepository.findByClubId(clubId)
-                .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         User user = userRepository.findById(clubApplication.getClubLeader().getId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
