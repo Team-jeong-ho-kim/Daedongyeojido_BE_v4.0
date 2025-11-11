@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideClubCreationRequest;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
-import team.jeonghokim.daedongyeojido.domain.club.domain.ClubApplication;
-import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubApplicationRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
@@ -16,24 +14,17 @@ import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
 @RequiredArgsConstructor
 public class DecideClubCreationService {
 
-    private final ClubApplicationRepository clubApplicationRepository;
     private final UserRepository userRepository;
     private final ClubFacade clubFacade;
 
     @Transactional
     public void execute(Long clubId, DecideClubCreationRequest request) {
+        if (!request.isOpen()) return;
         Club club = clubFacade.getClubById(clubId);
-
-        ClubApplication clubApplication = clubApplicationRepository.findByClubId(clubId)
+        User user = userRepository.findById(club.getClubApplicant().getId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        User user = userRepository.findById(clubApplication.getClubLeader().getId())
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
-
-        if (request.isOpen()) {
-            club.clubOpen();
-            clubApplication.approve();
-            user.approvedClub(club);
-        }
+        club.clubOpen();
+        user.approvedClub(club);
     }
 }
