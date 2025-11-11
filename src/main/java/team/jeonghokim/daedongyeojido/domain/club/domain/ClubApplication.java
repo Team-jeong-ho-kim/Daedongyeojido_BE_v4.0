@@ -22,4 +22,8 @@ public class ClubApplication extends BaseIdEntity {
 
     @Column(nullable = false)
     private boolean isApproved;
+
+    public void approve() {
+        this.isApproved = true;
+    }
 }

@@ -34,6 +34,7 @@ public class DecideClubCreationService {
 
         if (request.isOpen()) {
             club.clubOpen();
+            clubApplication.approve();
             user.approvedClub(club);
         }
     }
