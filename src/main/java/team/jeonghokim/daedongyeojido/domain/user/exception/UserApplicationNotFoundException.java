@@ -7,6 +7,6 @@ public class UserApplicationNotFoundException extends DaedongException {
     public static final DaedongException EXCEPTION = new UserApplicationNotFoundException();
 
     private UserApplicationNotFoundException() {
-        super(ErrorCode);
+        super(ErrorCode.USER_APPLICATION_NOT_FOUND);
     }
 }
