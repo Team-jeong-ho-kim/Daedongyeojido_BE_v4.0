@@ -4,20 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
-import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
-import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotFoundException;
+import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
 
 @Service
 @RequiredArgsConstructor
 public class QueryClubDetailService {
 
-    private final ClubRepository clubRepository;
+    private final ClubFacade clubFacade;
 
     @Transactional(readOnly = true)
     public QueryClubDetailResponse execute(Long clubId) {
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
+        Club club = clubFacade.getClubById(clubId);
 
         return QueryClubDetailResponse.of(club);
     }

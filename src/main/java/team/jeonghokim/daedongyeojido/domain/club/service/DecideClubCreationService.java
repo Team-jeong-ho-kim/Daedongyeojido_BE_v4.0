@@ -12,6 +12,7 @@ import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotFoundExceptio
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
+import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
 
 @Service
 @RequiredArgsConstructor
@@ -20,11 +21,11 @@ public class DecideClubCreationService {
     private final ClubRepository clubRepository;
     private final ClubApplicationRepository clubApplicationRepository;
     private final UserRepository userRepository;
+    private final ClubFacade clubFacade;
 
     @Transactional
     public void execute(Long clubId, DecideClubCreationRequest request) {
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
+        Club club = clubFacade.getClubById(clubId);
 
         ClubApplication clubApplication = clubApplicationRepository.findByClubId(clubId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);

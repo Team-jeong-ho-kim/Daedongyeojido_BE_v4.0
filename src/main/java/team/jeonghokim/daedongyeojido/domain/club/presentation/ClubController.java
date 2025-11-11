@@ -8,7 +8,11 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubR
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.TeamMemberRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
-import team.jeonghokim.daedongyeojido.domain.club.service.*;
+import team.jeonghokim.daedongyeojido.domain.club.service.CreateClubService;
+import team.jeonghokim.daedongyeojido.domain.club.service.DissolveClubService;
+import team.jeonghokim.daedongyeojido.domain.club.service.QueryClubDetailService;
+import team.jeonghokim.daedongyeojido.domain.club.service.QueryClubListService;
+import team.jeonghokim.daedongyeojido.domain.club.service.UpdateClubService;
 
 @RestController
 @RequestMapping("/club")
@@ -20,6 +24,7 @@ public class ClubController {
     private final QueryClubDetailService queryClubDetailService;
     private final UpdateClubService updateClubService;
     private final ApplyTeamMemberService applyTeamMemberService;
+    private final DissolveClubService dissolveClubService;
 
     @PostMapping("/create/apply")
     @ResponseStatus(HttpStatus.CREATED)
@@ -49,5 +54,10 @@ public class ClubController {
     @ResponseStatus(HttpStatus.CREATED)
     public void applyMember(@RequestBody @Valid TeamMemberRequest request) {
         applyTeamMemberService.execute(request);
+      
+    @PostMapping("/dissolution")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void dissolveClub() {
+        dissolveClubService.execute();
     }
 }
