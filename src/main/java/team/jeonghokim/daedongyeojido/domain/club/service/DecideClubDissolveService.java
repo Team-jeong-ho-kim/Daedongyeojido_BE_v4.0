@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
+import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotOpenException;
 import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
@@ -22,12 +23,23 @@ public class DecideClubDissolveService {
 
     @Transactional
     public void execute(Long clubId, DecideClubDissolveRequest request) {
-        if (!request.isDecision()) return;
+        if (!request.isDecision()) {
+            return;
+        }
+
         Club club = clubFacade.getClubById(clubId);
-        User user = userRepository.findByAccountId(club.getClubApplicant().getAccountId())
+        validateClubIsOpen(club);
+
+        User clubApplicant = userRepository.findByAccountId(club.getClubApplicant().getAccountId())
                         .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        clubRepository.delete(clubFacade.getClubById(clubId));
-        user.updateRole(Role.STUDENT);
+        clubRepository.delete(club);
+        clubApplicant.updateRole(Role.STUDENT);
+    }
+
+    private void validateClubIsOpen(Club club) {
+        if (!club.getIsOpen()) {
+            throw ClubNotOpenException.EXCEPTION;
+        }
     }
 }
