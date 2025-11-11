@@ -9,5 +9,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByAccountId(String accountId);
 
-    Optional<User> findByUserNameAndClassNumber(String userName, Integer classNumber);
+    Optional<User> findByUserNameAndClassNumber(String userName, String classNumber);
 }
