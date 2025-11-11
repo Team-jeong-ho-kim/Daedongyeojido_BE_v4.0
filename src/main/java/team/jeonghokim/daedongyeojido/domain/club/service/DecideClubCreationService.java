@@ -26,15 +26,15 @@ public class DecideClubCreationService {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
 
-        ClubApplication clubLeader = clubApplicationRepository.findByClubId(clubId)
+        ClubApplication clubApplication = clubApplicationRepository.findByClubId(clubId)
                 .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
 
-        User user = userRepository.findById(clubLeader.getClubLeader().getId())
+        User user = userRepository.findById(clubApplication.getClubLeader().getId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         if (request.isOpen()) {
             club.clubOpen();
-            clubLeader.approve();
+            clubApplication.approve();
             user.approvedClub(club);
         }
     }
