@@ -4,10 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
-import team.jeonghokim.daedongyeojido.domain.club.domain.ClubApplication;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubLink;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
-import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubApplicationRepository;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
@@ -26,7 +24,6 @@ public class CreateClubService {
     private final ClubRepository clubRepository;
     private final UserFacade userFacade;
     private final CreateClubValidator createClubValidator;
-    private final ClubApplicationRepository clubApplicationRepository;
     private final S3Service s3Service;
 
     @Transactional
@@ -41,12 +38,6 @@ public class CreateClubService {
         Club club = createClub(request, clubApplicant, clubMajors, clubLinks);
 
         clubRepository.save(club);
-
-        clubApplicationRepository.save(ClubApplication.builder()
-                .club(club)
-                .clubLeader(clubApplicant)
-                .isApproved(false)
-                .build());
     }
 
     private Club createClub(ClubRequest request, User clubApplicant, List<ClubMajor> clubMajors, List<ClubLink> clubLinks) {
