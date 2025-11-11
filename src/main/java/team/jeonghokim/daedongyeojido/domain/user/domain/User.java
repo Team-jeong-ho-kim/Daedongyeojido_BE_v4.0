@@ -80,4 +80,8 @@ public class User extends BaseIdEntity {
         this.role = Role.CLUB_LEADER;
         this.club = club;
     }
+
+    public void updateRole(Role role) {
+        this.role = role;
+    }
 }
