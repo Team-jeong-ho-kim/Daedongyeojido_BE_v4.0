@@ -39,22 +39,38 @@ public class LoginService {
     }
 
     private User createUser(XquareResponse xquareUser) {
+        String classNumber = classNumber(
+                xquareUser.grade(),
+                xquareUser.classNum(),
+                xquareUser.num()
+        );
+
         return userRepository.save(
                 User.builder()
                         .accountId(xquareUser.accountId())
                         .password(passwordEncoder.encode(xquareUser.password()))
                         .userName(xquareUser.name())
-                        .classNumber(xquareUser.classNum())
+                        .classNumber(classNumber)
                         .role(Role.STUDENT)
                         .build()
         );
     }
 
     private User coverUserInfo(User user, XquareResponse xquareUser) {
+        String classNumber = classNumber(
+                xquareUser.grade(),
+                xquareUser.classNum(),
+                xquareUser.num()
+        );
+
          user.coverInfo(
                 xquareUser.name(),
-                 xquareUser.classNum()
+                 classNumber
         );
          return user;
+    }
+
+    private String classNumber(int grade, int classNum, int num) {
+        return String.format("%d%d%02d", grade, classNum, num);
     }
 }
