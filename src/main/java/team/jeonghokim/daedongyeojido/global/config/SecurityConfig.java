@@ -29,6 +29,7 @@ public class SecurityConfig {
     private static final String ADMIN = "ADMIN";
     private static final String TEACHER = "TEACHER";
     private static final String CLUB_MEMBER = "CLUB_MEMBER";
+    private static final String CLUB_LEADER = "CLUB_LEADER";
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -46,6 +47,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/user/**", "/auth/**").permitAll()
                         .requestMatchers("/admin/**").hasRole(ADMIN)
+                        .requestMatchers("/club/member/apply").hasAnyRole(CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.GET, "/club/**").permitAll()
                         .requestMatchers("/club/create/apply").hasAnyRole(STUDENT, ADMIN, TEACHER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.PATCH,"/club/**").hasAnyRole(CLUB_MEMBER)

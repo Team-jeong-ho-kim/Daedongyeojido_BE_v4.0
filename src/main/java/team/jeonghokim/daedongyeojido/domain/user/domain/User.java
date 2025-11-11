@@ -32,7 +32,7 @@ public class User extends BaseIdEntity {
     private String introduction;
 
     @Column(nullable = false, length = 4)
-    private Integer classNumber;
+    private String classNumber;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserLink> links = new ArrayList<>();
@@ -62,7 +62,7 @@ public class User extends BaseIdEntity {
         this.profileImage = profileImage;
     }
 
-    public void coverInfo(String userName, Integer classNumber) {
+    public void coverInfo(String userName, String classNumber) {
         this.userName = userName;
         this.classNumber = classNumber;
     }
@@ -74,5 +74,10 @@ public class User extends BaseIdEntity {
         this.links.clear();
         this.links.addAll(links);
         this.profileImage = profileImage;
+    }
+
+    public void approvedClub(Club club) {
+        this.role = Role.CLUB_LEADER;
+        this.club = club;
     }
 }

@@ -3,15 +3,9 @@ package team.jeonghokim.daedongyeojido.domain.club.presentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.TeamMemberRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
 import team.jeonghokim.daedongyeojido.domain.club.service.CreateClubService;
@@ -29,6 +23,7 @@ public class ClubController {
     private final QueryClubListService queryClubListService;
     private final QueryClubDetailService queryClubDetailService;
     private final UpdateClubService updateClubService;
+    private final ApplyTeamMemberService applyTeamMemberService;
     private final DissolveClubService dissolveClubService;
 
     @PostMapping("/create/apply")
@@ -55,6 +50,11 @@ public class ClubController {
         updateClubService.execute(clubId, request);
     }
 
+    @PostMapping("/member/apply")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void applyMember(@RequestBody @Valid TeamMemberRequest request) {
+        applyTeamMemberService.execute(request);
+      
     @PostMapping("/dissolution")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void dissolveClub() {

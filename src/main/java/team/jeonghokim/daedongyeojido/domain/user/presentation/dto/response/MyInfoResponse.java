@@ -8,7 +8,7 @@ import java.util.List;
 @Builder
 public record MyInfoResponse(
         String userName,
-        Integer classNumber,
+        String classNumber,
         String introduction,
         String club,
         List<Major> major,

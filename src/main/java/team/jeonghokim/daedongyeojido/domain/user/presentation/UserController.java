@@ -15,6 +15,7 @@ import team.jeonghokim.daedongyeojido.domain.user.service.UpdateMyInfoService;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
+    
     private final InputMyInfoService inputMyInfoService;
     private final QueryMyInfoService queryMyInfoService;
     private final UpdateMyInfoService updateMyInfoService;
