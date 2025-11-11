@@ -7,6 +7,10 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
+import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
+import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
+import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -14,13 +18,16 @@ public class DecideClubDissolveService {
 
     private final ClubFacade clubFacade;
     private final ClubRepository clubRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void execute(Long clubId, DecideClubDissolveRequest request) {
+        if (!request.isDecision()) return;
         Club club = clubFacade.getClubById(clubId);
+        User user = userRepository.findByAccountId(club.getClubApplicant().getAccountId())
+                        .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        if (request.isDecision()) {
-            clubRepository.delete(club);
-        }
+        clubRepository.delete(clubFacade.getClubById(clubId));
+        user.updateRole(Role.STUDENT);
     }
 }
