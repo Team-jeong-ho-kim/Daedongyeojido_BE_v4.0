@@ -34,9 +34,8 @@ public class DecideClubCreationService {
         if (request.isOpen()) {
             club.clubOpen();
             user.approvedClub(club);
-            alarmRepository.delete(alarm);
-        } else {
-            alarmRepository.delete(alarm);
         }
+
+        alarmRepository.delete(alarm);
     }
 }
