@@ -10,7 +10,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "tbl_application_form")
+@Entity
+@Table(name = "tbl_application_form")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApplicationForm extends BaseIdEntity {
