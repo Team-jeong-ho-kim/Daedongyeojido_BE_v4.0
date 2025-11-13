@@ -3,6 +3,10 @@ package team.jeonghokim.daedongyeojido.domain.club.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.AlarmRepository;
+import team.jeonghokim.daedongyeojido.domain.alarm.exception.AlarmNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotOpenException;
@@ -21,20 +25,25 @@ public class DecideClubDissolveService {
     private final ClubFacade clubFacade;
     private final ClubRepository clubRepository;
     private final UserRepository userRepository;
+    private final AlarmRepository alarmRepository;
 
     @Transactional
     public void execute(Long clubId, DecideClubDissolveRequest request) {
-        if (!request.isDecision()) return;
         Club club = clubFacade.getClubById(clubId);
 
         if (!club.getIsOpen()) {
             throw ClubNotOpenException.EXCEPTION;
         }
 
-        // 동아리 해체 수락 시 해체되는 동아리의 동아리원들 권한을 STUDENT로 수정
-        List<User> clubMembers = userRepository.findAllByClub(club);
-        clubMembers.forEach(member -> member.leaveClub(null, Role.STUDENT));
+        Alarm alarm = alarmRepository.findByClubAndAlarmType(club, AlarmType.DISSOLVE_CLUB)
+                .orElseThrow(() -> AlarmNotFoundException.EXCEPTION);
 
-        clubRepository.delete(club);
+        if (request.isDecision()) {
+            List<User> clubMembers = userRepository.findAllByClub(club);
+            clubMembers.forEach(member -> member.leaveClub(null, Role.STUDENT));
+            clubRepository.delete(club);
+        }
+
+        alarmRepository.delete(alarm);
     }
 }
