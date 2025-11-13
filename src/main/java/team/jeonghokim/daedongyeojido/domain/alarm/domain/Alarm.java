@@ -2,6 +2,8 @@ package team.jeonghokim.daedongyeojido.domain.alarm.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -10,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -34,11 +37,16 @@ public class Alarm extends BaseIdEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User receiver;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AlarmType alarmType;
+
     @Builder
-    public Alarm(String title, String content, Club club, User receiver) {
+    public Alarm(String title, String content, Club club, User receiver, AlarmType alarmType) {
         this.title = title;
         this.content = content;
         this.club = club;
         this.receiver = receiver;
+        this.alarmType = alarmType;
     }
 }
