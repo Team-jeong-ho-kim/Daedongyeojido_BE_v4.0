@@ -10,6 +10,7 @@ import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.reques
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,12 +26,13 @@ public class CreateApplicationFormService {
         User user = userFacade.getCurrentUser();
 
         List<ApplicationQuestion> questions = createApplicationQuestion(request);
+        LocalDate date = LocalDate.parse(request.getSubmissionDuration());
 
         applicationFormRepository.save(ApplicationForm.builder()
                 .club(user.getClub())
                 .user(user)
                 .questions(questions)
-                .submissionDuration(request.getSubmissionDuration())
+                .submissionDuration(date)
                 .build());
     }
 
