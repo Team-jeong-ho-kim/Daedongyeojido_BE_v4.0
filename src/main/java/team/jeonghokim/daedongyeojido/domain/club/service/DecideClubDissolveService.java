@@ -13,7 +13,6 @@ import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotOpenException
 import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 
 import java.util.List;
@@ -40,7 +39,7 @@ public class DecideClubDissolveService {
 
         if (request.isDecision()) {
             List<User> clubMembers = userRepository.findAllByClub(club);
-            clubMembers.forEach(member -> member.leaveClub(null, Role.STUDENT));
+            clubMembers.forEach(User::leaveClub);
             clubRepository.delete(club);
         }
 
