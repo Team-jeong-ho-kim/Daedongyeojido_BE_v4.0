@@ -7,6 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "tbl_application_form")
@@ -25,7 +26,7 @@ public class ApplicationForm extends BaseIdEntity {
     private Club club;
 
     @OneToMany(mappedBy = "applicationForm", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ApplicationQuestion> questions;
+    private List<ApplicationQuestion> questions = new ArrayList<>();;
 
     @Column(nullable = false)
     private LocalDate submissionDuration;
