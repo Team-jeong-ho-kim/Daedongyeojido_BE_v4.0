@@ -38,6 +38,7 @@ public enum ErrorCode {
     ALREADY_APPLY_CLUB(409, "이미 동아리 개설 신청을 하였습니다."),
     CLUB_NOT_FOUND(404, "동아리를 찾을 수 없습니다."),
     CLUB_NOT_OPEN(403, "개설되지 않은 동아리입니다."),
+    USER_NOT_IN_CLUB(404, "소속된 동아리가 없습니다."),
 
     // general
     BAD_REQUEST(400, "front fault"),
