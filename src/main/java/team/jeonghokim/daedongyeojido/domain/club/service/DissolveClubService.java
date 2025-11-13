@@ -34,6 +34,7 @@ public class DissolveClubService {
                 .content(AlarmType.DISSOLVE_CLUB.format(club.getClubName()))
                 .club(club)
                 .receiver(receiver)
+                .alarmType(AlarmType.DISSOLVE_CLUB)
                 .build();
 
         alarmRepository.save(alarm);
