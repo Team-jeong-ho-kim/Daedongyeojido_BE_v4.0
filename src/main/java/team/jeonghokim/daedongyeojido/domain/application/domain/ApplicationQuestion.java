@@ -7,7 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
-@Entity(name = "tbl_application_question")
+@Entity
+@Table(name = "tbl_application_question")
 @Getter
 @Builder
 @NoArgsConstructor
