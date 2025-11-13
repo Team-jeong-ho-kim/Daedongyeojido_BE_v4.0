@@ -81,8 +81,8 @@ public class User extends BaseIdEntity {
         this.club = club;
     }
 
-    public void leaveClub(Club club, Role role) {
-        this.club = club;
-        this.role = role;
+    public void leaveClub() {
+        this.club = null;
+        this.role = Role.STUDENT;
     }
 }
