@@ -1,5 +1,6 @@
 package team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -16,5 +17,6 @@ public class ApplicationFormRequest {
             String> content;
 
     @NotBlank(message = "제출 기한을 설정해주세요.")
+    @JsonProperty("submissionDuration")
     private String submissionDuration;
 }
