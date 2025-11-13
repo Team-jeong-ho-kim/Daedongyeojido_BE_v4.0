@@ -40,6 +40,9 @@ public enum ErrorCode {
     CLUB_NOT_OPEN(403, "개설되지 않은 동아리입니다."),
     USER_NOT_IN_CLUB(404, "소속된 동아리가 없습니다."),
 
+    // alarm
+    ALARM_NOT_FOUND(404, "알람을 찾을 수 없습니다."),
+
     // general
     BAD_REQUEST(400, "front fault"),
     INTERNAL_SERVER_ERROR(500, "server fault");
