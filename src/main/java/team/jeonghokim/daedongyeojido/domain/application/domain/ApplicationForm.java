@@ -24,7 +24,7 @@ public class ApplicationForm extends BaseIdEntity {
     @JoinColumn(name = "club_id", nullable = false)
     private Club club;
 
-    @OneToMany(mappedBy = "application_form", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "applicationForm", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApplicationQuestion> questions;
 
     @Column(nullable = false)
