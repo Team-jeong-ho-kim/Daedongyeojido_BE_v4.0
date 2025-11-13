@@ -31,7 +31,7 @@ public class CreateApplicationFormService {
         applicationFormRepository.save(ApplicationForm.builder()
                 .club(user.getClub())
                 .user(user)
-                .questions(questions)
+                .applicationQuestions(questions)
                 .submissionDuration(date)
                 .build());
     }
