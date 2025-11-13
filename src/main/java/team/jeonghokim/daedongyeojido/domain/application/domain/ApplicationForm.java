@@ -12,9 +12,7 @@ import java.util.List;
 
 @Entity(name = "tbl_application_form")
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplicationForm extends BaseIdEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
