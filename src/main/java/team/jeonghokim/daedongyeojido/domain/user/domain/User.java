@@ -82,7 +82,7 @@ public class User extends BaseIdEntity {
     }
 
     public void leaveClub(Club club, Role role) {
-        this.role = role;
         this.club = club;
+        this.role = role;
     }
 }
