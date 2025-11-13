@@ -31,7 +31,7 @@ public class DecideClubCreationService {
         Alarm alarm = alarmRepository.findByClubAndAlarmType(club, AlarmType.CREATE_CLUB)
                 .orElseThrow(() -> AlarmNotFoundException.EXCEPTION);
 
-        if (request.isApproved()) {
+        if (request.isOpen()) {
             club.clubOpen();
             user.approvedClub(club);
             alarmRepository.delete(alarm);
