@@ -12,6 +12,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubReposito
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 
@@ -27,6 +28,7 @@ public class CreateClubService {
     private final UserFacade userFacade;
     private final CreateClubValidator createClubValidator;
     private final S3Service s3Service;
+    private final UserRepository userRepository;
 
     @Transactional
     public void execute(ClubRequest request) {
@@ -80,6 +82,7 @@ public class CreateClubService {
                 .content(AlarmType.CREATE_CLUB.format(club.getClubName()))
                 .club(club)
                 .receiver(clubApplicant)
+                .alarmType(AlarmType.CREATE_CLUB)
                 .build();
 
         club.getAlarms().add(alarm);
