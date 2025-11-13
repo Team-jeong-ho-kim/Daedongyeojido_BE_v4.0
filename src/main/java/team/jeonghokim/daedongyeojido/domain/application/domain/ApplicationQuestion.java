@@ -20,4 +20,11 @@ public class ApplicationQuestion extends BaseIdEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "application_id", nullable = false)
     private ApplicationForm applicationForm;
+
+    protected void setApplicationForm(ApplicationForm applicationForm) {
+        if (this.applicationForm != null) {
+            return;
+        }
+        this.applicationForm = applicationForm;
+    }
 }
