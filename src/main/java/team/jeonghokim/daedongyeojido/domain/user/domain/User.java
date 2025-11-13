@@ -85,4 +85,9 @@ public class User extends BaseIdEntity {
         this.club = club;
         this.role = role;
     }
+
+    public void approvedTeamMember(Club club) {
+        this.role = Role.CLUB_MEMBER;
+        this.club = club;
+    }
 }
