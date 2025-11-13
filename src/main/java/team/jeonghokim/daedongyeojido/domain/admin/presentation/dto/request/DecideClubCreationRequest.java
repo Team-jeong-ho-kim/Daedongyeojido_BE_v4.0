@@ -6,6 +6,5 @@ import jakarta.validation.constraints.NotNull;
 public record DecideClubCreationRequest(
         @JsonProperty("isOpen")
         @NotNull(message = "개설 신청 수락 및 거절 여부는 null일 수 없습니다.")
-        @JsonProperty("isApproved")
-        Boolean isApproved
+        Boolean isOpen
 ) {}
