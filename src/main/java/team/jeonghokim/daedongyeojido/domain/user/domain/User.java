@@ -81,7 +81,8 @@ public class User extends BaseIdEntity {
         this.club = club;
     }
 
-    public void updateRole(Role role) {
+    public void leaveClub(Club club, Role role) {
         this.role = role;
+        this.club = club;
     }
 }
