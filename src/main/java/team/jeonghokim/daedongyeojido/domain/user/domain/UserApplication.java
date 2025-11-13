@@ -22,4 +22,8 @@ public class UserApplication extends BaseIdEntity {
 
     @Column(nullable = false)
     private boolean isApproved;
+
+    public void approved() {
+        this.isApproved = true;
+    }
 }
