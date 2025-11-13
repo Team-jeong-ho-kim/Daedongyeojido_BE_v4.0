@@ -3,6 +3,8 @@ package team.jeonghokim.daedongyeojido.domain.club.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubLink;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
@@ -37,6 +39,7 @@ public class CreateClubService {
 
         Club club = createClub(request, clubApplicant, clubMajors, clubLinks);
 
+        createAlarm(club, clubApplicant);
         clubRepository.save(club);
     }
 
@@ -69,5 +72,16 @@ public class CreateClubService {
                         .link(link)
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    private void createAlarm(Club club, User clubApplicant) {
+        Alarm alarm = Alarm.builder()
+                .title(AlarmType.CREATE_CLUB.getTitle())
+                .content(AlarmType.CREATE_CLUB.format(club.getClubName()))
+                .club(club)
+                .receiver(clubApplicant)
+                .build();
+
+        club.getAlarms().add(alarm);
     }
 }
