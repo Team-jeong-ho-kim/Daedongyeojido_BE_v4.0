@@ -21,6 +21,7 @@ public class ClubController {
     private final UpdateClubService updateClubService;
     private final ApplyTeamMemberService applyTeamMemberService;
     private final DissolveClubService dissolveClubService;
+    private  final DeleteTeamMemberService deleteTeamMemberService;
 
     @PostMapping("/create/apply")
     @ResponseStatus(HttpStatus.CREATED)
@@ -56,5 +57,11 @@ public class ClubController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void dissolveClub() {
         dissolveClubService.execute();
+    }
+
+    @DeleteMapping("/member/{user-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteTeamMember(@PathVariable("user-id") Long userId) {
+        deleteTeamMemberService.execute(userId);
     }
 }
