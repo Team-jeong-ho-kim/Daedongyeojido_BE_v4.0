@@ -1,10 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.application.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -14,6 +11,7 @@ import java.util.List;
 
 @Entity(name = "tbl_application_form")
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplicationForm extends BaseIdEntity {
