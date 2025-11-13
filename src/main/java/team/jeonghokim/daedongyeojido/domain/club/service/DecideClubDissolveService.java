@@ -11,7 +11,8 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.Decid
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
-import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,23 +24,17 @@ public class DecideClubDissolveService {
 
     @Transactional
     public void execute(Long clubId, DecideClubDissolveRequest request) {
-        if (!request.isDecision()) {
-            return;
-        }
-
+        if (!request.isDecision()) return;
         Club club = clubFacade.getClubById(clubId);
-        validateClubIsOpen(club);
 
-        User clubApplicant = userRepository.findByAccountId(club.getClubApplicant().getAccountId())
-                        .orElseThrow(() -> UserNotFoundException.EXCEPTION);
-
-        clubRepository.delete(club);
-        clubApplicant.updateRole(Role.STUDENT);
-    }
-
-    private void validateClubIsOpen(Club club) {
         if (!club.getIsOpen()) {
             throw ClubNotOpenException.EXCEPTION;
         }
+
+        // 동아리 해체 수락 시 해체되는 동아리의 동아리원들 권한을 STUDENT로 수정
+        List<User> clubMembers = userRepository.findAllByClub(club);
+        clubMembers.forEach(member -> member.leaveClub(club, Role.STUDENT));
+
+        clubRepository.delete(club);
     }
 }
