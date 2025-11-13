@@ -5,7 +5,7 @@ import lombok.*;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
-@Entity
+@Entity(name = "tbl_user_application")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
