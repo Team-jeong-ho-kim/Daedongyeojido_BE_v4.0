@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -58,6 +59,9 @@ public class Club extends BaseIdEntity {
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClubLink> clubLinks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Alarm> alarms = new ArrayList<>();
 
     @Builder
     public Club(
