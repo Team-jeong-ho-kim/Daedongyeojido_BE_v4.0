@@ -60,7 +60,7 @@ public class ClubController {
     }
 
     @DeleteMapping("/member/{user-id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTeamMember(@PathVariable("user-id") Long userId) {
         deleteTeamMemberService.execute(userId);
     }
