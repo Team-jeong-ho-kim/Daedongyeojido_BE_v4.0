@@ -21,7 +21,7 @@ public class ClubController {
     private final UpdateClubService updateClubService;
     private final ApplyTeamMemberService applyTeamMemberService;
     private final DissolveClubService dissolveClubService;
-    private  final DeleteTeamMemberService deleteTeamMemberService;
+    private final DeleteTeamMemberService deleteTeamMemberService;
 
     @PostMapping("/create/apply")
     @ResponseStatus(HttpStatus.CREATED)
