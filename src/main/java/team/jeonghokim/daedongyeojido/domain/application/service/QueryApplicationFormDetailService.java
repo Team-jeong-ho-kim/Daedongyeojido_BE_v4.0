@@ -17,10 +17,10 @@ public class QueryApplicationFormDetailService {
     private final ApplicationFormRepository applicationFormRepository;
 
     @Transactional(readOnly = true)
-    public ApplicationFormResponse execute() {
+    public ApplicationFormResponse execute(Long clubId) {
         User user = userFacade.getCurrentUser();
 
-        ApplicationForm applicationForm = applicationFormRepository.findByClub(user.getClub())
+        ApplicationForm applicationForm = applicationFormRepository.findByClubId(clubId)
                 .orElseThrow(() -> ApplicationFormNotFoundException.EXCEPTION);
 
         return ApplicationFormResponse.of(applicationForm);
