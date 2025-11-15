@@ -7,7 +7,6 @@ import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
 import team.jeonghokim.daedongyeojido.domain.application.domain.repository.ApplicationFormRepository;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationFormNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormResponse;
-import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
 @Service
@@ -18,7 +17,6 @@ public class QueryApplicationFormDetailService {
 
     @Transactional(readOnly = true)
     public ApplicationFormResponse execute(Long clubId) {
-        User user = userFacade.getCurrentUser();
 
         ApplicationForm applicationForm = applicationFormRepository.findByClubId(clubId)
                 .orElseThrow(() -> ApplicationFormNotFoundException.EXCEPTION);
