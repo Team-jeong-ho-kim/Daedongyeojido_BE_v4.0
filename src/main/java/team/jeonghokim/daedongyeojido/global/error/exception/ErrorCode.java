@@ -22,6 +22,9 @@ public enum ErrorCode {
     INVALID_USER(401, "유효 하지 않은 사용자입니다."),
     USER_APPLICATION_NOT_FOUND(404, "팀원 신청 기록을 찾을 수 없습니다."),
 
+    //application
+    APPLICATION_FORM_NOT_FOUND(404, "지원서를 찾을 수 없습니다."),
+
     //s3
     IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
     FAILED_UPLOAD(500, "업로드 실패"),
