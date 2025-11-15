@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.requ
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
@@ -19,7 +20,7 @@ public record CreateAnnouncementRequest(
         @Size(max = 200, message = "소개글은 200자를 초과할 수 없습니다.")
         String introduction,
 
-        @NotNull(message = "모집 전공은 비어 있을 수 없습니다.")
+        @NotEmpty(message = "최소 하나 이상의 모집 전공이 필요합니다.")
         List<Major> major,
 
         @NotNull(message = "지원 마감일은 필수입니다.")
