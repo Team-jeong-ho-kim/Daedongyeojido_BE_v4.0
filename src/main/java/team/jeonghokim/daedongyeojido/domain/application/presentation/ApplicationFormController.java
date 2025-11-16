@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request.ApplicationFormRequest;
-import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormResponse;
+import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.application.service.CreateApplicationFormService;
 import team.jeonghokim.daedongyeojido.domain.application.service.QueryApplicationFormDetailService;
 
@@ -24,7 +24,7 @@ public class ApplicationFormController {
 
     @GetMapping("/{club-id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApplicationFormResponse queryApplicationForm(@PathVariable("club-id") Long clubId) {
+    public ApplicationFormDetailResponse queryApplicationForm(@PathVariable("club-id") Long clubId) {
         return queryApplicationFormDetailService.execute(clubId);
     }
 }

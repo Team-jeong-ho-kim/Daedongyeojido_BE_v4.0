@@ -6,12 +6,12 @@ import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationQuest
 import java.time.LocalDate;
 import java.util.List;
 
-public record ApplicationFormResponse(
+public record ApplicationFormDetailResponse(
         List<String> content,
         LocalDate submissionDuration
 ) {
-    public static ApplicationFormResponse of(ApplicationForm applicationForm) {
-        return new ApplicationFormResponse(
+    public static ApplicationFormDetailResponse of(ApplicationForm applicationForm) {
+        return new ApplicationFormDetailResponse(
                 applicationForm.getApplicationQuestions().stream().map(ApplicationQuestion::getContent).toList(),
                 applicationForm.getSubmissionDuration()
         );
