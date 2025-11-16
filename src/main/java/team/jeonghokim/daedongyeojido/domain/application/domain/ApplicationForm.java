@@ -16,6 +16,9 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApplicationForm extends BaseIdEntity {
 
+    @Column(nullable = false, length = 30)
+    private String applicationFormTitle;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
     private User user;
@@ -31,7 +34,8 @@ public class ApplicationForm extends BaseIdEntity {
     private LocalDate submissionDuration;
 
     @Builder
-    public ApplicationForm(User user, Club club, List<ApplicationQuestion> applicationQuestions, LocalDate submissionDuration) {
+    public ApplicationForm(String applicationFormTitle, User user, Club club, List<ApplicationQuestion> applicationQuestions, LocalDate submissionDuration) {
+        this.applicationFormTitle = applicationFormTitle;
         this.user = user;
         this.club = club;
         addApplicationQuestion(applicationQuestions);
