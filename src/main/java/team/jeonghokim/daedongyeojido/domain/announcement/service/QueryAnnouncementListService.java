@@ -17,7 +17,16 @@ public class QueryAnnouncementListService {
 
     @Transactional(readOnly = true)
     public QueryAnnouncementListResponse execute() {
-        List<AnnouncementResponse> announcements = announcementRepository.findAllAnnouncements();
-        return new QueryAnnouncementListResponse(announcements);
+        List<AnnouncementResponse> announcements = announcementRepository.findAll().stream()
+                .map(announcement -> new AnnouncementResponse(
+                        announcement.getId(),
+                        announcement.getTitle(),
+                        announcement.getClub().getClubName(),
+                        announcement.getDeadline(),
+                        announcement.getClub().getClubImage()
+                )).toList();
+        return QueryAnnouncementListResponse.builder()
+                .announcements(announcements)
+                .build();
     }
 }
