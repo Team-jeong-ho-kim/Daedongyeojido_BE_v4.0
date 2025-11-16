@@ -5,7 +5,7 @@ import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
 
 import java.util.List;
 
-public interface ApplicationFormRepository extends JpaRepository<ApplicationForm, Long> {
+public interface ApplicationFormRepository extends JpaRepository<ApplicationForm, Long>, ApplicationFormRepositoryCustom {
 
     List<ApplicationForm> findAllByClubId(Long clubId);
 }
