@@ -8,12 +8,16 @@ import java.util.List;
 
 public record ApplicationFormDetailResponse(
         String applicationFormTitle,
+        String clubName,
+        String clubImage,
         List<String> content,
         LocalDate submissionDuration
 ) {
     public static ApplicationFormDetailResponse of(ApplicationForm applicationForm) {
         return new ApplicationFormDetailResponse(
                 applicationForm.getApplicationFormTitle(),
+                applicationForm.getClub().getClubName(),
+                applicationForm.getClub().getClubImage(),
                 applicationForm.getApplicationQuestions().stream().map(ApplicationQuestion::getContent).toList(),
                 applicationForm.getSubmissionDuration()
         );
