@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class QueryAnnouncementVO extends AnnouncementVO {
 
     @QueryProjection
-    public QueryAnnouncementVO(Long announcementId, String title, String clubName, LocalDate deadLine, String clubImage) {
-        super(announcementId, title, clubName, deadLine, clubImage);
+    public QueryAnnouncementVO(Long announcementId, String title, String clubName, LocalDate deadline, String clubImage) {
+        super(announcementId, title, clubName, deadline, clubImage);
     }
 }
