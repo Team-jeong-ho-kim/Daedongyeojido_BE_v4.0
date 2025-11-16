@@ -6,8 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request.ApplicationFormRequest;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormDetailResponse;
+import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormListResponse;
 import team.jeonghokim.daedongyeojido.domain.application.service.CreateApplicationFormService;
+import team.jeonghokim.daedongyeojido.domain.application.service.QueryAllApplicationFormService;
 import team.jeonghokim.daedongyeojido.domain.application.service.QueryApplicationFormDetailService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/application")
@@ -15,6 +19,7 @@ import team.jeonghokim.daedongyeojido.domain.application.service.QueryApplicatio
 public class ApplicationFormController {
     private final CreateApplicationFormService createApplicationFormService;
     private final QueryApplicationFormDetailService queryApplicationFormDetailService;
+    private final QueryAllApplicationFormService queryAllApplicationFormService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -26,5 +31,11 @@ public class ApplicationFormController {
     @ResponseStatus(HttpStatus.OK)
     public ApplicationFormDetailResponse queryApplicationForm(@PathVariable("club-id") Long clubId) {
         return queryApplicationFormDetailService.execute(clubId);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<ApplicationFormListResponse> queryAllApplicationForm() {
+        return queryAllApplicationFormService.execute();
     }
 }
