@@ -1,6 +1,6 @@
 package team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response;
 
-import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
+import com.querydsl.core.annotations.QueryProjection;
 
 import java.time.LocalDate;
 
@@ -11,13 +11,17 @@ public record ApplicationFormListResponse(
         String clubImage,
         LocalDate submissionDuration
 ) {
-    public static ApplicationFormListResponse of(ApplicationForm applicationForm) {
-        return new ApplicationFormListResponse(
-                applicationForm.getId(),
-                applicationForm.getApplicationFormTitle(),
-                applicationForm.getClub().getClubName(),
-                applicationForm.getClub().getClubImage(),
-                applicationForm.getSubmissionDuration()
-        );
+    @QueryProjection
+    public ApplicationFormListResponse(Long applicationFormId,
+                                      String applicationFormTitle,
+                                      String clubName,
+                                      String clubImage,
+                                      LocalDate submissionDuration) {
+
+        this.applicationFormId = applicationFormId;
+        this.applicationFormTitle = applicationFormTitle;
+        this.clubName = clubName;
+        this.clubImage = clubImage;
+        this.submissionDuration = submissionDuration;
     }
 }
