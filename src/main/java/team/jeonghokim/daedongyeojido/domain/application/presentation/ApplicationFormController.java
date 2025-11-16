@@ -27,10 +27,10 @@ public class ApplicationFormController {
         createApplicationFormService.execute(request);
     }
 
-    @GetMapping("/{club-id}")
+    @GetMapping("/{application-form-id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApplicationFormDetailResponse queryApplicationForm(@PathVariable("club-id") Long clubId) {
-        return queryApplicationFormDetailService.execute(clubId);
+    public ApplicationFormDetailResponse queryApplicationForm(@PathVariable("application-form-id") Long applicationFormId) {
+        return queryApplicationFormDetailService.execute(applicationFormId);
     }
 
     @GetMapping("/all/{club-id}")

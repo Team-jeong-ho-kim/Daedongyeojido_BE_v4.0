@@ -14,9 +14,9 @@ public class QueryApplicationFormDetailService {
     private final ApplicationFormRepository applicationFormRepository;
 
     @Transactional(readOnly = true)
-    public ApplicationFormDetailResponse execute(Long clubId) {
+    public ApplicationFormDetailResponse execute(Long applicationFormId) {
 
-        ApplicationForm applicationForm = applicationFormRepository.findByClubId(clubId)
+        ApplicationForm applicationForm = applicationFormRepository.findByApplicationFormId(applicationFormId)
                 .orElseThrow(() -> ApplicationFormNotFoundException.EXCEPTION);
 
         return ApplicationFormDetailResponse.of(applicationForm);
