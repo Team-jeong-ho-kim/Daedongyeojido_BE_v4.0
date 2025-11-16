@@ -21,9 +21,6 @@ public class QueryAllApplicationFormService {
 
         Club club = clubFacade.getClubById(clubId);
 
-        return applicationFormRepository.findAllByClubId(club.getId())
-                .stream()
-                .map(ApplicationFormListResponse::of)
-                .toList();
+        return applicationFormRepository.findAllByClubId(club.getId());
     }
 }
