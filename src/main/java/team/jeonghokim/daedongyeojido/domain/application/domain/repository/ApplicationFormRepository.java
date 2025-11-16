@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ApplicationFormRepository extends JpaRepository<ApplicationForm, Long> {
-    Optional<ApplicationForm> findByClubId(Long clubId);
+    Optional<ApplicationForm> findByApplicationFormId(Long applicationFormId);
 
     List<ApplicationForm> findAllByClubId(Long clubId);
 }
