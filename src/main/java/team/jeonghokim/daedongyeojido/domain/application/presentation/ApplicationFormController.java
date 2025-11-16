@@ -33,9 +33,9 @@ public class ApplicationFormController {
         return queryApplicationFormDetailService.execute(clubId);
     }
 
-    @GetMapping
+    @GetMapping("/all/{club-id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ApplicationFormListResponse> queryAllApplicationForm() {
-        return queryAllApplicationFormService.execute();
+    public List<ApplicationFormListResponse> queryAllApplicationForm(@PathVariable("club-id") Long clubId) {
+        return queryAllApplicationFormService.execute(clubId);
     }
 }
