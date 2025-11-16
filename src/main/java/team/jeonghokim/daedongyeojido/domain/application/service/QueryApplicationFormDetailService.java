@@ -16,7 +16,7 @@ public class QueryApplicationFormDetailService {
     @Transactional(readOnly = true)
     public ApplicationFormDetailResponse execute(Long applicationFormId) {
 
-        ApplicationForm applicationForm = applicationFormRepository.findByApplicationFormId(applicationFormId)
+        ApplicationForm applicationForm = applicationFormRepository.findById(applicationFormId)
                 .orElseThrow(() -> ApplicationFormNotFoundException.EXCEPTION);
 
         return ApplicationFormDetailResponse.of(applicationForm);
