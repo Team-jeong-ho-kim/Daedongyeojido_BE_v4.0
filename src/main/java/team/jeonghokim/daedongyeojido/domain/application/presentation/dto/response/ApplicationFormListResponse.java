@@ -9,4 +9,11 @@ public record ApplicationFormListResponse(
         String clubImage,
         LocalDate submissionDuration
 ) {
+    public static ApplicationFormListResponse of(ApplicationForm applicationForm) {
+        return new ApplicationFormListResponse(
+                applicationForm.getClub().getClubName(),
+                applicationForm.getClub().getClubImage(),
+                applicationForm.getSubmissionDuration()
+        );
+    }
 }
