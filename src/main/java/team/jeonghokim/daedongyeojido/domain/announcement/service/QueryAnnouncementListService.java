@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.announcement.domain.repository.AnnouncementRepository;
-import team.jeonghokim.daedongyeojido.domain.announcement.domain.repository.vo.AnnouncementVO;
+import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.AnnouncementResponse;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.QueryAnnouncementListResponse;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class QueryAnnouncementListService {
 
     @Transactional(readOnly = true)
     public QueryAnnouncementListResponse execute() {
-        List<AnnouncementVO> announcements = announcementRepository.findAllAnnouncementVO();
+        List<AnnouncementResponse> announcements = announcementRepository.findAllAnnouncements();
         return new QueryAnnouncementListResponse(announcements);
     }
 }
