@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.UpdateAnnouncementRequest;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
-import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.time.LocalDate;
@@ -78,12 +77,7 @@ public class Announcement extends BaseIdEntity {
     public void updateAnnouncement(UpdateAnnouncementRequest request) {
         this.title = request.title();
         this.introduction = request.introduction();
-        this.announcementMajors.clear();
-        request.major().stream()
-                .map(major -> AnnouncementMajor.builder()
-                        .major(major)
-                        .build())
-                .forEach(this::addAnnouncementMajor);
+        updateAnnouncementMajors(request);
         this.deadline = request.deadline();
         this.talentDescription = request.talentDescription();
         this.assignment = request.assignment();
@@ -92,5 +86,14 @@ public class Announcement extends BaseIdEntity {
     private void addAnnouncementMajor(AnnouncementMajor announcementMajor) {
         announcementMajor.setAnnouncement(this);
         this.announcementMajors.add(announcementMajor);
+    }
+
+    private void updateAnnouncementMajors(UpdateAnnouncementRequest request) {
+        this.announcementMajors.clear();
+        request.major().stream()
+                .map(major -> AnnouncementMajor.builder()
+                        .major(major)
+                        .build())
+                .forEach(this::addAnnouncementMajor);
     }
 }
