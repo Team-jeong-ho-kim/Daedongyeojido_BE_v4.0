@@ -10,6 +10,7 @@ import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.respon
 import team.jeonghokim.daedongyeojido.domain.application.service.CreateApplicationFormService;
 import team.jeonghokim.daedongyeojido.domain.application.service.QueryApplicationFormListService;
 import team.jeonghokim.daedongyeojido.domain.application.service.QueryApplicationFormDetailService;
+import team.jeonghokim.daedongyeojido.domain.application.service.UpdateApplicationFormService;
 
 @RestController
 @RequestMapping("/application")
@@ -18,6 +19,7 @@ public class ApplicationFormController {
     private final CreateApplicationFormService createApplicationFormService;
     private final QueryApplicationFormDetailService queryApplicationFormDetailService;
     private final QueryApplicationFormListService queryAllApplicationFormService;
+    private final UpdateApplicationFormService updateApplicationFormService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -35,5 +37,11 @@ public class ApplicationFormController {
     @ResponseStatus(HttpStatus.OK)
     public QueryApplicationFormListResponse queryAllApplicationForm(@PathVariable("club-id") Long clubId) {
         return queryAllApplicationFormService.execute(clubId);
+    }
+
+    @PatchMapping("/{application-form-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateApplicationForm(@PathVariable("application-form-id") Long applicationFormId, @RequestBody @Valid ApplicationFormRequest request) {
+        updateApplicationFormService.execute(applicationFormId, request);
     }
 }
