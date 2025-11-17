@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.domain.application.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request.ApplicationFormRequest;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -47,5 +48,12 @@ public class ApplicationForm extends BaseIdEntity {
             applicationQuestion.setApplicationForm(this);
             this.applicationQuestions.add(applicationQuestion);
         });
+    }
+
+    public void update(String applicationFormTitle, List<ApplicationQuestion> applicationQuestions, LocalDate submissionDuration) {
+        this.applicationFormTitle = applicationFormTitle;
+        this.applicationQuestions.clear();
+        this.applicationQuestions.addAll(applicationQuestions);
+        this.submissionDuration = submissionDuration;
     }
 }
