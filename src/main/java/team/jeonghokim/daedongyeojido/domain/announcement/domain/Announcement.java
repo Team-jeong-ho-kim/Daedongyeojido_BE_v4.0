@@ -13,7 +13,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
-import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.time.LocalDate;
