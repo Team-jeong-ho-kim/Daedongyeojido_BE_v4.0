@@ -49,10 +49,19 @@ public class ApplicationForm extends BaseIdEntity {
         });
     }
 
-    public void update(String applicationFormTitle, List<ApplicationQuestion> applicationQuestions, LocalDate submissionDuration) {
+    public void update(String applicationFormTitle, List<String> applicationQuestions, LocalDate submissionDuration) {
         this.applicationFormTitle = applicationFormTitle;
         this.applicationQuestions.clear();
-        this.applicationQuestions.addAll(applicationQuestions);
+        applicationQuestions.stream()
+                .map(applicationQuestion -> ApplicationQuestion.builder()
+                        .content(applicationQuestion)
+                        .build())
+                .forEach(this::addApplicationQuestion);
         this.submissionDuration = submissionDuration;
+    }
+
+    private void addApplicationQuestion(ApplicationQuestion applicationQuestion) {
+        applicationQuestion.setApplicationForm(this);
+        this.applicationQuestions.add(applicationQuestion);
     }
 }
