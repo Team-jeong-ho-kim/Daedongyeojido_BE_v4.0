@@ -21,4 +21,11 @@ public class UserLink extends BaseIdEntity {
         this.user = user;
         this.link = link;
     }
+
+    protected void setUser(User user) {
+        if (this.user != null) {
+            return;
+        }
+        this.user = user;
+    }
 }

@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
@@ -25,5 +26,12 @@ public class UserMajor extends BaseIdEntity {
     public UserMajor(User user, Major major) {
         this.user = user;
         this.major = major;
+    }
+
+    protected void setUser(User user) {
+        if (this.user != null) {
+            return;
+        }
+        this.user = user;
     }
 }
