@@ -7,19 +7,18 @@ import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
 import team.jeonghokim.daedongyeojido.domain.application.domain.repository.ApplicationFormRepository;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationFormAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.application.facade.ApplicationFormFacade;
-import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request.ApplicationFormRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
 @Service
 @RequiredArgsConstructor
-public class UpdateApplicationFormService {
+public class DeleteApplicationFormService {
     private final ApplicationFormRepository applicationFormRepository;
     private final ApplicationFormFacade applicationFormFacade;
     private final UserFacade userFacade;
 
     @Transactional
-    public void execute(Long applicationFormId, ApplicationFormRequest request) {
+    public void execute(Long applicationFormId) {
 
         User user = userFacade.getCurrentUser();
         ApplicationForm applicationForm = applicationFormFacade.getApplicationById(applicationFormId);
@@ -28,10 +27,6 @@ public class UpdateApplicationFormService {
             throw ApplicationFormAccessDeniedException.EXCEPTION;
         }
 
-        applicationForm.update(
-                request.getApplicationFormTitle(),
-                request.getContent(),
-                request.getSubmissionDuration()
-        );
+        applicationFormRepository.delete(applicationForm);
     }
 }
