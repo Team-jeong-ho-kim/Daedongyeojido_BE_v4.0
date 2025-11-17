@@ -26,4 +26,11 @@ public class UserMajor extends BaseIdEntity {
         this.user = user;
         this.major = major;
     }
+
+    protected void setUser(User user) {
+        if (this.user != null) {
+            return;
+        }
+        this.user = user;
+    }
 }

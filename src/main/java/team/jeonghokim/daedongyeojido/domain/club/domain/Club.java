@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.util.ArrayList;
@@ -109,21 +110,28 @@ public class Club extends BaseIdEntity {
         this.oneLiner = request.getOneLiner();
         this.introduction = request.getIntroduction();
 
+        updateMajors(request.getMajor());
+        updateLinks(request.getLink());
+    }
+
+    private void updateMajors(List<Major> majors) {
         this.clubMajors.clear();
-        request.getMajor().stream()
+        majors.stream()
                 .map(major -> ClubMajor.builder()
                         .major(major)
                         .build())
                 .forEach(this::addClubMajor);
+    }
 
+    private void updateLinks(List<String> links) {
         this.clubLinks.clear();
-        request.getLink().stream()
+        links.stream()
                 .map(link -> ClubLink.builder()
                         .link(link)
                         .build())
                 .forEach(this::addClubLink);
     }
-
+    
     private void addClubMajor(ClubMajor clubMajor) {
         clubMajor.setClub(this);
         this.clubMajors.add(clubMajor);

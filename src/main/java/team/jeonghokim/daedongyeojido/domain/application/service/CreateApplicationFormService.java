@@ -26,14 +26,13 @@ public class CreateApplicationFormService {
         User user = userFacade.getCurrentUser();
 
         List<ApplicationQuestion> questions = createApplicationQuestion(request);
-        LocalDate date = LocalDate.parse(request.getSubmissionDuration());
 
         applicationFormRepository.save(ApplicationForm.builder()
                 .applicationFormTitle(request.getApplicationFormTitle())
                 .club(user.getClub())
                 .user(user)
                 .applicationQuestions(questions)
-                .submissionDuration(date)
+                .submissionDuration(request.getSubmissionDuration())
                 .build());
     }
 

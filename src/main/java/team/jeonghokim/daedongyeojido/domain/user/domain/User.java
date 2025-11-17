@@ -3,6 +3,7 @@ package team.jeonghokim.daedongyeojido.domain.user.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
@@ -67,13 +68,39 @@ public class User extends BaseIdEntity {
         this.classNumber = classNumber;
     }
 
-    public void update(String introduction, List<UserMajor> majors, List<UserLink> links, String profileImage) {
+    public void update(String introduction, List<Major> majors, List<String> links, String profileImage) {
         this.introduction = introduction;
-        this.majors.clear();
-        this.majors.addAll(majors);
-        this.links.clear();
-        this.links.addAll(links);
+        updateMajors(majors);
+        updateLinks(links);
         this.profileImage = profileImage;
+    }
+
+    private void updateMajors(List<Major> majors) {
+        this.majors.clear();
+        majors.stream()
+                .map(major -> UserMajor.builder()
+                        .major(major)
+                        .build())
+                .forEach(this::addUserMajor);
+    }
+
+    private void updateLinks(List<String> links) {
+        this.links.clear();
+        links.stream()
+                .map(link -> UserLink.builder()
+                        .link(link)
+                        .build())
+                .forEach(this::addUserLink);
+    }
+
+    private void addUserMajor(UserMajor userMajor) {
+        userMajor.setUser(this);
+        this.majors.add(userMajor);
+    }
+
+    private void addUserLink(UserLink userLink) {
+        userLink.setUser(this);
+        this.links.add(userLink);
     }
 
     public void approvedClub(Club club) {

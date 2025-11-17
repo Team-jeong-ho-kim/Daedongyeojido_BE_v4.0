@@ -3,9 +3,11 @@ package team.jeonghokim.daedongyeojido.domain.application.presentation.dto.reque
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -21,7 +23,7 @@ public class ApplicationFormRequest {
                  @Size(max = 150, message = "질문은 150자까지 작성할 수 있습니다.")
             String> content;
 
-    @NotBlank(message = "제출 기한을 설정해주세요.")
+    @NotNull(message = "제출 기한을 설정해주세요.")
     @JsonProperty("submissionDuration")
-    private String submissionDuration;
+    private LocalDate submissionDuration;
 }
