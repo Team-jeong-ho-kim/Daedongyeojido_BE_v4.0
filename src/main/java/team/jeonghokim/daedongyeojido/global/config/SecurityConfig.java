@@ -55,6 +55,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/application/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET,"/application/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH,"/application/**").hasAnyRole(CLUB_MEMBER, CLUB_LEADER)
+                        .requestMatchers(HttpMethod.DELETE,"/application/**").hasAnyRole(CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.DELETE, "/club/member/**").hasRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.POST, "/announcement").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/announcement/**").permitAll()
