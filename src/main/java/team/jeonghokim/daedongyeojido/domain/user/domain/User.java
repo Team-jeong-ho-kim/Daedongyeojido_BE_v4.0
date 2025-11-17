@@ -70,19 +70,27 @@ public class User extends BaseIdEntity {
 
     public void update(String introduction, List<Major> majors, List<String> links, String profileImage) {
         this.introduction = introduction;
+        updateMajors(majors);
+        updateLinks(links);
+        this.profileImage = profileImage;
+    }
+
+    private void updateMajors(List<Major> majors) {
         this.majors.clear();
         majors.stream()
                 .map(major -> UserMajor.builder()
                         .major(major)
                         .build())
                 .forEach(this::addUserMajor);
+    }
+
+    private void updateLinks(List<String> links) {
         this.links.clear();
         links.stream()
                 .map(link -> UserLink.builder()
                         .link(link)
                         .build())
                 .forEach(this::addUserLink);
-        this.profileImage = profileImage;
     }
 
     private void addUserMajor(UserMajor userMajor) {
