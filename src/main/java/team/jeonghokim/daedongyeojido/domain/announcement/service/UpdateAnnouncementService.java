@@ -20,11 +20,11 @@ public class UpdateAnnouncementService {
 
     @Transactional
     public void execute(Long announcementId, UpdateAnnouncementRequest request) {
-        User currenetUser = userFacade.getCurrentUser();
+        User currentUser = userFacade.getCurrentUser();
         Announcement announcement = announcementRepository.findById(announcementId)
                 .orElseThrow(() -> AnnouncementNotFoundException.EXCEPTION);
 
-        if (!announcement.getClub().equals(currenetUser.getClub())) {
+        if (!announcement.getClub().equals(currentUser.getClub())) {
             throw AnnouncementAccessDeniedException.EXCEPTION;
         }
 
