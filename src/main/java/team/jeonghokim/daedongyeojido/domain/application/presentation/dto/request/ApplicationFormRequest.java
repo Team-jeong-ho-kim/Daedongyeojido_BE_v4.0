@@ -13,6 +13,7 @@ public class ApplicationFormRequest {
 
     @NotBlank(message = "지원서 제목을 작성해주세요")
     @Size(max = 30, message = "지원서 제목은 30자까지 작성할 수 있습니다.")
+    @JsonProperty("applicationFormTitle")
     private String applicationFormTitle;
 
     @NotEmpty(message = "질문을 최소 하나 이상 작성해주세요.")
