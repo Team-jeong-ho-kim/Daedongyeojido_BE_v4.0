@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request.ApplicationFormRequest;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.QueryApplicationFormListResponse;
-import team.jeonghokim.daedongyeojido.domain.application.service.CreateApplicationFormService;
-import team.jeonghokim.daedongyeojido.domain.application.service.QueryApplicationFormListService;
-import team.jeonghokim.daedongyeojido.domain.application.service.QueryApplicationFormDetailService;
-import team.jeonghokim.daedongyeojido.domain.application.service.UpdateApplicationFormService;
+import team.jeonghokim.daedongyeojido.domain.application.service.*;
 
 @RestController
 @RequestMapping("/application")
@@ -20,6 +17,7 @@ public class ApplicationFormController {
     private final QueryApplicationFormDetailService queryApplicationFormDetailService;
     private final QueryApplicationFormListService queryAllApplicationFormService;
     private final UpdateApplicationFormService updateApplicationFormService;
+    private final DeleteApplicationFormService deleteApplicationFormService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -43,5 +41,11 @@ public class ApplicationFormController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateApplicationForm(@PathVariable("application-form-id") Long applicationFormId, @RequestBody @Valid ApplicationFormRequest request) {
         updateApplicationFormService.execute(applicationFormId, request);
+    }
+
+    @DeleteMapping("/{application-form-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteApplicationForm(@PathVariable("application-form-id") Long applicationFormId) {
+        deleteApplicationFormService.execute(applicationFormId);
     }
 }
