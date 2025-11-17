@@ -24,6 +24,7 @@ public enum ErrorCode {
 
     //application
     APPLICATION_FORM_NOT_FOUND(404, "지원서를 찾을 수 없습니다."),
+    APPLICATION_FORM_ACCESS_DENIED(403, "해당 지원서에 대한 수정 권한이 없습니다."),
 
     //s3
     IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
