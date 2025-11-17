@@ -3,6 +3,7 @@ package team.jeonghokim.daedongyeojido.domain.announcement.presentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.reque
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.QueryAnnouncementDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.QueryAnnouncementListResponse;
 import team.jeonghokim.daedongyeojido.domain.announcement.service.CreateAnnouncementService;
+import team.jeonghokim.daedongyeojido.domain.announcement.service.DeleteAnnouncementService;
 import team.jeonghokim.daedongyeojido.domain.announcement.service.QueryAnnouncementDetailService;
 import team.jeonghokim.daedongyeojido.domain.announcement.service.QueryAnnouncementListService;
 import team.jeonghokim.daedongyeojido.domain.announcement.service.UpdateAnnouncementService;
@@ -28,6 +30,7 @@ public class AnnouncementController {
     private final QueryAnnouncementListService queryAnnouncementListService;
     private final QueryAnnouncementDetailService queryAnnouncementDetailService;
     private final UpdateAnnouncementService updateAnnouncementService;
+    private final DeleteAnnouncementService deleteAnnouncementService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -51,5 +54,11 @@ public class AnnouncementController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAnnouncement(@PathVariable("announcement-id") Long announcementId, @RequestBody @Valid AnnouncementRequest request) {
         updateAnnouncementService.execute(announcementId, request);
+    }
+
+    @DeleteMapping("/{announcement-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAnnouncement(@PathVariable("announcement-id") Long announcementId) {
+        deleteAnnouncementService.execute(announcementId);
     }
 }
