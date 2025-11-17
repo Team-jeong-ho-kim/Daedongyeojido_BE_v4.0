@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.CreateAnnouncementRequest;
-import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.UpdateAnnouncementRequest;
+import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.AnnouncementRequest;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.QueryAnnouncementDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.QueryAnnouncementListResponse;
 import team.jeonghokim.daedongyeojido.domain.announcement.service.CreateAnnouncementService;
@@ -32,7 +31,7 @@ public class AnnouncementController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createAnnouncement(@RequestBody @Valid CreateAnnouncementRequest request) {
+    public void createAnnouncement(@RequestBody @Valid AnnouncementRequest request) {
         createAnnouncementService.execute(request);
     }
 
@@ -50,7 +49,7 @@ public class AnnouncementController {
 
     @PatchMapping("/{announcement-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateAnnouncement(@PathVariable("announcement-id") Long announcementId, @RequestBody @Valid UpdateAnnouncementRequest request) {
+    public void updateAnnouncement(@PathVariable("announcement-id") Long announcementId, @RequestBody @Valid AnnouncementRequest request) {
         updateAnnouncementService.execute(announcementId, request);
     }
 }
