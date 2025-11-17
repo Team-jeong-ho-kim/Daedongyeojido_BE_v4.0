@@ -2,7 +2,6 @@ package team.jeonghokim.daedongyeojido.domain.application.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request.ApplicationFormRequest;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
