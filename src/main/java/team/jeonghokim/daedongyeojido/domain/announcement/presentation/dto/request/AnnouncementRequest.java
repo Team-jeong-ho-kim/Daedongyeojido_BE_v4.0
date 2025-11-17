@@ -36,10 +36,7 @@ public record AnnouncementRequest(
         String assignment,
 
         @NotBlank(message = "대표자 연락처는 필수입니다.")
-        @Pattern(
-                regexp = "^(01[016789])[-]?(\\d{3,4})[-]?(\\d{4})$",
-                message = "전화번호 형식이 올바르지 않습니다. 예) 010-1234-5678"
-        )
+        @Size(max = 11, message = "전화번호는 11자 이내로 작성해주세요.")
         @JsonProperty("phoneNumber")
         String phoneNumber
 ) {
