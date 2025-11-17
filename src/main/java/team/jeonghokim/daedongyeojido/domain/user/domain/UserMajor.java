@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
