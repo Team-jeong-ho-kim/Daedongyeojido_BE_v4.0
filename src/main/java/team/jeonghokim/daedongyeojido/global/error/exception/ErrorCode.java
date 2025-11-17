@@ -50,6 +50,7 @@ public enum ErrorCode {
 
     // announcement
     ANNOUNCEMENT_NOT_FOUND(404, "공고를 찾을 수 없습니다."),
+    ANNOUNCEMENT_ACCESS_DENIED(403, "해당 공고에 대한 수정 권한이 없습니다."),
 
     // general
     BAD_REQUEST(400, "front fault"),

@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.announcement.domain.Announcement;
 import team.jeonghokim.daedongyeojido.domain.announcement.domain.AnnouncementMajor;
 import team.jeonghokim.daedongyeojido.domain.announcement.domain.repository.AnnouncementRepository;
-import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.CreateAnnouncementRequest;
+import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.AnnouncementRequest;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
@@ -22,7 +22,7 @@ public class CreateAnnouncementService {
     private final UserFacade userFacade;
 
     @Transactional
-    public void execute(CreateAnnouncementRequest request) {
+    public void execute(AnnouncementRequest request) {
         User user = userFacade.getCurrentUser();
 
         List<AnnouncementMajor> announcementMajors = createAnnouncementMajor(request);
@@ -32,7 +32,7 @@ public class CreateAnnouncementService {
     }
 
     private Announcement createAnnouncement(
-            CreateAnnouncementRequest request,
+            AnnouncementRequest request,
             Club club,
             List<AnnouncementMajor> announcementMajors
     ) {
@@ -42,12 +42,13 @@ public class CreateAnnouncementService {
                 .introduction(request.introduction())
                 .talentDescription(request.talentDescription())
                 .assignment(request.assignment())
+                .phoneNumber(request.phoneNumber())
                 .club(club)
                 .announcementMajors(announcementMajors)
                 .build();
     }
 
-    private List<AnnouncementMajor> createAnnouncementMajor(CreateAnnouncementRequest request) {
+    private List<AnnouncementMajor> createAnnouncementMajor(AnnouncementRequest request) {
         return request.major().stream().map(major ->
                         AnnouncementMajor.builder()
                                 .major(major)

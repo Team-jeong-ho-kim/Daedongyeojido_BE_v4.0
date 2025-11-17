@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public record CreateAnnouncementRequest(
+public record AnnouncementRequest(
 
         @NotBlank(message = "공고 제목은 필수입니다.")
         @Size(max = 20, message = "공고 제목은 20자를 초과할 수 없습니다.")
@@ -32,6 +33,11 @@ public record CreateAnnouncementRequest(
         String talentDescription,
 
         @Size(max = 150, message = "과제는 150자를 초과할 수 없습니다.")
-        String assignment
+        String assignment,
+
+        @NotBlank(message = "대표자 연락처는 필수입니다.")
+        @Size(max = 11, message = "전화번호는 11자 이내로 작성해주세요.")
+        @JsonProperty("phoneNumber")
+        String phoneNumber
 ) {
 }

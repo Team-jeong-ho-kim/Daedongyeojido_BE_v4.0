@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.AnnouncementRequest;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
@@ -40,6 +41,9 @@ public class Announcement extends BaseIdEntity {
     @Column(length = 150)
     private String assignment;
 
+    @Column(length = 11)
+    private String phoneNumber;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id", nullable = false)
     private Club club;
@@ -54,6 +58,7 @@ public class Announcement extends BaseIdEntity {
             String introduction,
             String talentDescription,
             String assignment,
+            String phoneNumber,
             Club club,
             List<AnnouncementMajor> announcementMajors
     ) {
@@ -62,6 +67,7 @@ public class Announcement extends BaseIdEntity {
         this.introduction = introduction;
         this.talentDescription = talentDescription;
         this.assignment = assignment;
+        this.phoneNumber = phoneNumber;
         this.club = club;
         addAnnouncementMajors(announcementMajors);
     }
@@ -71,5 +77,29 @@ public class Announcement extends BaseIdEntity {
             major.setAnnouncement(this);
             this.announcementMajors.add(major);
         });
+    }
+
+    public void updateAnnouncement(AnnouncementRequest request) {
+        this.title = request.title();
+        this.introduction = request.introduction();
+        updateAnnouncementMajors(request);
+        this.deadline = request.deadline();
+        this.talentDescription = request.talentDescription();
+        this.assignment = request.assignment();
+        this.phoneNumber = request.phoneNumber();
+    }
+
+    private void addAnnouncementMajor(AnnouncementMajor announcementMajor) {
+        announcementMajor.setAnnouncement(this);
+        this.announcementMajors.add(announcementMajor);
+    }
+
+    private void updateAnnouncementMajors(AnnouncementRequest request) {
+        this.announcementMajors.clear();
+        request.major().stream()
+                .map(major -> AnnouncementMajor.builder()
+                        .major(major)
+                        .build())
+                .forEach(this::addAnnouncementMajor);
     }
 }
