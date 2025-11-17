@@ -12,7 +12,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.UpdateAnnouncementRequest;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.time.LocalDate;
@@ -71,5 +73,24 @@ public class Announcement extends BaseIdEntity {
             major.setAnnouncement(this);
             this.announcementMajors.add(major);
         });
+    }
+
+    public void updateAnnouncement(UpdateAnnouncementRequest request) {
+        this.title = request.title();
+        this.introduction = request.introduction();
+        this.announcementMajors.clear();
+        request.major().stream()
+                .map(major -> AnnouncementMajor.builder()
+                        .major(major)
+                        .build())
+                .forEach(this::addAnnouncementMajor);
+        this.deadline = request.deadline();
+        this.talentDescription = request.talentDescription();
+        this.assignment = request.assignment();
+    }
+
+    private void addAnnouncementMajor(AnnouncementMajor announcementMajor) {
+        announcementMajor.setAnnouncement(this);
+        this.announcementMajors.add(announcementMajor);
     }
 }
