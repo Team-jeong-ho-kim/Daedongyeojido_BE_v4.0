@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.application.domain.repository.ApplicationFormRepository;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormListResponse;
+import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.QueryApplicationFormListResponse;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
 
@@ -17,10 +18,14 @@ public class QueryApplicationFormListService {
     private final ClubFacade clubFacade;
 
     @Transactional(readOnly = true)
-    public List<ApplicationFormListResponse> execute(Long clubId) {
+    public QueryApplicationFormListResponse execute(Long clubId) {
 
         Club club = clubFacade.getClubById(clubId);
 
-        return applicationFormRepository.findAllByClubId(club.getId());
+        List<ApplicationFormListResponse> applicationFormListResponses = applicationFormRepository.findAllByClubId(club.getId());
+
+        return QueryApplicationFormListResponse.builder()
+                .listResponses(applicationFormListResponses)
+                .build();
     }
 }
