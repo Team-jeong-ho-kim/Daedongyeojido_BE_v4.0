@@ -48,6 +48,9 @@ public enum ErrorCode {
     // alarm
     ALARM_NOT_FOUND(404, "알람을 찾을 수 없습니다."),
 
+    // announcement
+    ANNOUNCEMENT_NOT_FOUND(404, "공고를 찾을 수 없습니다."),
+
     // general
     BAD_REQUEST(400, "front fault"),
     INTERNAL_SERVER_ERROR(500, "server fault");
