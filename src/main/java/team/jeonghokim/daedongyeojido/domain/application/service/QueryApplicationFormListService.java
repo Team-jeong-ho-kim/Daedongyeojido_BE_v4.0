@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.application.domain.repository.ApplicationFormRepository;
-import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormListResponse;
+import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormResponse;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.QueryApplicationFormListResponse;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
@@ -22,7 +22,7 @@ public class QueryApplicationFormListService {
 
         Club club = clubFacade.getClubById(clubId);
 
-        List<ApplicationFormListResponse> applicationFormListResponses = applicationFormRepository.findAllByClubId(club.getId());
+        List<ApplicationFormResponse> applicationFormListResponses = applicationFormRepository.findAllByClubId(club.getId());
 
         return QueryApplicationFormListResponse.builder()
                 .listResponses(applicationFormListResponses)

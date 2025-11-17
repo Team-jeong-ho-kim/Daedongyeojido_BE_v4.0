@@ -6,13 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request.ApplicationFormRequest;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormDetailResponse;
-import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormListResponse;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.QueryApplicationFormListResponse;
 import team.jeonghokim.daedongyeojido.domain.application.service.CreateApplicationFormService;
 import team.jeonghokim.daedongyeojido.domain.application.service.QueryApplicationFormListService;
 import team.jeonghokim.daedongyeojido.domain.application.service.QueryApplicationFormDetailService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/application")

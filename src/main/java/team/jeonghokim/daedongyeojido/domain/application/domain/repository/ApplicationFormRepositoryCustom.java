@@ -1,10 +1,10 @@
 package team.jeonghokim.daedongyeojido.domain.application.domain.repository;
 
-import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormListResponse;
+import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormResponse;
 
 import java.util.List;
 
 public interface ApplicationFormRepositoryCustom {
 
-    List<ApplicationFormListResponse> findAllByClubId(Long clubId);
+    List<ApplicationFormResponse> findAllByClubId(Long clubId);
 }

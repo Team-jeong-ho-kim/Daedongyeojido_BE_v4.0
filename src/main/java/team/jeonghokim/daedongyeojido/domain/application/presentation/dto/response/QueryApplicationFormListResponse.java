@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record QueryApplicationFormListResponse(List<ApplicationFormListResponse> listResponses) {
+public record QueryApplicationFormListResponse(List<ApplicationFormResponse> listResponses) {
 }

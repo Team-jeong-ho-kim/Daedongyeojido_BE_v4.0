@@ -4,7 +4,7 @@ import com.querydsl.core.annotations.QueryProjection;
 
 import java.time.LocalDate;
 
-public record ApplicationFormListResponse(
+public record ApplicationFormResponse(
         Long applicationFormId,
         String applicationFormTitle,
         String clubName,
@@ -12,11 +12,11 @@ public record ApplicationFormListResponse(
         LocalDate submissionDuration
 ) {
     @QueryProjection
-    public ApplicationFormListResponse(Long applicationFormId,
-                                      String applicationFormTitle,
-                                      String clubName,
-                                      String clubImage,
-                                      LocalDate submissionDuration) {
+    public ApplicationFormResponse(Long applicationFormId,
+                                   String applicationFormTitle,
+                                   String clubName,
+                                   String clubImage,
+                                   LocalDate submissionDuration) {
 
         this.applicationFormId = applicationFormId;
         this.applicationFormTitle = applicationFormTitle;
