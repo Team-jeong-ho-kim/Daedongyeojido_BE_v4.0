@@ -8,7 +8,7 @@ import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.reques
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationFormListResponse;
 import team.jeonghokim.daedongyeojido.domain.application.service.CreateApplicationFormService;
-import team.jeonghokim.daedongyeojido.domain.application.service.QueryAllApplicationFormService;
+import team.jeonghokim.daedongyeojido.domain.application.service.QueryApplicationFormListService;
 import team.jeonghokim.daedongyeojido.domain.application.service.QueryApplicationFormDetailService;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ApplicationFormController {
     private final CreateApplicationFormService createApplicationFormService;
     private final QueryApplicationFormDetailService queryApplicationFormDetailService;
-    private final QueryAllApplicationFormService queryAllApplicationFormService;
+    private final QueryApplicationFormListService queryAllApplicationFormService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

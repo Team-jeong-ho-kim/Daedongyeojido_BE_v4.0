@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class QueryAllApplicationFormService {
+public class QueryApplicationFormListService {
     private final ApplicationFormRepository applicationFormRepository;
     private final ClubFacade clubFacade;
 
