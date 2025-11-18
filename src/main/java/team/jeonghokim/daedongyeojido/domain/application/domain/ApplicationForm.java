@@ -28,7 +28,7 @@ public class ApplicationForm extends BaseIdEntity {
     private Club club;
 
     @OneToMany(mappedBy = "applicationForm", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ApplicationQuestion> applicationQuestions = new ArrayList<>();;
+    private List<ApplicationQuestion> applicationQuestions = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDate submissionDuration;
