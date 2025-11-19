@@ -1,5 +1,6 @@
 package team.jeonghokim.daedongyeojido.domain.submission.presentation;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ public class SubmissionController {
 
     @PostMapping("/{application_form_id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createSubmission(@PathVariable("application_form_id") Long applicationFormId, SubmissionRequest request) {
+    public void createSubmission(@PathVariable("application_form_id") Long applicationFormId, @RequestBody @Valid SubmissionRequest request) {
         createSubmissionService.execute(applicationFormId, request);
     }
 }
