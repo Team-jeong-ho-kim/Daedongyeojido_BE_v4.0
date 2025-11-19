@@ -24,10 +24,10 @@ public class ApplicationFormRequest {
                  @Size(max = 150, message = "질문은 150자까지 작성할 수 있습니다.")
             String> content;
 
-    @NotNull(message = "제출 기한을 설정해주세요.")
+    @NotEmpty(message = "제출 기한을 설정해주세요.")
     @JsonProperty("submissionDuration")
     private LocalDate submissionDuration;
 
-    @NotNull(message = "전공 리스트를 입력해주세요.")
+    @NotEmpty(message = "전공 리스트를 입력해주세요.")
     private List<Major> majors;
 }

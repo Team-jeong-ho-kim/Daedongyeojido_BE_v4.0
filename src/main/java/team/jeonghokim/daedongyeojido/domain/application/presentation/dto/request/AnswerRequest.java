@@ -1,14 +1,14 @@
 package team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
 public class AnswerRequest {
 
-    @NotNull(message = "존재하지 않는 질문입니다.")
+    @NotEmpty(message = "존재하지 않는 질문입니다.")
     @JsonProperty("applicationQuestionId")
     private Long applicationQuestionId;
 
