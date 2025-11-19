@@ -44,7 +44,7 @@ public class CreateApplicationFormService {
                 .map(content -> ApplicationQuestion.builder()
                         .content(content)
                         .build())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private List<ApplicationMajor> createApplicationMajor(ApplicationFormRequest request) {
@@ -52,6 +52,6 @@ public class CreateApplicationFormService {
                         ApplicationMajor.builder()
                                 .major(major)
                                 .build())
-                .collect(Collectors.toList());
+                .toList();
     }
 }
