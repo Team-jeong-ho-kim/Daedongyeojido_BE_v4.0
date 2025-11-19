@@ -99,7 +99,6 @@ public class Club extends BaseIdEntity {
         });
     }
 
-
     public void clubOpen() {
         this.isOpen = true;
     }
