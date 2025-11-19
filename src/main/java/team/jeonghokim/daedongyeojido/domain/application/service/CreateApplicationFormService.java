@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
+import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationMajor;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationQuestion;
 import team.jeonghokim.daedongyeojido.domain.application.domain.repository.ApplicationFormRepository;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request.ApplicationFormRequest;
@@ -31,6 +32,7 @@ public class CreateApplicationFormService {
                 .club(user.getClub())
                 .user(user)
                 .applicationQuestions(questions)
+                .applicationMajors(createApplicationMajor(request))
                 .submissionDuration(request.getSubmissionDuration())
                 .build());
     }
@@ -42,6 +44,14 @@ public class CreateApplicationFormService {
                 .map(content -> ApplicationQuestion.builder()
                         .content(content)
                         .build())
+                .collect(Collectors.toList());
+    }
+
+    private List<ApplicationMajor> createApplicationMajor(ApplicationFormRequest request) {
+        return request.getMajors().stream().map(major ->
+                        ApplicationMajor.builder()
+                                .major(major)
+                                .build())
                 .collect(Collectors.toList());
     }
 }
