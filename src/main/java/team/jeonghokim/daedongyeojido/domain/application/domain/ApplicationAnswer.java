@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.domain.application.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
@@ -23,4 +24,10 @@ public class ApplicationAnswer extends BaseIdEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Submission submission;
+
+    @Builder
+    public ApplicationAnswer(String content, ApplicationQuestion applicationQuestion) {
+        this.content = content;
+        this.applicationQuestion = applicationQuestion;
+    }
 }
