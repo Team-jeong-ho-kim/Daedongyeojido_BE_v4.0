@@ -5,7 +5,6 @@ import lombok.*;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationAnswer;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
-import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.request.SubmissionRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -71,7 +70,6 @@ public class Submission extends BaseIdEntity {
         this.classNumber = classNumber;
         this.user = user;
         this.applicationForm = applicationForm;
-
         addAnswers(answers);
     }
 
