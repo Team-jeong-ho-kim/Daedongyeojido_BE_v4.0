@@ -48,10 +48,12 @@ public class CreateApplicationFormService {
     }
 
     private List<ApplicationMajor> createApplicationMajor(ApplicationFormRequest request) {
-        return request.getMajors().stream().map(major ->
-                        ApplicationMajor.builder()
-                                .major(major)
-                                .build())
+        return Optional.ofNullable(request.getMajors())
+                .orElseGet(List::of)
+                .stream()
+                .map(major -> ApplicationMajor.builder()
+                        .major(major)
+                        .build())
                 .toList();
     }
 }
