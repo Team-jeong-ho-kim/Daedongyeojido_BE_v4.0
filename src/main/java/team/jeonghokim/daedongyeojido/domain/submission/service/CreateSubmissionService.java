@@ -46,7 +46,7 @@ public class CreateSubmissionService {
     private List<ApplicationAnswer> createAnswer(SubmissionRequest request, ApplicationForm applicationForm) {
         return request.getAnswer().stream()
                 .map(answerRequest -> {
-                    ApplicationQuestion applicationQuestion = validate(applicationForm, answerRequest.getApplicationFormQuestionId());
+                    ApplicationQuestion applicationQuestion = validate(applicationForm, answerRequest.getApplicationQuestionId());
                     return ApplicationAnswer.builder()
                             .content(answerRequest.getAnswer())
                             .applicationQuestion(applicationQuestion)
