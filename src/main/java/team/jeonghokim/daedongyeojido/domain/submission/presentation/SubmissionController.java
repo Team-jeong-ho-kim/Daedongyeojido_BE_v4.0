@@ -10,5 +10,11 @@ import team.jeonghokim.daedongyeojido.domain.submission.service.CreateSubmission
 @RequestMapping("/submission")
 @RequiredArgsConstructor
 public class SubmissionController {
+    private final CreateSubmissionService createSubmissionService;
 
+    @PostMapping("/{application_form_id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createSubmission(@PathVariable("application_form_id") Long applicationFormId, SubmissionRequest request) {
+        createSubmissionService.execute(applicationFormId, request);
+    }
 }
