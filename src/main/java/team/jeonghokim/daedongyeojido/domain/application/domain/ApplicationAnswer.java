@@ -1,7 +1,6 @@
 package team.jeonghokim.daedongyeojido.domain.application.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,6 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 @Table(name = "tbl_application_answer")
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ApplicationAnswer extends BaseIdEntity {
 
     @Column(nullable = false, length = 200)
@@ -23,6 +21,7 @@ public class ApplicationAnswer extends BaseIdEntity {
     private ApplicationQuestion applicationQuestion;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "submission_id", nullable = false)
     private Submission submission;
 
     @Builder
