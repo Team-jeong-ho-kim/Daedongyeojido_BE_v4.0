@@ -1,7 +1,9 @@
 package team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response;
 
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
+import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationMajor;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationQuestion;
+import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,7 +13,8 @@ public record ApplicationFormDetailResponse(
         String clubName,
         String clubImage,
         List<String> content,
-        LocalDate submissionDuration
+        LocalDate submissionDuration,
+        List<Major> major
 ) {
     public static ApplicationFormDetailResponse of(ApplicationForm applicationForm) {
         return new ApplicationFormDetailResponse(
@@ -19,7 +22,8 @@ public record ApplicationFormDetailResponse(
                 applicationForm.getClub().getClubName(),
                 applicationForm.getClub().getClubImage(),
                 applicationForm.getApplicationQuestions().stream().map(ApplicationQuestion::getContent).toList(),
-                applicationForm.getSubmissionDuration()
+                applicationForm.getSubmissionDuration(),
+                applicationForm.getApplicationMajors().stream().map(ApplicationMajor::getMajor).toList()
         );
     }
 }
