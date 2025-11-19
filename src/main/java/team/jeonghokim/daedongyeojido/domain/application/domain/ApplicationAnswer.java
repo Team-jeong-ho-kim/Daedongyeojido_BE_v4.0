@@ -30,4 +30,9 @@ public class ApplicationAnswer extends BaseIdEntity {
         this.content = content;
         this.applicationQuestion = applicationQuestion;
     }
+
+    protected void setSubmission(Submission submission) {
+        if (this.submission != null) return;
+        this.submission = submission;
+    }
 }
