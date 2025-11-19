@@ -32,7 +32,9 @@ public class ApplicationAnswer extends BaseIdEntity {
     }
 
     public void setSubmission(Submission submission) {
-        if (this.submission != null) return;
+        if (this.submission != null) {
+            return;
+        }
         this.submission = submission;
     }
 }
