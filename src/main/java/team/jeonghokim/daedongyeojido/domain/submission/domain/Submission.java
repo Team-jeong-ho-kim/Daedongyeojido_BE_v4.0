@@ -1,14 +1,11 @@
 package team.jeonghokim.daedongyeojido.domain.submission.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationAnswer;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
-import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationQuestion;
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
+import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.request.SubmissionRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -21,7 +18,6 @@ import java.util.List;
 @Table(name = "tbl_submission")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Submission extends BaseIdEntity {
 
     @Enumerated(EnumType.STRING)
@@ -54,4 +50,36 @@ public class Submission extends BaseIdEntity {
 
     @OneToMany(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApplicationAnswer> applicationAnswers = new ArrayList<>();
+
+    @Builder
+    public Submission(
+            ApplicationStatus applicationStatus,
+            LocalDate submissionDuration,
+            List<Major> major,
+            String introduction,
+            String userName,
+            String classNumber,
+            User user,
+            ApplicationForm applicationForm,
+            List<ApplicationAnswer> answers
+    ) {
+        this.applicationStatus = applicationStatus;
+        this.submissionDuration = submissionDuration;
+        this.major = major;
+        this.introduction = introduction;
+        this.userName = userName;
+        this.classNumber = classNumber;
+        this.user = user;
+        this.applicationForm = applicationForm;
+
+        addAnswers(answers);
+    }
+
+    private void addAnswers(List<ApplicationAnswer> answers) {
+        answers.forEach(answer -> {
+            answer.setSubmission(this);
+            this.applicationAnswers.add(answer);
+        });
+    }
+
 }
