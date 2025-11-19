@@ -20,7 +20,7 @@ public class UserController {
     private final QueryMyInfoService queryMyInfoService;
     private final UpdateMyInfoService updateMyInfoService;
     private final DecideTeamMemberApplicationService decideTeamMemberApplicationService;
-    private final CreateSubmissionService createSubmissionService;
+    private final CreateApplicationService createSubmissionService;
 
     @PatchMapping("/my-info")
     @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CreateSubmissionService {
+public class CreateApplicationService {
     private final SubmissionRepository submissionRepository;
     private final UserFacade userFacade;
     private final ApplicationFormFacade applicationFormFacade;
