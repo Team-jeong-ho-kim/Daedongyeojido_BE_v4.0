@@ -2,7 +2,6 @@ package team.jeonghokim.daedongyeojido.domain.application.presentation.dto.respo
 
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationMajor;
-import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationQuestion;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.time.LocalDate;
@@ -12,7 +11,7 @@ public record ApplicationFormDetailResponse(
         String applicationFormTitle,
         String clubName,
         String clubImage,
-        List<String> content,
+        List<ApplicationQuestionResponse> content,
         LocalDate submissionDuration,
         List<Major> major
 ) {
@@ -21,7 +20,7 @@ public record ApplicationFormDetailResponse(
                 applicationForm.getApplicationFormTitle(),
                 applicationForm.getClub().getClubName(),
                 applicationForm.getClub().getClubImage(),
-                applicationForm.getApplicationQuestions().stream().map(ApplicationQuestion::getContent).toList(),
+                applicationForm.getApplicationQuestions().stream().map(ApplicationQuestionResponse::of).toList(),
                 applicationForm.getSubmissionDuration(),
                 applicationForm.getApplicationMajors().stream().map(ApplicationMajor::getMajor).toList()
         );
