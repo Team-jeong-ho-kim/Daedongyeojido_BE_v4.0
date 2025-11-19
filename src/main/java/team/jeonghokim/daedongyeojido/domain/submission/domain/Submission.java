@@ -23,9 +23,6 @@ public class Submission extends BaseIdEntity {
     @Column(nullable = false, length = 13)
     private ApplicationStatus applicationStatus;
 
-    @Column(nullable = false)
-    private LocalDate submissionDuration;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
     private Major major;
@@ -53,7 +50,6 @@ public class Submission extends BaseIdEntity {
     @Builder
     public Submission(
             ApplicationStatus applicationStatus,
-            LocalDate submissionDuration,
             Major major,
             String introduction,
             String userName,
@@ -63,7 +59,6 @@ public class Submission extends BaseIdEntity {
             List<ApplicationAnswer> answers
     ) {
         this.applicationStatus = applicationStatus;
-        this.submissionDuration = submissionDuration;
         this.major = major;
         this.introduction = introduction;
         this.userName = userName;

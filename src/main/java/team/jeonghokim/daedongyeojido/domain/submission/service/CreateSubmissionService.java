@@ -36,7 +36,6 @@ public class CreateSubmissionService {
                         .introduction(request.getIntroduction())
                         .answers(createAnswer(request, applicationForm))
                         .major(request.getMajor())
-                        .submissionDuration(applicationForm.getSubmissionDuration())
                         .user(user)
                         .applicationForm(applicationForm)
                         .applicationStatus(ApplicationStatus.WRITING)
