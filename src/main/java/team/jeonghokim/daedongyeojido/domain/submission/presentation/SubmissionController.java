@@ -13,9 +13,9 @@ import team.jeonghokim.daedongyeojido.domain.submission.service.CreateSubmission
 public class SubmissionController {
     private final CreateSubmissionService createSubmissionService;
 
-    @PostMapping("/{application_form_id}")
+    @PostMapping("/{application-form-id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createSubmission(@PathVariable("application_form_id") Long applicationFormId, @RequestBody @Valid SubmissionRequest request) {
+    public void createSubmission(@PathVariable("application-form-id") Long applicationFormId, @RequestBody @Valid SubmissionRequest request) {
         createSubmissionService.execute(applicationFormId, request);
     }
 }
