@@ -2,12 +2,14 @@ package team.jeonghokim.daedongyeojido.domain.application.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 @Entity
 @Table(name = "tbl_application_major")
+@Getter
 @NoArgsConstructor
 public class ApplicationMajor extends BaseIdEntity {
 
