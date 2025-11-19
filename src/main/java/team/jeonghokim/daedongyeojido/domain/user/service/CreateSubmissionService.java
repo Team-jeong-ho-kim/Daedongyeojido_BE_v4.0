@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.domain.submission.service;
+package team.jeonghokim.daedongyeojido.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

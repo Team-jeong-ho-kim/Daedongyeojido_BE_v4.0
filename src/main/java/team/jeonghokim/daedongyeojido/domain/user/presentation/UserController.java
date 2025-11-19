@@ -4,14 +4,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.request.SubmissionRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideTeamMemberApplicationRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInfoRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.UpdateMyInfoRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.MyInfoResponse;
-import team.jeonghokim.daedongyeojido.domain.user.service.DecideTeamMemberApplicationService;
-import team.jeonghokim.daedongyeojido.domain.user.service.InputMyInfoService;
-import team.jeonghokim.daedongyeojido.domain.user.service.QueryMyInfoService;
-import team.jeonghokim.daedongyeojido.domain.user.service.UpdateMyInfoService;
+import team.jeonghokim.daedongyeojido.domain.user.service.*;
 
 @RestController
 @RequestMapping("/user")
@@ -22,6 +20,7 @@ public class UserController {
     private final QueryMyInfoService queryMyInfoService;
     private final UpdateMyInfoService updateMyInfoService;
     private final DecideTeamMemberApplicationService decideTeamMemberApplicationService;
+    private final CreateSubmissionService createSubmissionService;
 
     @PatchMapping("/my-info")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -45,5 +44,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void approveTeamMember(@RequestBody @Valid DecideTeamMemberApplicationRequest request) {
         decideTeamMemberApplicationService.execute(request);
+    }
+
+    @PostMapping("/application/{application-form-id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createSubmission(@PathVariable("application-form-id") Long applicationFormId, @RequestBody @Valid SubmissionRequest request) {
+        createSubmissionService.execute(applicationFormId, request);
     }
 }
