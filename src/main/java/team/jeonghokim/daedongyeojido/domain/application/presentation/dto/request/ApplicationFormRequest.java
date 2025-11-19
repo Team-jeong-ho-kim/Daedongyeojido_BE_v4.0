@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,4 +27,7 @@ public class ApplicationFormRequest {
     @NotNull(message = "제출 기한을 설정해주세요.")
     @JsonProperty("submissionDuration")
     private LocalDate submissionDuration;
+
+    @NotNull(message = "전공 리스트를 입력해주세요.")
+    private List<Major> majors;
 }
