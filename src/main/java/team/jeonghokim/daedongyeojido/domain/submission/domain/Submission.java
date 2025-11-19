@@ -5,13 +5,16 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationAnswer;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
+import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationQuestion;
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -48,4 +51,7 @@ public class Submission extends BaseIdEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "application_form_id", nullable = false)
     private ApplicationForm applicationForm;
+
+    @OneToMany(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ApplicationAnswer> applicationAnswers = new ArrayList<>();
 }
