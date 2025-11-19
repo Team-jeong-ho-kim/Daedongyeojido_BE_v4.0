@@ -28,7 +28,7 @@ public class Submission extends BaseIdEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
-    private List<Major> major;
+    private Major major;
 
     @Column(length = 300)
     private String introduction;
@@ -54,7 +54,7 @@ public class Submission extends BaseIdEntity {
     public Submission(
             ApplicationStatus applicationStatus,
             LocalDate submissionDuration,
-            List<Major> major,
+            Major major,
             String introduction,
             String userName,
             String classNumber,
@@ -79,5 +79,4 @@ public class Submission extends BaseIdEntity {
             this.applicationAnswers.add(answer);
         });
     }
-
 }
