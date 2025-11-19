@@ -30,15 +30,19 @@ public class ApplicationForm extends BaseIdEntity {
     @OneToMany(mappedBy = "applicationForm", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApplicationQuestion> applicationQuestions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "applicationForm", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ApplicationMajor> applicationMajors = new ArrayList<>();
+
     @Column(nullable = false)
     private LocalDate submissionDuration;
 
     @Builder
-    public ApplicationForm(String applicationFormTitle, User user, Club club, List<ApplicationQuestion> applicationQuestions, LocalDate submissionDuration) {
+    public ApplicationForm(String applicationFormTitle, User user, Club club, List<ApplicationQuestion> applicationQuestions, LocalDate submissionDuration, List<ApplicationMajor> applicationMajors) {
         this.applicationFormTitle = applicationFormTitle;
         this.user = user;
         this.club = club;
         addApplicationQuestion(applicationQuestions);
+        addApplicationMajors(applicationMajors);
         this.submissionDuration = submissionDuration;
     }
 
@@ -63,5 +67,12 @@ public class ApplicationForm extends BaseIdEntity {
     private void addApplicationQuestion(ApplicationQuestion applicationQuestion) {
         applicationQuestion.setApplicationForm(this);
         this.applicationQuestions.add(applicationQuestion);
+    }
+
+    private void addApplicationMajors(List<ApplicationMajor> applicationMajors) {
+        applicationMajors.forEach(major ->{
+            major.setApplicationForm(this);
+            this.applicationMajors.add(major);
+        });
     }
 }
