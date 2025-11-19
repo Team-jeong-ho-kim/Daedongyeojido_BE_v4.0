@@ -1,18 +1,15 @@
 package team.jeonghokim.daedongyeojido.domain.application.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 @Entity
 @Table(name = "tbl_application_question")
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplicationQuestion extends BaseIdEntity {
 
     @Column(nullable = false, length = 150)
