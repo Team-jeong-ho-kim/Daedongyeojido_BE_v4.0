@@ -27,7 +27,7 @@ public class SubmissionRequest {
     @Size(max = 300, message = "자기소개는 최대 300자까지 작성할 수 있습니다.")
     private String introduction;
 
-    @NotNull(message = "전공 선택을 필수입니다.")
+    @NotNull(message = "전공 선택은 필수입니다.")
     private Major major;
 
     private List<AnswerRequest> answer;
