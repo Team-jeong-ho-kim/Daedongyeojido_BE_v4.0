@@ -21,7 +21,7 @@ public class UserController {
     private final QueryMyInfoService queryMyInfoService;
     private final UpdateMyInfoService updateMyInfoService;
     private final DecideTeamMemberApplicationService decideTeamMemberApplicationService;
-    private final CreateApplicationService createSubmissionService;
+    private final CreateApplicationService createApplicationService;
     private final QueryApplicationDetailService queryApplicationDetailService;
 
     @PatchMapping("/my-info")
@@ -51,7 +51,7 @@ public class UserController {
     @PostMapping("/application/{application-form-id}")
     @ResponseStatus(HttpStatus.CREATED)
     public void createSubmission(@PathVariable("application-form-id") Long applicationFormId, @RequestBody @Valid SubmissionRequest request) {
-        createSubmissionService.execute(applicationFormId, request);
+        createApplicationService.execute(applicationFormId, request);
     }
 
     @GetMapping("/application/{submission-id}")
