@@ -19,12 +19,12 @@ public class ApplicationFormRequest {
     @JsonProperty("applicationFormTitle")
     private String applicationFormTitle;
 
-    @NotEmpty(message = "질문을 최소 하나 이상 작성해주세요.")
+    @NotNull(message = "질문을 최소 하나 이상 작성해주세요.")
     private List<@NotBlank(message = "질문을 작성해주세요.")
                  @Size(max = 150, message = "질문은 150자까지 작성할 수 있습니다.")
             String> content;
 
-    @NotEmpty(message = "제출 기한을 설정해주세요.")
+    @NotNull(message = "제출 기한을 설정해주세요.")
     @JsonProperty("submissionDuration")
     private LocalDate submissionDuration;
 
