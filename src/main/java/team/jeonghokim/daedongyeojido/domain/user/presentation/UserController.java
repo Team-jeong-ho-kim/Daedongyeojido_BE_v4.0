@@ -8,6 +8,7 @@ import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.request
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideTeamMemberApplicationRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInfoRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.UpdateMyInfoRequest;
+import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.QueryApplicationDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.QueryMyInfoResponse;
 import team.jeonghokim.daedongyeojido.domain.user.service.*;
 
@@ -21,6 +22,7 @@ public class UserController {
     private final UpdateMyInfoService updateMyInfoService;
     private final DecideTeamMemberApplicationService decideTeamMemberApplicationService;
     private final CreateApplicationService createSubmissionService;
+    private final QueryApplicationDetailService queryApplicationDetailService;
 
     @PatchMapping("/my-info")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -50,5 +52,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createSubmission(@PathVariable("application-form-id") Long applicationFormId, @RequestBody @Valid SubmissionRequest request) {
         createSubmissionService.execute(applicationFormId, request);
+    }
+
+    @GetMapping("/application/{submission-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryApplicationDetailResponse queryApplicationDetail(@PathVariable("submission-id") Long submissionId) {
+        return queryApplicationDetailService.execute(submissionId);
     }
 }
