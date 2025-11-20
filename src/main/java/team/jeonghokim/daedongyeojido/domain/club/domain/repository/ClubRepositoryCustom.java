@@ -4,7 +4,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.repository.vo.ClubVO;
 
 import java.util.List;
 
-public interface ClubCustomRepository {
+public interface ClubRepositoryCustom {
 
     List<ClubVO> findAllByIsOpenIsTrue();
 }
