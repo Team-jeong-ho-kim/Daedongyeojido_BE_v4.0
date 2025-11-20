@@ -57,7 +57,7 @@ public enum ErrorCode {
     ANNOUNCEMENT_ACCESS_DENIED(403, "해당 공고에 대한 수정 권한이 없습니다."),
 
     // submission
-    SUBMISSION_NOT_FOUND(404, "제출 내역을 찾을 수 없습니다"),
+    SUBMISSION_NOT_FOUND(404, "제출 내역을 찾을 수 없습니다."),
 
     // general
     BAD_REQUEST(400, "front fault"),
