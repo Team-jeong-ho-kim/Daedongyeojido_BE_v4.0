@@ -71,7 +71,7 @@ public class UserController {
 
     @PatchMapping("/application/{submission-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateApplication(@PathVariable("submission-id") Long applicationFormId, @RequestBody @Valid SubmissionRequest request) {
-        updateApplicationService.execute(applicationFormId, request);
+    public void updateApplication(@PathVariable("submission-id") Long submissionId, @RequestBody @Valid SubmissionRequest request) {
+        updateApplicationService.execute(submissionId, request);
     }
 }
