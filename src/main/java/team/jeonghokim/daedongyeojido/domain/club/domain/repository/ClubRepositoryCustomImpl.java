@@ -12,7 +12,7 @@ import static team.jeonghokim.daedongyeojido.domain.club.domain.QClub.club;
 import static team.jeonghokim.daedongyeojido.domain.club.domain.QClubMajor.clubMajor;
 
 @RequiredArgsConstructor
-public class ClubCustomRepositoryImpl implements ClubCustomRepository {
+public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
