@@ -51,7 +51,10 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                 .from(submission)
                 .join(submission.applicationForm).fetchJoin()
                 .join(submission.applicationForm.club).fetchJoin()
-                .where(submission.user.id.eq(userId))
+                .where(
+                        submission.user.id.eq(userId),
+                        submission.applicationStatus.eq(ApplicationStatus.WRITING)
+                )
                 .fetch();
     }
 }
