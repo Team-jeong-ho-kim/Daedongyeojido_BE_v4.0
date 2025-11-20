@@ -49,8 +49,8 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                         submission.applicationForm.submissionDuration
                 ))
                 .from(submission)
-                .join(submission.applicationForm).fetchJoin()
-                .join(submission.applicationForm.club).fetchJoin()
+                .join(submission.applicationForm)
+                .join(submission.applicationForm.club)
                 .where(
                         submission.user.id.eq(userId),
                         submission.applicationStatus.eq(ApplicationStatus.WRITING)
