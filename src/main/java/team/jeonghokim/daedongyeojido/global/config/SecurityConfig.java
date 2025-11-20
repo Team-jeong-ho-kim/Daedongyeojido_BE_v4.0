@@ -62,6 +62,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/announcement/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.DELETE, "/announcement/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.POST,"/submission/**").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.GET, "/club/submission/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .anyRequest().authenticated()
                 )
                 .with(new SecurityFilterConfig(jwtTokenProvider, objectMapper), Customizer.withDefaults())
