@@ -25,6 +25,7 @@ public class UserController {
     private final CreateApplicationService createApplicationService;
     private final QueryApplicationDetailService queryApplicationDetailService;
     private final QueryApplicationListService queryApplicationListService;
+    private final UpdateApplicationService updateApplicationService;
 
     @PatchMapping("/my-info")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -66,5 +67,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public QueryApplicationListResponse queryApplicationList() {
         return queryApplicationListService.execute();
+    }
+
+    @PatchMapping("/application/{submission-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateApplication(@PathVariable("submission-id") Long applicationFormId, @RequestBody @Valid SubmissionRequest request) {
+        updateApplicationService.execute(applicationFormId, request);
     }
 }
