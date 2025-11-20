@@ -5,7 +5,7 @@ import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.respons
 
 import java.util.List;
 
-public interface SubmissionCustomRepository {
+public interface SubmissionRepositoryCustom {
 
     List<ApplicantResponse> findAllByApplicationFormWithValidStatuses(ApplicationForm applicationForm);
 }
