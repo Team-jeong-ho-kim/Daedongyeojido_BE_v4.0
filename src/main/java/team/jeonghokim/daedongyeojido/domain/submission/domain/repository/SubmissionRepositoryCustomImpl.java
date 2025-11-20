@@ -2,7 +2,6 @@ package team.jeonghokim.daedongyeojido.domain.submission.domain.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.ApplicantResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QApplicantResponse;
@@ -17,7 +16,7 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ApplicantResponse> findAllByApplicationFormWithValidStatuses(ApplicationForm applicationForm) {
+    public List<ApplicantResponse> findAllByApplicationFormIdWithValidStatuses(Long applicationFormId) {
         return jpaQueryFactory
                 .select(new QApplicantResponse(
                         submission.id,
@@ -27,7 +26,7 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                 ))
                 .from(submission)
                 .where(
-                        submission.applicationForm.eq(applicationForm),
+                        submission.applicationForm.id.eq(applicationFormId),
                         submission.applicationStatus.in(
                                 ApplicationStatus.SUBMITTED,
                                 ApplicationStatus.ACCEPTED,
