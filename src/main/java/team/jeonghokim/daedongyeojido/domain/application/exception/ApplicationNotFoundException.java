@@ -7,6 +7,6 @@ public class ApplicationNotFoundException extends DaedongException {
     public static final DaedongException EXCEPTION = new ApplicationNotFoundException();
 
     private ApplicationNotFoundException() {
-        super(ErrorCode.APPLICATION_FORM_NOT_FOUND);
+        super(ErrorCode.APPLICATION_NOT_FOUND);
     }
 }
