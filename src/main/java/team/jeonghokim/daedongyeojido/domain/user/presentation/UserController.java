@@ -9,6 +9,7 @@ import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.Decid
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInfoRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.UpdateMyInfoRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.QueryApplicationDetailResponse;
+import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.QueryApplicationListResponse;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.QueryMyInfoResponse;
 import team.jeonghokim.daedongyeojido.domain.user.service.*;
 
@@ -23,6 +24,7 @@ public class UserController {
     private final DecideTeamMemberApplicationService decideTeamMemberApplicationService;
     private final CreateApplicationService createApplicationService;
     private final QueryApplicationDetailService queryApplicationDetailService;
+    private final QueryApplicationListService queryApplicationListService;
 
     @PatchMapping("/my-info")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -58,5 +60,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public QueryApplicationDetailResponse queryApplicationDetail(@PathVariable("submission-id") Long submissionId) {
         return queryApplicationDetailService.execute(submissionId);
+    }
+
+    @GetMapping("/application")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryApplicationListResponse queryApplicationList() {
+        return queryApplicationListService.execute();
     }
 }
