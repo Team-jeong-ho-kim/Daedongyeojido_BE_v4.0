@@ -29,7 +29,7 @@ public class QuerySubmissionListService {
                 .orElseThrow(() -> ApplicationFormNotFoundException.EXCEPTION);
 
         List<ApplicantResponse> applicantResponses =
-                submissionRepository.findAllByApplicationFormWithValidStatuses(applicationForm);
+                submissionRepository.findAllByApplicationFormIdWithValidStatuses(applicationForm.getId());
 
         return new QuerySubmissionListResponse(applicantResponses);
     }
