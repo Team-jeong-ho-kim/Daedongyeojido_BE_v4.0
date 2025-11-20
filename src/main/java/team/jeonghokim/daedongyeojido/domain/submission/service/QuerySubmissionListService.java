@@ -21,7 +21,7 @@ public class QuerySubmissionListService {
     private final ApplicationFormRepository applicationFormRepository;
     private final SubmissionRepository submissionRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public QuerySubmissionListResponse execute() {
         // 1. 조회하려는 유저의 동아리 정보를 가져오기
         User currentUser = userFacade.getCurrentUser();
