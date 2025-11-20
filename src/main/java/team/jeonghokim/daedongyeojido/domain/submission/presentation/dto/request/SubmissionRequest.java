@@ -2,7 +2,7 @@ package team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.reques
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request.AnswerRequest;
@@ -26,7 +26,7 @@ public class SubmissionRequest {
     @Size(max = 300, message = "자기소개는 최대 300자까지 작성할 수 있습니다.")
     private String introduction;
 
-    @NotEmpty(message = "최소 하나 이상의 전공을 선택해주세요.")
+    @NotNull(message = "전공을 선택해주세요.")
     private Major major;
 
     private List<AnswerRequest> answer;
