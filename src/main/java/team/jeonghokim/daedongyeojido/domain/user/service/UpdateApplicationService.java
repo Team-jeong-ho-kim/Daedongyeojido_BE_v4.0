@@ -6,8 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationAnswer;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationQuestion;
+import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotFoundException;
+import team.jeonghokim.daedongyeojido.domain.application.exception.CannotModifyApplicationException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.InvalidApplicationQuestionException;
 import team.jeonghokim.daedongyeojido.domain.application.facade.ApplicationFormFacade;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
@@ -34,6 +36,10 @@ public class UpdateApplicationService {
 
         if (!user.getId().equals(submission.getUser().getId())) {
             throw ApplicationAccessDeniedException.EXCEPTION;
+        }
+
+        if (submission.getApplicationStatus() != ApplicationStatus.WRITING) {
+            throw CannotModifyApplicationException.EXCEPTION;
         }
 
         ApplicationForm applicationForm = applicationFormFacade.getApplicationById(submission.getApplicationForm().getId());
