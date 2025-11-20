@@ -12,7 +12,7 @@ import java.util.List;
 import static team.jeonghokim.daedongyeojido.domain.submission.domain.QSubmission.submission;
 
 @RequiredArgsConstructor
-public class SubmissionCustomRepositoryImpl implements SubmissionCustomRepository{
+public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
