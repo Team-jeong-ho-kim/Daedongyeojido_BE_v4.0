@@ -7,6 +7,6 @@ public class ApplicationAccessDeniedException extends DaedongException {
     public static final DaedongException EXCEPTION = new ApplicationAccessDeniedException();
 
     private ApplicationAccessDeniedException() {
-        super(ErrorCode);
+        super(ErrorCode.APPLICATION_ACCESS_DENIED);
     }
 }
