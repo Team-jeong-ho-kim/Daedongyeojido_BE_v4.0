@@ -8,7 +8,7 @@ import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.request
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideTeamMemberApplicationRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInfoRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.UpdateMyInfoRequest;
-import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.MyInfoResponse;
+import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.QueryMyInfoResponse;
 import team.jeonghokim.daedongyeojido.domain.user.service.*;
 
 @RestController
@@ -30,7 +30,7 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public MyInfoResponse queryMyInfo() {
+    public QueryMyInfoResponse queryMyInfo() {
         return queryMyInfoService.execute();
     }
 

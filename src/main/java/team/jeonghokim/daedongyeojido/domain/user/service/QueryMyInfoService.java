@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
-import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.MyInfoResponse;
+import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.QueryMyInfoResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -15,9 +15,9 @@ public class QueryMyInfoService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public MyInfoResponse execute() {
+    public QueryMyInfoResponse execute() {
         User user = userFacade.getCurrentUser();
 
-        return MyInfoResponse.of(user);
+        return QueryMyInfoResponse.of(user);
     }
 }

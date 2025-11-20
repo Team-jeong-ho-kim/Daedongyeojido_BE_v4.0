@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Builder
-public record MyInfoResponse(
+public record QueryMyInfoResponse(
         String userName,
         String classNumber,
         String introduction,
@@ -20,8 +20,8 @@ public record MyInfoResponse(
         List<String> link,
         String profileImage
 ) {
-    public static MyInfoResponse of(User user) {
-        return new MyInfoResponse(
+    public static QueryMyInfoResponse of(User user) {
+        return new QueryMyInfoResponse(
                 user.getUserName(),
                 user.getClassNumber(),
                 user.getIntroduction(),
