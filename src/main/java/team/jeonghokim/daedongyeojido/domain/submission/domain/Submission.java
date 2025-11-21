@@ -9,7 +9,6 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,5 +72,20 @@ public class Submission extends BaseIdEntity {
             answer.setSubmission(this);
             this.applicationAnswers.add(answer);
         });
+    };
+
+    public void update(
+            Major major,
+            String introduction,
+            String userName,
+            String classNumber,
+            List<ApplicationAnswer> answers
+    ) {
+        this.major = major;
+        this.introduction = introduction;
+        this.userName = userName;
+        this.classNumber = classNumber;
+        this.applicationAnswers.clear();
+        addAnswers(answers);
     }
 }

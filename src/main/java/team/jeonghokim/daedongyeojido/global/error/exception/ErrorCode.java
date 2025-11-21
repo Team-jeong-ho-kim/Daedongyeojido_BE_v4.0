@@ -28,6 +28,7 @@ public enum ErrorCode {
     INVALID_APPLICATION_QUESTION(400, "유효하지 않은 질문입니다."),
     APPLICATION_NOT_FOUND(404, "지원서를 찾을 수 없습니다."),
     APPLICATION_ACCESS_DENIED(403, "지원서 관련 권한이 없습니다."),
+    CANNOT_MODIFY_APPLICATION(400, "지원서를 수정할 수 없습니다."),
 
     //s3
     IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
