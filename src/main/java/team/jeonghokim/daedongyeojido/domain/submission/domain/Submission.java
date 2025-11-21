@@ -88,4 +88,9 @@ public class Submission extends BaseIdEntity {
         this.applicationAnswers.clear();
         addAnswers(answers);
     }
+
+    public boolean isSubmitted() {
+        return applicationStatus != ApplicationStatus.NOT_SUBMITTED &&
+                applicationStatus != ApplicationStatus.WRITING;
+    }
 }
