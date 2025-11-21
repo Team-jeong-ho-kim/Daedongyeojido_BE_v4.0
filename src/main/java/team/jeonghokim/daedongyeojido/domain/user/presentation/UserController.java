@@ -78,7 +78,7 @@ public class UserController {
 
     @DeleteMapping("/application/{submission-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSubmission(@PathVariable("submission-id") Long submissionId) {
+    public void deleteApplication(@PathVariable("submission-id") Long submissionId) {
         deleteApplicationService.execute(submissionId);
     }
 }
