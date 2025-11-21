@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotSubmittedException;
+import team.jeonghokim.daedongyeojido.domain.club.exception.UserNotInClubException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QuerySubmissionDetailResponse;
@@ -31,6 +32,10 @@ public class QuerySubmissionDetailService {
     }
 
     private void validate(User user, Submission submission) {
+        if (user.getClub() == null) {
+            throw UserNotInClubException.EXCEPTION;
+        }
+
         if (!user.getClub().getId().equals(submission.getApplicationForm().getClub().getId())) {
             throw ApplicationAccessDeniedException.EXCEPTION;
         }
