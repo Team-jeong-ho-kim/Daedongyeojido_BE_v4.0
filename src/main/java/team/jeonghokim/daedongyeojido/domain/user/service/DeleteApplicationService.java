@@ -15,6 +15,7 @@ import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 @Service
 @RequiredArgsConstructor
 public class DeleteApplicationService {
+    
     private final UserFacade userFacade;
     private final SubmissionFacade  submissionFacade;
     private final SubmissionRepository submissionRepository;
