@@ -54,7 +54,7 @@ public class UserController {
 
     @PostMapping("/application/{application-form-id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createSubmission(@PathVariable("application-form-id") Long applicationFormId, @RequestBody @Valid SubmissionRequest request) {
+    public void createApplication(@PathVariable("application-form-id") Long applicationFormId, @RequestBody @Valid SubmissionRequest request) {
         createApplicationService.execute(applicationFormId, request);
     }
 
