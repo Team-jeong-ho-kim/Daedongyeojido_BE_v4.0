@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user/**", "/auth/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/admin/**").hasRole(ADMIN)
                         .requestMatchers("/club/member/apply").hasAnyRole(CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.GET, "/club/submission/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
@@ -64,6 +64,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/announcement/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.POST,"/user/application/**").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET,"/user/application/**").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.DELETE,"/user/application/**").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
                         .anyRequest().authenticated()
                 )
                 .with(new SecurityFilterConfig(jwtTokenProvider, objectMapper), Customizer.withDefaults())

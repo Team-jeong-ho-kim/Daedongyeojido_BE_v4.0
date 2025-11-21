@@ -14,6 +14,7 @@ import team.jeonghokim.daedongyeojido.domain.application.exception.InvalidApplic
 import team.jeonghokim.daedongyeojido.domain.application.facade.ApplicationFormFacade;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
+import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.request.SubmissionRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
@@ -23,16 +24,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UpdateApplicationService {
-    private final SubmissionRepository submissionRepository;
     private final UserFacade userFacade;
     private final ApplicationFormFacade applicationFormFacade;
+    private final SubmissionFacade submissionFacade;
 
     @Transactional
     public void execute(Long submissionId, SubmissionRequest request) {
         User user = userFacade.getCurrentUser();
 
-        Submission submission = submissionRepository.findById(submissionId)
-                .orElseThrow(() -> ApplicationNotFoundException.EXCEPTION);
+        Submission submission = submissionFacade.getApplicationBySubmissionId(submissionId);
 
         if (!user.getId().equals(submission.getUser().getId())) {
             throw ApplicationAccessDeniedException.EXCEPTION;
