@@ -77,7 +77,7 @@ public class ClubController {
         return querySubmissionListService.execute();
     }
 
-    @GetMapping("/{submission-id}")
+    @GetMapping("/submission/{submission-id}")
     @ResponseStatus(HttpStatus.OK)
     public QuerySubmissionDetailResponse querySubmissionDetail(@PathVariable("submission-id") Long submissionId) {
         return querySubmissionDetailService.execute(submissionId);
