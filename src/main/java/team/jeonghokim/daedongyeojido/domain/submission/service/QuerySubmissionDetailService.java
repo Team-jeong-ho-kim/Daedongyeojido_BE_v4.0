@@ -30,7 +30,7 @@ public class QuerySubmissionDetailService {
         return QuerySubmissionDetailResponse.from(submission);
     }
 
-    public void validate(User user, Submission submission) {
+    private void validate(User user, Submission submission) {
         if (!user.getClub().getId().equals(submission.getApplicationForm().getClub().getId())) {
             throw ApplicationAccessDeniedException.EXCEPTION;
         }
