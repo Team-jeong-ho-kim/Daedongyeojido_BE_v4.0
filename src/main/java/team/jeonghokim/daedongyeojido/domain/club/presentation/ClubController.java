@@ -9,7 +9,9 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.TeamM
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
 import team.jeonghokim.daedongyeojido.domain.club.service.*;
+import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QuerySubmissionDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QuerySubmissionListResponse;
+import team.jeonghokim.daedongyeojido.domain.submission.service.QuerySubmissionDetailService;
 import team.jeonghokim.daedongyeojido.domain.submission.service.QuerySubmissionListService;
 
 @RestController
@@ -25,6 +27,7 @@ public class ClubController {
     private final DissolveClubService dissolveClubService;
     private final DeleteTeamMemberService deleteTeamMemberService;
     private final QuerySubmissionListService querySubmissionListService;
+    private final QuerySubmissionDetailService querySubmissionDetailService;
 
     @PostMapping("/create/apply")
     @ResponseStatus(HttpStatus.CREATED)
@@ -72,5 +75,11 @@ public class ClubController {
     @ResponseStatus(HttpStatus.OK)
     public QuerySubmissionListResponse querySubmissionList() {
         return querySubmissionListService.execute();
+    }
+
+    @GetMapping("/{submission-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public QuerySubmissionDetailResponse querySubmissionDetail(@PathVariable("submission-id") Long submissionId) {
+        return querySubmissionDetailService.execute(submissionId);
     }
 }
