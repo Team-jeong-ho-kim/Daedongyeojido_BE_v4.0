@@ -31,7 +31,7 @@ public class QuerySubmissionDetailService {
     }
 
     public void validate(User user, Submission submission) {
-        if (user.getClub() != submission.getApplicationForm().getClub()) {
+        if (!user.getClub().getId().equals(submission.getApplicationForm().getClub().getId())) {
             throw ApplicationAccessDeniedException.EXCEPTION;
         }
 
