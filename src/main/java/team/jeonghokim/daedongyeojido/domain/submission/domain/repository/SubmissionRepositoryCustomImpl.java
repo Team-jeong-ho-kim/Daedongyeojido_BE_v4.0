@@ -6,8 +6,7 @@ import team.jeonghokim.daedongyeojido.domain.application.domain.enums.Applicatio
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationListResponse;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.QApplicationListResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.QSubmission;
-import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.ApplicantResponse;
-import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QApplicantResponse;
+import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.*;
 
 import java.util.List;
 
@@ -54,6 +53,30 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                 .where(
                         submission.user.id.eq(userId),
                         submission.applicationStatus.eq(ApplicationStatus.WRITING)
+                )
+                .fetch();
+    }
+
+    @Override
+    public List<SubmissionListResponse> findAllSubmissionByUserId(Long userId) {
+        return jpaQueryFactory
+                .select(new QSubmissionListResponse(
+                        submission.id,
+                        submission.applicationForm.club.clubName,
+                        submission.applicationForm.club.clubImage,
+                        submission.applicationStatus,
+                        submission.applicationForm.submissionDuration
+                ))
+                .from(submission)
+                .join(submission.applicationForm)
+                .join(submission.applicationForm.club)
+                .where(
+                        submission.user.id.eq(userId),
+                        submission.applicationStatus.in(
+                                ApplicationStatus.SUBMITTED,
+                                ApplicationStatus.ACCEPTED,
+                                ApplicationStatus.REJECTED
+                        )
                 )
                 .fetch();
     }
