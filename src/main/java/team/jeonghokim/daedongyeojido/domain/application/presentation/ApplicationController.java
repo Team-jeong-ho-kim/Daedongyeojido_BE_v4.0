@@ -10,7 +10,7 @@ import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.Quer
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.QueryApplicationListResponse;
 import team.jeonghokim.daedongyeojido.domain.user.service.*;
 
-@Service
+@RestController
 @RequestMapping("/application")
 @RequiredArgsConstructor
 public class ApplicationController {
