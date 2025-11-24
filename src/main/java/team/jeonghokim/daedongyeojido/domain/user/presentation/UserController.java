@@ -27,6 +27,7 @@ public class UserController {
     private final QueryApplicationListService queryApplicationListService;
     private final UpdateApplicationService updateApplicationService;
     private final DeleteApplicationService deleteApplicationService;
+    private final SubmitApplicationService submitApplicationService;
 
     @PatchMapping("/my-info")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -80,5 +81,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteApplication(@PathVariable("submission-id") Long submissionId) {
         deleteApplicationService.execute(submissionId);
+    }
+
+    @PatchMapping("/application/submit/{submission-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void submitApplication(@PathVariable("submission-id") Long submissionId) {
+        submitApplicationService.execute(submissionId);
     }
 }

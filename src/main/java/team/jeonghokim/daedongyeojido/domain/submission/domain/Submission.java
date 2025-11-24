@@ -93,4 +93,8 @@ public class Submission extends BaseIdEntity {
         return applicationStatus != ApplicationStatus.NOT_SUBMITTED &&
                 applicationStatus != ApplicationStatus.WRITING;
     }
+
+    public void submit() {
+        this.applicationStatus = ApplicationStatus.SUBMITTED;
+    }
 }
