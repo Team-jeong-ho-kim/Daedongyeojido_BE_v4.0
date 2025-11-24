@@ -97,4 +97,8 @@ public class Submission extends BaseIdEntity {
     public void submit() {
         this.applicationStatus = ApplicationStatus.SUBMITTED;
     }
+
+    public void cancel() {
+        this.applicationStatus = ApplicationStatus.WRITING;
+    }
 }
