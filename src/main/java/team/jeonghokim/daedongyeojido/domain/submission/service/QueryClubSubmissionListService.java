@@ -8,7 +8,7 @@ import team.jeonghokim.daedongyeojido.domain.application.domain.repository.Appli
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationFormNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.ApplicantResponse;
-import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QuerySubmissionListResponse;
+import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionListResponse;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
@@ -23,7 +23,7 @@ public class QueryClubSubmissionListService {
     private final SubmissionRepository submissionRepository;
 
     @Transactional(readOnly = true)
-    public QuerySubmissionListResponse execute() {
+    public QueryClubSubmissionListResponse execute() {
         User currentUser = userFacade.getCurrentUser();
         ApplicationForm applicationForm = applicationFormRepository.findByClub(currentUser.getClub())
                 .orElseThrow(() -> ApplicationFormNotFoundException.EXCEPTION);
@@ -31,6 +31,6 @@ public class QueryClubSubmissionListService {
         List<ApplicantResponse> applicantResponses =
                 submissionRepository.findAllByApplicationFormIdWithValidStatuses(applicationForm.getId());
 
-        return new QuerySubmissionListResponse(applicantResponses);
+        return new QueryClubSubmissionListResponse(applicantResponses);
     }
 }
