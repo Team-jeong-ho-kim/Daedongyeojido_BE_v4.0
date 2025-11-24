@@ -9,8 +9,8 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.TeamM
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
 import team.jeonghokim.daedongyeojido.domain.club.service.*;
-import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QuerySubmissionDetailResponse;
-import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QuerySubmissionListResponse;
+import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionDetailResponse;
+import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionListResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.service.QueryClubSubmissionDetailService;
 import team.jeonghokim.daedongyeojido.domain.submission.service.QueryClubSubmissionListService;
 
@@ -73,13 +73,13 @@ public class ClubController {
 
     @GetMapping("/submission")
     @ResponseStatus(HttpStatus.OK)
-    public QuerySubmissionListResponse querySubmissionList() {
+    public QueryClubSubmissionListResponse querySubmissionList() {
         return queryClubSubmissionListService.execute();
     }
 
     @GetMapping("/submission/{submission-id}")
     @ResponseStatus(HttpStatus.OK)
-    public QuerySubmissionDetailResponse querySubmissionDetail(@PathVariable("submission-id") Long submissionId) {
+    public QueryClubSubmissionDetailResponse querySubmissionDetail(@PathVariable("submission-id") Long submissionId) {
         return queryClubSubmissionDetailService.execute(submissionId);
     }
 }

@@ -5,7 +5,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.util.List;
 
-public record QuerySubmissionDetailResponse(
+public record QueryClubSubmissionDetailResponse(
         String userName,
         String classNumber,
         String introduction,
@@ -13,8 +13,8 @@ public record QuerySubmissionDetailResponse(
         List<SubmissionDto> answers
 ) {
 
-    public static QuerySubmissionDetailResponse from(Submission submission) {
-        return new QuerySubmissionDetailResponse(
+    public static QueryClubSubmissionDetailResponse from(Submission submission) {
+        return new QueryClubSubmissionDetailResponse(
                 submission.getUserName(),
                 submission.getClassNumber(),
                 submission.getIntroduction(),
