@@ -15,7 +15,7 @@ import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
 @Service
 @RequiredArgsConstructor
-public class QuerySubmissionDetailService {
+public class QueryClubSubmissionDetailService {
 
     private final SubmissionRepository submissionRepository;
     private final UserFacade userFacade;
