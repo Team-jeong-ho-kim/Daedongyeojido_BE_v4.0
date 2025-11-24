@@ -3,7 +3,6 @@ package team.jeonghokim.daedongyeojido.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotSubmittedException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
@@ -27,7 +26,7 @@ public class CancelApplicationService {
             throw ApplicationAccessDeniedException.EXCEPTION;
         }
 
-        if (submission.getApplicationStatus() != ApplicationStatus.SUBMITTED) {
+        if (!(submission.isSubmitted())) {
             throw ApplicationNotSubmittedException.EXCEPTION;
         }
 
