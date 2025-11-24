@@ -12,7 +12,7 @@ import team.jeonghokim.daedongyeojido.domain.club.service.*;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QuerySubmissionDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QuerySubmissionListResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.service.QueryClubSubmissionDetailService;
-import team.jeonghokim.daedongyeojido.domain.submission.service.QuerySubmissionListService;
+import team.jeonghokim.daedongyeojido.domain.submission.service.QueryClubSubmissionListService;
 
 @RestController
 @RequestMapping("/club")
@@ -26,7 +26,7 @@ public class ClubController {
     private final ApplyTeamMemberService applyTeamMemberService;
     private final DissolveClubService dissolveClubService;
     private final DeleteTeamMemberService deleteTeamMemberService;
-    private final QuerySubmissionListService querySubmissionListService;
+    private final QueryClubSubmissionListService queryClubSubmissionListService;
     private final QueryClubSubmissionDetailService queryClubSubmissionDetailService;
 
     @PostMapping("/create/apply")
@@ -74,7 +74,7 @@ public class ClubController {
     @GetMapping("/submission")
     @ResponseStatus(HttpStatus.OK)
     public QuerySubmissionListResponse querySubmissionList() {
-        return querySubmissionListService.execute();
+        return queryClubSubmissionListService.execute();
     }
 
     @GetMapping("/submission/{submission-id}")

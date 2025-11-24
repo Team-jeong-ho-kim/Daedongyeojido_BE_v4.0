@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class QuerySubmissionListService {
+public class QueryClubSubmissionListService {
 
     private final UserFacade userFacade;
     private final ApplicationFormRepository applicationFormRepository;
