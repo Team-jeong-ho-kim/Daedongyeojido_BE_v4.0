@@ -90,11 +90,14 @@ public class Submission extends BaseIdEntity {
     }
 
     public boolean isSubmitted() {
-        return applicationStatus != ApplicationStatus.NOT_SUBMITTED &&
-                applicationStatus != ApplicationStatus.WRITING;
+        return applicationStatus != ApplicationStatus.WRITING;
     }
 
     public void submit() {
         this.applicationStatus = ApplicationStatus.SUBMITTED;
+    }
+
+    public void cancel() {
+        this.applicationStatus = ApplicationStatus.WRITING;
     }
 }
