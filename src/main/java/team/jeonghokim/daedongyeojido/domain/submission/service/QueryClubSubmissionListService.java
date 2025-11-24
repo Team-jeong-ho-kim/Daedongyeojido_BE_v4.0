@@ -25,6 +25,7 @@ public class QueryClubSubmissionListService {
     @Transactional(readOnly = true)
     public QueryClubSubmissionListResponse execute() {
         User currentUser = userFacade.getCurrentUser();
+
         ApplicationForm applicationForm = applicationFormRepository.findByClub(currentUser.getClub())
                 .orElseThrow(() -> ApplicationFormNotFoundException.EXCEPTION);
 
