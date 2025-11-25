@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryUserSubmissionListResponse;
+import team.jeonghokim.daedongyeojido.domain.submission.service.QueryUserSubmissionListService;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideTeamMemberApplicationRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInfoRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.UpdateMyInfoRequest;
@@ -19,6 +21,7 @@ public class UserController {
     private final QueryMyInfoService queryMyInfoService;
     private final UpdateMyInfoService updateMyInfoService;
     private final DecideTeamMemberApplicationService decideTeamMemberApplicationService;
+    private final QueryUserSubmissionListService queryUserSubmissionListService;
 
     @PatchMapping("/my-info")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -42,5 +45,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void approveTeamMember(@RequestBody @Valid DecideTeamMemberApplicationRequest request) {
         decideTeamMemberApplicationService.execute(request);
+    }
+
+    @GetMapping("/submission")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryUserSubmissionListResponse queryUserSubmissionList() {
+        return queryUserSubmissionListService.execute();
     }
 }

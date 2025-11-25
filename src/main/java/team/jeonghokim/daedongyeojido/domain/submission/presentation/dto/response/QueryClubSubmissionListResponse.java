@@ -2,5 +2,5 @@ package team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.respon
 
 import java.util.List;
 
-public record QuerySubmissionListResponse(List<ApplicantResponse> applicants) {
+public record QueryClubSubmissionListResponse(List<ApplicantResponse> applicants) {
 }
