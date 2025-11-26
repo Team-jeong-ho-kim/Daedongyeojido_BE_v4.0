@@ -51,6 +51,7 @@ public enum ErrorCode {
     CLUB_NOT_OPEN(403, "개설되지 않은 동아리입니다."),
     USER_NOT_IN_CLUB(404, "소속된 동아리가 없습니다."),
     CLUB_MISMATCH(403, "동아리장이 속한 동아리와 동아리원이 속한 동아리가 일치하지 않습니다."),
+    AlreadyApplicantInClubException(409, "지원자가 이미 동아리에 소속되어있습니다."),
 
     // alarm
     ALARM_NOT_FOUND(404, "알람을 찾을 수 없습니다."),
