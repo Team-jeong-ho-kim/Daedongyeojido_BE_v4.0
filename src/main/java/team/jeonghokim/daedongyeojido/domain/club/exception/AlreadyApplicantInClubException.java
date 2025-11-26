@@ -8,6 +8,6 @@ public class AlreadyApplicantInClubException extends DaedongException {
     public static final DaedongException EXCEPTION = new AlreadyApplicantInClubException();
 
     private AlreadyApplicantInClubException() {
-        super(ErrorCode.AlreadyApplicantInClubException);
+        super(ErrorCode.ALREADY_APPLICANT_IN_CLUB_EXCEPTION);
     }
 }
