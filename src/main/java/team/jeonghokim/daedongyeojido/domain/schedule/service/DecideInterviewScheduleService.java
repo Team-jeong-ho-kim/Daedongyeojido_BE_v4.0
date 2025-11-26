@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyApplicantInClubException;
-import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyJoinClubException;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.Schedule;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
 import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.DecideInterviewScheduleRequest;
@@ -35,7 +34,7 @@ public class DecideInterviewScheduleService {
                 .interviewSchedule(request.interviewSchedule())
                 .place(request.place())
                 .interviewTime(request.interviewTime())
-                .user(applicant)
+                .applicant(applicant)
                 .club(interviewer.getClub())
                 .build();
 
