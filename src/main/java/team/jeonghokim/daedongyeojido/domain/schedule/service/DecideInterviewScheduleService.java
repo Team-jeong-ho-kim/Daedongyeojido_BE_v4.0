@@ -3,6 +3,7 @@ package team.jeonghokim.daedongyeojido.domain.schedule.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyApplicantInClubException;
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyJoinClubException;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.Schedule;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
@@ -27,7 +28,7 @@ public class DecideInterviewScheduleService {
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         if (applicant.getClub() != null) {
-            throw AlreadyJoinClubException.EXCEPTION;
+            throw AlreadyApplicantInClubException.EXCEPTION;
         }
 
         Schedule schedule = Schedule.builder()
