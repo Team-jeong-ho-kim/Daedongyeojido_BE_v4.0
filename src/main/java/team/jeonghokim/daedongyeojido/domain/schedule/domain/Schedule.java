@@ -34,18 +34,18 @@ public class Schedule extends BaseIdEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
-    private User user;
+    private User applicant;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
 
     @Builder
-    public Schedule(LocalDate interviewSchedule, String place, LocalDateTime interviewTime, User user, Club club) {
+    public Schedule(LocalDate interviewSchedule, String place, LocalDateTime interviewTime, User applicant, Club club) {
         this.interviewSchedule = interviewSchedule;
         this.place = place;
         this.interviewTime = interviewTime;
-        this.user = user;
+        this.applicant = applicant;
         this.club = club;
     }
 }
