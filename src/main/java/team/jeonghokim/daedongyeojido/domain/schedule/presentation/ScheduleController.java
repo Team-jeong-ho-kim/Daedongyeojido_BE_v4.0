@@ -1,5 +1,6 @@
 package team.jeonghokim.daedongyeojido.domain.schedule.presentation;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ public class ScheduleController {
     private final DecideInterviewScheduleService decideInterviewScheduleService;
 
     @PostMapping("/{user-id}")
-    public void decideInterviewSchedule(@PathVariable("user-id") Long userId, @RequestBody DecideInterviewScheduleRequest request) {
+    public void decideInterviewSchedule(@PathVariable("user-id") Long userId, @RequestBody @Valid DecideInterviewScheduleRequest request) {
         decideInterviewScheduleService.execute(userId, request);
     }
 }
