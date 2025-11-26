@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyApplicantInClubException;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.Schedule;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
+import team.jeonghokim.daedongyeojido.domain.schedule.exception.AlreadyInterviewScheduleExistsException;
 import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.DecideInterviewScheduleRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
@@ -25,6 +26,10 @@ public class DecideInterviewScheduleService {
         User interviewer = userFacade.getCurrentUser();
         User applicant = userRepository.findById(userId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+
+        if (scheduleRepository.existsByApplicantAndClub(applicant, interviewer.getClub())) {
+            throw AlreadyInterviewScheduleExistsException.EXCEPTION;
+        }
 
         if (applicant.getClub() != null) {
             throw AlreadyApplicantInClubException.EXCEPTION;
