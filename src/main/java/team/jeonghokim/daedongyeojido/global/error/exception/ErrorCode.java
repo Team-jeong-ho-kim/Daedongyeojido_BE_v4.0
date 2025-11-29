@@ -21,6 +21,7 @@ public enum ErrorCode {
     PASSWORD_MISMATCH(401, "비밀 번호가 일치 하지 않습니다."),
     INVALID_USER(401, "유효 하지 않은 사용자입니다."),
     USER_APPLICATION_NOT_FOUND(404, "팀원 신청 기록을 찾을 수 없습니다."),
+    ALREADY_SELECT_CLUB(409, "이미 동아리에 소속되어있습니다"),
 
     //application
     APPLICATION_FORM_NOT_FOUND(404, "지원서 폼을 찾을 수 없습니다."),
