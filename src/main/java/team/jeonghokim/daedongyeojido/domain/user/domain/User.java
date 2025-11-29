@@ -120,5 +120,6 @@ public class User extends BaseIdEntity {
 
     public void selectedClub(Club club) {
         this.club = club;
+        this.role = Role.CLUB_MEMBER;
     }
 }
