@@ -6,7 +6,7 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public record DecideInterviewScheduleRequest(
 
@@ -22,6 +22,6 @@ public record DecideInterviewScheduleRequest(
         @FutureOrPresent(message = "면접 시간은 과거일 수 없습니다.")
         @JsonProperty("interviewTime")
         @JsonFormat(pattern = "HH:mm")
-        LocalDateTime interviewTime
+        LocalTime interviewTime
 ) {
 }
