@@ -15,7 +15,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "tbl_schedule")
@@ -30,7 +30,7 @@ public class Schedule extends BaseIdEntity {
     private String place;
 
     @Column(nullable = false)
-    private LocalDateTime interviewTime;
+    private LocalTime interviewTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
@@ -41,7 +41,7 @@ public class Schedule extends BaseIdEntity {
     private Club club;
 
     @Builder
-    public Schedule(LocalDate interviewSchedule, String place, LocalDateTime interviewTime, User applicant, Club club) {
+    public Schedule(LocalDate interviewSchedule, String place, LocalTime interviewTime, User applicant, Club club) {
         this.interviewSchedule = interviewSchedule;
         this.place = place;
         this.interviewTime = interviewTime;
