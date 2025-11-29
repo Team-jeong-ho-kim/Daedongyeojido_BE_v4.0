@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public enum ApplicationStatus {
-    NOT_SUBMITTED,
     SUBMITTED,
     WRITING,
     ACCEPTED,

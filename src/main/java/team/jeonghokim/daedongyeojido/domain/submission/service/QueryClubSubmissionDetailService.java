@@ -9,26 +9,26 @@ import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNo
 import team.jeonghokim.daedongyeojido.domain.club.exception.UserNotInClubException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
-import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QuerySubmissionDetailResponse;
+import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
 @Service
 @RequiredArgsConstructor
-public class QuerySubmissionDetailService {
+public class QueryClubSubmissionDetailService {
 
     private final SubmissionRepository submissionRepository;
     private final UserFacade userFacade;
 
     @Transactional(readOnly = true)
-    public QuerySubmissionDetailResponse execute(Long submissionId) {
+    public QueryClubSubmissionDetailResponse execute(Long submissionId) {
         User user = userFacade.getCurrentUser();
         Submission submission = submissionRepository.findById(submissionId)
                 .orElseThrow(() -> ApplicationNotFoundException.EXCEPTION);
 
         validate(user, submission);
 
-        return QuerySubmissionDetailResponse.from(submission);
+        return QueryClubSubmissionDetailResponse.from(submission);
     }
 
     private void validate(User user, Submission submission) {

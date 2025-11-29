@@ -10,7 +10,7 @@ import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.respon
 import team.jeonghokim.daedongyeojido.domain.application.service.*;
 
 @RestController
-@RequestMapping("/application")
+@RequestMapping("/application-form")
 @RequiredArgsConstructor
 public class ApplicationFormController {
     private final CreateApplicationFormService createApplicationFormService;
