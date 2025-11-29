@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
+import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotAcceptedException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
@@ -29,7 +30,11 @@ public class DecideClubService {
         if (applicant.getClub() != null) {
             throw AlreadySelectClubException.EXCEPTION;
         }
-        
+
+        if (submission.getApplicationStatus() != ApplicationStatus.ACCEPTED) {
+            throw ApplicationNotAcceptedException.EXCEPTION;
+        }
+
         if (request.getIsSelected()) {
             applicant.selectedClub(submission.getApplicationForm().getClub());
         }
