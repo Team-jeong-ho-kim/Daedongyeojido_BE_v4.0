@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.exception.AlreadySelectClubException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideClubRequest;
 
@@ -20,7 +21,11 @@ public class DecideClubService {
         User user = userFacade.getCurrentUser();
 
         Submission submission = submissionFacade.getApplicationBySubmissionId(submissionId);
-        
+
+        if (user.getClub() != null) {
+            throw AlreadySelectClubException.EXCEPTION;
+        }
+
         if (request.getIsSelected()) {
             user.selectedClub(submission.getApplicationForm().getClub());
         }
