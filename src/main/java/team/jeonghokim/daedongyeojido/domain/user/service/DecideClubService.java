@@ -9,9 +9,7 @@ import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNo
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.AlreadySelectClubException;
-import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideClubRequest;
 
@@ -20,7 +18,6 @@ import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.Decid
 public class DecideClubService {
     private final UserFacade userFacade;
     private final SubmissionFacade submissionFacade;
-    private final UserRepository userRepository;
 
     @Transactional
     public void execute(Long submissionId, DecideClubRequest request) {
@@ -28,6 +25,14 @@ public class DecideClubService {
 
         Submission submission = submissionFacade.getApplicationBySubmissionId(submissionId);
 
+        validate(applicant, submission);
+
+        if (request.getIsSelected()) {
+            applicant.selectedClub(submission.getApplicationForm().getClub());
+        }
+    }
+
+    private void validate(User applicant, Submission submission) {
         if (!applicant.getId().equals(submission.getUser().getId())) {
             throw ApplicationAccessDeniedException.EXCEPTION;
         }
@@ -38,10 +43,6 @@ public class DecideClubService {
 
         if (submission.getApplicationStatus() != ApplicationStatus.ACCEPTED) {
             throw ApplicationNotAcceptedException.EXCEPTION;
-        }
-
-        if (request.getIsSelected()) {
-            applicant.selectedClub(submission.getApplicationForm().getClub());
         }
     }
 }
