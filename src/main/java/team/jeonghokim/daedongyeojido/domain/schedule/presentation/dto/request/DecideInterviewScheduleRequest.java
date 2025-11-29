@@ -19,7 +19,6 @@ public record DecideInterviewScheduleRequest(
         String place,
 
         @NotNull(message = "면접 시간은 필수입니다.")
-        @FutureOrPresent(message = "면접 시간은 과거일 수 없습니다.")
         @JsonProperty("interviewTime")
         @JsonFormat(pattern = "HH:mm")
         LocalTime interviewTime
