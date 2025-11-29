@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryUserSubmissionListResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.service.QueryUserSubmissionListService;
+import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideClubRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideTeamMemberApplicationRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInfoRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.UpdateMyInfoRequest;
@@ -22,6 +23,7 @@ public class UserController {
     private final UpdateMyInfoService updateMyInfoService;
     private final DecideTeamMemberApplicationService decideTeamMemberApplicationService;
     private final QueryUserSubmissionListService queryUserSubmissionListService;
+    private final DecideClubService decideClubService;
 
     @PatchMapping("/my-info")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -51,5 +53,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public QueryUserSubmissionListResponse queryUserSubmissionList() {
         return queryUserSubmissionListService.execute();
+    }
+
+    @PatchMapping("/decide/{submission-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void decideClub(@PathVariable("submission-id") Long submissionId, @RequestBody @Valid DecideClubRequest request) {
+        decideClubService.execute(submissionId, request);
     }
 }
