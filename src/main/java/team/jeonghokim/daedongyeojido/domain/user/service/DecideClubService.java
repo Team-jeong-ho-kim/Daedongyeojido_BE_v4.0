@@ -6,10 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotAcceptedException;
+import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyJoinClubException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.user.exception.AlreadySelectClubException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideClubRequest;
 
@@ -38,7 +38,7 @@ public class DecideClubService {
         }
 
         if (applicant.getClub() != null) {
-            throw AlreadySelectClubException.EXCEPTION;
+            throw AlreadyJoinClubException.EXCEPTION;
         }
 
         if (submission.getApplicationStatus() != ApplicationStatus.ACCEPTED) {
