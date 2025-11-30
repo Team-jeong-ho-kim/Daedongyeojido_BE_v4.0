@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.InterviewScheduleRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
@@ -47,5 +48,11 @@ public class Schedule extends BaseIdEntity {
         this.interviewTime = interviewTime;
         this.applicant = applicant;
         this.club = club;
+    }
+
+    public void updateSchedule(InterviewScheduleRequest request) {
+        this.interviewSchedule = request.interviewSchedule();
+        this.place = request.place();
+        this.interviewTime = request.interviewTime();
     }
 }
