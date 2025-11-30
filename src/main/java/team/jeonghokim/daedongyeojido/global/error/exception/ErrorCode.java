@@ -31,6 +31,7 @@ public enum ErrorCode {
     CANNOT_MODIFY_APPLICATION(400, "지원서를 수정할 수 없습니다."),
     CANNOT_DELETE_APPLICATION(400, "지원서를 삭제할 수 없습니다."),
     APPLICATION_NOT_SUBMITTED(400, "제출하지 않은 지원서입니다."),
+    APPLICATION_NOT_ACCEPTED(400, "합격되지 않은 지원서입니다."),
 
     //s3
     IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
