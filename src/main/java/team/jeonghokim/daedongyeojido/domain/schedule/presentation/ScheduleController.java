@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.DecideInterviewScheduleRequest;
+import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.InterviewScheduleRequest;
 import team.jeonghokim.daedongyeojido.domain.schedule.service.DecideInterviewScheduleService;
 
 @RestController
@@ -18,7 +18,7 @@ public class ScheduleController {
     private final DecideInterviewScheduleService decideInterviewScheduleService;
 
     @PostMapping("/{user-id}")
-    public void decideInterviewSchedule(@PathVariable("user-id") Long userId, @RequestBody @Valid DecideInterviewScheduleRequest request) {
+    public void decideInterviewSchedule(@PathVariable("user-id") Long userId, @RequestBody @Valid InterviewScheduleRequest request) {
         decideInterviewScheduleService.execute(userId, request);
     }
 }
