@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public record DecideInterviewScheduleRequest(
+public record InterviewScheduleRequest(
 
         @NotNull(message = "면접 날짜는 필수입니다.")
         @FutureOrPresent(message = "면접 날짜는 과거일 수 없습니다.")
