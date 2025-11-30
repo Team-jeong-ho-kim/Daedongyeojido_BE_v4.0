@@ -23,7 +23,7 @@ public class ScheduleController {
     private final UpdateInterviewScheduleService updateInterviewScheduleService;
 
     @PostMapping("/{user-id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public void decideInterviewSchedule(@PathVariable("user-id") Long userId, @RequestBody @Valid InterviewScheduleRequest request) {
         decideInterviewScheduleService.execute(userId, request);
     }
