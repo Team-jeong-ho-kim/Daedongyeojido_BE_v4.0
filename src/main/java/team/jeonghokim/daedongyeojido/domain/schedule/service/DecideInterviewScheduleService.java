@@ -7,7 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyApplicantInCl
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.Schedule;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
 import team.jeonghokim.daedongyeojido.domain.schedule.exception.AlreadyInterviewScheduleExistsException;
-import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.DecideInterviewScheduleRequest;
+import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.InterviewScheduleRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
@@ -22,7 +22,7 @@ public class DecideInterviewScheduleService {
     private final UserFacade userFacade;
 
     @Transactional
-    public void execute(Long userId, DecideInterviewScheduleRequest request) {
+    public void execute(Long userId, InterviewScheduleRequest request) {
         User interviewer = userFacade.getCurrentUser();
         User applicant = userRepository.findById(userId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
