@@ -65,6 +65,7 @@ public enum ErrorCode {
 
     // schedule
     ALREADY_INTERVIEW_SCHEDULE_EXISTS(409, "이미 지원자 면접 일정이 존재합니다."),
+    INTERVIEW_SCHEDULE_NOT_FOUND(404, "면접 일정을 찾을 수 없습니다."),
 
     // general
     BAD_REQUEST(400, "front fault"),
