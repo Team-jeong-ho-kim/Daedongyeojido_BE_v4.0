@@ -26,7 +26,7 @@ public class User extends BaseIdEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(length = 11)
+    @Column(unique = true, length = 11)
     private String phoneNumber;
 
     @Column(length = 30)
