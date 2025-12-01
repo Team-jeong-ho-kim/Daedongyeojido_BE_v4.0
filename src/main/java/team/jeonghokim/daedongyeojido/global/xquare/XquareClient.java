@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.request.LoginRequest;
 import team.jeonghokim.daedongyeojido.global.xquare.dto.XquareResponse;
 
-@FeignClient(name = "xquare-login", url = "${key.login-api-url}")
+@FeignClient(name = "xquare-login", url = "${das-key.login-api-url}")
 public interface XquareClient {
 
     @GetMapping("/user-data")

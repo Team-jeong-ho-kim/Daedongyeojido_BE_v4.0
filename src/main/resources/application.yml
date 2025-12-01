@@ -48,5 +48,5 @@ jwt:
   access-expiration: ${JWT_ACCESS_EXP}
   refresh-expiration: ${JWT_REFRESH_EXP}
 
-key:
+das-key:
   login-api-url: ${XQUARE_URL}
