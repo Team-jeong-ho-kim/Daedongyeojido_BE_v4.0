@@ -5,6 +5,7 @@ import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.auth.SignatureProvider;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -14,7 +15,7 @@ public class SmsInterceptor implements RequestInterceptor {
     private static final String HEADER_AUTH = "Authorization";
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String HMAC = "hmac-sha256";
-    private static final String FORMAT = "%s apiKey=%s, date=%d, salt=%s, signature=%s";
+    private static final String FORMAT = "%s apiKey=%s, date=%s, salt=%s, signature=%s";
 
     private final SignatureProvider signatureProvider;
     private final String accessKey;
@@ -23,24 +24,24 @@ public class SmsInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate template) {
 
-        long timestamp = System.currentTimeMillis();
+        String date = Instant.now().toString();
         String salt = UUID.randomUUID().toString();
 
-        String signature = createSignature(timestamp, salt);
+        String signature = createSignature(date, salt);
 
-        template.header(HEADER_AUTH, authorizationHeader(timestamp, salt, signature));
+        template.header(HEADER_AUTH, authorizationHeader(date, salt, signature));
         template.header(CONTENT_TYPE, HEADER_CONTENT_TYPE);
     }
 
-    private String createSignature(long timestamp, String salt) {
-        String data = timestamp + salt;
+    private String createSignature(String date, String salt) {
+        String data = date + salt;
 
         return signatureProvider.generateSignature(secretKey, data);
     }
 
-    private String authorizationHeader(long timestamp, String salt, String signature) {
+    private String authorizationHeader(String date, String salt, String signature) {
         return String.format(
-                FORMAT, HMAC, accessKey, timestamp, salt, signature
+                FORMAT, HMAC, accessKey, date, salt, signature
         );
     }
 }
