@@ -70,7 +70,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-commons:4.1.1'
 
     //cool sms
-    implementation 'net.nurigo:sdk:4.3.2'
+    implementation 'com.solapi:sdk:1.0.3'
 }
 
 dependencyManagement {
