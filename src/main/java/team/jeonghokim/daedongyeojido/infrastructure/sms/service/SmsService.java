@@ -18,7 +18,13 @@ public class SmsService {
 
     public void send(String phoneNumber, Message message) {
 
-        SmsRequest request = new SmsRequest(phoneNumber, from, message.getContent());
+        SmsRequest request = new SmsRequest(
+                new SmsRequest.Message(
+                        phoneNumber,
+                        from,
+                        message.getContent()
+                )
+        );
 
         smsClient.send(request);
     }
