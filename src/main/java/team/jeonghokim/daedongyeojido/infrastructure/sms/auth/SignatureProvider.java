@@ -6,6 +6,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.sms.exception.SignatureGene
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.util.HexFormat;
 
 @Component
@@ -29,7 +30,7 @@ public class SignatureProvider {
              */
             return HexFormat.of().formatHex(result);
 
-        } catch (Exception e) {
+        } catch (GeneralSecurityException e) {
             throw SignatureGenerationException.EXCEPTION;
         }
     }
