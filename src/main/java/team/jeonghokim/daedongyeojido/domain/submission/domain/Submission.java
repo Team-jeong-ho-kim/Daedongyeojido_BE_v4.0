@@ -100,4 +100,8 @@ public class Submission extends BaseIdEntity {
     public void cancel() {
         this.applicationStatus = ApplicationStatus.WRITING;
     }
+
+    public void applyPassResult(boolean isPassed) {
+        this.applicationStatus = isPassed ? ApplicationStatus.ACCEPTED : ApplicationStatus.REJECTED;
+    }
 }
