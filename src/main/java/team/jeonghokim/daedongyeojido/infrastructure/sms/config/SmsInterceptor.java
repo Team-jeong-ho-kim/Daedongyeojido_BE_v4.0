@@ -21,10 +21,10 @@ public class SmsInterceptor implements RequestInterceptor {
 
     private final SignatureProvider signatureProvider;
 
-    @Value("${cool-sms.accessKey}")
+    @Value("${solapi-sms.accessKey}")
     private String accessKey;
 
-    @Value("${cool-sms.secretKey}")
+    @Value("${solapi-sms.secretKey}")
     private String secretKey;
 
     @Override

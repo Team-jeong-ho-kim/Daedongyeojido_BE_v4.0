@@ -51,8 +51,8 @@ jwt:
 das-key:
   login-api-url: ${XQUARE_URL}
 
-cool-sms:
+solapi-sms:
   accessKey: ${ACCESS_KEY}
   secretKey: ${SECRET_KEY}
   from: ${REPRESENTER_PHONE_NUMBER}
-  url: ${COOL_SMS_URL}
+  url: ${SOLAPI_URL}
