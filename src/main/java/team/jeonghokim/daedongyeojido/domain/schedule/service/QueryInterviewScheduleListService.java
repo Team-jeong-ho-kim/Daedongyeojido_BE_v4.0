@@ -20,8 +20,8 @@ public class QueryInterviewScheduleListService {
 
     @Transactional(readOnly = true)
     public QueryInterviewScheduleListResponse execute() {
-        User currentUser = userFacade.getCurrentUser();
-        List<InterviewScheduleResponse> schedules = scheduleRepository.findAllSchedulesByClubId(currentUser.getClub().getId());
+        User user = userFacade.getCurrentUser();
+        List<InterviewScheduleResponse> schedules = scheduleRepository.findAllSchedulesByClubId(user.getClub().getId());
         return new QueryInterviewScheduleListResponse(schedules);
     }
 }
