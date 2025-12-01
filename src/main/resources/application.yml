@@ -48,7 +48,7 @@ jwt:
   access-expiration: ${JWT_ACCESS_EXP}
   refresh-expiration: ${JWT_REFRESH_EXP}
 
-das-key:
+key:
   login-api-url: ${XQUARE_URL}
 
 solapi-sms:
