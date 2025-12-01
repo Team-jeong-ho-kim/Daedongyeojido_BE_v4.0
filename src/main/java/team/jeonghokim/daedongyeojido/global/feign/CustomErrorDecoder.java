@@ -1,11 +1,11 @@
-package team.jeonghokim.daedongyeojido.infrastructure.feign.error;
+package team.jeonghokim.daedongyeojido.global.feign;
 
 import feign.codec.ErrorDecoder;
 import feign.Response;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
-import team.jeonghokim.daedongyeojido.infrastructure.feign.exception.FeignBadRequestException;
-import team.jeonghokim.daedongyeojido.infrastructure.feign.exception.FeignForbiddenException;
-import team.jeonghokim.daedongyeojido.infrastructure.feign.exception.FeignUnauthorizedException;
+import team.jeonghokim.daedongyeojido.global.feign.exception.FeignBadRequestException;
+import team.jeonghokim.daedongyeojido.global.feign.exception.FeignForbiddenException;
+import team.jeonghokim.daedongyeojido.global.feign.exception.FeignUnauthorizedException;
 
 public class CustomErrorDecoder implements ErrorDecoder {
 

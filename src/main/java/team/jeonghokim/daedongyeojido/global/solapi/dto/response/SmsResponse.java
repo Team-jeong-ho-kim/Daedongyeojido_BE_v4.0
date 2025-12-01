@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.infrastructure.feign.solapi.dto.response;
+package team.jeonghokim.daedongyeojido.global.solapi.dto.response;
 
 public record SmsResponse(
         String groupId,

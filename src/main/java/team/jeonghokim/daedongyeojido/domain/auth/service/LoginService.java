@@ -11,8 +11,8 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.global.security.jwt.JwtTokenProvider;
-import team.jeonghokim.daedongyeojido.infrastructure.feign.xquare.XquareClient;
-import team.jeonghokim.daedongyeojido.infrastructure.feign.xquare.dto.response.XquareResponse;
+import team.jeonghokim.daedongyeojido.global.xquare.XquareClient;
+import team.jeonghokim.daedongyeojido.global.xquare.dto.XquareResponse;
 
 @Service
 @RequiredArgsConstructor

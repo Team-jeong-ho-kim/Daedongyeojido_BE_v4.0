@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.infrastructure.feign.xquare.dto.response;
+package team.jeonghokim.daedongyeojido.global.xquare.dto;
 
 import java.time.LocalDate;
 import java.util.UUID;

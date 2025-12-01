@@ -1,10 +1,10 @@
-package team.jeonghokim.daedongyeojido.infrastructure.feign.solapi;
+package team.jeonghokim.daedongyeojido.global.solapi;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import team.jeonghokim.daedongyeojido.infrastructure.feign.solapi.dto.request.SmsRequest;
-import team.jeonghokim.daedongyeojido.infrastructure.feign.solapi.dto.response.SmsResponse;
+import team.jeonghokim.daedongyeojido.global.solapi.dto.request.SmsRequest;
+import team.jeonghokim.daedongyeojido.global.solapi.dto.response.SmsResponse;
 
 @FeignClient(
         name = "solapi-sms",
