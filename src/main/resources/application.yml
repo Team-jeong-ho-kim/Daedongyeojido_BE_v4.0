@@ -50,3 +50,8 @@ jwt:
 
 das-key:
   login-api-url: ${XQUARE_URL}
+
+cool-sms:
+  accessKey: ${ACCESS_KEY}
+  secretKey: ${SECRET_KEY}
+  serviceId: ${SERVICE_ID}
