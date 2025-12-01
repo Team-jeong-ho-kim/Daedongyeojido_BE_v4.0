@@ -25,14 +25,14 @@ public class QueryInterviewScheduleDetailService {
     @Transactional(readOnly = true)
     public QueryInterviewScheduleDetailResponse execute(Long scheduleId) {
         User user = userFacade.getCurrentUser();
-        Schedule schedule = scheduleRepository.findById(scheduleId)
+        Schedule schedule = scheduleRepository.findScheduleById(scheduleId)
                 .orElseThrow(() -> InterviewScheduleNotFoundException.EXCEPTION);
 
         if (!(user.getClub().getId().equals(schedule.getClub().getId()))) {
             throw InterviewScheduleAccessDeniedException.EXCEPTION;
         }
 
-        Submission submission = submissionRepository.findByUserIdAndApplicationFormClubId(schedule.getApplicant().getId(), schedule.getClub().getId())
+        Submission submission = submissionRepository.findByUserIdAndClubId(schedule.getApplicant().getId(), schedule.getClub().getId())
                 .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION);
 
         return QueryInterviewScheduleDetailResponse.of(schedule, submission);
