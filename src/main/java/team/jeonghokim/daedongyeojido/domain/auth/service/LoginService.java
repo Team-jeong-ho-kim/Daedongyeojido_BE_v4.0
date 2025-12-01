@@ -12,7 +12,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserReposito
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.global.security.jwt.JwtTokenProvider;
 import team.jeonghokim.daedongyeojido.infrastructure.feign.xquare.XquareClient;
-import team.jeonghokim.daedongyeojido.infrastructure.feign.xquare.dto.XquareResponse;
+import team.jeonghokim.daedongyeojido.infrastructure.feign.xquare.dto.response.XquareResponse;
 
 @Service
 @RequiredArgsConstructor
