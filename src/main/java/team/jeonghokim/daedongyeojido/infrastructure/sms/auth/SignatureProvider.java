@@ -10,7 +10,7 @@ import java.util.Base64;
 
 @Component
 public class SignatureProvider {
-    private static final String HMAC = "HmacSHA256";
+    private static final String HMAC = "hmac-sha256";
 
     public String generateSignature(String secretKey, String data) {
         try {
