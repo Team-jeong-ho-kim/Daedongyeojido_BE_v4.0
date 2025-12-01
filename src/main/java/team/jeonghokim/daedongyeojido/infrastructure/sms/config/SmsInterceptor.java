@@ -5,7 +5,10 @@ import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.auth.SignatureProvider;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -16,6 +19,9 @@ public class SmsInterceptor implements RequestInterceptor {
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String HMAC = "hmac-sha256";
     private static final String FORMAT = "%s apiKey=%s, date=%s, salt=%s, signature=%s";
+    private static final DateTimeFormatter ISO8601 =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                    .withZone(ZoneOffset.UTC);
 
     private final SignatureProvider signatureProvider;
     private final String accessKey;
@@ -24,7 +30,7 @@ public class SmsInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate template) {
 
-        String date = Instant.now().toString();
+        String date = ISO8601.format(Instant.now());;
         String salt = UUID.randomUUID().toString();
 
         String signature = createSignature(date, salt);
