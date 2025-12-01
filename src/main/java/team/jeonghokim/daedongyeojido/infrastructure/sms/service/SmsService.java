@@ -19,11 +19,11 @@ public class SmsService {
     public void send(String phoneNumber, Message message) {
 
         SmsRequest request = new SmsRequest(
-                new SmsRequest.Message(
-                        phoneNumber,
-                        from,
-                        message.getContent()
-                )
+                SmsRequest.Message.builder()
+                        .to(phoneNumber)
+                        .from(from)
+                        .text(message.getContent())
+                        .build()
         );
 
         smsClient.send(request);
