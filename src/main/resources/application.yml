@@ -54,5 +54,5 @@ das-key:
 cool-sms:
   accessKey: ${ACCESS_KEY}
   secretKey: ${SECRET_KEY}
-  serviceId: ${SERVICE_ID}
+  from: ${REPRESENTER_PHONE_NUMBER}
   url: ${COOL_SMS_URL}
