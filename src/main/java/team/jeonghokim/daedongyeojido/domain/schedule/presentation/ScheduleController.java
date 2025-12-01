@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.InterviewScheduleRequest;
+import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.response.QueryInterviewScheduleDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.response.QueryInterviewScheduleListResponse;
 import team.jeonghokim.daedongyeojido.domain.schedule.service.DecideInterviewScheduleService;
+import team.jeonghokim.daedongyeojido.domain.schedule.service.QueryInterviewScheduleDetailService;
 import team.jeonghokim.daedongyeojido.domain.schedule.service.QueryInterviewScheduleListService;
 import team.jeonghokim.daedongyeojido.domain.schedule.service.UpdateInterviewScheduleService;
 
@@ -25,6 +27,7 @@ public class ScheduleController {
     private final DecideInterviewScheduleService decideInterviewScheduleService;
     private final UpdateInterviewScheduleService updateInterviewScheduleService;
     private final QueryInterviewScheduleListService queryInterviewScheduleListService;
+    private final QueryInterviewScheduleDetailService queryInterviewScheduleDetailService;
 
     @PostMapping("/{user-id}")
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,5 +45,11 @@ public class ScheduleController {
     @ResponseStatus(HttpStatus.OK)
     public QueryInterviewScheduleListResponse queryInterviewScheduleList() {
         return queryInterviewScheduleListService.execute();
+    }
+
+    @GetMapping("/{schedule-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryInterviewScheduleDetailResponse queryInterviewScheduleDetail(@PathVariable("schedule-id") Long scheduleId) {
+        return queryInterviewScheduleDetailService.execute(scheduleId);
     }
 }

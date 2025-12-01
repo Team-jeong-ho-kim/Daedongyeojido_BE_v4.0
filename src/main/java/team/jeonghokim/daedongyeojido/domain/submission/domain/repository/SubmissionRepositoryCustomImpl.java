@@ -6,9 +6,15 @@ import team.jeonghokim.daedongyeojido.domain.application.domain.enums.Applicatio
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationListResponse;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.QApplicationListResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.QSubmission;
+import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.*;
 
 import java.util.List;
+import java.util.Optional;
+
+import static team.jeonghokim.daedongyeojido.domain.application.domain.QApplicationForm.applicationForm;
+import static team.jeonghokim.daedongyeojido.domain.club.domain.QClub.club;
+import static team.jeonghokim.daedongyeojido.domain.user.domain.QUser.user;
 
 @RequiredArgsConstructor
 public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCustom {
@@ -79,5 +85,21 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                         )
                 )
                 .fetch();
+    }
+
+    @Override
+    public Optional<Submission> findByUserIdAndClubId(Long userId, Long clubId) {
+        return Optional.ofNullable(
+                jpaQueryFactory
+                        .selectFrom(submission)
+                        .join(submission.user, user).fetchJoin()
+                        .join(submission.applicationForm, applicationForm).fetchJoin()
+                        .join(applicationForm.club, club).fetchJoin()
+                        .where(
+                                submission.user.id.eq(userId),
+                                applicationForm.club.id.eq(clubId)
+                        )
+                        .fetchOne()
+        );
     }
 }
