@@ -13,7 +13,7 @@ public class SmsInterceptor implements RequestInterceptor {
     private static final String HEADER_CONTENT_TYPE = "application/json";
     private static final String HEADER_AUTH = "Authorization";
     private static final String CONTENT_TYPE = "Content-Type";
-    private static final String HMAC = "HmacSHA256";
+    private static final String HMAC = "hmac-sha256";
     private static final String FORMAT = "%s apiKey=%s, date=%d, salt=%s, signature=%s";
 
     private final SignatureProvider signatureProvider;
