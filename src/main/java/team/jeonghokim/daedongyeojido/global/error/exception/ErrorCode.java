@@ -44,6 +44,9 @@ public enum ErrorCode {
     FEIGN_UNAUTHORIZED_EXCEPTION(401, "Feign Unauthorized Exception"),
     FEIGN_FORBIDDEN_EXCEPTION(403, "Feign Forbidden Exception"),
 
+    //sms
+    SIGNATURE_GENERATION_EXCEPTION(500, "HMAC 시그니처 생성에 실패했습니다."),
+
     // club
     ALREADY_EXISTS_CLUB(409, "해당 동아리가 이미 존재합니다."),
     ALREADY_JOIN_CLUB(409, "이미 다른 동아리에 소속되어있습니다."),
