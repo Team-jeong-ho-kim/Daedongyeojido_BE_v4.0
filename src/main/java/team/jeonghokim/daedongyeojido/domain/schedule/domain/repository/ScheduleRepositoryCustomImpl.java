@@ -29,9 +29,9 @@ public class ScheduleRepositoryCustomImpl implements ScheduleRepositoryCustom {
                 .from(schedule)
                 .join(schedule.applicant, user)
                 .join(submission)
-                .where(
-                        submission.user.id.eq(user.id),
-                        submission.applicationForm.club.id.eq(clubId)
+                .on(
+                    submission.user.id.eq(user.id),
+                    submission.applicationForm.club.id.eq(clubId)
                 )
                 .orderBy(schedule.interviewSchedule.asc())
                 .fetch();
