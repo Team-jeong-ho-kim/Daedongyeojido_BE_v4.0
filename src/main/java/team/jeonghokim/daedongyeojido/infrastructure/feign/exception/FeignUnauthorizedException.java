@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.global.feign.exception;
+package team.jeonghokim.daedongyeojido.infrastructure.feign.exception;
 
 
 import team.jeonghokim.daedongyeojido.global.error.exception.DaedongException;
