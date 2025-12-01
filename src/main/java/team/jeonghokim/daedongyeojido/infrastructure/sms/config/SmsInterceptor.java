@@ -3,13 +3,10 @@ package team.jeonghokim.daedongyeojido.infrastructure.sms.config;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.auth.SignatureProvider;
 
 import java.util.UUID;
 
-@Component
 @RequiredArgsConstructor
 public class SmsInterceptor implements RequestInterceptor {
 
@@ -20,12 +17,8 @@ public class SmsInterceptor implements RequestInterceptor {
     private static final String FORMAT = "%s apiKey=%s, date=%d, salt=%s, signature=%s";
 
     private final SignatureProvider signatureProvider;
-
-    @Value("${solapi-sms.accessKey}")
-    private String accessKey;
-
-    @Value("${solapi-sms.secretKey}")
-    private String secretKey;
+    private final String accessKey;
+    private final String secretKey;
 
     @Override
     public void apply(RequestTemplate template) {
