@@ -28,7 +28,7 @@ public class QueryInterviewScheduleDetailService {
         Schedule schedule = scheduleRepository.findScheduleById(scheduleId)
                 .orElseThrow(() -> InterviewScheduleNotFoundException.EXCEPTION);
 
-        if (!(user.getClub().getId().equals(schedule.getClub().getId()))) {
+        if (!user.getClub().getId().equals(schedule.getClub().getId())) {
             throw InterviewScheduleAccessDeniedException.EXCEPTION;
         }
 
