@@ -55,3 +55,4 @@ cool-sms:
   accessKey: ${ACCESS_KEY}
   secretKey: ${SECRET_KEY}
   serviceId: ${SERVICE_ID}
+  url: ${COOL_SMS_URL}
