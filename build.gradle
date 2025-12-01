@@ -68,6 +68,9 @@ dependencies {
     //feign
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0'
     implementation 'org.springframework.cloud:spring-cloud-commons:4.1.1'
+
+    //cool sms
+    implementation 'com.solapi:sdk:1.0.3'
 }
 
 dependencyManagement {

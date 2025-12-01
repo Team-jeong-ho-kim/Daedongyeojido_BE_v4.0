@@ -50,3 +50,9 @@ jwt:
 
 key:
   login-api-url: ${XQUARE_URL}
+
+solapi-sms:
+  accessKey: ${ACCESS_KEY}
+  secretKey: ${SECRET_KEY}
+  from: ${REPRESENTER_PHONE_NUMBER}
+  url: ${SOLAPI_URL}
