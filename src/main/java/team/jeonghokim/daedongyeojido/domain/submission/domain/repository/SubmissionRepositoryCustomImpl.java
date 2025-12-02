@@ -102,4 +102,17 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                         .fetchOne()
         );
     }
+
+    @Override
+    public Optional<Submission> findSubmissionById(Long submissionId) {
+        return Optional.ofNullable(
+                jpaQueryFactory
+                        .selectFrom(submission)
+                        .join(submission.applicationForm, applicationForm).fetchJoin()
+                        .join(applicationForm.club, club).fetchJoin()
+                        .join(submission.user, user).fetchJoin()
+                        .where(submission.id.eq(submissionId))
+                        .fetchOne()
+        );
+    }
 }
