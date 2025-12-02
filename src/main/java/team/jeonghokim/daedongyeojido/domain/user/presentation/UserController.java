@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.QueryUserAlarmResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryUserSubmissionListResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.service.QueryUserSubmissionListService;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideClubRequest;
@@ -24,6 +25,7 @@ public class UserController {
     private final DecideTeamMemberApplicationService decideTeamMemberApplicationService;
     private final QueryUserSubmissionListService queryUserSubmissionListService;
     private final DecideClubService decideClubService;
+    private final QueryUserAlarmService queryUserAlarmService;
 
     @PatchMapping("/my-info")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -59,5 +61,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void decideClub(@PathVariable("submission-id") Long submissionId, @RequestBody @Valid DecideClubRequest request) {
         decideClubService.execute(submissionId, request);
+    }
+
+    @GetMapping("/alarm")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryUserAlarmResponse queryUserAlarm() {
+        return queryUserAlarmService.execute();
     }
 }
