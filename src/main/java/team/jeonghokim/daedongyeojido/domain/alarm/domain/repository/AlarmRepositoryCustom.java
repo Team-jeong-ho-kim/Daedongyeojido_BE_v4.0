@@ -7,4 +7,6 @@ import java.util.List;
 public interface AlarmRepositoryCustom {
 
     List<AlarmResponse> findAllByClubId(Long clubId);
+
+    List<AlarmResponse> findAllByUserId(Long userId);
 }
