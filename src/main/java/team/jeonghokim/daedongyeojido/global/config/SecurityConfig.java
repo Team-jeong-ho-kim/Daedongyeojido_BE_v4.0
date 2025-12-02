@@ -52,19 +52,18 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/auth/reissue").permitAll()
 
                         // user
-                        .requestMatchers(HttpMethod.GET, "/user/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/submission").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.PATCH, "/user/decide/**").hasAnyRole(CLUB_MEMBER, CLUB_LEADER, STUDENT)
                         .requestMatchers(HttpMethod.PATCH, "/user/**").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.POST, "/user/application/**").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/user/application/**").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.DELETE, "/user/application/**").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.GET, "/user/**").permitAll()
 
                         // admin
                         .requestMatchers("/admin/**").hasRole(ADMIN)
 
                         // club
-                        .requestMatchers(HttpMethod.GET, "/club/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/club/member/apply").hasAnyRole(CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.GET, "/club/submission/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.POST, "/club/create/apply").hasAnyRole(STUDENT, ADMIN, TEACHER, CLUB_MEMBER)
@@ -73,12 +72,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/club/**").hasAnyRole(CLUB_MEMBER)
                         .requestMatchers(HttpMethod.DELETE, "/club/member/**").hasRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.GET, "/club/alarm").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.GET, "/club/**").permitAll()
 
                         // announcement
-                        .requestMatchers(HttpMethod.GET, "/announcement/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/announcement").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.PATCH, "/announcement/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.DELETE, "/announcement/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.GET, "/announcement/**").permitAll()
 
                         // schedule
                         .requestMatchers(HttpMethod.POST, "/schedule/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
