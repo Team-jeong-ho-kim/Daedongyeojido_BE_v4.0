@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.QueryClubAlarmResponse;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.TeamMemberRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
@@ -28,6 +29,7 @@ public class ClubController {
     private final DeleteTeamMemberService deleteTeamMemberService;
     private final QueryClubSubmissionListService queryClubSubmissionListService;
     private final QueryClubSubmissionDetailService queryClubSubmissionDetailService;
+    private final QueryClubAlarmService queryClubAlarmService;
 
     @PostMapping("/create/apply")
     @ResponseStatus(HttpStatus.CREATED)
@@ -81,5 +83,11 @@ public class ClubController {
     @ResponseStatus(HttpStatus.OK)
     public QueryClubSubmissionDetailResponse querySubmissionDetail(@PathVariable("submission-id") Long submissionId) {
         return queryClubSubmissionDetailService.execute(submissionId);
+    }
+
+    @GetMapping("/alarm")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryClubAlarmResponse queryClubAlarm() {
+        return queryClubAlarmService.execute();
     }
 }
