@@ -61,13 +61,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/user/alarm").hasAnyRole(STUDENT, ADMIN, TEACHER, CLUB_MEMBER, CLUB_LEADER)
 
                         // application
-                        .requestMatchers(HttpMethod.POST, "/application/**").hasRole(STUDENT)
-                        .requestMatchers(HttpMethod.GET, "/application/**").hasRole(STUDENT)
-                        .requestMatchers(HttpMethod.GET, "/application").hasRole(STUDENT)
-                        .requestMatchers(HttpMethod.PATCH, "/application/**").hasRole(STUDENT)
-                        .requestMatchers(HttpMethod.PATCH, "/application/submit/**").hasRole(STUDENT)
-                        .requestMatchers(HttpMethod.PATCH, "/application/cancel/**").hasRole(STUDENT)
-                        .requestMatchers(HttpMethod.DELETE, "/application/**").hasRole(STUDENT)
+                        .requestMatchers("/application/**").hasRole(STUDENT)
 
                         // admin
                         .requestMatchers(HttpMethod.PATCH, "/admin/club/create/**").hasRole(ADMIN)
