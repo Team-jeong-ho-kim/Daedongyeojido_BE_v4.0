@@ -7,7 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 
 import java.util.Optional;
 
-public interface AlarmRepository extends JpaRepository<Alarm, Long> {
+public interface AlarmRepository extends JpaRepository<Alarm, Long>, AlarmRepositoryCustom {
 
     Optional<Alarm> findByClubAndAlarmType(Club club, AlarmType alarmType);
 }
