@@ -29,7 +29,7 @@ public class PassClubService {
     }
 
     public void validate(User user, Submission submission) {
-        if (user.getClub().getId().equals(submission.getApplicationForm().getClub().getId())) {
+        if (!user.getClub().getId().equals(submission.getApplicationForm().getClub().getId())) {
             throw ClubAccessDeniedException.EXCEPTION;
         }
 
