@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.QueryClubAlarmResponse;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.PassClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.TeamMemberRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
@@ -29,6 +30,7 @@ public class ClubController {
     private final DeleteTeamMemberService deleteTeamMemberService;
     private final QueryClubSubmissionListService queryClubSubmissionListService;
     private final QueryClubSubmissionDetailService queryClubSubmissionDetailService;
+    private final PassClubService passClubService;
     private final QueryClubAlarmService queryClubAlarmService;
 
     @PostMapping("/create/apply")
@@ -83,6 +85,12 @@ public class ClubController {
     @ResponseStatus(HttpStatus.OK)
     public QueryClubSubmissionDetailResponse querySubmissionDetail(@PathVariable("submission-id") Long submissionId) {
         return queryClubSubmissionDetailService.execute(submissionId);
+    }
+
+    @PatchMapping("/pass/{submission-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void passClub(@PathVariable("submission-id") Long submissionId, @RequestBody @Valid PassClubRequest request) {
+        passClubService.execute(submissionId, request);
     }
 
     @GetMapping("/alarm")

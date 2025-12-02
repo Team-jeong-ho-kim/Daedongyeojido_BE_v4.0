@@ -56,6 +56,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/club/**").permitAll()
                         .requestMatchers("/club/create/apply").hasAnyRole(STUDENT, ADMIN, TEACHER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.POST, "/club/dissolution").hasRole(CLUB_LEADER)
+                        .requestMatchers(HttpMethod.PATCH, "/club/pass/**").hasRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.PATCH,"/club/**").hasAnyRole(CLUB_MEMBER)
                         .requestMatchers(HttpMethod.POST,"/application-form/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET,"/application-form/**").permitAll()
