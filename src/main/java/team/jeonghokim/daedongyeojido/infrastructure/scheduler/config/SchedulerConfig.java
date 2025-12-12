@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.global.config;
+package team.jeonghokim.daedongyeojido.infrastructure.scheduler.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
