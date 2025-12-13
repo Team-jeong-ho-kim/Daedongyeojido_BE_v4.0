@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public record DecideResultDurationRequest(
 
         @NotNull(message = "발표 기간을 설정해주세요.")
-        @JsonFormat(pattern = "yyyy-MM-dd")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime resultDuration
 ) {
 }
