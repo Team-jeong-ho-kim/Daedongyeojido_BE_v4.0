@@ -64,6 +64,9 @@ public enum ErrorCode {
     RESULT_DURATION_ALREADY_SET(409, "이미 발표시간이 설정되어있습니다."),
     RESULT_DURATION_ALREADY_EXECUTED(400, "이미 결과 처리가 완료되었습니다."),
 
+    // redis
+    REDIS_SERIALIZE_FAIL(500, "Redis 직렬화 실패"),
+
     // s3
     IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
     FAILED_UPLOAD(500, "업로드 실패"),
