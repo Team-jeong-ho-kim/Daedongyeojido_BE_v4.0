@@ -33,20 +33,6 @@ public enum ErrorCode {
     APPLICATION_NOT_SUBMITTED(400, "제출하지 않은 지원서입니다."),
     APPLICATION_NOT_ACCEPTED(400, "합격되지 않은 지원서입니다."),
 
-    //s3
-    IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
-    FAILED_UPLOAD(500, "업로드 실패"),
-    FAILED_DELETE(500, "삭제 실패"),
-    INVALID_EXTENSION(400, "유효하지 않은 파일 확장자입니다."),
-
-    //feign
-    FEIGN_BAD_REQUEST(400, "Feign Bad Request"),
-    FEIGN_UNAUTHORIZED_EXCEPTION(401, "Feign Unauthorized Exception"),
-    FEIGN_FORBIDDEN_EXCEPTION(403, "Feign Forbidden Exception"),
-
-    //sms
-    SIGNATURE_GENERATION_EXCEPTION(500, "HMAC 시그니처 생성에 실패했습니다."),
-
     // club
     ALREADY_EXISTS_CLUB(409, "해당 동아리가 이미 존재합니다."),
     ALREADY_JOIN_CLUB(409, "이미 다른 동아리에 소속되어있습니다."),
@@ -72,6 +58,20 @@ public enum ErrorCode {
     ALREADY_INTERVIEW_SCHEDULE_EXISTS(409, "이미 지원자 면접 일정이 존재합니다."),
     INTERVIEW_SCHEDULE_NOT_FOUND(404, "면접 일정을 찾을 수 없습니다."),
     INTERVIEW_SCHEDULE_ACCESS_DENIED(403, "해당 면접 일정 관련 권한이 없습니다."),
+
+    //s3
+    IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
+    FAILED_UPLOAD(500, "업로드 실패"),
+    FAILED_DELETE(500, "삭제 실패"),
+    INVALID_EXTENSION(400, "유효하지 않은 파일 확장자입니다."),
+
+    //feign
+    FEIGN_BAD_REQUEST(400, "Feign Bad Request"),
+    FEIGN_UNAUTHORIZED_EXCEPTION(401, "Feign Unauthorized Exception"),
+    FEIGN_FORBIDDEN_EXCEPTION(403, "Feign Forbidden Exception"),
+
+    //sms
+    SIGNATURE_GENERATION_EXCEPTION(500, "HMAC 시그니처 생성에 실패했습니다."),
 
     // general
     BAD_REQUEST(400, "front fault"),
