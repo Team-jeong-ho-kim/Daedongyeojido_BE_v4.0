@@ -19,7 +19,6 @@ import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
-import team.jeonghokim.daedongyeojido.infrastructure.sms.service.SmsService;
 
 import java.time.ZoneOffset;
 
@@ -32,7 +31,6 @@ public class PassClubService {
     private final ResultDurationRepository resultDurationRepository;
     private final ObjectMapper objectMapper;
     private final RedisTemplate<String, String> redisTemplate;
-    private final SmsService smsService;
 
     private static final String RESULT_DURATION_ZSET = "club:result-duration";
 
@@ -78,6 +76,7 @@ public class PassClubService {
     }
 
     private String serializePayload(SchedulerPayload payload) {
+
         try {
             return objectMapper.writeValueAsString(payload);
         } catch (JsonProcessingException e) {
