@@ -61,6 +61,7 @@ public enum ErrorCode {
 
     // resultDuration
     RESULT_DURATION_NOT_FOUND(404, "발표시간이 설정되지 않았습니다."),
+    RESULT_DURATION_ALREADY_EXECUTED(400, "이미 결과 처리가 완료되었습니다."),
 
     // s3
     IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
