@@ -66,6 +66,7 @@ public enum ErrorCode {
 
     // redis
     REDIS_SERIALIZE_FAIL(500, "Redis 직렬화 실패"),
+    REDIS_DESERIALIZE_FAIL(500, "Redis 역직렬화 실패"),
 
     // s3
     IMAGE_NOT_FOUND(404, "이미지를 찾을 수 없음"),
