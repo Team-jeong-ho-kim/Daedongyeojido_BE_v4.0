@@ -1,6 +1,5 @@
 package team.jeonghokim.daedongyeojido.domain.club.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.Submis
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +29,7 @@ public class PassClubService {
     private final RedisTemplate<String, SchedulerPayload> redisTemplate;
 
     private static final String RESULT_DURATION_ZSET = "club:result-duration";
+    public static final String SEOUL_TIME_ZONE = "Asia/Seoul";
 
     @Transactional
     public void execute(Long submissionId, PassClubRequest request) {
@@ -59,7 +59,9 @@ public class PassClubService {
         ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
                 .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
 
-        long score = resultDuration.getResultDuration().toEpochSecond(ZoneOffset.UTC);
+        long score = resultDuration.getResultDuration()
+                .atZone(ZoneId.of(SEOUL_TIME_ZONE))
+                .toEpochSecond();
 
         SchedulerPayload payload = SchedulerPayload.builder()
                 .submissionId(submission.getId())
