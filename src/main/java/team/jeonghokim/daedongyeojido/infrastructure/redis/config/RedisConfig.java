@@ -1,5 +1,8 @@
 package team.jeonghokim.daedongyeojido.infrastructure.redis.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,14 +11,16 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisKeyValueAdapter;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import team.jeonghokim.daedongyeojido.infrastructure.redis.serializer.CustomRedisSerializer;
+import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
 
 @Configuration
 @EnableRedisRepositories(
         enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP,
         keyspaceNotificationsConfigParameter = "" //Elasticache는 CONFIG 명령어를 제한 -> 우회
 )
+@RequiredArgsConstructor
 public class RedisConfig {
     @Value("${redis.host}")
     private String host;
@@ -23,22 +28,27 @@ public class RedisConfig {
     @Value("${redis.port}")
     private Integer port;
 
+    private final ObjectMapper objectMapper;
+
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(host, port);
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(connectionFactory);
+    public RedisTemplate<String, SchedulerPayload> schedulerRedisTemplate(RedisConnectionFactory factory) {
 
-        // Redis key와 value에 대한 Serializer 설정
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
-        return redisTemplate;
+        RedisTemplate<String, SchedulerPayload> template = new RedisTemplate<>();
+        template.setConnectionFactory(factory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new CustomRedisSerializer<>(objectMapper));
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new CustomRedisSerializer<>(objectMapper));
+        template.afterPropertiesSet();
+
+        return template;
     }
+
 }
