@@ -1,6 +1,5 @@
 package team.jeonghokim.daedongyeojido.domain.club.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -13,7 +12,6 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.PassC
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationNotFoundException;
-import team.jeonghokim.daedongyeojido.infrastructure.redis.exception.RedisSerializeFailedException;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
@@ -29,8 +27,7 @@ public class PassClubService {
     private final UserFacade userFacade;
     private final SubmissionRepository submissionRepository;
     private final ResultDurationRepository resultDurationRepository;
-    private final ObjectMapper objectMapper;
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, SchedulerPayload> redisTemplate;
 
     private static final String RESULT_DURATION_ZSET = "club:result-duration";
 
@@ -70,17 +67,8 @@ public class PassClubService {
                 .isPassed(isPassed)
                 .build();
 
-        String json = serializePayload(payload);
-
-        redisTemplate.opsForZSet().add(RESULT_DURATION_ZSET, json, score);
-    }
-
-    private String serializePayload(SchedulerPayload payload) {
-
-        try {
-            return objectMapper.writeValueAsString(payload);
-        } catch (JsonProcessingException e) {
-            throw RedisSerializeFailedException.EXCEPTION;
-        }
+        redisTemplate
+                .opsForZSet()
+                .add(RESULT_DURATION_ZSET, payload, score);
     }
 }
