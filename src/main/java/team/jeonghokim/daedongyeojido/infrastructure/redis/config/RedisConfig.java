@@ -38,14 +38,15 @@ public class RedisConfig {
     @Bean
     public RedisTemplate<String, SchedulerPayload> schedulerRedisTemplate(RedisConnectionFactory factory) {
 
-        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        ObjectMapper redisObjectMapper = objectMapper.copy();
+        redisObjectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
         RedisTemplate<String, SchedulerPayload> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new CustomRedisSerializer<>(objectMapper));
+        template.setValueSerializer(new CustomRedisSerializer<>(redisObjectMapper));
         template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(new CustomRedisSerializer<>(objectMapper));
+        template.setHashValueSerializer(new CustomRedisSerializer<>(redisObjectMapper));
         template.afterPropertiesSet();
 
         return template;
