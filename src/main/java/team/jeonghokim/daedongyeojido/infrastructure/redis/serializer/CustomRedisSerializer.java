@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.infrastructure.redis.config;
+package team.jeonghokim.daedongyeojido.infrastructure.redis.serializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
