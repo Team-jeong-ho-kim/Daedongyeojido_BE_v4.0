@@ -37,11 +37,11 @@ public class PassClubService {
         Submission submission = submissionRepository.findSubmissionById(submissionId)
                         .orElseThrow(() -> ApplicationNotFoundException.EXCEPTION);
 
-        saveSMS(submission, request.isPassed());
-
         validate(user, submission);
 
         submission.applyPassResult(request.isPassed());
+        
+        saveSMS(submission, request.isPassed());
     }
 
     private void validate(User user, Submission submission) {
