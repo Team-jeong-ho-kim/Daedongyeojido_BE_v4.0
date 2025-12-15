@@ -16,6 +16,7 @@ public record DecideInterviewScheduleRequest(
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate interviewSchedule,
 
+        @NotNull(message = "면접 장소는 필수입니다.")
         String place,
 
         @NotNull(message = "면접 시간은 필수입니다.")
