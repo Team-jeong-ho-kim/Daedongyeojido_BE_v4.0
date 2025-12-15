@@ -66,6 +66,7 @@ public class SecurityConfig {
                         // admin
                         .requestMatchers(HttpMethod.PATCH, "/admin/club/create/**").hasRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/dissolution/**").hasRole(ADMIN)
+                        .requestMatchers(HttpMethod.POST, "/admin/duration").hasRole(ADMIN)
 
                         // club
                         .requestMatchers(HttpMethod.POST, "/club/create/apply").hasAnyRole(STUDENT)
