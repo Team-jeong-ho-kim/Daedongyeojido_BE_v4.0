@@ -8,7 +8,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.redis.exception.RedisSerial
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
 
 @RequiredArgsConstructor
-public class CustomRedisSerializer <T> implements RedisSerializer<SchedulerPayload> {
+public class CustomRedisSerializer implements RedisSerializer<SchedulerPayload> {
 
     private final ObjectMapper objectMapper;
 

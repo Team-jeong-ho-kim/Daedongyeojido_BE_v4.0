@@ -44,9 +44,9 @@ public class RedisConfig {
         RedisTemplate<String, SchedulerPayload> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new CustomRedisSerializer<>(redisObjectMapper));
+        template.setValueSerializer(new CustomRedisSerializer(redisObjectMapper));
         template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(new CustomRedisSerializer<>(redisObjectMapper));
+        template.setHashValueSerializer(new CustomRedisSerializer(redisObjectMapper));
         template.afterPropertiesSet();
 
         return template;
