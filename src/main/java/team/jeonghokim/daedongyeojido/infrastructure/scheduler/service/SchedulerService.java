@@ -68,5 +68,7 @@ public class SchedulerService {
             smsRedisTemplate.opsForZSet()
                     .remove(RESULT_DURATION_ZSET, payload);
         }
+
+        resultDuration.execute();
     }
 }
