@@ -1,7 +1,6 @@
 package team.jeonghokim.daedongyeojido.infrastructure.scheduler.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.time.ZoneId;
 import java.util.Set;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class SchedulerService {
 
