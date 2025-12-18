@@ -48,7 +48,7 @@ public class AnnouncementController {
         return queryAnnouncementDetailService.execute(announcementId);
     }
 
-    @GetMapping("/{club-id}")
+    @GetMapping("/club/{club-id}")
     @ResponseStatus(HttpStatus.OK)
     public QueryClubAnnouncementResponse queryClubAnnouncement(@PathVariable("club-id") Long clubId) {
         return queryClubAnnouncementService.execute(clubId);
