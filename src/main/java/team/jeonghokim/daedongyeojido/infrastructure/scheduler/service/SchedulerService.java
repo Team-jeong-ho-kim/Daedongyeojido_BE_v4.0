@@ -61,14 +61,17 @@ public class SchedulerService {
 
         // 문자 발송
         for (SchedulerPayload payload : messages) {
-            smsService.send(
-                    payload.phoneNumber(),
-                    payload.isPassed() ? Message.CLUB_FINAL_ACCEPTED : Message.CLUB_FINAL_REJECTED
-            );
+            try {
+                smsService.send(
+                        payload.phoneNumber(),
+                        payload.isPassed() ? Message.CLUB_FINAL_ACCEPTED : Message.CLUB_FINAL_REJECTED
+                );
 
-            // 문자 발송후 제거
-            smsRedisTemplate.opsForZSet()
-                    .remove(RESULT_DURATION_ZSET, payload);
+                // 문자 발송 성공 시 제거
+                smsRedisTemplate.opsForZSet()
+                        .remove(RESULT_DURATION_ZSET, payload);
+
+            } catch (Exception e) {}
         }
 
         resultDuration.execute();
