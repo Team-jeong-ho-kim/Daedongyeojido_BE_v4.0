@@ -8,13 +8,13 @@ import java.util.List;
 public record ClubMembersDto(
         String userName,
         List<Major> majors,
-        String introduce
+        String introduction
 ) {
 
     @QueryProjection
-    public ClubMembersDto(String userName, List<Major> majors, String introduce) {
+    public ClubMembersDto(String userName, List<Major> majors, String introduction) {
         this.userName = userName;
         this.majors = majors;
-        this.introduce = introduce;
+        this.introduction = introduction;
     }
 }
