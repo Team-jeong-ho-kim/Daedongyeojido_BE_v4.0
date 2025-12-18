@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.infrastructure.scheduler.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +18,7 @@ import java.time.ZoneId;
 import java.util.Set;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class SchedulerService {
 
@@ -71,7 +73,10 @@ public class SchedulerService {
                 smsRedisTemplate.opsForZSet()
                         .remove(RESULT_DURATION_ZSET, payload);
 
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                log.error("SMS 문자 전송에 실패함 phoneNumber={}, submissionId={}, 다음 스케줄링에서 시도해야 함",
+                        payload.phoneNumber(), payload.submissionId(), e);
+            }
         }
 
         resultDuration.execute();
