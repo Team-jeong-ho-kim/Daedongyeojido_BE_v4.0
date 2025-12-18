@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.infrastructure.scheduler.service;
 
 import lombok.RequiredArgsConstructor;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class SchedulerService {
 
     @Transactional
     @Scheduled(fixedRate = 10_000)
+    @SchedulerLock(name = "resultDurationExecute", lockAtMostFor = "9s", lockAtLeastFor = "1s")
     public void execute() {
 
         // 어드민 발표기간 설정 전 스케줄러 대기 상태
