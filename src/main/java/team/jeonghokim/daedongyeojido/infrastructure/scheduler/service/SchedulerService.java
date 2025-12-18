@@ -29,7 +29,6 @@ public class SchedulerService {
     public static final String RESULT_DURATION_ZSET = "club:result-duration";
     public static final String SEOUL_TIME_ZONE = "Asia/Seoul";
 
-    @Transactional
     @Scheduled(fixedRate = 10_000)
     @SchedulerLock(name = "resultDurationExecute", lockAtMostFor = "9s", lockAtLeastFor = "1s")
     public void execute() {
