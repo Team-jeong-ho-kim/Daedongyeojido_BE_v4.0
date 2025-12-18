@@ -45,7 +45,7 @@ public class SchedulerService {
         }
 
         Set<SchedulerPayload> messages = queryMessages();
-        if (messages.isEmpty()) {
+        if (messages == null || messages.isEmpty()) {
             return;
         }
 
