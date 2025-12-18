@@ -15,11 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.AnnouncementRequest;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.QueryAnnouncementDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.QueryAnnouncementListResponse;
-import team.jeonghokim.daedongyeojido.domain.announcement.service.CreateAnnouncementService;
-import team.jeonghokim.daedongyeojido.domain.announcement.service.DeleteAnnouncementService;
-import team.jeonghokim.daedongyeojido.domain.announcement.service.QueryAnnouncementDetailService;
-import team.jeonghokim.daedongyeojido.domain.announcement.service.QueryAnnouncementListService;
-import team.jeonghokim.daedongyeojido.domain.announcement.service.UpdateAnnouncementService;
+import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.QueryClubAnnouncementResponse;
+import team.jeonghokim.daedongyeojido.domain.announcement.service.*;
 
 @RestController
 @RequestMapping("/announcement")
@@ -29,6 +26,7 @@ public class AnnouncementController {
     private final CreateAnnouncementService createAnnouncementService;
     private final QueryAnnouncementListService queryAnnouncementListService;
     private final QueryAnnouncementDetailService queryAnnouncementDetailService;
+    private final QueryClubAnnouncementService queryClubAnnouncementService;
     private final UpdateAnnouncementService updateAnnouncementService;
     private final DeleteAnnouncementService deleteAnnouncementService;
 
@@ -48,6 +46,12 @@ public class AnnouncementController {
     @ResponseStatus(HttpStatus.OK)
     public QueryAnnouncementDetailResponse queryAnnouncementDetail(@PathVariable("announcement-id") Long announcementId) {
         return queryAnnouncementDetailService.execute(announcementId);
+    }
+
+    @GetMapping("/club/{club-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryClubAnnouncementResponse queryClubAnnouncement(@PathVariable("club-id") Long clubId) {
+        return queryClubAnnouncementService.execute(clubId);
     }
 
     @PatchMapping("/{announcement-id}")

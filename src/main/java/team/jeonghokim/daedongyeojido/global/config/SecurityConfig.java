@@ -69,7 +69,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/admin/duration").hasRole(ADMIN)
 
                         // club
-                        .requestMatchers(HttpMethod.POST, "/club/create/apply").hasAnyRole(STUDENT)
+                        .requestMatchers(HttpMethod.POST, "/club/create/apply").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.POST, "/club/dissolution").hasRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.POST, "/club/member/apply").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/club/submission").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
@@ -84,6 +84,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/announcement").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.PATCH, "/announcement/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.DELETE, "/announcement/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.GET, "/announcement/club/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER, STUDENT)
                         .requestMatchers(HttpMethod.GET, "/announcement/**").permitAll()
 
                         // application-form
