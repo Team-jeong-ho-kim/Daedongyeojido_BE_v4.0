@@ -6,7 +6,6 @@ import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
@@ -41,41 +40,60 @@ public class SchedulerService {
             return;
         }
 
-        // 발표기간 설정 후 현재 시간과 비교 후 기간이 되지 않았을 경우 대기
+        if (!isResultDuration(resultDuration)) {
+            return;
+        }
+
+        Set<SchedulerPayload> messages = queryMessages();
+        if (messages.isEmpty()) {
+            return;
+        }
+
+        sendSms(messages);
+    }
+
+    private boolean isResultDuration(ResultDuration resultDuration) {
+        if (resultDuration == null) {
+            return false;
+        }
+
         long now = Instant.now().getEpochSecond();
         long duration = resultDuration.getResultDuration()
                 .atZone(ZoneId.of(SEOUL_TIME_ZONE))
                 .toEpochSecond();
 
-        if (now < duration) {
-            return;
-        }
+        return now >= duration;
+    }
 
-        // 발표시간이 되었을때 redis에서 모든 메시지를 가져옴
-        Set<SchedulerPayload> messages = smsRedisTemplate.opsForZSet()
+    private Set<SchedulerPayload> queryMessages() {
+        long now = Instant.now().getEpochSecond();
+
+        return smsRedisTemplate.opsForZSet()
                 .rangeByScore(RESULT_DURATION_ZSET, 0, now);
+    }
 
-        // message가 null일 경우 NPE 방지
-        if (messages == null || messages.isEmpty()) {
-            return;
-        }
-
-        // 문자 발송
+    private void sendSms(Set<SchedulerPayload> messages) {
         for (SchedulerPayload payload : messages) {
             try {
                 smsService.send(
                         payload.phoneNumber(),
-                        payload.isPassed() ? Message.CLUB_FINAL_ACCEPTED : Message.CLUB_FINAL_REJECTED
+                        payload.isPassed()
+                                ? Message.CLUB_FINAL_ACCEPTED
+                                : Message.CLUB_FINAL_REJECTED
                 );
 
-                // 문자 발송 성공 시 제거
                 smsRedisTemplate.opsForZSet()
                         .remove(RESULT_DURATION_ZSET, payload);
 
             } catch (Exception e) {
-                log.error("SMS 문자 전송에 실패함 phoneNumber={}, submissionId={}, 다음 스케줄링에서 시도해야 함",
-                        payload.phoneNumber(), payload.submissionId(), e);
+                log.error(
+                        "SMS 문자 전송에 실패함 phoneNumber={}, submissionId={}, 다음 스케줄링에서 재시도",
+                        payload.phoneNumber(),
+                        payload.submissionId(),
+                        e
+                );
             }
         }
     }
+
 }
