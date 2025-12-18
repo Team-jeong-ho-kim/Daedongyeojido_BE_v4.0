@@ -8,8 +8,8 @@ import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.Que
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.PassClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.TeamMemberRequest;
-import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.club.service.*;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionListResponse;
