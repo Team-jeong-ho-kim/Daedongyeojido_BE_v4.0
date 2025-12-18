@@ -10,7 +10,7 @@ import java.util.List;
 import static team.jeonghokim.daedongyeojido.domain.announcement.domain.QAnnouncement.announcement;
 
 @RequiredArgsConstructor
-public class AnnouncementCustomRepositoryImpl implements AnnouncementCustomRepository{
+public class AnnouncementCustomRepositoryImpl implements AnnouncementRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 

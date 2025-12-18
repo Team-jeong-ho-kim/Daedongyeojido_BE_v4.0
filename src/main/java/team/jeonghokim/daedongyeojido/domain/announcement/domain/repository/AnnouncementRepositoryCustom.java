@@ -4,7 +4,7 @@ import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.respo
 
 import java.util.List;
 
-public interface AnnouncementCustomRepository {
+public interface AnnouncementRepositoryCustom {
 
     List<AnnouncementResponse> findAllAnnouncements();
 }
