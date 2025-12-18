@@ -15,14 +15,7 @@ public class ResultDuration extends BaseIdEntity {
 
     private LocalDateTime resultDuration;
 
-    private boolean isExecuted;
-
     public ResultDuration(LocalDateTime resultDuration) {
         this.resultDuration = resultDuration;
-        this.isExecuted = false;
-    }
-
-    public void execute() {
-        this.isExecuted = true;
     }
 }

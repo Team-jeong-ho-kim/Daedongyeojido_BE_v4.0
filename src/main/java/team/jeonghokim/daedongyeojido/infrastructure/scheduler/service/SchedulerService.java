@@ -78,7 +78,5 @@ public class SchedulerService {
                         payload.phoneNumber(), payload.submissionId(), e);
             }
         }
-
-        resultDuration.execute();
     }
 }
