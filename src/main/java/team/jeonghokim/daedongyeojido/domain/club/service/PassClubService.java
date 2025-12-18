@@ -1,16 +1,23 @@
 package team.jeonghokim.daedongyeojido.domain.club.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyJoinClubException;
 import team.jeonghokim.daedongyeojido.domain.club.exception.ClubAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.PassClubRequest;
+import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
+import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
+import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationNotFoundException;
+import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+
+import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +25,11 @@ public class PassClubService {
 
     private final UserFacade userFacade;
     private final SubmissionRepository submissionRepository;
+    private final ResultDurationRepository resultDurationRepository;
+    private final RedisTemplate<String, SchedulerPayload> redisTemplate;
+
+    private static final String RESULT_DURATION_ZSET = "club:result-duration";
+    public static final String SEOUL_TIME_ZONE = "Asia/Seoul";
 
     @Transactional
     public void execute(Long submissionId, PassClubRequest request) {
@@ -28,9 +40,11 @@ public class PassClubService {
         validate(user, submission);
 
         submission.applyPassResult(request.isPassed());
+        
+        saveSMS(submission, request.isPassed());
     }
 
-    public void validate(User user, Submission submission) {
+    private void validate(User user, Submission submission) {
         if (!user.getClub().getId().equals(submission.getApplicationForm().getClub().getId())) {
             throw ClubAccessDeniedException.EXCEPTION;
         }
@@ -38,5 +52,25 @@ public class PassClubService {
         if (!(submission.getUser().getClub() == null)) {
             throw AlreadyJoinClubException.EXCEPTION;
         }
+    }
+
+    private void saveSMS(Submission submission, boolean isPassed) {
+
+        ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
+                .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
+
+        long score = resultDuration.getResultDuration()
+                .atZone(ZoneId.of(SEOUL_TIME_ZONE))
+                .toEpochSecond();
+
+        SchedulerPayload payload = SchedulerPayload.builder()
+                .submissionId(submission.getId())
+                .phoneNumber(submission.getUser().getPhoneNumber())
+                .isPassed(isPassed)
+                .build();
+
+        redisTemplate
+                .opsForZSet()
+                .add(RESULT_DURATION_ZSET, payload, score);
     }
 }

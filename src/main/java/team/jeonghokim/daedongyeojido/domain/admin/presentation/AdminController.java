@@ -3,14 +3,10 @@ package team.jeonghokim.daedongyeojido.domain.admin.presentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideClubCreationRequest;
+import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideResultDurationRequest;
+import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubCreationService;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubDissolveService;
@@ -22,6 +18,7 @@ public class AdminController {
 
     private final DecideClubCreationService decideClubCreationService;
     private final DecideClubDissolveService decideClubDissolveService;
+    private final DecideResultDurationService decideResultDurationService;
 
     @PatchMapping("/club/create/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -33,5 +30,11 @@ public class AdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void decideClubDissolve(@PathVariable("club-id") Long clubId, @RequestBody @Valid DecideClubDissolveRequest request) {
         decideClubDissolveService.execute(clubId, request);
+    }
+
+    @PostMapping("/duration")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void decideResultDuration(@RequestBody @Valid DecideResultDurationRequest request) {
+        decideResultDurationService.execute(request);
     }
 }
