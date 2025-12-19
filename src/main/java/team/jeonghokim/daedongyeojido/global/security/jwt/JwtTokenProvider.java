@@ -30,7 +30,7 @@ public class JwtTokenProvider {
     private final CustomUserDetailsService customUserDetailsService;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    private static final String CLAIM_TYPE = "type";
+    private static final String CLAIM_TYPE = "typ";
     private static final String ACCESS_TYPE = "access";
     private static final String REFRESH_TYPE = "refresh";
     private static final int MILLISECONDS = 1000;
@@ -133,6 +133,6 @@ public class JwtTokenProvider {
     }
 
     private boolean isNotRefreshToken(String token) {
-        return !REFRESH_TYPE.equals(getJws(token).getHeader().get("type").toString());
+        return !REFRESH_TYPE.equals(getJws(token).getHeader().get(CLAIM_TYPE).toString());
     }
 }
