@@ -18,7 +18,14 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.PassC
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.TeamMemberRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
-import team.jeonghokim.daedongyeojido.domain.club.service.*;
+import team.jeonghokim.daedongyeojido.domain.club.service.ApplyTeamMemberService;
+import team.jeonghokim.daedongyeojido.domain.club.service.CreateClubService;
+import team.jeonghokim.daedongyeojido.domain.club.service.DeleteTeamMemberService;
+import team.jeonghokim.daedongyeojido.domain.club.service.DissolveClubService;
+import team.jeonghokim.daedongyeojido.domain.club.service.PassClubService;
+import team.jeonghokim.daedongyeojido.domain.club.service.QueryClubDetailService;
+import team.jeonghokim.daedongyeojido.domain.club.service.QueryClubListService;
+import team.jeonghokim.daedongyeojido.domain.club.service.UpdateClubService;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionListResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.service.QueryClubSubmissionDetailService;
@@ -39,7 +46,6 @@ public class ClubController {
     private final QueryClubSubmissionListService queryClubSubmissionListService;
     private final QueryClubSubmissionDetailService queryClubSubmissionDetailService;
     private final PassClubService passClubService;
-    private final QueryClubAlarmService queryClubAlarmService;
 
     @PostMapping("/applications")
     @ResponseStatus(HttpStatus.CREATED)
