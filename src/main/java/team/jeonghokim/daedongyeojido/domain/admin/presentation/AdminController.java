@@ -27,7 +27,7 @@ public class AdminController {
     private final DecideClubDissolveService decideClubDissolveService;
     private final DecideResultDurationService decideResultDurationService;
 
-    @PatchMapping("/club/applications/{club-id}")
+    @PatchMapping("/clubs/applications/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void decideClubCreation(@PathVariable("club-id") Long clubId, @RequestBody @Valid DecideClubCreationRequest request) {
         decideClubCreationService.execute(clubId, request);
