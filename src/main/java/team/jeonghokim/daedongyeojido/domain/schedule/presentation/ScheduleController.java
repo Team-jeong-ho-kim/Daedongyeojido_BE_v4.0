@@ -20,7 +20,7 @@ import team.jeonghokim.daedongyeojido.domain.schedule.service.QueryInterviewSche
 import team.jeonghokim.daedongyeojido.domain.schedule.service.UpdateInterviewScheduleService;
 
 @RestController
-@RequestMapping("/schedule")
+@RequestMapping("/schedules")
 @RequiredArgsConstructor
 public class ScheduleController {
 
