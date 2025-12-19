@@ -15,7 +15,7 @@ import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.Quer
 import team.jeonghokim.daedongyeojido.domain.user.service.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -45,27 +45,21 @@ public class UserController {
         updateMyInfoService.execute(request);
     }
 
-    @PatchMapping("/member/decision")
+    @PatchMapping("/members")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void approveTeamMember(@RequestBody @Valid DecideTeamMemberApplicationRequest request) {
         decideTeamMemberApplicationService.execute(request);
     }
 
-    @GetMapping("/submission")
+    @GetMapping("/submissions")
     @ResponseStatus(HttpStatus.OK)
     public QueryUserSubmissionListResponse queryUserSubmissionList() {
         return queryUserSubmissionListService.execute();
     }
 
-    @PatchMapping("/decide/{submission-id}")
+    @PatchMapping("/submissions/{submission-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void decideClub(@PathVariable("submission-id") Long submissionId, @RequestBody @Valid DecideClubRequest request) {
         decideClubService.execute(submissionId, request);
-    }
-
-    @GetMapping("/alarm")
-    @ResponseStatus(HttpStatus.OK)
-    public QueryUserAlarmResponse queryUserAlarm() {
-        return queryUserAlarmService.execute();
     }
 }
