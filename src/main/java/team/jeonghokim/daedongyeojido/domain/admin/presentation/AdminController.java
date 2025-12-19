@@ -3,7 +3,14 @@ package team.jeonghokim.daedongyeojido.domain.admin.presentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideClubCreationRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideResultDurationRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
@@ -20,7 +27,7 @@ public class AdminController {
     private final DecideClubDissolveService decideClubDissolveService;
     private final DecideResultDurationService decideResultDurationService;
 
-    @PatchMapping("/club/create/{club-id}")
+    @PatchMapping("/club/applications/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void decideClubCreation(@PathVariable("club-id") Long clubId, @RequestBody @Valid DecideClubCreationRequest request) {
         decideClubCreationService.execute(clubId, request);
@@ -32,7 +39,7 @@ public class AdminController {
         decideClubDissolveService.execute(clubId, request);
     }
 
-    @PostMapping("/duration")
+    @PostMapping("/result-duration")
     @ResponseStatus(HttpStatus.CREATED)
     public void decideResultDuration(@RequestBody @Valid DecideResultDurationRequest request) {
         decideResultDurationService.execute(request);
