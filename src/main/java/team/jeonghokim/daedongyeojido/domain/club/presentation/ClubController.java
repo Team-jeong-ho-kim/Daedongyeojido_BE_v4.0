@@ -17,7 +17,7 @@ import team.jeonghokim.daedongyeojido.domain.submission.service.QueryClubSubmiss
 import team.jeonghokim.daedongyeojido.domain.submission.service.QueryClubSubmissionListService;
 
 @RestController
-@RequestMapping("/club")
+@RequestMapping("/clubs")
 @RequiredArgsConstructor
 public class ClubController {
 
@@ -33,7 +33,7 @@ public class ClubController {
     private final PassClubService passClubService;
     private final QueryClubAlarmService queryClubAlarmService;
 
-    @PostMapping("/create/apply")
+    @PostMapping("/applications")
     @ResponseStatus(HttpStatus.CREATED)
     public void createClub(@ModelAttribute @Valid ClubRequest request) {
         createClubService.execute(request);
@@ -57,7 +57,7 @@ public class ClubController {
         updateClubService.execute(clubId, request);
     }
 
-    @PostMapping("/member/apply")
+    @PostMapping("/members")
     @ResponseStatus(HttpStatus.CREATED)
     public void applyMember(@RequestBody @Valid TeamMemberRequest request) {
         applyTeamMemberService.execute(request);
@@ -69,33 +69,27 @@ public class ClubController {
         dissolveClubService.execute();
     }
 
-    @DeleteMapping("/member/{user-id}")
+    @DeleteMapping("/members/{user-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTeamMember(@PathVariable("user-id") Long userId) {
         deleteTeamMemberService.execute(userId);
     }
 
-    @GetMapping("/submission")
+    @GetMapping("/submissions")
     @ResponseStatus(HttpStatus.OK)
     public QueryClubSubmissionListResponse querySubmissionList() {
         return queryClubSubmissionListService.execute();
     }
 
-    @GetMapping("/submission/{submission-id}")
+    @GetMapping("/submissions/{submission-id}")
     @ResponseStatus(HttpStatus.OK)
     public QueryClubSubmissionDetailResponse querySubmissionDetail(@PathVariable("submission-id") Long submissionId) {
         return queryClubSubmissionDetailService.execute(submissionId);
     }
 
-    @PatchMapping("/pass/{submission-id}")
+    @PatchMapping("/submissions/{submission-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void passClub(@PathVariable("submission-id") Long submissionId, @RequestBody @Valid PassClubRequest request) {
         passClubService.execute(submissionId, request);
-    }
-
-    @GetMapping("/alarm")
-    @ResponseStatus(HttpStatus.OK)
-    public QueryClubAlarmResponse queryClubAlarm() {
-        return queryClubAlarmService.execute();
     }
 }
