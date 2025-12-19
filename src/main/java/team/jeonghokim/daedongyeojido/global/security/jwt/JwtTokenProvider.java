@@ -108,7 +108,7 @@ public class JwtTokenProvider {
             throw InvalidTokenException.EXCEPTION;
         }
 
-        return refreshTokenRepository.findByToken(refreshToken)
+        return refreshTokenRepository.findByRefreshToken(refreshToken)
                 .map(token -> {
                     String accountId = token.getAccountId();
                     TokenResponse tokenResponse = receiveToken(accountId);
@@ -133,6 +133,6 @@ public class JwtTokenProvider {
     }
 
     private boolean isNotRefreshToken(String token) {
-        return !REFRESH_TYPE.equals(getJws(token).getHeader().get(CLAIM_TYPE).toString());
+        return !REFRESH_TYPE.equals(getJws(token).getBody().get(CLAIM_TYPE, String.class));
     }
 }
