@@ -2,7 +2,6 @@ package team.jeonghokim.daedongyeojido.global.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
@@ -74,17 +73,18 @@ public class JwtTokenProvider {
 
     // 토큰에 담겨 있는 userId로 SpringSecurity Authentication 정보를 반환 하는 메서드
     public Authentication getAuthentication(String token) {
-        Claims claims = getJws(token).getBody();
+        Claims claims = getClaims(token);
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    private Jws<Claims> getJws(String token) {
+    private Claims getClaims(String token) {
         try {
             return Jwts
                     .parser() //JWT parser 생성
                     .setSigningKey(jwtProperties.getSecretKey())
-                    .parseClaimsJws(token);
+                    .parseClaimsJws(token)
+                    .getBody();
         }
         catch (ExpiredJwtException e) {
             throw ExpiredTokenException.EXCEPTION;
@@ -133,6 +133,6 @@ public class JwtTokenProvider {
     }
 
     private boolean isNotRefreshToken(String token) {
-        return !REFRESH_TYPE.equals(getJws(token).getBody().get(CLAIM_TYPE, String.class));
+        return !REFRESH_TYPE.equals(getClaims(token).get(CLAIM_TYPE, String.class));
     }
 }
