@@ -19,7 +19,7 @@ import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.respo
 import team.jeonghokim.daedongyeojido.domain.announcement.service.*;
 
 @RestController
-@RequestMapping("/announcement")
+@RequestMapping("/announcements")
 @RequiredArgsConstructor
 public class AnnouncementController {
 
@@ -48,7 +48,7 @@ public class AnnouncementController {
         return queryAnnouncementDetailService.execute(announcementId);
     }
 
-    @GetMapping("/club/{club-id}")
+    @GetMapping("/clubs/{club-id}")
     @ResponseStatus(HttpStatus.OK)
     public QueryClubAnnouncementResponse queryClubAnnouncement(@PathVariable("club-id") Long clubId) {
         return queryClubAnnouncementService.execute(clubId);
