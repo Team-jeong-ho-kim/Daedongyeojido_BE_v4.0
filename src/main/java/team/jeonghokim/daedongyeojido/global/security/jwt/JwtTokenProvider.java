@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.global.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import team.jeonghokim.daedongyeojido.domain.auth.domain.RefreshToken;
 import team.jeonghokim.daedongyeojido.domain.auth.domain.repository.RefreshTokenRepository;
+import team.jeonghokim.daedongyeojido.domain.auth.exception.RefreshTokenNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.TokenResponse;
 import team.jeonghokim.daedongyeojido.global.security.auth.CustomUserDetailsService;
 import team.jeonghokim.daedongyeojido.global.security.exception.ExpiredTokenException;
@@ -72,18 +74,17 @@ public class JwtTokenProvider {
 
     // 토큰에 담겨 있는 userId로 SpringSecurity Authentication 정보를 반환 하는 메서드
     public Authentication getAuthentication(String token) {
-        Claims claims = getClaims(token);
+        Claims claims = getJws(token).getBody();
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public Claims getClaims(String token) {
+    private Jws<Claims> getJws(String token) {
         try {
             return Jwts
                     .parser() //JWT parser 생성
                     .setSigningKey(jwtProperties.getSecretKey())
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .parseClaimsJws(token);
         }
         catch (ExpiredJwtException e) {
             throw ExpiredTokenException.EXCEPTION;
@@ -102,19 +103,20 @@ public class JwtTokenProvider {
                 .build();
     }
 
-    public TokenResponse reissueToken(String accountId) {
+    public TokenResponse reissueToken(String refreshToken) {
+        if (isNotRefreshToken(refreshToken)) {
+            throw InvalidTokenException.EXCEPTION;
+        }
 
-        RefreshToken refreshToken = refreshTokenRepository.save(RefreshToken.builder()
-                .accountId(accountId)
-                .refreshToken(createRefreshToken(accountId))
-                .timeToLive((jwtProperties.getRefreshExpiration()))
-                .build());
+        return refreshTokenRepository.findByToken(refreshToken)
+                .map(token -> {
+                    String accountId = token.getAccountId();
+                    TokenResponse tokenResponse = receiveToken(accountId);
 
-        return TokenResponse
-                .builder()
-                .accessToken(createAccessToken(accountId))
-                .refreshToken(refreshToken.getRefreshToken())
-                .build();
+                    token.update(tokenResponse.refreshToken(), jwtProperties.getRefreshExpiration());
+                    return new TokenResponse(tokenResponse.accessToken(), token.getRefreshToken());
+                })
+                .orElseThrow(() -> RefreshTokenNotFoundException.EXCEPTION);
     }
 
     //HTTP 요청 헤더에서 토큰을 가져오는 메서드
@@ -128,5 +130,9 @@ public class JwtTokenProvider {
         }
 
         return null;
+    }
+
+    private boolean isNotRefreshToken(String token) {
+        return !REFRESH_TYPE.equals(getJws(token).getHeader().get("type").toString());
     }
 }
