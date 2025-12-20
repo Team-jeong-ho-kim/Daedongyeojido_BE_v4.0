@@ -11,4 +11,8 @@ public enum Message {
 
     private final String title;
     private final String content;
+
+    public String format(Object... args) {
+        return content.formatted(args);
+    }
 }
