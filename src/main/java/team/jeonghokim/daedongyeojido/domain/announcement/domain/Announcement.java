@@ -48,7 +48,7 @@ public class Announcement extends BaseIdEntity {
     @JoinColumn(name = "club_id", nullable = false)
     private Club club;
 
-    @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "announcement", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<AnnouncementMajor> announcementMajors = new ArrayList<>();
 
     @Builder
