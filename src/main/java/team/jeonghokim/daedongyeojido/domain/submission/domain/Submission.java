@@ -43,7 +43,7 @@ public class Submission extends BaseIdEntity {
     @JoinColumn(name = "application_form_id", nullable = false)
     private ApplicationForm applicationForm;
 
-    @OneToMany(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "submission", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ApplicationAnswer> applicationAnswers = new ArrayList<>();
 
     @Builder
