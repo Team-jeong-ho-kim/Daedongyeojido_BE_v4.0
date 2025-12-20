@@ -27,10 +27,10 @@ public class ApplicationForm extends BaseIdEntity {
     @JoinColumn(name = "club_id", nullable = false)
     private Club club;
 
-    @OneToMany(mappedBy = "applicationForm", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "applicationForm", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ApplicationQuestion> applicationQuestions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "applicationForm", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "applicationForm", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ApplicationMajor> applicationMajors = new ArrayList<>();
 
     @Column(nullable = false)
