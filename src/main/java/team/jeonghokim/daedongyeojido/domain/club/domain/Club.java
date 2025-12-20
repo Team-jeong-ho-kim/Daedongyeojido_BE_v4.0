@@ -55,13 +55,13 @@ public class Club extends BaseIdEntity {
     @JoinColumn(name = "account_id", nullable = false)
     private User clubApplicant;
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ClubMajor> clubMajors = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ClubLink> clubLinks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Alarm> alarms = new ArrayList<>();
 
     @Builder
