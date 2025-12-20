@@ -35,13 +35,13 @@ public class User extends BaseIdEntity {
     @Column(nullable = false, length = 4)
     private String classNumber;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<UserLink> links = new ArrayList<>();
 
     @Column(length = 300)
     private String profileImage;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<UserMajor> majors =  new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
