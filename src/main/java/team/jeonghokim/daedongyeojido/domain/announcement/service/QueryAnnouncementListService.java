@@ -18,8 +18,6 @@ public class QueryAnnouncementListService {
     @Transactional(readOnly = true)
     public QueryAnnouncementListResponse execute() {
         List<AnnouncementResponse> announcements = announcementRepository.findAllAnnouncements();
-        return QueryAnnouncementListResponse.builder()
-                .announcements(announcements)
-                .build();
+        return QueryAnnouncementListResponse.from(announcements);
     }
 }
