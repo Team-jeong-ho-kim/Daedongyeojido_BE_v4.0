@@ -10,7 +10,7 @@ import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.respon
 import team.jeonghokim.daedongyeojido.domain.application.service.*;
 
 @RestController
-@RequestMapping("/application-form")
+@RequestMapping("/application-forms")
 @RequiredArgsConstructor
 public class ApplicationFormController {
     private final CreateApplicationFormService createApplicationFormService;
@@ -31,7 +31,7 @@ public class ApplicationFormController {
         return queryApplicationFormDetailService.execute(applicationFormId);
     }
 
-    @GetMapping("/all/{club-id}")
+    @GetMapping("/clubs/{club-id}")
     @ResponseStatus(HttpStatus.OK)
     public QueryApplicationFormListResponse queryAllApplicationForm(@PathVariable("club-id") Long clubId) {
         return queryAllApplicationFormService.execute(clubId);
