@@ -2,7 +2,6 @@ package team.jeonghokim.daedongyeojido.domain.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.auth.domain.repository.RefreshTokenRepository;
 import team.jeonghokim.daedongyeojido.domain.auth.exception.RefreshTokenNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.TokenResponse;
@@ -18,7 +17,6 @@ public class ReissueService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtProperties jwtProperties;
 
-    @Transactional
     public TokenResponse execute(String refreshToken) {
 
         if (jwtTokenProvider.isNotRefreshToken(refreshToken)) {
