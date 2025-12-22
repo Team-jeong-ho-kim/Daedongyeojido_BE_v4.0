@@ -67,10 +67,10 @@ public class PassClubService {
                 .submissionId(submission.getId())
                 .phoneNumber(submission.getUser().getPhoneNumber())
                 .isPassed(isPassed)
+                .clubName(submission.getApplicationForm().getClub().getClubName())
                 .build();
 
-        redisTemplate
-                .opsForZSet()
+        redisTemplate.opsForZSet()
                 .add(RESULT_DURATION_ZSET, payload, score);
     }
 }
