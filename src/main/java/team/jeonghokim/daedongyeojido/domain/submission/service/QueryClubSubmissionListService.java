@@ -29,9 +29,9 @@ public class QueryClubSubmissionListService {
         ApplicationForm applicationForm = applicationFormRepository.findByClub(currentUser.getClub())
                 .orElseThrow(() -> ApplicationFormNotFoundException.EXCEPTION);
 
-        List<ApplicantResponse> applicantResponses =
+        List<ApplicantResponse> applicants =
                 submissionRepository.findAllByApplicationFormIdWithValidStatuses(applicationForm.getId());
 
-        return new QueryClubSubmissionListResponse(applicantResponses);
+        return QueryClubSubmissionListResponse.from(applicants);
     }
 }
