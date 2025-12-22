@@ -15,20 +15,21 @@ public record QueryMyInfoResponse(
         String userName,
         String classNumber,
         String introduction,
-        String club,
+        String clubName,
         List<Major> major,
         List<String> link,
         String profileImage
 ) {
-    public static QueryMyInfoResponse of(User user) {
-        return new QueryMyInfoResponse(
-                user.getUserName(),
-                user.getClassNumber(),
-                user.getIntroduction(),
-                Optional.ofNullable(user.getClub()).map(Club::getClubName).orElse(null),
-                user.getMajors().stream().map(UserMajor::getMajor).toList(),
-                user.getLinks().stream().map(UserLink::getLink).toList(),
-                user.getProfileImage()
-        );
+
+    public static QueryMyInfoResponse from(User user) {
+        return QueryMyInfoResponse.builder()
+                .userName(user.getUserName())
+                .classNumber(user.getClassNumber())
+                .introduction(user.getIntroduction())
+                .clubName(Optional.ofNullable(user.getClub()).map(Club::getClubName).orElse(null))
+                .major(user.getMajors().stream().map(UserMajor::getMajor).toList())
+                .link(user.getLinks().stream().map(UserLink::getLink).toList())
+                .profileImage(user.getProfileImage())
+                .build();
     }
 }
