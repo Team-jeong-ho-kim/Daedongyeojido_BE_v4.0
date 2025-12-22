@@ -28,7 +28,7 @@ public class JwtTokenProvider {
     private final CustomUserDetailsService customUserDetailsService;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    private static final String CLAIM_TYPE = "type";
+    private static final String CLAIM_TYPE = "typ";
     private static final String ACCESS_TYPE = "access";
     private static final String REFRESH_TYPE = "refresh";
     private static final int MILLISECONDS = 1000;
@@ -77,7 +77,7 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public Claims getClaims(String token) {
+    private Claims getClaims(String token) {
         try {
             return Jwts
                     .parser() //JWT parser 생성
@@ -95,25 +95,9 @@ public class JwtTokenProvider {
 
     public TokenResponse receiveToken(String accountId) {
 
-        return TokenResponse
-                .builder()
+        return TokenResponse.builder()
                 .accessToken(createAccessToken(accountId))
                 .refreshToken(createRefreshToken(accountId))
-                .build();
-    }
-
-    public TokenResponse reissueToken(String accountId) {
-
-        RefreshToken refreshToken = refreshTokenRepository.save(RefreshToken.builder()
-                .accountId(accountId)
-                .refreshToken(createRefreshToken(accountId))
-                .timeToLive((jwtProperties.getRefreshExpiration()))
-                .build());
-
-        return TokenResponse
-                .builder()
-                .accessToken(createAccessToken(accountId))
-                .refreshToken(refreshToken.getRefreshToken())
                 .build();
     }
 
@@ -128,5 +112,9 @@ public class JwtTokenProvider {
         }
 
         return null;
+    }
+
+    public boolean isNotRefreshToken(String token) {
+        return !REFRESH_TYPE.equals(getClaims(token).get(CLAIM_TYPE, String.class));
     }
 }
