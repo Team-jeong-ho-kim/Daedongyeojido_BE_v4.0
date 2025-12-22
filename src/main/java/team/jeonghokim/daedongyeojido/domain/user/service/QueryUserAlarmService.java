@@ -20,9 +20,7 @@ public class QueryUserAlarmService {
     @Transactional(readOnly = true)
     public QueryUserAlarmResponse execute() {
         User user = userFacade.getCurrentUser();
-
-        List<AlarmResponse> alarmResponses = alarmRepository.findAllByUserId(user.getId());
-
-        return new QueryUserAlarmResponse(alarmResponses);
+        List<AlarmResponse> alarms = alarmRepository.findAllByUserId(user.getId());
+        return QueryUserAlarmResponse.from(alarms);
     }
 }

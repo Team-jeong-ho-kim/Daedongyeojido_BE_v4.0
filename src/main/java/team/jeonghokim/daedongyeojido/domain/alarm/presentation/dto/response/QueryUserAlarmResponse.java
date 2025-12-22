@@ -1,6 +1,15 @@
 package team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response;
 
+import lombok.Builder;
+
 import java.util.List;
 
-public record QueryUserAlarmResponse(List<AlarmResponse> alarmResponses) {
+@Builder
+public record QueryUserAlarmResponse(List<AlarmResponse> alarms) {
+
+    public static QueryUserAlarmResponse from(List<AlarmResponse> alarms) {
+        return QueryUserAlarmResponse.builder()
+                .alarms(alarms)
+                .build();
+    }
 }
