@@ -18,6 +18,6 @@ public class QueryClubListService {
     @Transactional(readOnly = true)
     public QueryClubListResponse execute() {
         List<ClubVO> clubs = clubRepository.findAllByIsOpenIsTrue();
-        return new QueryClubListResponse(clubs);
+        return QueryClubListResponse.from(clubs);
     }
 }
