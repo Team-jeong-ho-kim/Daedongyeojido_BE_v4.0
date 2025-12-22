@@ -22,6 +22,6 @@ public class QueryInterviewScheduleListService {
     public QueryInterviewScheduleListResponse execute() {
         User user = userFacade.getCurrentUser();
         List<InterviewScheduleResponse> schedules = scheduleRepository.findAllSchedulesByClubId(user.getClub().getId());
-        return new QueryInterviewScheduleListResponse(schedules);
+        return QueryInterviewScheduleListResponse.from(schedules);
     }
 }
