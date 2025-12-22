@@ -19,13 +19,9 @@ public class QueryApplicationFormListService {
 
     @Transactional(readOnly = true)
     public QueryApplicationFormListResponse execute(Long clubId) {
-
         Club club = clubFacade.getClubById(clubId);
+        List<ApplicationFormResponse> applicationForms = applicationFormRepository.findAllByClubId(club.getId());
 
-        List<ApplicationFormResponse> applicationFormListResponses = applicationFormRepository.findAllByClubId(club.getId());
-
-        return QueryApplicationFormListResponse.builder()
-                .listResponses(applicationFormListResponses)
-                .build();
+        return QueryApplicationFormListResponse.from(applicationForms);
     }
 }
