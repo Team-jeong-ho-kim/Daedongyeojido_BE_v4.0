@@ -3,12 +3,12 @@ package team.jeonghokim.daedongyeojido.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotAcceptedException;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.club.domain.ClubAlarm;
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyJoinClubException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
@@ -53,11 +53,10 @@ public class DecideClubService {
     }
 
     private void joinClub(Club club, User user) {
-        Alarm alarm = Alarm.builder()
+        ClubAlarm alarm = ClubAlarm.builder()
                 .title(AlarmType.USER_JOINED_CLUB.formatTitle(user.getUserName()))
                 .content(AlarmType.USER_JOINED_CLUB.formatContent(user.getUserName()))
                 .club(club)
-                .receiver(user)
                 .alarmType(AlarmType.USER_JOINED_CLUB)
                 .build();
 
@@ -65,11 +64,10 @@ public class DecideClubService {
     }
 
     private void refuseClub(Club club, User user) {
-        Alarm alarm = Alarm.builder()
+        ClubAlarm alarm = ClubAlarm.builder()
                 .title(AlarmType.USER_REFUSED_CLUB.formatTitle(user.getUserName()))
                 .content(AlarmType.USER_REFUSED_CLUB.formatContent(user.getUserName()))
                 .club(club)
-                .receiver(user)
                 .alarmType(AlarmType.USER_REFUSED_CLUB)
                 .build();
 

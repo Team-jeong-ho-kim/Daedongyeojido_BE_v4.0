@@ -3,10 +3,10 @@ package team.jeonghokim.daedongyeojido.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.club.domain.ClubAlarm;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
@@ -33,11 +33,10 @@ public class SubmitApplicationService {
     }
 
     private void submitApplication(Club club, User user) {
-        Alarm alarm = Alarm.builder()
+        ClubAlarm alarm = ClubAlarm.builder()
                 .title(AlarmType.USER_SUBMIT_APPLICATION.formatTitle(user.getUserName()))
                 .content(AlarmType.USER_SUBMIT_APPLICATION.formatContent(user.getUserName()))
                 .club(club)
-                .receiver(user)
                 .alarmType(AlarmType.USER_SUBMIT_APPLICATION)
                 .build();
 
