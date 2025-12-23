@@ -3,6 +3,9 @@ package team.jeonghokim.daedongyeojido.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserApplication;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserApplicationRepository;
@@ -26,6 +29,33 @@ public class DecideTeamMemberApplicationService {
         if (request.getIsApproved()) {
             user.approvedTeamMember(userApplication.getClub());
             userApplication.approved();
+            joinClub(userApplication.getClub(), user);
+        } else {
+            refuseClub(userApplication.getClub(), user);
         }
+    }
+
+    private void joinClub(Club club, User user) {
+        Alarm alarm = Alarm.builder()
+                .title(AlarmType.USER_JOINED_CLUB.getTitle())
+                .content(AlarmType.USER_JOINED_CLUB.format(user.getUserName()))
+                .club(club)
+                .receiver(user)
+                .alarmType(AlarmType.USER_JOINED_CLUB)
+                .build();
+
+        club.getAlarms().add(alarm);
+    }
+
+    private void refuseClub(Club club, User user) {
+        Alarm alarm = Alarm.builder()
+                .title(AlarmType.USER_REFUSED_CLUB.getTitle())
+                .content(AlarmType.USER_REFUSED_CLUB.format(user.getUserName()))
+                .club(club)
+                .receiver(user)
+                .alarmType(AlarmType.USER_REFUSED_CLUB)
+                .build();
+
+        club.getAlarms().add(alarm);
     }
 }
