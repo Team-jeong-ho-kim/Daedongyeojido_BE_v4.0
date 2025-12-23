@@ -3,6 +3,9 @@ package team.jeonghokim.daedongyeojido.domain.schedule.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyApplicantInClubException;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.Schedule;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
@@ -44,5 +47,26 @@ public class DecideInterviewScheduleService {
                 .build();
 
         scheduleRepository.save(schedule);
+
+        createSchedule(schedule, interviewer, applicant);
+    }
+
+    private void createSchedule(Schedule schedule, User interviewer, User applicant) {
+        Alarm alarm = Alarm.builder()
+                .title(AlarmType.INTERVIEW_SCHEDULE_CREATED.getTitle()
+                                .formatted(interviewer.getClub().getClubName()))
+                .content(AlarmType.INTERVIEW_SCHEDULE_CREATED.format(
+                                interviewer.getClub().getClubName(),
+                                schedule.getInterviewSchedule(),
+                                schedule.getInterviewTime(),
+                                schedule.getPlace()
+                        )
+                )
+                .club(interviewer.getClub())
+                .receiver(applicant)
+                .alarmType(AlarmType.INTERVIEW_SCHEDULE_CREATED)
+                .build();
+
+        applicant.getAlarms().add(alarm);
     }
 }
