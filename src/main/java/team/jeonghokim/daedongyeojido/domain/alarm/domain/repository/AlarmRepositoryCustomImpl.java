@@ -2,12 +2,12 @@ package team.jeonghokim.daedongyeojido.domain.alarm.domain.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.QClubAlarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.QUserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.AlarmResponse;
 import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.QAlarmResponse;
 import team.jeonghokim.daedongyeojido.domain.club.domain.QClub;
-import team.jeonghokim.daedongyeojido.domain.club.domain.QClubAlarm;
 import team.jeonghokim.daedongyeojido.domain.user.domain.QUser;
-import team.jeonghokim.daedongyeojido.domain.user.domain.QUserAlarm;
 
 import java.util.List;
 
