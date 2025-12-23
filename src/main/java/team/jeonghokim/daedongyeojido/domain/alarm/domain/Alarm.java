@@ -23,10 +23,10 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Alarm extends BaseIdEntity {
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 500, nullable = false)
     private String title;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 300, nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
