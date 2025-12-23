@@ -13,7 +13,7 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseTimeIdEntity;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserAlarm extends BaseTimeIdEntity {
 
-    @Column(length = 500, nullable = false)
+    @Column(length = 50, nullable = false)
     private String title;
 
     @Column(length = 300, nullable = false)
