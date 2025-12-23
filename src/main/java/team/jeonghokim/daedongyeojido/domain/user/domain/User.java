@@ -53,7 +53,7 @@ public class User extends BaseIdEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Alarm> alarms = new ArrayList<>();
 
     public void inputMyInfo(String phoneNumber, String introduction,
