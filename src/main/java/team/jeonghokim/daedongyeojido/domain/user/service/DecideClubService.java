@@ -3,9 +3,12 @@ package team.jeonghokim.daedongyeojido.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotAcceptedException;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyJoinClubException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
@@ -29,6 +32,9 @@ public class DecideClubService {
 
         if (request.getIsSelected()) {
             applicant.selectedClub(submission.getApplicationForm().getClub());
+            joinClub(submission.getApplicationForm().getClub(), applicant);
+        } else {
+            refuseClub(submission.getApplicationForm().getClub(), applicant);
         }
     }
 
@@ -44,5 +50,29 @@ public class DecideClubService {
         if (submission.getApplicationStatus() != ApplicationStatus.ACCEPTED) {
             throw ApplicationNotAcceptedException.EXCEPTION;
         }
+    }
+
+    private void joinClub(Club club, User user) {
+        Alarm alarm = Alarm.builder()
+                .title(AlarmType.USER_JOINED_CLUB.getTitle())
+                .content(AlarmType.USER_JOINED_CLUB.format(user.getUserName()))
+                .club(club)
+                .receiver(user)
+                .alarmType(AlarmType.USER_JOINED_CLUB)
+                .build();
+
+        club.getAlarms().add(alarm);
+    }
+
+    private void refuseClub(Club club, User user) {
+        Alarm alarm = Alarm.builder()
+                .title(AlarmType.USER_REFUSED_CLUB.getTitle())
+                .content(AlarmType.USER_REFUSED_CLUB.format(user.getUserName()))
+                .club(club)
+                .receiver(user)
+                .alarmType(AlarmType.USER_REFUSED_CLUB)
+                .build();
+
+        club.getAlarms().add(alarm);
     }
 }

@@ -17,7 +17,9 @@ public enum AlarmType {
     CLUB_CREATION_ACCEPTED("%s 개설 성공", "%s 동아리가 성공적으로 개설되었습니다."),
     CLUB_CREATION_REJECTED("%s 개설 실패", "%s 동아리의 개설 신청이 거부되었습니다."),
     CLUB_DISSOLUTION_ACCEPTED("%s 해체 성공", "%s 동아리가 성공적으로 해체되었습니다."),
-    CLUB_DISSOLUTION_REJECTED("%s 해체 실패", "%s 동아리의 해체 신청이 거부되었습니다.");
+    CLUB_DISSOLUTION_REJECTED("%s 해체 실패", "%s 동아리의 해체 신청이 거부되었습니다."),
+    USER_JOINED_CLUB("%s님 동아리 합류", "%s님이 동아리에 합류하였습니다."),
+    USER_REFUSED_CLUB("%s 동아리 합류 거절", "%s님이 동아리 합류를 거부하였습니다.");
 
 
     private final String title;
