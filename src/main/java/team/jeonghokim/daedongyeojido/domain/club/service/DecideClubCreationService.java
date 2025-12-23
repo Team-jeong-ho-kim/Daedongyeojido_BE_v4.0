@@ -32,6 +32,8 @@ public class DecideClubCreationService {
             club.clubOpen();
             user.approvedClub(club);
             acceptClub(club, user);
+        } else {
+            rejectClub(club, user);
         }
     }
 
@@ -42,6 +44,18 @@ public class DecideClubCreationService {
                 .club(club)
                 .receiver(user)
                 .alarmType(AlarmType.CLUB_CREATION_ACCEPTED)
+                .build();
+
+        user.getAlarms().add(alarm);
+    }
+
+    private void rejectClub(Club club, User user) {
+        Alarm alarm = Alarm.builder()
+                .title(AlarmType.CLUB_CREATION_REJECTED.getTitle())
+                .content(AlarmType.CLUB_CREATION_REJECTED.format(club.getClubName()))
+                .club(club)
+                .receiver(user)
+                .alarmType(AlarmType.CLUB_CREATION_REJECTED)
                 .build();
 
         user.getAlarms().add(alarm);
