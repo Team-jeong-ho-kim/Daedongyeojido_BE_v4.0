@@ -3,7 +3,6 @@ package team.jeonghokim.daedongyeojido.domain.club.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubLink;
@@ -12,6 +11,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubReposito
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 
@@ -75,14 +75,13 @@ public class CreateClubService {
     }
 
     private void createAlarm(Club club, User clubApplicant) {
-        Alarm alarm = Alarm.builder()
+        UserAlarm alarm = UserAlarm.builder()
                 .title(AlarmType.CREATE_CLUB_APPLY.formatTitle(club.getClubName()))
                 .content(AlarmType.CREATE_CLUB_APPLY.formatContent(club.getClubName()))
-                .club(club)
                 .receiver(clubApplicant)
                 .alarmType(AlarmType.CREATE_CLUB_APPLY)
                 .build();
 
-        club.getAlarms().add(alarm);
+        clubApplicant.getAlarms().add(alarm);
     }
 }
