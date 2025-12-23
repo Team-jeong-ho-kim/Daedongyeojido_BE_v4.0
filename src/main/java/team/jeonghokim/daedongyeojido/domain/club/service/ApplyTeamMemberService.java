@@ -7,7 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.TeamMemberRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.user.domain.UserAlarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserApplication;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserApplicationRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;

@@ -1,8 +1,9 @@
-package team.jeonghokim.daedongyeojido.domain.club.domain;
+package team.jeonghokim.daedongyeojido.domain.alarm.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.global.entity.BaseTimeIdEntity;
 
 @Entity(name = "tbl_club_alarm")

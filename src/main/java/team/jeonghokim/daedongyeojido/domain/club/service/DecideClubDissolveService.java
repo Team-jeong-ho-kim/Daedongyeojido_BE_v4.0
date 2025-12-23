@@ -10,7 +10,7 @@ import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotOpenException
 import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.user.domain.UserAlarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 

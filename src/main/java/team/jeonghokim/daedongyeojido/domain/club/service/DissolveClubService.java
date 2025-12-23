@@ -7,8 +7,8 @@ import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.exception.UserNotInClubException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.user.domain.UserAlarm;
-import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserAlarmRepository;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
 import java.util.Optional;
