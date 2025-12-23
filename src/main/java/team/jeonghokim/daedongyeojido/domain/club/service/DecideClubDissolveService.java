@@ -14,6 +14,7 @@ import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
+import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 
 import java.util.List;
 
@@ -29,20 +30,44 @@ public class DecideClubDissolveService {
     @Transactional
     public void execute(Long clubId, DecideClubDissolveRequest request) {
         Club club = clubFacade.getClubById(clubId);
+        User user = userRepository.findById(club.getClubApplicant().getId())
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         if (!club.getIsOpen()) {
             throw ClubNotOpenException.EXCEPTION;
         }
 
-        Alarm alarm = alarmRepository.findByClubAndAlarmType(club, AlarmType.DISSOLVE_CLUB)
-                .orElseThrow(() -> AlarmNotFoundException.EXCEPTION);
-
         if (request.isDecision()) {
             List<User> clubMembers = userRepository.findAllByClub(club);
             clubMembers.forEach(User::leaveClub);
             clubRepository.delete(club);
+            acceptDissolution(club, user);
+        } else {
+            rejectDissolution(club, user);
         }
+    }
 
-        alarmRepository.delete(alarm);
+    private void acceptDissolution(Club club, User user) {
+        Alarm alarm = Alarm.builder()
+                .title(AlarmType.CLUB_DISSOLUTION_ACCEPTED.getTitle())
+                .content(AlarmType.CLUB_DISSOLUTION_ACCEPTED.format(club.getClubName()))
+                .club(club)
+                .receiver(user)
+                .alarmType(AlarmType.CLUB_DISSOLUTION_ACCEPTED)
+                .build();
+
+        user.getAlarms().add(alarm);
+    }
+
+    private void rejectDissolution(Club club, User user) {
+        Alarm alarm = Alarm.builder()
+                .title(AlarmType.CLUB_DISSOLUTION_REJECTED.getTitle())
+                .content(AlarmType.CLUB_DISSOLUTION_REJECTED.format(club.getClubName()))
+                .club(club)
+                .receiver(user)
+                .alarmType(AlarmType.CLUB_DISSOLUTION_REJECTED)
+                .build();
+
+        user.getAlarms().add(alarm);
     }
 }
