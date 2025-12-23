@@ -21,7 +21,8 @@ public enum AlarmType {
     USER_JOINED_CLUB("%s님 동아리 합류", "%s님이 동아리에 합류하였습니다."),
     USER_REFUSED_CLUB("%s 동아리 합류 거절", "%s님이 동아리 합류를 거부하였습니다."),
     USER_SUBMIT_APPLICATION("%s 지원서 제출", "%s님이 동아리 지원서를 제출했습니다."),
-    USER_CANCEL_APPLICATION("%s 제출 취소", "%s님이 동아리 지원서 제출을 취소하였습니다.");
+    USER_CANCEL_APPLICATION("%s 제출 취소", "%s님이 동아리 지원서 제출을 취소하였습니다."),
+    DELETE_CLUB_MEMBER("%s 활동 종료", "%s 동아리에서 활동이 종료되었습니다.");
 
     private final String title;
     private final String content;
