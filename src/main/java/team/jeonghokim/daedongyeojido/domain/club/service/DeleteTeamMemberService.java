@@ -40,7 +40,7 @@ public class DeleteTeamMemberService {
 
     private void deleteClubMember(Club club, User user) {
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.DELETE_CLUB_MEMBER.getTitle())
+                .title(AlarmType.DELETE_CLUB_MEMBER.format(club.getClubName()))
                 .content(AlarmType.DELETE_CLUB_MEMBER.format(club.getClubName()))
                 .club(club)
                 .receiver(user)

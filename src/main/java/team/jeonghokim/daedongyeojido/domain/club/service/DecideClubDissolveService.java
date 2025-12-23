@@ -46,7 +46,7 @@ public class DecideClubDissolveService {
 
     private void acceptDissolution(Club club, User user) {
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.CLUB_DISSOLUTION_ACCEPTED.getTitle())
+                .title(AlarmType.CLUB_DISSOLUTION_ACCEPTED.format(club.getClubName()))
                 .content(AlarmType.CLUB_DISSOLUTION_ACCEPTED.format(club.getClubName()))
                 .club(club)
                 .receiver(user)
@@ -58,7 +58,7 @@ public class DecideClubDissolveService {
 
     private void rejectDissolution(Club club, User user) {
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.CLUB_DISSOLUTION_REJECTED.getTitle())
+                .title(AlarmType.CLUB_DISSOLUTION_REJECTED.format(club.getClubName()))
                 .content(AlarmType.CLUB_DISSOLUTION_REJECTED.format(club.getClubName()))
                 .club(club)
                 .receiver(user)

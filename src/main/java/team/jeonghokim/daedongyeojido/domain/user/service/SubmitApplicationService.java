@@ -34,7 +34,7 @@ public class SubmitApplicationService {
 
     private void submitApplication(Club club, User user) {
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.USER_SUBMIT_APPLICATION.getTitle())
+                .title(AlarmType.USER_SUBMIT_APPLICATION.format(user.getUserName()))
                 .content(AlarmType.USER_SUBMIT_APPLICATION.format(user.getUserName()))
                 .club(club)
                 .receiver(user)

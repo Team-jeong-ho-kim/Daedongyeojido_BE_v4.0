@@ -76,7 +76,7 @@ public class CreateClubService {
 
     private void createAlarm(Club club, User clubApplicant) {
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.CREATE_CLUB_APPLY.getTitle())
+                .title(AlarmType.CREATE_CLUB_APPLY.format(club.getClubName()))
                 .content(AlarmType.CREATE_CLUB_APPLY.format(club.getClubName()))
                 .club(club)
                 .receiver(clubApplicant)

@@ -30,7 +30,7 @@ public class DissolveClubService {
         // sms 알림 기능 로직 추가 해야 함.
 
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.DISSOLVE_CLUB_APPLY.getTitle())
+                .title(AlarmType.DISSOLVE_CLUB_APPLY.format(club.getClubName()))
                 .content(AlarmType.DISSOLVE_CLUB_APPLY.format(club.getClubName()))
                 .club(club)
                 .receiver(receiver)
