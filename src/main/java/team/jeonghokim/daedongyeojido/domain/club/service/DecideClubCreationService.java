@@ -6,8 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideClubCreationRequest;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.AlarmRepository;
-import team.jeonghokim.daedongyeojido.domain.alarm.exception.AlarmNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
@@ -20,7 +18,6 @@ public class DecideClubCreationService {
 
     private final UserRepository userRepository;
     private final ClubFacade clubFacade;
-    private final AlarmRepository alarmRepository;
 
     @Transactional
     public void execute(Long clubId, DecideClubCreationRequest request) {
