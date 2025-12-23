@@ -28,14 +28,22 @@ public class DecideClubCreationService {
         User user = userRepository.findById(club.getClubApplicant().getId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        Alarm alarm = alarmRepository.findByClubAndAlarmType(club, AlarmType.CREATE_CLUB)
-                .orElseThrow(() -> AlarmNotFoundException.EXCEPTION);
-
         if (request.isOpen()) {
             club.clubOpen();
             user.approvedClub(club);
+            acceptClub(club, user);
         }
+    }
 
-        alarmRepository.delete(alarm);
+    private void acceptClub(Club club, User user) {
+        Alarm alarm = Alarm.builder()
+                .title(AlarmType.CLUB_CREATION_ACCEPTED.getTitle())
+                .content(AlarmType.CLUB_CREATION_ACCEPTED.format(club.getClubName()))
+                .club(club)
+                .receiver(user)
+                .alarmType(AlarmType.CLUB_CREATION_ACCEPTED)
+                .build();
+
+        user.getAlarms().add(alarm);
     }
 }
