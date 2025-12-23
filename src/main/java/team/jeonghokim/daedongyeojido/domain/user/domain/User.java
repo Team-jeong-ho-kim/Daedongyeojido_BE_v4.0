@@ -54,7 +54,7 @@ public class User extends BaseIdEntity {
     private Club club;
 
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Alarm> alarms = new ArrayList<>();
+    private List<UserAlarm> alarms = new ArrayList<>();
 
     public void inputMyInfo(String phoneNumber, String introduction,
                             List<UserMajor> majors, List<UserLink> links, String profileImage) {

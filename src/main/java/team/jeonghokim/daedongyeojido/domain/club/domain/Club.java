@@ -62,7 +62,7 @@ public class Club extends BaseIdEntity {
     private List<ClubLink> clubLinks = new ArrayList<>();
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Alarm> alarms = new ArrayList<>();
+    private List<ClubAlarm> alarms = new ArrayList<>();
 
     @Builder
     public Club(
