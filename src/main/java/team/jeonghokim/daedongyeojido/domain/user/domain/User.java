@@ -2,7 +2,6 @@ package team.jeonghokim.daedongyeojido.domain.user.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
