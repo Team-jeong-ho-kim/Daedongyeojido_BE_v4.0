@@ -12,6 +12,7 @@ import java.util.List;
 public record QueryAnnouncementDetailResponse(
         String title,
         List<Major> major,
+        String phoneNumber,
         LocalDate deadline,
         String introduction,
         String talentDescription,
@@ -22,6 +23,7 @@ public record QueryAnnouncementDetailResponse(
         return QueryAnnouncementDetailResponse.builder()
                 .title(announcement.getTitle())
                 .major(announcement.getAnnouncementMajors().stream().map(AnnouncementMajor::getMajor).toList())
+                .phoneNumber(announcement.getPhoneNumber())
                 .deadline(announcement.getDeadline())
                 .introduction(announcement.getIntroduction())
                 .talentDescription(announcement.getTalentDescription())
