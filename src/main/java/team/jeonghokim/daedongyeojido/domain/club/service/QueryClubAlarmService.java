@@ -23,11 +23,9 @@ public class QueryClubAlarmService {
     @Transactional(readOnly = true)
     public QueryClubAlarmResponse execute() {
         User user = userFacade.getCurrentUser();
-
         Club club = clubFacade.getClubById(user.getClub().getId());
+        List<AlarmResponse> alarms = alarmRepository.findAllByClubId(club.getId());
 
-        List<AlarmResponse> alarmResponses = alarmRepository.findAllByClubId(club.getId());
-
-        return new QueryClubAlarmResponse(alarmResponses);
+        return QueryClubAlarmResponse.from(alarms);
     }
 }

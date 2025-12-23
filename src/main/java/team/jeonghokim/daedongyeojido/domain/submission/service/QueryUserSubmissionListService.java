@@ -20,9 +20,8 @@ public class QueryUserSubmissionListService {
     @Transactional(readOnly = true)
     public QueryUserSubmissionListResponse execute() {
         User user = userFacade.getCurrentUser();
+        List<SubmissionListResponse> submissions = submissionRepository.findAllSubmissionByUserId(user.getId());
 
-        List<SubmissionListResponse> submissionListResponses = submissionRepository.findAllSubmissionByUserId(user.getId());
-
-        return new QueryUserSubmissionListResponse(submissionListResponses);
+        return QueryUserSubmissionListResponse.from(submissions);
     }
 }

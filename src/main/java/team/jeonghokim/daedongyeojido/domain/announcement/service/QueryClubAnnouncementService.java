@@ -20,11 +20,9 @@ public class QueryClubAnnouncementService {
 
     @Transactional(readOnly = true)
     public QueryClubAnnouncementResponse execute(Long clubId) {
-
         Club club = clubFacade.getClubById(clubId);
+        List<ClubAnnouncementResponse> clubAnnouncements = announcementRepository.findAllClubAnnouncementsByClubId(club.getId());
 
-        List<ClubAnnouncementResponse> clubAnnouncementResponses = announcementRepository.findAllClubAnnouncementsByClubId(club.getId());
-
-        return new QueryClubAnnouncementResponse(clubAnnouncementResponses);
+        return QueryClubAnnouncementResponse.from(clubAnnouncements);
     }
 }

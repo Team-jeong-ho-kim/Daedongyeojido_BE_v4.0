@@ -6,4 +6,7 @@ import java.util.List;
 
 public record QueryClubListResponse(List<ClubVO> clubs) {
 
+    public static QueryClubListResponse from(List<ClubVO> clubs) {
+        return new QueryClubListResponse(clubs);
+    }
 }
