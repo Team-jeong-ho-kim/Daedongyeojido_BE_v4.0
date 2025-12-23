@@ -39,8 +39,8 @@ public class ApplyTeamMemberService {
 
     private void createAlarm(Club club, User userApplication) {
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.CLUB_MEMBER_APPLY.format(club.getClubName()))
-                .content(AlarmType.CLUB_MEMBER_APPLY.format(club.getClubName()))
+                .title(AlarmType.CLUB_MEMBER_APPLY.formatTitle(club.getClubName()))
+                .content(AlarmType.CLUB_MEMBER_APPLY.formatContent(club.getClubName()))
                 .club(club)
                 .receiver(userApplication)
                 .alarmType(AlarmType.CLUB_MEMBER_APPLY)

@@ -36,8 +36,8 @@ public class DecideClubCreationService {
 
     private void acceptClub(Club club, User user) {
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.CLUB_CREATION_ACCEPTED.format(club.getClubName()))
-                .content(AlarmType.CLUB_CREATION_ACCEPTED.format(club.getClubName()))
+                .title(AlarmType.CLUB_CREATION_ACCEPTED.formatTitle(club.getClubName()))
+                .content(AlarmType.CLUB_CREATION_ACCEPTED.formatContent(club.getClubName()))
                 .club(club)
                 .receiver(user)
                 .alarmType(AlarmType.CLUB_CREATION_ACCEPTED)
@@ -48,8 +48,8 @@ public class DecideClubCreationService {
 
     private void rejectClub(Club club, User user) {
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.CLUB_CREATION_REJECTED.format(club.getClubName()))
-                .content(AlarmType.CLUB_CREATION_REJECTED.format(club.getClubName()))
+                .title(AlarmType.CLUB_CREATION_REJECTED.formatTitle(club.getClubName()))
+                .content(AlarmType.CLUB_CREATION_REJECTED.formatContent(club.getClubName()))
                 .club(club)
                 .receiver(user)
                 .alarmType(AlarmType.CLUB_CREATION_REJECTED)

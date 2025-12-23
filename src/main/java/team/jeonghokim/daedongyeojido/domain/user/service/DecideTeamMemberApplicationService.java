@@ -37,8 +37,8 @@ public class DecideTeamMemberApplicationService {
 
     private void joinClub(Club club, User user) {
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.USER_JOINED_CLUB.getTitle())
-                .content(AlarmType.USER_JOINED_CLUB.format(user.getUserName()))
+                .title(AlarmType.USER_JOINED_CLUB.formatTitle(user.getUserName()))
+                .content(AlarmType.USER_JOINED_CLUB.formatContent(user.getUserName()))
                 .club(club)
                 .receiver(user)
                 .alarmType(AlarmType.USER_JOINED_CLUB)
@@ -49,8 +49,8 @@ public class DecideTeamMemberApplicationService {
 
     private void refuseClub(Club club, User user) {
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.USER_REFUSED_CLUB.getTitle())
-                .content(AlarmType.USER_REFUSED_CLUB.format(user.getUserName()))
+                .title(AlarmType.USER_REFUSED_CLUB.formatTitle(user.getUserName()))
+                .content(AlarmType.USER_REFUSED_CLUB.formatContent(user.getUserName()))
                 .club(club)
                 .receiver(user)
                 .alarmType(AlarmType.USER_REFUSED_CLUB)

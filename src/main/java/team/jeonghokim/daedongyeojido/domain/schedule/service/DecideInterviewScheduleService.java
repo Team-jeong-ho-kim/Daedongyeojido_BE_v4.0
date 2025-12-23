@@ -53,15 +53,12 @@ public class DecideInterviewScheduleService {
 
     private void createSchedule(Schedule schedule, User interviewer, User applicant) {
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.INTERVIEW_SCHEDULE_CREATED.getTitle()
-                                .formatted(interviewer.getClub().getClubName()))
-                .content(AlarmType.INTERVIEW_SCHEDULE_CREATED.format(
+                .title(AlarmType.INTERVIEW_SCHEDULE_CREATED.formatTitle(interviewer.getClub().getClubName()))
+                .content(AlarmType.INTERVIEW_SCHEDULE_CREATED.formatContent(
                                 interviewer.getClub().getClubName(),
                                 schedule.getInterviewSchedule(),
                                 schedule.getInterviewTime(),
-                                schedule.getPlace()
-                        )
-                )
+                                schedule.getPlace()))
                 .club(interviewer.getClub())
                 .receiver(applicant)
                 .alarmType(AlarmType.INTERVIEW_SCHEDULE_CREATED)

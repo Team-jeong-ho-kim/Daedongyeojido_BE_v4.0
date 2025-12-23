@@ -39,8 +39,8 @@ public class CancelApplicationService {
 
     private void cancelApplication(Club club, User user) {
         Alarm alarm = Alarm.builder()
-                .title(AlarmType.USER_CANCEL_APPLICATION.format(user.getUserName()))
-                .content(AlarmType.USER_CANCEL_APPLICATION.format(user.getUserName()))
+                .title(AlarmType.USER_CANCEL_APPLICATION.formatTitle(user.getUserName()))
+                .content(AlarmType.USER_CANCEL_APPLICATION.formatContent(user.getUserName()))
                 .club(club)
                 .receiver(user)
                 .alarmType(AlarmType.USER_CANCEL_APPLICATION)
