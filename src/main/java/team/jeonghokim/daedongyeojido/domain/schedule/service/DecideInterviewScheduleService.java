@@ -12,6 +12,7 @@ import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.Schedule
 import team.jeonghokim.daedongyeojido.domain.schedule.exception.AlreadyInterviewScheduleExistsException;
 import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.InterviewScheduleRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
@@ -52,14 +53,13 @@ public class DecideInterviewScheduleService {
     }
 
     private void createSchedule(Schedule schedule, User interviewer, User applicant) {
-        Alarm alarm = Alarm.builder()
+        UserAlarm alarm = UserAlarm.builder()
                 .title(AlarmType.INTERVIEW_SCHEDULE_CREATED.formatTitle(interviewer.getClub().getClubName()))
                 .content(AlarmType.INTERVIEW_SCHEDULE_CREATED.formatContent(
                                 interviewer.getClub().getClubName(),
                                 schedule.getInterviewSchedule(),
                                 schedule.getInterviewTime(),
                                 schedule.getPlace()))
-                .club(interviewer.getClub())
                 .receiver(applicant)
                 .alarmType(AlarmType.INTERVIEW_SCHEDULE_CREATED)
                 .build();
