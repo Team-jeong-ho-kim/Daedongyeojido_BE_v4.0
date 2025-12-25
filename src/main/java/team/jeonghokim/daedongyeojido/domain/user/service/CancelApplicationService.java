@@ -34,10 +34,10 @@ public class CancelApplicationService {
         }
 
         submission.cancel();
-        cancelApplication(submission.getApplicationForm().getClub(), user);
+        executeCancelAlarm(submission.getApplicationForm().getClub(), user);
     }
 
-    private void cancelApplication(Club club, User user) {
+    private void executeCancelAlarm(Club club, User user) {
         ClubAlarm alarm = ClubAlarm.builder()
                 .title(AlarmType.USER_CANCEL_APPLICATION.formatTitle(user.getUserName()))
                 .content(AlarmType.USER_CANCEL_APPLICATION.formatContent(user.getUserName()))
