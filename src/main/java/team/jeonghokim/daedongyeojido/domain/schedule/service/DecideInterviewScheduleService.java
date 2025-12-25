@@ -47,10 +47,10 @@ public class DecideInterviewScheduleService {
 
         scheduleRepository.save(schedule);
 
-        createSchedule(schedule, interviewer, applicant);
+        executeScheduleAlarm(schedule, interviewer, applicant);
     }
 
-    private void createSchedule(Schedule schedule, User interviewer, User applicant) {
+    private void executeScheduleAlarm(Schedule schedule, User interviewer, User applicant) {
         UserAlarm alarm = UserAlarm.builder()
                 .title(AlarmType.INTERVIEW_SCHEDULE_CREATED.formatTitle(interviewer.getClub().getClubName()))
                 .content(AlarmType.INTERVIEW_SCHEDULE_CREATED.formatContent(
