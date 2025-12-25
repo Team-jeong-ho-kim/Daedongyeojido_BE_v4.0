@@ -6,7 +6,8 @@ import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.global.entity.BaseTimeIdEntity;
 
-@Entity(name = "tbl_club_alarm")
+@Entity
+@Table(name = "tbl_club_alarm")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
