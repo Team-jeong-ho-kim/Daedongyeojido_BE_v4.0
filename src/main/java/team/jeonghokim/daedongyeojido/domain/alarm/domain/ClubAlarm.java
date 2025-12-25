@@ -9,9 +9,7 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseTimeIdEntity;
 @Entity
 @Table(name = "tbl_club_alarm")
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClubAlarm extends BaseTimeIdEntity {
 
     @Column(length = 50, nullable = false)
@@ -27,4 +25,12 @@ public class ClubAlarm extends BaseTimeIdEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AlarmType alarmType;
+
+    @Builder
+    public ClubAlarm(String title, String content, Club club, AlarmType alarmType) {
+        this.title = title;
+        this.content = content;
+        this.club = club;
+        this.alarmType = alarmType;
+    }
 }
