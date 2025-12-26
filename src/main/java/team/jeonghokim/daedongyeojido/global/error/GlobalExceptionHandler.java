@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DaedongException.class)
     public ResponseEntity<ErrorResponse> handClimException(DaedongException e) {
         ErrorCode errorCode = e.getErrorCode();
-        ErrorResponse response = ErrorResponse.of(errorCode, e.getMessage());
+        ErrorResponse response = ErrorResponse.of(errorCode, errorCode.getErrorMessage());
         e.printStackTrace();
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatusCode()));
