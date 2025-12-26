@@ -7,6 +7,7 @@ import lombok.Builder;
 public record SchedulerPayload(
         @JsonProperty("submission_id") Long submissionId,
         @JsonProperty("phone_number") String phoneNumber,
-        @JsonProperty("is_passed") boolean isPassed
+        @JsonProperty("is_passed") boolean isPassed,
+        @JsonProperty("club_name") String clubName
 ) {
 }

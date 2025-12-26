@@ -3,12 +3,12 @@ package team.jeonghokim.daedongyeojido.domain.club.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.Alarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.AlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.exception.UserNotInClubException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
 import java.util.Optional;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class DissolveClubService {
 
     private final UserFacade userFacade;
-    private final AlarmRepository alarmRepository;
+    private final UserAlarmRepository userAlarmRepository;
 
     @Transactional
     public void execute() {
@@ -29,14 +29,13 @@ public class DissolveClubService {
 
         // sms 알림 기능 로직 추가 해야 함.
 
-        Alarm alarm = Alarm.builder()
-                .title(AlarmType.DISSOLVE_CLUB.getTitle())
-                .content(AlarmType.DISSOLVE_CLUB.format(club.getClubName()))
-                .club(club)
+        UserAlarm alarm = UserAlarm.builder()
+                .title(AlarmType.DISSOLVE_CLUB_APPLY.formatTitle(club.getClubName()))
+                .content(AlarmType.DISSOLVE_CLUB_APPLY.formatContent(club.getClubName()))
                 .receiver(receiver)
-                .alarmType(AlarmType.DISSOLVE_CLUB)
+                .alarmType(AlarmType.DISSOLVE_CLUB_APPLY)
                 .build();
 
-        alarmRepository.save(alarm);
+        userAlarmRepository.save(alarm);
     }
 }

@@ -16,13 +16,13 @@ public class SmsService {
     @Value("${solapi-sms.from}")
     private String from;
 
-    public void send(String phoneNumber, Message message) {
+    public void send(String phoneNumber, Message message, String clubName) {
 
         SmsRequest request = new SmsRequest(
                 SmsRequest.Message.builder()
                         .to(phoneNumber)
                         .from(from)
-                        .text(message.getContent())
+                        .text(message.format(clubName))
                         .build()
         );
 

@@ -79,7 +79,8 @@ public class SchedulerService {
                         payload.phoneNumber(),
                         payload.isPassed()
                                 ? Message.CLUB_FINAL_ACCEPTED
-                                : Message.CLUB_FINAL_REJECTED
+                                : Message.CLUB_FINAL_REJECTED,
+                        payload.clubName()
                 );
 
                 smsRedisTemplate.opsForZSet()

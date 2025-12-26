@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.domain.user.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
@@ -51,6 +52,9 @@ public class User extends BaseIdEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
+
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserAlarm> alarms = new ArrayList<>();
 
     public void inputMyInfo(String phoneNumber, String introduction,
                             List<UserMajor> majors, List<UserLink> links, String profileImage) {

@@ -2,7 +2,8 @@ package team.jeonghokim.daedongyeojido.domain.alarm.domain.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.QAlarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.QClubAlarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.QUserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.AlarmResponse;
 import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.QAlarmResponse;
 import team.jeonghokim.daedongyeojido.domain.club.domain.QClub;
@@ -13,17 +14,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AlarmRepositoryCustomImpl implements AlarmRepositoryCustom {
     private final JPAQueryFactory queryFactory;
-    private final QAlarm alarm = QAlarm.alarm;
+    private final QClubAlarm clubAlarm = QClubAlarm.clubAlarm;
+    private final QUserAlarm userAlarm = QUserAlarm.userAlarm;
 
     @Override
     public List<AlarmResponse> findAllByClubId(Long clubId) {
         return queryFactory.select(new QAlarmResponse(
-                alarm.id,
-                alarm.title,
-                alarm.content
+                clubAlarm.id,
+                clubAlarm.title,
+                clubAlarm.content
         ))
-                .from(alarm)
-                .join(alarm.club, QClub.club)
+                .from(clubAlarm)
+                .join(clubAlarm.club, QClub.club)
                 .where(QClub.club.id.eq(clubId))
                 .fetch();
     }
@@ -31,12 +33,12 @@ public class AlarmRepositoryCustomImpl implements AlarmRepositoryCustom {
     @Override
     public List<AlarmResponse> findAllByUserId(Long userId) {
         return queryFactory.select(new QAlarmResponse(
-                alarm.id,
-                alarm.title,
-                alarm.content
+                userAlarm.id,
+                userAlarm.title,
+                userAlarm.content
         ))
-                .from(alarm)
-                .join(alarm.receiver, QUser.user)
+                .from(userAlarm)
+                .join(userAlarm.receiver, QUser.user)
                 .where(QUser.user.id.eq(userId))
                 .fetch();
     }
