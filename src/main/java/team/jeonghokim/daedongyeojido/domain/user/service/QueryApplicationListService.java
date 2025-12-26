@@ -20,9 +20,7 @@ public class QueryApplicationListService {
     @Transactional(readOnly = true)
     public QueryApplicationListResponse execute() {
         User user = userFacade.getCurrentUser();
-
-        List<ApplicationListResponse> applicationListResponses = submissionRepository.findAllByUserId(user.getId());
-
-        return new QueryApplicationListResponse(applicationListResponses);
+        List<ApplicationListResponse> applications = submissionRepository.findAllByUserId(user.getId());
+        return QueryApplicationListResponse.from(applications);
     }
 }

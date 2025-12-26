@@ -1,16 +1,15 @@
 package team.jeonghokim.daedongyeojido.domain.auth.domain;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
 
-@RedisHash
 @Getter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RedisHash
 public class RefreshToken {
 
     @Id
@@ -21,4 +20,9 @@ public class RefreshToken {
 
     @TimeToLive
     private Long timeToLive;
+
+    public void update(String refreshToken, Long timeToLive) {
+        this.refreshToken = refreshToken;
+        this.timeToLive = timeToLive;
+    }
 }

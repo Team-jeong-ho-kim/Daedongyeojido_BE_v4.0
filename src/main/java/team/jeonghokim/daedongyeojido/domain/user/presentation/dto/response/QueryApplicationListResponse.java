@@ -4,5 +4,9 @@ import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.respon
 
 import java.util.List;
 
-public record QueryApplicationListResponse(List<ApplicationListResponse> applicationListResponses) {
+public record QueryApplicationListResponse(List<ApplicationListResponse> applications) {
+
+    public static QueryApplicationListResponse from(List<ApplicationListResponse> applications) {
+        return new QueryApplicationListResponse(applications);
+    }
 }
