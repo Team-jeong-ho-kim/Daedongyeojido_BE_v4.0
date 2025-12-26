@@ -97,6 +97,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/schedules/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/schedules/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
 
+                        // result-duration
+                        .requestMatchers(HttpMethod.GET, "/result-duration").permitAll()
+
                         // alarm
                         .requestMatchers(HttpMethod.GET, "/alarms/clubs").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/alarms/users").hasAnyRole(STUDENT, TEACHER, ADMIN, CLUB_LEADER, CLUB_MEMBER)
