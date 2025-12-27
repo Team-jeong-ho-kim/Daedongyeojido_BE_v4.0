@@ -48,7 +48,7 @@ public class AdminController {
         decideResultDurationService.execute(request);
     }
 
-    @PatchMapping("result-duration/{result-duration-id}")
+    @PatchMapping("/result-duration/{result-duration-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateResultDuration(@PathVariable("result-duration-id") Long resultDurationId, @RequestBody @Valid UpdateResultDurationRequest request) {
         updateResultDurationService.execute(resultDurationId, request);
