@@ -6,6 +6,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserLink;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserMajor;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
+import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +19,8 @@ public record QueryMyInfoResponse(
         String clubName,
         List<Major> major,
         List<String> link,
-        String profileImage
+        String profileImage,
+        Role role
 ) {
 
     public static QueryMyInfoResponse from(User user) {
@@ -30,6 +32,7 @@ public record QueryMyInfoResponse(
                 .major(user.getMajors().stream().map(UserMajor::getMajor).toList())
                 .link(user.getLinks().stream().map(UserLink::getLink).toList())
                 .profileImage(user.getProfileImage())
+                .role(user.getRole())
                 .build();
     }
 }
