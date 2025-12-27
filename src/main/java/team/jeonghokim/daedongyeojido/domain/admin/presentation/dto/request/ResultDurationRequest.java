@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.domain.resultduration.presentation.dto.request;
+package team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.FutureOrPresent;

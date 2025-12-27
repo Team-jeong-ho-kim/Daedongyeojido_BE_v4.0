@@ -17,8 +17,8 @@ import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationS
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubCreationService;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubDissolveService;
-import team.jeonghokim.daedongyeojido.domain.resultduration.presentation.dto.request.ResultDurationRequest;
-import team.jeonghokim.daedongyeojido.domain.resultduration.service.UpdateResultDurationService;
+import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.ResultDurationRequest;
+import team.jeonghokim.daedongyeojido.domain.admin.service.UpdateResultDurationService;
 
 @RestController
 @RequestMapping("/admin")
