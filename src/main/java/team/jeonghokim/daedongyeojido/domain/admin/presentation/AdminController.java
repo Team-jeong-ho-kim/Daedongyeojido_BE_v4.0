@@ -17,7 +17,7 @@ import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationS
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubCreationService;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubDissolveService;
-import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.ResultDurationRequest;
+import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.UpdateResultDurationRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.service.UpdateResultDurationService;
 
 @RestController
@@ -50,7 +50,7 @@ public class AdminController {
 
     @PatchMapping("result-duration/{result-duration-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateResultDuration(@PathVariable("result-duration-id") Long resultDurationId, @RequestBody @Valid ResultDurationRequest request) {
+    public void updateResultDuration(@PathVariable("result-duration-id") Long resultDurationId, @RequestBody @Valid UpdateResultDurationRequest request) {
         updateResultDurationService.execute(resultDurationId, request);
     }
     

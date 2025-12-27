@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record ResultDurationRequest(
+public record UpdateResultDurationRequest(
 
         @NotNull(message = "발표기간을 입력해주세요.")
         @FutureOrPresent(message = "발표기간은 과거일 수 없습니다.")
