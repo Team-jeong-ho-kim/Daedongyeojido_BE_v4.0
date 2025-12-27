@@ -18,4 +18,8 @@ public class ResultDuration extends BaseIdEntity {
     public ResultDuration(LocalDateTime resultDuration) {
         this.resultDuration = resultDuration;
     }
+
+    public void update(LocalDateTime resultDuration) {
+        this.resultDuration = resultDuration;
+    }
 }
