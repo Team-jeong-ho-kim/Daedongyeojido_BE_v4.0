@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
@@ -48,7 +50,8 @@ public class SmsEventListener {
                     event.clubName()
             );
 
-        } catch (Exception e) {
+        } catch (HttpServerErrorException |
+                 ResourceAccessException e) {
 
             log.warn("유저 SMS 이벤트 실패: phoneNumber={} message={}",
                     event.phoneNumber(), event.message(), e);

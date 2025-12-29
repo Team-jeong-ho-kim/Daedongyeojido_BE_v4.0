@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
@@ -19,6 +21,8 @@ import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundExceptio
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.AlarmEventFinalFailedException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
+
+import java.net.SocketTimeoutException;
 
 @Slf4j
 @Component
@@ -53,9 +57,11 @@ public class UserAlarmEventListener {
         } catch (UserNotFoundException e) {
             throw e;
 
-        } catch(Exception e) {
+        } catch(HttpServerErrorException |
+                ResourceAccessException e) {
 
             log.warn("유저 알림 전송 실패 재시도 예정 (userId={}, alarmType={})", event.userId(), event.alarmType(), e);
+
             throw new HttpApiException(e);
         }
     }

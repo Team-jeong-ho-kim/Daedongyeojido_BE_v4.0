@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.ClubAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.ClubAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
@@ -53,8 +55,11 @@ public class ClubAlarmEventListener {
         } catch (ClubNotFoundException e) {
             throw e;
 
-        } catch (Exception e) {
+        } catch (HttpServerErrorException |
+                 ResourceAccessException e) {
+
             log.warn("동아리 알림 전송 실패 재시도 예정 (clubId={}, alarmType={})", event.clubId(), event.alarmType(), e);
+
             throw new HttpApiException(e);
         }
     }
