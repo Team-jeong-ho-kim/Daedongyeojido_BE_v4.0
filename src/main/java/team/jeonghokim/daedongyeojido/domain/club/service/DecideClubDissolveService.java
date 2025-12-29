@@ -45,9 +45,9 @@ public class DecideClubDissolveService {
 
             clubMembers.forEach(User::leaveClub);
 
-            clubRepository.delete(club);
-
             acceptDissolution(club, user);
+
+            clubRepository.delete(club);
         } else {
 
             rejectDissolution(club, user);
