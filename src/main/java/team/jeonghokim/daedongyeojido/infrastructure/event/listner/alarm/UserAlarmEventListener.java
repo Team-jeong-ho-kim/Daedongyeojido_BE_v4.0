@@ -49,7 +49,6 @@ public class UserAlarmEventListener {
                     .alarmType(event.alarmType())
                     .build());
 
-            receiver.getAlarms().add(alarm);
         } catch (Exception e) {
             log.warn("유저 알림 전송 실패 재시도 예정 (userId={}, alarmType={})", event.userId(), event.alarmType(), e);
             throw new HttpApiException(e);
