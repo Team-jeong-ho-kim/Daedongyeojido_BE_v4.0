@@ -41,4 +41,22 @@ public class SmsEventListener {
                     event.phoneNumber(), event.message(), e);
         }
     }
+
+    @Async("largeScaleExecutor")
+    public void handleLargeScaleSmsEvent(UserSmsEvent event) {
+        try {
+            smsService.send(
+                    event.phoneNumber(),
+                    event.message(),
+                    event.clubName()
+            );
+
+            smsRedisTemplate.opsForZSet()
+                    .remove(RESULT_DURATION_ZSET, event.payload());
+
+        } catch (Exception e) {
+            log.error("유저 SMS 이벤트 실패: phoneNumber={} message={}",
+                    event.phoneNumber(), event.message(), e);
+        }
+    }
 }
