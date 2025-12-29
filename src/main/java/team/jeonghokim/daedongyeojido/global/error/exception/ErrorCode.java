@@ -84,6 +84,7 @@ public enum ErrorCode {
 
     // event
     ALARM_EVENT_FINAL_FAILED(500, "알람 이벤트 발송에 최종 실패했습니다."),
+    SMS_EVENT_FINAL_FAILED(500, "SMS 이벤트 발송에 최종 실패했습니다."),
 
     // general
     BAD_REQUEST(400, "front fault"),
