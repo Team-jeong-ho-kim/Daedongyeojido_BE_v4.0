@@ -45,7 +45,7 @@ public class AlarmEventListener {
                             .alarmType(event.alarmType())
                     .build());
         } catch (Exception e) {
-            log.info("동아리 알람 이벤트 실패: clubId={} alarmType={}",
+            log.error("동아리 알람 이벤트 실패: clubId={} alarmType={}",
                     event.clubId(), event.alarmType(), e);
         }
     }
@@ -65,7 +65,7 @@ public class AlarmEventListener {
                             .alarmType(event.alarmType())
                     .build());
         } catch (Exception e) {
-            log.info("유저 알람 이벤트 실패: clubId={} alarmType={}",
+            log.error("유저 알람 이벤트 실패: clubId={} alarmType={}",
                     event.userId(), event.alarmType(), e);
         }
     }
