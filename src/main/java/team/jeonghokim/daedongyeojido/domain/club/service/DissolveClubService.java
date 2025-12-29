@@ -27,8 +27,6 @@ public class DissolveClubService {
         Club club = Optional.ofNullable(receiver.getClub())
                 .orElseThrow(() -> UserNotInClubException.EXCEPTION);
 
-        // sms 알림 기능 로직 추가 해야 함.
-
         UserAlarm alarm = UserAlarm.builder()
                 .title(AlarmType.DISSOLVE_CLUB_APPLY.formatTitle(club.getClubName()))
                 .content(AlarmType.DISSOLVE_CLUB_APPLY.formatContent(club.getClubName()))
