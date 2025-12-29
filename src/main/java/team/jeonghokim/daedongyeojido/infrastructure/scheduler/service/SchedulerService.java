@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
@@ -76,7 +77,7 @@ public class SchedulerService {
     private void sendSms(Set<SchedulerPayload> messages) {
         for (SchedulerPayload payload : messages) {
             try {
-                eventPublisher.publishEvent(UserSmsEvent.builder()
+                eventPublisher.publishEvent(LargeScaleSmsEvent.builder()
                                 .phoneNumber(payload.phoneNumber())
                                 .message(payload.isPassed()
                                         ? Message.CLUB_FINAL_ACCEPTED
