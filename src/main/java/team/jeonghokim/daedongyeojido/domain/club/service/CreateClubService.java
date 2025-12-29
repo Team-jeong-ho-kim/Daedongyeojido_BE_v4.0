@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.club.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
@@ -11,8 +12,8 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubReposito
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class CreateClubService {
     private final UserFacade userFacade;
     private final CreateClubValidator createClubValidator;
     private final S3Service s3Service;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public void execute(ClubRequest request) {
@@ -75,13 +77,11 @@ public class CreateClubService {
     }
 
     private void createAlarm(Club club, User clubApplicant) {
-        UserAlarm alarm = UserAlarm.builder()
-                .title(AlarmType.CREATE_CLUB_APPLY.formatTitle(club.getClubName()))
-                .content(AlarmType.CREATE_CLUB_APPLY.formatContent(club.getClubName()))
-                .receiver(clubApplicant)
-                .alarmType(AlarmType.CREATE_CLUB_APPLY)
-                .build();
-
-        clubApplicant.getAlarms().add(alarm);
+        eventPublisher.publishEvent(UserAlarmEvent.builder()
+                        .title(AlarmType.CREATE_CLUB_APPLY.formatTitle(club.getClubName()))
+                        .content(AlarmType.CREATE_CLUB_APPLY.formatContent(club.getClubName()))
+                        .userId(clubApplicant.getId())
+                        .alarmType(AlarmType.CREATE_CLUB_APPLY)
+                .build());
     }
 }
