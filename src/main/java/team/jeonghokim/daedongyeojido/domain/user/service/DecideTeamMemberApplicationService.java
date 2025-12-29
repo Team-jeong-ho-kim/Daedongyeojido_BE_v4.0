@@ -13,6 +13,7 @@ import team.jeonghokim.daedongyeojido.domain.user.exception.UserApplicationNotFo
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideTeamMemberApplicationRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class DecideTeamMemberApplicationService {
     private final UserFacade userFacade;
     private final UserApplicationRepository userApplicationRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final AlarmEventFactory alarmEventFactory;
 
     @Transactional
     public void execute(DecideTeamMemberApplicationRequest request) {
@@ -38,20 +40,14 @@ public class DecideTeamMemberApplicationService {
     }
 
     private void joinClub(Club club, User user) {
-        eventPublisher.publishEvent(ClubAlarmEvent.builder()
-                .title(AlarmType.USER_JOINED_CLUB.formatTitle(user.getUserName()))
-                .content(AlarmType.USER_JOINED_CLUB.formatContent(user.getUserName()))
-                .clubId(club.getId())
-                .alarmType(AlarmType.USER_JOINED_CLUB)
-                .build());
+        eventPublisher.publishEvent(
+                alarmEventFactory.createClubAlarmEvent(club, user, AlarmType.USER_JOINED_CLUB)
+        );
     }
 
     private void refuseClub(Club club, User user) {
-        eventPublisher.publishEvent(ClubAlarmEvent.builder()
-                .title(AlarmType.USER_REFUSED_CLUB.formatTitle(user.getUserName()))
-                .content(AlarmType.USER_REFUSED_CLUB.formatContent(user.getUserName()))
-                .clubId(club.getId())
-                .alarmType(AlarmType.USER_REFUSED_CLUB)
-                .build());
+        eventPublisher.publishEvent(
+                alarmEventFactory.createClubAlarmEvent(club, user, AlarmType.USER_REFUSED_CLUB)
+        );
     }
 }

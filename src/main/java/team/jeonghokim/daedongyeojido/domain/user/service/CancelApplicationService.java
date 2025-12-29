@@ -13,6 +13,7 @@ import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class CancelApplicationService {
     private final SubmissionFacade submissionFacade;
     private final UserFacade userFacade;
     private final ApplicationEventPublisher eventPublisher;
+    private final AlarmEventFactory alarmEventFactory;
 
     @Transactional
     public void execute(Long submissionId) {
@@ -40,11 +42,8 @@ public class CancelApplicationService {
     }
 
     private void executeCancelAlarm(Club club, User user) {
-        eventPublisher.publishEvent(ClubAlarmEvent.builder()
-                        .title(AlarmType.USER_CANCEL_APPLICATION.formatTitle(user.getUserName()))
-                        .content(AlarmType.USER_CANCEL_APPLICATION.formatContent(user.getUserName()))
-                        .clubId(club.getId())
-                        .alarmType(AlarmType.USER_CANCEL_APPLICATION)
-                .build());
+        eventPublisher.publishEvent(
+                alarmEventFactory.createClubAlarmEvent(club, user, AlarmType.USER_CANCEL_APPLICATION)
+        );
     }
 }
