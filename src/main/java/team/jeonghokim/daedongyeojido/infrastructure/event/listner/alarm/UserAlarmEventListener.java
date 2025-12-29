@@ -51,14 +51,14 @@ public class UserAlarmEventListener {
 
             receiver.getAlarms().add(alarm);
         } catch (Exception e) {
-            log.warn("유저 알림 전송 실패 재시도 예정 (clubId={}, alarmType={})", event.userId(), event.alarmType(), e);
+            log.warn("유저 알림 전송 실패 재시도 예정 (userId={}, alarmType={})", event.userId(), event.alarmType(), e);
             throw new HttpApiException(e);
         }
     }
 
     @Recover
     public void recoverUserEvent(HttpApiException e, UserAlarmEvent event) {
-        log.error("유저 알람 이벤트 최종 실패: clubId={} alarmType={}",
+        log.error("유저 알람 이벤트 최종 실패: userId={} alarmType={}",
                 event.userId(), event.alarmType(), e);
 
         throw new AlarmEventFinalFailedException();
