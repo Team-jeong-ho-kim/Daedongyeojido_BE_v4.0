@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.club.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
@@ -8,10 +9,10 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.exception.ClubMisMatchException;
 import team.jeonghokim.daedongyeojido.domain.club.exception.UserNotInClubException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class DeleteTeamMemberService {
 
     private final UserRepository userRepository;
     private final UserFacade userFacade;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public void execute(Long userId) {
@@ -39,13 +41,11 @@ public class DeleteTeamMemberService {
     }
 
     private void deleteClubMember(Club club, User user) {
-        UserAlarm alarm = UserAlarm.builder()
-                .title(AlarmType.DELETE_CLUB_MEMBER.formatTitle(club.getClubName()))
-                .content(AlarmType.DELETE_CLUB_MEMBER.formatContent(club.getClubName()))
-                .receiver(user)
-                .alarmType(AlarmType.DELETE_CLUB_MEMBER)
-                .build();
-
-        user.getAlarms().add(alarm);
+        eventPublisher.publishEvent(UserAlarmEvent.builder()
+                        .title(AlarmType.DELETE_CLUB_MEMBER.formatTitle(club.getClubName()))
+                        .content(AlarmType.DELETE_CLUB_MEMBER.formatContent(club.getClubName()))
+                        .userId(user.getId())
+                        .alarmType(AlarmType.DELETE_CLUB_MEMBER)
+                .build());
     }
 }
