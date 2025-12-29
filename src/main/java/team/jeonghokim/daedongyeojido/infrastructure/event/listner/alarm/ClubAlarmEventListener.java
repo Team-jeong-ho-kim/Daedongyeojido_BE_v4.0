@@ -13,17 +13,11 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.client.HttpServerErrorException;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.ClubAlarm;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.ClubAlarmRepository;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotFoundException;
-import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
-import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
 
 import java.net.SocketTimeoutException;
 import java.net.http.HttpTimeoutException;
@@ -31,14 +25,11 @@ import java.net.http.HttpTimeoutException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AlarmEventListener {
-    private final UserAlarmRepository userAlarmRepository;
+public class ClubAlarmEventListener {
     private final ClubAlarmRepository clubAlarmRepository;
-    private final UserRepository userRepository;
     private final ClubRepository clubRepository;
 
     private static final String CLUB_EVENT_RETRY = "recoverClubEvent";
-    private static final String USER_EVENT_RETRY = "recoverUserEvent";
 
     @Async
     @Retryable(
@@ -67,41 +58,9 @@ public class AlarmEventListener {
         club.getAlarms().add(alarm);
     }
 
-    @Async
-    @Retryable(
-            retryFor = {
-                    HttpTimeoutException.class,
-                    SocketTimeoutException.class,
-                    HttpServerErrorException.class,
-            },
-            recover = USER_EVENT_RETRY,
-            backoff = @Backoff(delay = 500, multiplier = 2)
-    )
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleUserAlarmEvent(UserAlarmEvent event) {
-        User receiver = userRepository.findById(event.userId())
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
-
-        UserAlarm alarm = userAlarmRepository.save(UserAlarm.builder()
-                .title(event.title())
-                .content(event.content())
-                .receiver(receiver)
-                .alarmType(event.alarmType())
-                .build());
-
-        receiver.getAlarms().add(alarm);
-    }
-
     @Recover
     public void recoverClubEvent(Exception e, ClubAlarmEvent event) {
         log.error("동아리 알람 이벤트 최종 실패: clubId={} alarmType={}",
                 event.clubId(), event.alarmType(), e);
-    }
-
-    @Recover
-    public void recoverUserEvent(Exception e, UserAlarmEvent event) {
-        log.error("유저 알람 이벤트 최종 실패: clubId={} alarmType={}",
-                event.userId(), event.alarmType(), e);
     }
 }
