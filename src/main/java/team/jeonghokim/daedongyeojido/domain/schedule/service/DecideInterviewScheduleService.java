@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.schedule.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
@@ -10,10 +11,10 @@ import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.Schedule
 import team.jeonghokim.daedongyeojido.domain.schedule.exception.AlreadyInterviewScheduleExistsException;
 import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.InterviewScheduleRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class DecideInterviewScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
     private final UserFacade userFacade;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public void execute(Long userId, InterviewScheduleRequest request) {
@@ -51,17 +53,15 @@ public class DecideInterviewScheduleService {
     }
 
     private void executeScheduleAlarm(Schedule schedule, User interviewer, User applicant) {
-        UserAlarm alarm = UserAlarm.builder()
-                .title(AlarmType.INTERVIEW_SCHEDULE_CREATED.formatTitle(interviewer.getClub().getClubName()))
-                .content(AlarmType.INTERVIEW_SCHEDULE_CREATED.formatContent(
+        eventPublisher.publishEvent(UserAlarmEvent.builder()
+                        .title(AlarmType.INTERVIEW_SCHEDULE_CREATED.formatTitle(interviewer.getClub().getClubName()))
+                        .content(AlarmType.INTERVIEW_SCHEDULE_CREATED.formatContent(
                                 interviewer.getClub().getClubName(),
                                 schedule.getInterviewSchedule(),
                                 schedule.getInterviewTime(),
                                 schedule.getPlace()))
-                .receiver(applicant)
-                .alarmType(AlarmType.INTERVIEW_SCHEDULE_CREATED)
-                .build();
-
-        applicant.getAlarms().add(alarm);
+                        .userId(applicant.getId())
+                        .alarmType(AlarmType.INTERVIEW_SCHEDULE_CREATED)
+                .build());
     }
 }
