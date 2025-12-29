@@ -11,16 +11,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
-import org.springframework.web.client.HttpServerErrorException;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.ClubAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.ClubAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
-
-import java.net.SocketTimeoutException;
-import java.net.http.HttpTimeoutException;
+import team.jeonghokim.daedongyeojido.infrastructure.event.exception.AlarmEventFinalFailedException;
+import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
 
 @Slf4j
 @Component
@@ -33,34 +31,36 @@ public class ClubAlarmEventListener {
 
     @Async
     @Retryable(
-            retryFor = {
-                    HttpTimeoutException.class,
-                    SocketTimeoutException.class,
-                    HttpServerErrorException.class,
-            },
+            retryFor = HttpApiException.class,
             recover = CLUB_EVENT_RETRY,
             backoff = @Backoff(delay = 500, multiplier = 2)
     )
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleClubAlarmEvent(ClubAlarmEvent event) {
+        try {
+            Club club = clubRepository.findById(event.clubId())
+                    .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
 
-        Club club = clubRepository.findById(event.clubId())
-                .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
+            ClubAlarm alarm = clubAlarmRepository.save(ClubAlarm.builder()
+                    .title(event.title())
+                    .content(event.content())
+                    .club(club)
+                    .alarmType(event.alarmType())
+                    .build());
 
-        ClubAlarm alarm = clubAlarmRepository.save(ClubAlarm.builder()
-                .title(event.title())
-                .content(event.content())
-                .club(club)
-                .alarmType(event.alarmType())
-                .build());
-
-        club.getAlarms().add(alarm);
+            club.getAlarms().add(alarm);
+        } catch (Exception e) {
+            log.warn("동아리 알림 전송 실패 재시도 예정 (clubId={}, alarmType={})", event.clubId(), event.alarmType(), e);
+            throw new HttpApiException(e);
+        }
     }
 
     @Recover
-    public void recoverClubEvent(Exception e, ClubAlarmEvent event) {
+    public void recoverClubEvent(HttpApiException e, ClubAlarmEvent event) {
         log.error("동아리 알람 이벤트 최종 실패: clubId={} alarmType={}",
                 event.clubId(), event.alarmType(), e);
+
+        throw new AlarmEventFinalFailedException();
     }
 }
