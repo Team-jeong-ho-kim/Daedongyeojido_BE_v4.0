@@ -82,10 +82,8 @@ public class SchedulerService {
                                         ? Message.CLUB_FINAL_ACCEPTED
                                         : Message.CLUB_FINAL_REJECTED)
                                 .clubName(payload.clubName())
+                                .payload(payload)
                         .build());
-
-                smsRedisTemplate.opsForZSet()
-                        .remove(RESULT_DURATION_ZSET, payload);
 
             } catch (Exception e) {
                 log.error(
