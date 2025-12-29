@@ -12,10 +12,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
-import team.jeonghokim.daedongyeojido.infrastructure.event.exception.AlarmEventFinalFailedException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.SmsEventFinalFailedException;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
@@ -31,6 +29,7 @@ public class SmsEventListener {
     private final RedisTemplate<String, SchedulerPayload> smsRedisTemplate;
 
     private static final String SMS_EVENT_RETRY = "recoverSmsEvent";
+    private static final String LARGE_SCALE_EVENT_RETRY = "recoverLargeScaleSmsEvent";
 
     @Async
     @Retryable(
@@ -56,6 +55,12 @@ public class SmsEventListener {
     }
 
     @Async("largeScaleExecutor")
+    @Retryable(
+            retryFor = HttpApiException.class,
+            recover = LARGE_SCALE_EVENT_RETRY,
+            maxAttempts = 5,
+            backoff = @Backoff(delay = 500, multiplier = 2)
+    )
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleLargeScaleSmsEvent(LargeScaleSmsEvent event) {
@@ -72,6 +77,7 @@ public class SmsEventListener {
         } catch (Exception e) {
             log.error("유저 SMS 이벤트 실패: phoneNumber={} message={}",
                     event.phoneNumber(), event.message(), e);
+            throw new HttpApiException(e);
         }
     }
 
