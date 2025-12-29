@@ -38,12 +38,14 @@ public class AlarmEventListener {
             Club club = clubRepository.findById(event.clubId())
                     .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
 
-            clubAlarmRepository.save(ClubAlarm.builder()
+            ClubAlarm alarm = clubAlarmRepository.save(ClubAlarm.builder()
                             .title(event.title())
                             .content(event.content())
                             .club(club)
                             .alarmType(event.alarmType())
                     .build());
+
+            club.getAlarms().add(alarm);
         } catch (Exception e) {
             log.error("동아리 알람 이벤트 실패: clubId={} alarmType={}",
                     event.clubId(), event.alarmType(), e);
@@ -58,12 +60,14 @@ public class AlarmEventListener {
             User receiver = userRepository.findById(event.userId())
                     .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-            userAlarmRepository.save(UserAlarm.builder()
+            UserAlarm alarm = userAlarmRepository.save(UserAlarm.builder()
                             .title(event.title())
                             .content(event.content())
                             .receiver(receiver)
                             .alarmType(event.alarmType())
                     .build());
+
+            receiver.getAlarms().add(alarm);
         } catch (Exception e) {
             log.error("유저 알람 이벤트 실패: clubId={} alarmType={}",
                     event.userId(), event.alarmType(), e);
