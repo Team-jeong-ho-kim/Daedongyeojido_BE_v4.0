@@ -13,7 +13,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserApplicat
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +22,7 @@ public class ApplyTeamMemberService {
     private final UserRepository userRepository;
     private final UserFacade userFacade;
     private final ApplicationEventPublisher eventPublisher;
+    private final AlarmEventFactory alarmEventFactory;
 
     @Transactional
     public void execute(TeamMemberRequest request) {
@@ -40,11 +41,8 @@ public class ApplyTeamMemberService {
     }
 
     private void createAlarm(Club club, User userApplication) {
-        eventPublisher.publishEvent(UserAlarmEvent.builder()
-                        .title(AlarmType.CLUB_MEMBER_APPLY.formatTitle(club.getClubName()))
-                        .content(AlarmType.CLUB_MEMBER_APPLY.formatContent(club.getClubName()))
-                        .userId(userApplication.getId())
-                        .alarmType(AlarmType.CLUB_MEMBER_APPLY)
-                .build());
+        eventPublisher.publishEvent(
+                alarmEventFactory.createUserAlarmEvent(userApplication, club, AlarmType.CLUB_MEMBER_APPLY)
+        );
     }
 }

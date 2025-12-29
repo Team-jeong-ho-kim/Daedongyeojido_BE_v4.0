@@ -13,7 +13,7 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.Decid
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
 
 import java.util.List;
 
@@ -25,6 +25,7 @@ public class DecideClubDissolveService {
     private final ClubRepository clubRepository;
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final AlarmEventFactory alarmEventFactory;
 
     @Transactional
     public void execute(Long clubId, DecideClubDissolveRequest request) {
@@ -47,20 +48,14 @@ public class DecideClubDissolveService {
     }
 
     private void acceptDissolution(Club club, User user) {
-        eventPublisher.publishEvent(UserAlarmEvent.builder()
-                        .title(AlarmType.CLUB_DISSOLUTION_ACCEPTED.formatTitle(club.getClubName()))
-                        .content(AlarmType.CLUB_DISSOLUTION_ACCEPTED.formatContent(club.getClubName()))
-                        .userId(user.getId())
-                        .alarmType(AlarmType.CLUB_DISSOLUTION_ACCEPTED)
-                .build());
+        eventPublisher.publishEvent(
+                alarmEventFactory.createUserAlarmEvent(user, club, AlarmType.CLUB_DISSOLUTION_ACCEPTED)
+        );
     }
 
     private void rejectDissolution(Club club, User user) {
-        eventPublisher.publishEvent(UserAlarmEvent.builder()
-                        .title(AlarmType.CLUB_DISSOLUTION_REJECTED.formatTitle(club.getClubName()))
-                        .content(AlarmType.CLUB_DISSOLUTION_REJECTED.formatContent(club.getClubName()))
-                        .userId(user.getId())
-                        .alarmType(AlarmType.CLUB_DISSOLUTION_REJECTED)
-                .build());
+        eventPublisher.publishEvent(
+                alarmEventFactory.createUserAlarmEvent(user, club, AlarmType.CLUB_DISSOLUTION_REJECTED)
+        );
     }
 }

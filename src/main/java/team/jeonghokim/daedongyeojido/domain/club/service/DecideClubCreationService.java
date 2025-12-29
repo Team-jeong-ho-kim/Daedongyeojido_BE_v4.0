@@ -11,7 +11,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +20,7 @@ public class DecideClubCreationService {
     private final UserRepository userRepository;
     private final ClubFacade clubFacade;
     private final ApplicationEventPublisher eventPublisher;
+    private final AlarmEventFactory alarmEventFactory;
 
     @Transactional
     public void execute(Long clubId, DecideClubCreationRequest request) {
@@ -37,20 +38,14 @@ public class DecideClubCreationService {
     }
 
     private void acceptClub(Club club, User user) {
-        eventPublisher.publishEvent(UserAlarmEvent.builder()
-                        .title(AlarmType.CLUB_CREATION_ACCEPTED.formatTitle(club.getClubName()))
-                        .content(AlarmType.CLUB_CREATION_ACCEPTED.formatContent(club.getClubName()))
-                        .userId(user.getId())
-                        .alarmType(AlarmType.CLUB_CREATION_ACCEPTED)
-                .build());
+        eventPublisher.publishEvent(
+                alarmEventFactory.createUserAlarmEvent(user, club, AlarmType.CLUB_CREATION_ACCEPTED)
+        );
     }
 
     private void rejectClub(Club club, User user) {
-        eventPublisher.publishEvent(UserAlarmEvent.builder()
-                    .title(AlarmType.CLUB_CREATION_REJECTED.formatTitle(club.getClubName()))
-                    .content(AlarmType.CLUB_CREATION_REJECTED.formatContent(club.getClubName()))
-                    .userId(user.getId())
-                    .alarmType(AlarmType.CLUB_CREATION_REJECTED)
-                .build());
+        eventPublisher.publishEvent(
+                alarmEventFactory.createUserAlarmEvent(user, club, AlarmType.CLUB_CREATION_REJECTED)
+        );
     }
 }
