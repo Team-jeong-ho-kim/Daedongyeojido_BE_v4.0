@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.infrastructure.event.listner.sms;
+package team.jeonghokim.daedongyeojido.infrastructure.event.listener.sms;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
