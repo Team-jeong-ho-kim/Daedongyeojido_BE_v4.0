@@ -88,4 +88,12 @@ public class SmsEventListener {
 
         throw new SmsEventFinalFailedException();
     }
+
+    @Recover
+    public void recoverLargeScaleSmsEvent(HttpApiException e, LargeScaleSmsEvent event) {
+        log.error("SMS 이벤트 최종 실패: phoneNumber={} message={}",
+                event.phoneNumber(), event.message(), e);
+
+        throw new SmsEventFinalFailedException();
+    }
 }
