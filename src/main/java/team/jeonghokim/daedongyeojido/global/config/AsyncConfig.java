@@ -15,6 +15,7 @@ import java.util.concurrent.Executor;
 public class AsyncConfig implements AsyncConfigurer {
 
     private static final String PREFIX = "Async-";
+    private static final String LARGE_PREFIX = "Large-Scale-SMS-";
 
     @Override
     public Executor getAsyncExecutor() {
@@ -29,8 +30,16 @@ public class AsyncConfig implements AsyncConfigurer {
         return executor;
     }
 
-    @Bean("")
+    @Bean(name = "largeScaleExecutor")
     public Executor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(20);
+        executor.setMaxPoolSize(50);
+        executor.setQueueCapacity(200);
+        executor.setThreadNamePrefix(LARGE_PREFIX);
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setAwaitTerminationSeconds(20);
+        executor.initialize();
+        return executor;
     }
 }
