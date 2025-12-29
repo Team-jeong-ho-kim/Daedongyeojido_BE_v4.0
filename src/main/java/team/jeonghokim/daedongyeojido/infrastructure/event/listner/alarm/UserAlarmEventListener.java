@@ -42,7 +42,7 @@ public class UserAlarmEventListener {
             User receiver = userRepository.findById(event.userId())
                     .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-            UserAlarm alarm = userAlarmRepository.save(UserAlarm.builder()
+            userAlarmRepository.save(UserAlarm.builder()
                     .title(event.title())
                     .content(event.content())
                     .receiver(receiver)

@@ -42,7 +42,7 @@ public class ClubAlarmEventListener {
             Club club = clubRepository.findById(event.clubId())
                     .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
 
-            ClubAlarm alarm = clubAlarmRepository.save(ClubAlarm.builder()
+            clubAlarmRepository.save(ClubAlarm.builder()
                     .title(event.title())
                     .content(event.content())
                     .club(club)
