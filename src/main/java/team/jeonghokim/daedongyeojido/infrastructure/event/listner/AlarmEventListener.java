@@ -2,12 +2,16 @@ package team.jeonghokim.daedongyeojido.infrastructure.event.listner;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+import org.springframework.web.client.HttpServerErrorException;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.ClubAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.ClubAlarmRepository;
@@ -21,6 +25,9 @@ import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundExceptio
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
 
+import java.net.SocketTimeoutException;
+import java.net.http.HttpTimeoutException;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -30,29 +37,37 @@ public class AlarmEventListener {
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
 
+    private static final String CLUB_EVENT_RETRY = "recoverClubEvent";
+
     @Async
+    @Retryable(
+            retryFor = {
+                    HttpTimeoutException.class,
+                    SocketTimeoutException.class,
+                    HttpServerErrorException.class,
+            },
+            recover = CLUB_EVENT_RETRY,
+            backoff = @Backoff(delay = 500, multiplier = 2)
+    )
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleClubAlarmEvent(ClubAlarmEvent event) {
-        try {
-            Club club = clubRepository.findById(event.clubId())
-                    .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
 
-            ClubAlarm alarm = clubAlarmRepository.save(ClubAlarm.builder()
-                            .title(event.title())
-                            .content(event.content())
-                            .club(club)
-                            .alarmType(event.alarmType())
-                    .build());
+        Club club = clubRepository.findById(event.clubId())
+                .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
 
-            club.getAlarms().add(alarm);
-        } catch (Exception e) {
-            log.error("동아리 알람 이벤트 실패: clubId={} alarmType={}",
-                    event.clubId(), event.alarmType(), e);
-        }
+        ClubAlarm alarm = clubAlarmRepository.save(ClubAlarm.builder()
+                .title(event.title())
+                .content(event.content())
+                .club(club)
+                .alarmType(event.alarmType())
+                .build());
+
+        club.getAlarms().add(alarm);
     }
 
     @Async
+    @Retryable
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleUserAlarmEvent(UserAlarmEvent event) {
@@ -61,10 +76,10 @@ public class AlarmEventListener {
                     .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
             UserAlarm alarm = userAlarmRepository.save(UserAlarm.builder()
-                            .title(event.title())
-                            .content(event.content())
-                            .receiver(receiver)
-                            .alarmType(event.alarmType())
+                    .title(event.title())
+                    .content(event.content())
+                    .receiver(receiver)
+                    .alarmType(event.alarmType())
                     .build());
 
             receiver.getAlarms().add(alarm);
