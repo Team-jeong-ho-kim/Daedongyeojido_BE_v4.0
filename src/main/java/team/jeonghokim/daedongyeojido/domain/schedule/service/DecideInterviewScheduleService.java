@@ -27,7 +27,9 @@ public class DecideInterviewScheduleService {
 
     @Transactional
     public void execute(Long userId, InterviewScheduleRequest request) {
+
         User interviewer = userFacade.getCurrentUser();
+
         User applicant = userRepository.findById(userId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
@@ -53,6 +55,7 @@ public class DecideInterviewScheduleService {
     }
 
     private void executeScheduleAlarm(Schedule schedule, User interviewer, User applicant) {
+
         eventPublisher.publishEvent(UserAlarmEvent.builder()
                         .title(AlarmType.INTERVIEW_SCHEDULE_CREATED.formatTitle(interviewer.getClub().getClubName()))
                         .content(AlarmType.INTERVIEW_SCHEDULE_CREATED.formatContent(

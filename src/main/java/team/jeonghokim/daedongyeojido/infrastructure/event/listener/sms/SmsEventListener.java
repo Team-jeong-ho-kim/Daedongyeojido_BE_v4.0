@@ -40,6 +40,7 @@ public class SmsEventListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleUserSmsEvent(UserSmsEvent event) {
+
         try {
             smsService.send(
                     event.phoneNumber(),
@@ -48,8 +49,10 @@ public class SmsEventListener {
             );
 
         } catch (Exception e) {
+
             log.warn("유저 SMS 이벤트 실패: phoneNumber={} message={}",
                     event.phoneNumber(), event.message(), e);
+
             throw new HttpApiException(e);
         }
     }
@@ -64,6 +67,7 @@ public class SmsEventListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleLargeScaleSmsEvent(LargeScaleSmsEvent event) {
+
         try {
             smsService.send(
                     event.phoneNumber(),
@@ -83,6 +87,7 @@ public class SmsEventListener {
 
     @Recover
     public void recoverSmsEvent(HttpApiException e, UserSmsEvent event) {
+
         log.error("SMS 이벤트 최종 실패: phoneNumber={} message={}",
                 event.phoneNumber(), event.message(), e);
 
@@ -91,6 +96,7 @@ public class SmsEventListener {
 
     @Recover
     public void recoverLargeScaleSmsEvent(HttpApiException e, LargeScaleSmsEvent event) {
+
         log.error("SMS 이벤트 최종 실패: phoneNumber={} message={}",
                 event.phoneNumber(), event.message(), e);
 

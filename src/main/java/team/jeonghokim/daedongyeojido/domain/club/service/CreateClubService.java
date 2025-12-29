@@ -32,20 +32,24 @@ public class CreateClubService {
 
     @Transactional
     public void execute(ClubRequest request) {
+
         User clubApplicant = userFacade.getCurrentUser();
 
         createClubValidator.validate(request, clubApplicant);
 
         List<ClubMajor> clubMajors = createClubMajor(request);
+
         List<ClubLink> clubLinks = createClubLink(request);
 
         Club club = createClub(request, clubApplicant, clubMajors, clubLinks);
 
         createAlarm(club, clubApplicant);
+
         clubRepository.save(club);
     }
 
     private Club createClub(ClubRequest request, User clubApplicant, List<ClubMajor> clubMajors, List<ClubLink> clubLinks) {
+
         return Club.builder()
                 .clubName(request.getClubName())
                 .clubImage(s3Service.upload(request.getClubImage()))
@@ -59,6 +63,7 @@ public class CreateClubService {
     }
 
     private List<ClubMajor> createClubMajor(ClubRequest request) {
+
         return request.getMajor().stream().map(major ->
                 ClubMajor.builder()
                         .major(major)
@@ -67,6 +72,7 @@ public class CreateClubService {
     }
 
     private List<ClubLink> createClubLink(ClubRequest request) {
+
         return Optional.ofNullable(request.getLink())
                 .orElseGet(List::of)
                 .stream()
@@ -77,6 +83,7 @@ public class CreateClubService {
     }
 
     private void createAlarm(Club club, User clubApplicant) {
+
         eventPublisher.publishEvent(UserAlarmEvent.builder()
                         .title(AlarmType.CREATE_CLUB_APPLY.formatTitle(club.getClubName()))
                         .content(AlarmType.CREATE_CLUB_APPLY.formatContent(club.getClubName()))

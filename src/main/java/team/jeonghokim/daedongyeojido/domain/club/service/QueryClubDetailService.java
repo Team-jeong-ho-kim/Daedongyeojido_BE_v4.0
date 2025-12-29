@@ -19,8 +19,11 @@ public class QueryClubDetailService {
 
     @Transactional(readOnly = true)
     public QueryClubDetailResponse execute(Long clubId) {
+
         ClubDetailDto clubDetail = clubRepository.findClubDetailById(clubId)
+
                 .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
+
         List<ClubMembersDto> clubMembers = clubRepository.findClubMembersById(clubId);
 
         return QueryClubDetailResponse.of(clubDetail, clubMembers);

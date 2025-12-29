@@ -22,6 +22,7 @@ public class DeleteApplicationService {
 
     @Transactional
     public void execute(Long submissionId) {
+
         User user = userFacade.getCurrentUser();
 
         Submission submission = submissionFacade.getApplicationBySubmissionId(submissionId);

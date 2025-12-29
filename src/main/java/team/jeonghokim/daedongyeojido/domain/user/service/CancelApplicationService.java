@@ -12,7 +12,6 @@ import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
 
 @Service
@@ -25,6 +24,7 @@ public class CancelApplicationService {
 
     @Transactional
     public void execute(Long submissionId) {
+
         User user = userFacade.getCurrentUser();
 
         Submission submission = submissionFacade.getApplicationBySubmissionId(submissionId);
@@ -38,10 +38,12 @@ public class CancelApplicationService {
         }
 
         submission.cancel();
+
         executeCancelAlarm(submission.getApplicationForm().getClub(), user);
     }
 
     private void executeCancelAlarm(Club club, User user) {
+
         eventPublisher.publishEvent(
                 alarmEventFactory.createClubAlarmEvent(club, user, AlarmType.USER_CANCEL_APPLICATION)
         );

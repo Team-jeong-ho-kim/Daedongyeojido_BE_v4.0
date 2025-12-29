@@ -24,26 +24,34 @@ public class DecideClubCreationService {
 
     @Transactional
     public void execute(Long clubId, DecideClubCreationRequest request) {
+
         Club club = clubFacade.getClubById(clubId);
+
         User user = userRepository.findById(club.getClubApplicant().getId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         if (request.isOpen()) {
+
             club.clubOpen();
+
             user.approvedClub(club);
+
             acceptClub(club, user);
         } else {
+
             rejectClub(club, user);
         }
     }
 
     private void acceptClub(Club club, User user) {
+
         eventPublisher.publishEvent(
                 alarmEventFactory.createUserAlarmEvent(user, club, AlarmType.CLUB_CREATION_ACCEPTED)
         );
     }
 
     private void rejectClub(Club club, User user) {
+
         eventPublisher.publishEvent(
                 alarmEventFactory.createUserAlarmEvent(user, club, AlarmType.CLUB_CREATION_REJECTED)
         );

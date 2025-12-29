@@ -25,7 +25,9 @@ public class DeleteTeamMemberService {
 
     @Transactional
     public void execute(Long userId) {
+
         User clubLeader = userFacade.getCurrentUser();
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
@@ -38,10 +40,12 @@ public class DeleteTeamMemberService {
         }
 
         user.leaveClub();
+
         deleteClubMember(clubLeader.getClub(), user);
     }
 
     private void deleteClubMember(Club club, User user) {
+
         eventPublisher.publishEvent(
                 alarmEventFactory.createUserAlarmEvent(user, club, AlarmType.DELETE_CLUB_MEMBER)
         );

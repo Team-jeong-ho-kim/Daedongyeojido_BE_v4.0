@@ -12,7 +12,6 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserApplicat
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserApplicationNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideTeamMemberApplicationRequest;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
 
 @Service
@@ -25,6 +24,7 @@ public class DecideTeamMemberApplicationService {
 
     @Transactional
     public void execute(DecideTeamMemberApplicationRequest request) {
+
         User user = userFacade.getCurrentUser();
 
         UserApplication userApplication = userApplicationRepository.findByUserId(user.getId())
@@ -40,12 +40,14 @@ public class DecideTeamMemberApplicationService {
     }
 
     private void joinClub(Club club, User user) {
+
         eventPublisher.publishEvent(
                 alarmEventFactory.createClubAlarmEvent(club, user, AlarmType.USER_JOINED_CLUB)
         );
     }
 
     private void refuseClub(Club club, User user) {
+
         eventPublisher.publishEvent(
                 alarmEventFactory.createClubAlarmEvent(club, user, AlarmType.USER_REFUSED_CLUB)
         );

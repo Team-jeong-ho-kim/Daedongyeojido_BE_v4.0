@@ -38,6 +38,7 @@ public class UserAlarmEventListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleUserAlarmEvent(UserAlarmEvent event) {
+
         try {
             User receiver = userRepository.findById(event.userId())
                     .orElseThrow(() -> UserNotFoundException.EXCEPTION);
@@ -53,6 +54,7 @@ public class UserAlarmEventListener {
             throw e;
 
         } catch(Exception e) {
+
             log.warn("유저 알림 전송 실패 재시도 예정 (userId={}, alarmType={})", event.userId(), event.alarmType(), e);
             throw new HttpApiException(e);
         }
@@ -60,6 +62,7 @@ public class UserAlarmEventListener {
 
     @Recover
     public void recoverUserEvent(HttpApiException e, UserAlarmEvent event) {
+
         log.error("유저 알람 이벤트 최종 실패: userId={} alarmType={}",
                 event.userId(), event.alarmType(), e);
 

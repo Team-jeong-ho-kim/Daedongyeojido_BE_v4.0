@@ -24,6 +24,7 @@ public class SubmitApplicationService {
 
     @Transactional
     public void execute(Long submissionId) {
+
         User user = userFacade.getCurrentUser();
 
         Submission submission = submissionFacade.getApplicationBySubmissionId(submissionId);
@@ -33,10 +34,12 @@ public class SubmitApplicationService {
         }
 
         submission.submit();
+
         submitApplication(submission.getApplicationForm().getClub(), user);
     }
 
     private void submitApplication(Club club, User user) {
+
         eventPublisher.publishEvent(
                 alarmEventFactory.createClubAlarmEvent(club, user, AlarmType.USER_SUBMIT_APPLICATION)
         );

@@ -29,7 +29,9 @@ public class DecideClubDissolveService {
 
     @Transactional
     public void execute(Long clubId, DecideClubDissolveRequest request) {
+
         Club club = clubFacade.getClubById(clubId);
+
         User user = userRepository.findById(club.getClubApplicant().getId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
@@ -38,22 +40,29 @@ public class DecideClubDissolveService {
         }
 
         if (request.isDecision()) {
+
             List<User> clubMembers = userRepository.findAllByClub(club);
+
             clubMembers.forEach(User::leaveClub);
+
             clubRepository.delete(club);
+
             acceptDissolution(club, user);
         } else {
+
             rejectDissolution(club, user);
         }
     }
 
     private void acceptDissolution(Club club, User user) {
+
         eventPublisher.publishEvent(
                 alarmEventFactory.createUserAlarmEvent(user, club, AlarmType.CLUB_DISSOLUTION_ACCEPTED)
         );
     }
 
     private void rejectDissolution(Club club, User user) {
+
         eventPublisher.publishEvent(
                 alarmEventFactory.createUserAlarmEvent(user, club, AlarmType.CLUB_DISSOLUTION_REJECTED)
         );

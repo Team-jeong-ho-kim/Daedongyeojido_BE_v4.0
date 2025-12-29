@@ -16,6 +16,7 @@ public class UpdateMyInfoService {
 
     @Transactional
     public void execute(UpdateMyInfoRequest request) {
+
         User user = userFacade.getCurrentUser();
 
         String profileImage = s3Service.update(user.getProfileImage(), request.profileImage());

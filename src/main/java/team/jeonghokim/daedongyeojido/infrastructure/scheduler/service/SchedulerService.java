@@ -57,6 +57,7 @@ public class SchedulerService {
     }
 
     private boolean isResultDuration(ResultDuration resultDuration) {
+
         if (resultDuration == null) {
             return false;
         }
@@ -70,6 +71,7 @@ public class SchedulerService {
     }
 
     private Set<SchedulerPayload> queryMessages() {
+        
         long now = Instant.now().getEpochSecond();
 
         return smsRedisTemplate.opsForZSet()

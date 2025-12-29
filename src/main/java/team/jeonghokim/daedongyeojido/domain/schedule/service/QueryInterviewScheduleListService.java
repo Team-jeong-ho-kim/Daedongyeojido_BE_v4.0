@@ -20,8 +20,11 @@ public class QueryInterviewScheduleListService {
 
     @Transactional(readOnly = true)
     public QueryInterviewScheduleListResponse execute() {
+
         User user = userFacade.getCurrentUser();
+
         List<InterviewScheduleResponse> schedules = scheduleRepository.findAllSchedulesByClubId(user.getClub().getId());
+
         return QueryInterviewScheduleListResponse.from(schedules);
     }
 }

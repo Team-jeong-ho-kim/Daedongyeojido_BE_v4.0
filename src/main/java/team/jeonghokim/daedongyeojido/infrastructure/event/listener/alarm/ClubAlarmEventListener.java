@@ -38,6 +38,7 @@ public class ClubAlarmEventListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleClubAlarmEvent(ClubAlarmEvent event) {
+
         try {
             Club club = clubRepository.findById(event.clubId())
                     .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
@@ -60,6 +61,7 @@ public class ClubAlarmEventListener {
 
     @Recover
     public void recoverClubEvent(HttpApiException e, ClubAlarmEvent event) {
+
         log.error("동아리 알람 이벤트 최종 실패: clubId={} alarmType={}",
                 event.clubId(), event.alarmType(), e);
 

@@ -26,6 +26,7 @@ public class ApplyTeamMemberService {
 
     @Transactional
     public void execute(TeamMemberRequest request) {
+
         User user = userFacade.getCurrentUser();
 
         User userApplication = userRepository.findByUserNameAndClassNumber(request.getUserName(), request.getClassNumber())
@@ -41,6 +42,7 @@ public class ApplyTeamMemberService {
     }
 
     private void createAlarm(Club club, User userApplication) {
+
         eventPublisher.publishEvent(
                 alarmEventFactory.createUserAlarmEvent(userApplication, club, AlarmType.CLUB_MEMBER_APPLY)
         );

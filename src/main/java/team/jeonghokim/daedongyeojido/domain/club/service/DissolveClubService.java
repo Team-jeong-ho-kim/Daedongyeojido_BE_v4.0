@@ -9,7 +9,6 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.exception.UserNotInClubException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
 
 import java.util.Optional;
@@ -24,6 +23,7 @@ public class DissolveClubService {
 
     @Transactional
     public void execute() {
+
         User receiver = userFacade.getCurrentUser();
 
         Club club = Optional.ofNullable(receiver.getClub())
