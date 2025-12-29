@@ -49,6 +49,9 @@ public class ClubAlarmEventListener {
                     .alarmType(event.alarmType())
                     .build());
 
+        } catch (ClubNotFoundException e) {
+            throw e;
+
         } catch (Exception e) {
             log.warn("동아리 알림 전송 실패 재시도 예정 (clubId={}, alarmType={})", event.clubId(), event.alarmType(), e);
             throw new HttpApiException(e);
