@@ -38,6 +38,7 @@ public class AlarmEventListener {
     private final ClubRepository clubRepository;
 
     private static final String CLUB_EVENT_RETRY = "recoverClubEvent";
+    private static final String USER_EVENT_RETRY = "recoverUserEvent";
 
     @Async
     @Retryable(
@@ -67,31 +68,40 @@ public class AlarmEventListener {
     }
 
     @Async
-    @Retryable
+    @Retryable(
+            retryFor = {
+                    HttpTimeoutException.class,
+                    SocketTimeoutException.class,
+                    HttpServerErrorException.class,
+            },
+            recover = USER_EVENT_RETRY,
+            backoff = @Backoff(delay = 500, multiplier = 2)
+    )
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleUserAlarmEvent(UserAlarmEvent event) {
-        try {
-            User receiver = userRepository.findById(event.userId())
-                    .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+        User receiver = userRepository.findById(event.userId())
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-            UserAlarm alarm = userAlarmRepository.save(UserAlarm.builder()
-                    .title(event.title())
-                    .content(event.content())
-                    .receiver(receiver)
-                    .alarmType(event.alarmType())
-                    .build());
+        UserAlarm alarm = userAlarmRepository.save(UserAlarm.builder()
+                .title(event.title())
+                .content(event.content())
+                .receiver(receiver)
+                .alarmType(event.alarmType())
+                .build());
 
-            receiver.getAlarms().add(alarm);
-        } catch (Exception e) {
-            log.error("유저 알람 이벤트 실패: clubId={} alarmType={}",
-                    event.userId(), event.alarmType(), e);
-        }
+        receiver.getAlarms().add(alarm);
     }
 
     @Recover
     public void recoverClubEvent(Exception e, ClubAlarmEvent event) {
         log.error("동아리 알람 이벤트 최종 실패: clubId={} alarmType={}",
                 event.clubId(), event.alarmType(), e);
+    }
+
+    @Recover
+    public void recoverUserEvent(Exception e, UserAlarmEvent event) {
+        log.error("유저 알람 이벤트 최종 실패: clubId={} alarmType={}",
+                event.userId(), event.alarmType(), e);
     }
 }
