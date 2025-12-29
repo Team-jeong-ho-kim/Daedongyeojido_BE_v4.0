@@ -3,13 +3,14 @@ package team.jeonghokim.daedongyeojido.infrastructure.scheduler.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
-import team.jeonghokim.daedongyeojido.infrastructure.sms.service.SmsService;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
 
 import java.time.Instant;
@@ -22,8 +23,8 @@ import java.util.Set;
 public class SchedulerService {
 
     private final RedisTemplate<String, SchedulerPayload> smsRedisTemplate;
-    private final SmsService smsService;
     private final ResultDurationRepository resultDurationRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public static final String RESULT_DURATION_ZSET = "club:result-duration";
     public static final String SEOUL_TIME_ZONE = "Asia/Seoul";
@@ -75,13 +76,13 @@ public class SchedulerService {
     private void sendSms(Set<SchedulerPayload> messages) {
         for (SchedulerPayload payload : messages) {
             try {
-                smsService.send(
-                        payload.phoneNumber(),
-                        payload.isPassed()
-                                ? Message.CLUB_FINAL_ACCEPTED
-                                : Message.CLUB_FINAL_REJECTED,
-                        payload.clubName()
-                );
+                eventPublisher.publishEvent(UserSmsEvent.builder()
+                                .phoneNumber(payload.phoneNumber())
+                                .message(payload.isPassed()
+                                        ? Message.CLUB_FINAL_ACCEPTED
+                                        : Message.CLUB_FINAL_REJECTED)
+                                .clubName(payload.clubName())
+                        .build());
 
                 smsRedisTemplate.opsForZSet()
                         .remove(RESULT_DURATION_ZSET, payload);
