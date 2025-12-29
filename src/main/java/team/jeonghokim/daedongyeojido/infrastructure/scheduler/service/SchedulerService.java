@@ -51,7 +51,9 @@ public class SchedulerService {
             return;
         }
 
-        sendSms(messages);
+        for (SchedulerPayload payload : messages) {
+            sendSms(payload);
+        }
     }
 
     private boolean isResultDuration(ResultDuration resultDuration) {
@@ -74,27 +76,15 @@ public class SchedulerService {
                 .rangeByScore(RESULT_DURATION_ZSET, 0, now);
     }
 
-    private void sendSms(Set<SchedulerPayload> messages) {
-        for (SchedulerPayload payload : messages) {
-            try {
-                eventPublisher.publishEvent(LargeScaleSmsEvent.builder()
-                                .phoneNumber(payload.phoneNumber())
-                                .message(payload.isPassed()
-                                        ? Message.CLUB_FINAL_ACCEPTED
-                                        : Message.CLUB_FINAL_REJECTED)
-                                .clubName(payload.clubName())
-                                .payload(payload)
-                        .build());
+    private void sendSms(SchedulerPayload payload) {
 
-            } catch (Exception e) {
-                log.error(
-                        "SMS 문자 전송에 실패함 phoneNumber={}, submissionId={}, 다음 스케줄링에서 재시도",
-                        payload.phoneNumber(),
-                        payload.submissionId(),
-                        e
-                );
-            }
-        }
+        eventPublisher.publishEvent(LargeScaleSmsEvent.builder()
+                .phoneNumber(payload.phoneNumber())
+                .message(payload.isPassed()
+                        ? Message.CLUB_FINAL_ACCEPTED
+                        : Message.CLUB_FINAL_REJECTED)
+                .clubName(payload.clubName())
+                .payload(payload)
+                .build());
     }
-
 }
