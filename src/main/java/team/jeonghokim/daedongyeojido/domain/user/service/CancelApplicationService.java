@@ -1,23 +1,25 @@
 package team.jeonghokim.daedongyeojido.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotSubmittedException;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.ClubAlarm;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
 
 @Service
 @RequiredArgsConstructor
 public class CancelApplicationService {
     private final SubmissionFacade submissionFacade;
     private final UserFacade userFacade;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public void execute(Long submissionId) {
@@ -38,13 +40,11 @@ public class CancelApplicationService {
     }
 
     private void executeCancelAlarm(Club club, User user) {
-        ClubAlarm alarm = ClubAlarm.builder()
-                .title(AlarmType.USER_CANCEL_APPLICATION.formatTitle(user.getUserName()))
-                .content(AlarmType.USER_CANCEL_APPLICATION.formatContent(user.getUserName()))
-                .club(club)
-                .alarmType(AlarmType.USER_CANCEL_APPLICATION)
-                .build();
-
-        club.getAlarms().add(alarm);
+        eventPublisher.publishEvent(ClubAlarmEvent.builder()
+                        .title(AlarmType.USER_CANCEL_APPLICATION.formatTitle(user.getUserName()))
+                        .content(AlarmType.USER_CANCEL_APPLICATION.formatContent(user.getUserName()))
+                        .clubId(club.getId())
+                        .alarmType(AlarmType.USER_CANCEL_APPLICATION)
+                .build());
     }
 }
