@@ -9,13 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.ClubAlarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.ClubAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotFoundException;
+import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
+import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
 
 @Slf4j
 @Component
@@ -45,4 +49,25 @@ public class AlarmEventListener {
                     event.clubId(), event.alarmType(), e);
         }
     }
+
+    @Async
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void handleUserAlarmEvent(UserAlarmEvent event) {
+        try {
+            User receiver = userRepository.findById(event.userId())
+                    .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+
+            userAlarmRepository.save(UserAlarm.builder()
+                            .title(event.title())
+                            .content(event.content())
+                            .receiver(receiver)
+                            .alarmType(event.alarmType())
+                    .build());
+        } catch (Exception e) {
+            log.info("유저 알람 이벤트 실패: clubId={} alarmType={}",
+                    event.userId(), event.alarmType(), e);
+        }
+    }
+
 }
