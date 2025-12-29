@@ -89,4 +89,9 @@ public class AlarmEventListener {
         }
     }
 
+    @Recover
+    public void recoverClubEvent(Exception e, ClubAlarmEvent event) {
+        log.error("동아리 알람 이벤트 최종 실패: clubId={} alarmType={}",
+                event.clubId(), event.alarmType(), e);
+    }
 }
