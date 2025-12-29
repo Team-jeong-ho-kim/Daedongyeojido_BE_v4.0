@@ -5,7 +5,7 @@ import team.jeonghokim.daedongyeojido.global.error.exception.ErrorCode;
 
 public class AlarmEventFinalFailedException extends DaedongException {
 
-    public AlarmEventFinalFailedException() {
-        super(ErrorCode.ALARM_EVENT_FINAL_FAILED);
+    public AlarmEventFinalFailedException(Throwable cause) {
+        super(ErrorCode.ALARM_EVENT_FINAL_FAILED, cause);
     }
 }

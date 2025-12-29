@@ -66,6 +66,6 @@ public class UserAlarmEventListener {
         log.error("유저 알람 이벤트 최종 실패: userId={} alarmType={}",
                 event.userId(), event.alarmType(), e);
 
-        throw new AlarmEventFinalFailedException();
+        throw new AlarmEventFinalFailedException(e);
     }
 }

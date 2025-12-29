@@ -91,7 +91,7 @@ public class SmsEventListener {
         log.error("SMS 이벤트 최종 실패: phoneNumber={} message={}",
                 event.phoneNumber(), event.message(), e);
 
-        throw new SmsEventFinalFailedException();
+        throw new SmsEventFinalFailedException(e);
     }
 
     @Recover
@@ -100,6 +100,6 @@ public class SmsEventListener {
         log.error("SMS 이벤트 최종 실패: phoneNumber={} message={}",
                 event.phoneNumber(), event.message(), e);
 
-        throw new SmsEventFinalFailedException();
+        throw new SmsEventFinalFailedException(e);
     }
 }

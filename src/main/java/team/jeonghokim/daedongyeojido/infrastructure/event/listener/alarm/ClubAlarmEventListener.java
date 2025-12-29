@@ -65,6 +65,6 @@ public class ClubAlarmEventListener {
         log.error("동아리 알람 이벤트 최종 실패: clubId={} alarmType={}",
                 event.clubId(), event.alarmType(), e);
 
-        throw new AlarmEventFinalFailedException();
+        throw new AlarmEventFinalFailedException(e);
     }
 }
