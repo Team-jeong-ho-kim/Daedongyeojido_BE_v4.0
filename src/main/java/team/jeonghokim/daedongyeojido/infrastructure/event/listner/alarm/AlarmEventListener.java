@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.infrastructure.event.listner;
+package team.jeonghokim.daedongyeojido.infrastructure.event.listner.alarm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
