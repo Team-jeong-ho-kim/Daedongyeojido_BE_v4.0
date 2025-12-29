@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.service.SmsService;
@@ -33,9 +34,6 @@ public class SmsEventListener {
                     event.clubName()
             );
 
-            smsRedisTemplate.opsForZSet()
-                    .remove(RESULT_DURATION_ZSET, event.payload());
-
         } catch (Exception e) {
             log.error("유저 SMS 이벤트 실패: phoneNumber={} message={}",
                     event.phoneNumber(), event.message(), e);
@@ -43,7 +41,9 @@ public class SmsEventListener {
     }
 
     @Async("largeScaleExecutor")
-    public void handleLargeScaleSmsEvent(UserSmsEvent event) {
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void handleLargeScaleSmsEvent(LargeScaleSmsEvent event) {
         try {
             smsService.send(
                     event.phoneNumber(),
