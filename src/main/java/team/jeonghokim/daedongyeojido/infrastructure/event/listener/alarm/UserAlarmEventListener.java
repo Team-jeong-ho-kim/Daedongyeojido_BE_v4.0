@@ -26,14 +26,21 @@ public class UserAlarmEventListener {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleUserAlarmEvent(UserAlarmEvent event) {
 
-        User receiver = userRepository.findById(event.userId())
-                .orElseThrow();
+        try {
+            User receiver = userRepository.findById(event.userId())
+                    .orElseThrow();
 
-        userAlarmRepository.save(UserAlarm.builder()
-                .title(event.title())
-                .content(event.content())
-                .receiver(receiver)
-                .alarmType(event.alarmType())
-                .build());
+            userAlarmRepository.save(UserAlarm.builder()
+                    .title(event.title())
+                    .content(event.content())
+                    .receiver(receiver)
+                    .alarmType(event.alarmType())
+                    .build());
+        } catch (Exception e) {
+
+            log.error("유저 알람 이벤트 실패 userId={} alarmType={}", event.userId(), event.alarmType(), e);
+
+            throw e;
+        }
     }
 }

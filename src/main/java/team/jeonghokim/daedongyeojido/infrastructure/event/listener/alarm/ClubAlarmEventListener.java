@@ -26,14 +26,21 @@ public class ClubAlarmEventListener {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleClubAlarmEvent(ClubAlarmEvent event) {
 
-        Club club = clubRepository.findById(event.clubId())
-                .orElseThrow();
+        try {
+            Club club = clubRepository.findById(event.clubId())
+                    .orElseThrow();
 
-        clubAlarmRepository.save(ClubAlarm.builder()
-                .title(event.title())
-                .content(event.content())
-                .club(club)
-                .alarmType(event.alarmType())
-                .build());
+            clubAlarmRepository.save(ClubAlarm.builder()
+                    .title(event.title())
+                    .content(event.content())
+                    .club(club)
+                    .alarmType(event.alarmType())
+                    .build());
+        } catch (Exception e) {
+
+            log.error("동아리 알림 생성 실패: clubId={}, alarmType={}", event.clubId(), event.alarmType(), e);
+
+            throw e;
+        }
     }
 }
