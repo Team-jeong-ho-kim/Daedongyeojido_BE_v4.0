@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.club.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
@@ -11,8 +12,9 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubReposito
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 
 import java.util.List;
@@ -27,23 +29,29 @@ public class CreateClubService {
     private final UserFacade userFacade;
     private final CreateClubValidator createClubValidator;
     private final S3Service s3Service;
+    private final ApplicationEventPublisher eventPublisher;
+    private final AlarmEventFactory alarmEventFactory;
 
     @Transactional
     public void execute(ClubRequest request) {
+
         User clubApplicant = userFacade.getCurrentUser();
 
         createClubValidator.validate(request, clubApplicant);
 
         List<ClubMajor> clubMajors = createClubMajor(request);
+
         List<ClubLink> clubLinks = createClubLink(request);
 
         Club club = createClub(request, clubApplicant, clubMajors, clubLinks);
 
         createAlarm(club, clubApplicant);
+
         clubRepository.save(club);
     }
 
     private Club createClub(ClubRequest request, User clubApplicant, List<ClubMajor> clubMajors, List<ClubLink> clubLinks) {
+
         return Club.builder()
                 .clubName(request.getClubName())
                 .clubImage(s3Service.upload(request.getClubImage()))
@@ -57,6 +65,7 @@ public class CreateClubService {
     }
 
     private List<ClubMajor> createClubMajor(ClubRequest request) {
+
         return request.getMajor().stream().map(major ->
                 ClubMajor.builder()
                         .major(major)
@@ -65,6 +74,7 @@ public class CreateClubService {
     }
 
     private List<ClubLink> createClubLink(ClubRequest request) {
+
         return Optional.ofNullable(request.getLink())
                 .orElseGet(List::of)
                 .stream()
@@ -75,13 +85,9 @@ public class CreateClubService {
     }
 
     private void createAlarm(Club club, User clubApplicant) {
-        UserAlarm alarm = UserAlarm.builder()
-                .title(AlarmType.CREATE_CLUB_APPLY.formatTitle(club.getClubName()))
-                .content(AlarmType.CREATE_CLUB_APPLY.formatContent(club.getClubName()))
-                .receiver(clubApplicant)
-                .alarmType(AlarmType.CREATE_CLUB_APPLY)
-                .build();
 
-        clubApplicant.getAlarms().add(alarm);
+        eventPublisher.publishEvent(
+                alarmEventFactory.createUserAlarmEvent(clubApplicant, club, AlarmType.CREATE_CLUB_APPLY)
+        );
     }
 }

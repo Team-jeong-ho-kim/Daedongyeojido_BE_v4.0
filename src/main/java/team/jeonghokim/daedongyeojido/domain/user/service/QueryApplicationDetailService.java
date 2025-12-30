@@ -18,7 +18,9 @@ public class QueryApplicationDetailService {
 
     @Transactional(readOnly = true)
     public QueryApplicationDetailResponse execute(Long submissionId) {
+
         User user = userFacade.getCurrentUser();
+
         Submission submission = submissionFacade.getApplicationBySubmissionId(submissionId);
 
         if (!submission.getUser().getId().equals(user.getId())) {

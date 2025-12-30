@@ -3,13 +3,15 @@ package team.jeonghokim.daedongyeojido.infrastructure.scheduler.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
-import team.jeonghokim.daedongyeojido.infrastructure.sms.service.SmsService;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
 
 import java.time.Instant;
@@ -22,8 +24,8 @@ import java.util.Set;
 public class SchedulerService {
 
     private final RedisTemplate<String, SchedulerPayload> smsRedisTemplate;
-    private final SmsService smsService;
     private final ResultDurationRepository resultDurationRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public static final String RESULT_DURATION_ZSET = "club:result-duration";
     public static final String SEOUL_TIME_ZONE = "Asia/Seoul";
@@ -49,10 +51,13 @@ public class SchedulerService {
             return;
         }
 
-        sendSms(messages);
+        for (SchedulerPayload payload : messages) {
+            sendSms(payload);
+        }
     }
 
     private boolean isResultDuration(ResultDuration resultDuration) {
+
         if (resultDuration == null) {
             return false;
         }
@@ -66,35 +71,22 @@ public class SchedulerService {
     }
 
     private Set<SchedulerPayload> queryMessages() {
+        
         long now = Instant.now().getEpochSecond();
 
         return smsRedisTemplate.opsForZSet()
                 .rangeByScore(RESULT_DURATION_ZSET, 0, now);
     }
 
-    private void sendSms(Set<SchedulerPayload> messages) {
-        for (SchedulerPayload payload : messages) {
-            try {
-                smsService.send(
-                        payload.phoneNumber(),
-                        payload.isPassed()
-                                ? Message.CLUB_FINAL_ACCEPTED
-                                : Message.CLUB_FINAL_REJECTED,
-                        payload.clubName()
-                );
+    private void sendSms(SchedulerPayload payload) {
 
-                smsRedisTemplate.opsForZSet()
-                        .remove(RESULT_DURATION_ZSET, payload);
-
-            } catch (Exception e) {
-                log.error(
-                        "SMS 문자 전송에 실패함 phoneNumber={}, submissionId={}, 다음 스케줄링에서 재시도",
-                        payload.phoneNumber(),
-                        payload.submissionId(),
-                        e
-                );
-            }
-        }
+        eventPublisher.publishEvent(LargeScaleSmsEvent.builder()
+                .phoneNumber(payload.phoneNumber())
+                .message(payload.isPassed()
+                        ? Message.CLUB_FINAL_ACCEPTED
+                        : Message.CLUB_FINAL_REJECTED)
+                .clubName(payload.clubName())
+                .payload(payload)
+                .build());
     }
-
 }

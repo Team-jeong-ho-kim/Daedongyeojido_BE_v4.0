@@ -19,7 +19,9 @@ public class QueryUserAlarmService {
 
     @Transactional(readOnly = true)
     public QueryUserAlarmResponse execute() {
+
         User user = userFacade.getCurrentUser();
+
         List<AlarmResponse> alarms = userAlarmRepository.findAllByUserId(user.getId());
       
         return QueryUserAlarmResponse.from(alarms);

@@ -26,6 +26,7 @@ public class CreateApplicationService {
 
     @Transactional
     public void execute(Long applicationFormId, SubmissionRequest request) {
+
         User user = userFacade.getCurrentUser();
 
         ApplicationForm applicationForm = applicationFormFacade.getApplicationById(applicationFormId);
@@ -43,6 +44,7 @@ public class CreateApplicationService {
     }
 
     private List<ApplicationAnswer> createAnswer(SubmissionRequest request, ApplicationForm applicationForm) {
+
         return request.getAnswer().stream()
                 .map(answerRequest -> {
                     ApplicationQuestion applicationQuestion = validate(applicationForm, answerRequest.getApplicationQuestionId());
@@ -55,6 +57,7 @@ public class CreateApplicationService {
     }
 
     private ApplicationQuestion validate(ApplicationForm applicationForm, Long applicationQuestionId) {
+
         return applicationForm.getApplicationQuestions().stream()
                 .filter(applicationQuestion -> applicationQuestion.getId().equals(applicationQuestionId))
                 .findFirst()

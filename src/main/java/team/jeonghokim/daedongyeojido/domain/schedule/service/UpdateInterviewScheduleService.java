@@ -20,7 +20,9 @@ public class UpdateInterviewScheduleService {
 
     @Transactional
     public void execute(Long scheduleId, InterviewScheduleRequest request) {
+
         User currentUser = userFacade.getCurrentUser();
+
         Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> InterviewScheduleNotFoundException.EXCEPTION);
 

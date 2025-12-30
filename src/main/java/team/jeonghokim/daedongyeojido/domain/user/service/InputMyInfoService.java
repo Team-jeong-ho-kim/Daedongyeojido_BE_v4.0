@@ -22,6 +22,7 @@ public class InputMyInfoService {
 
     @Transactional
     public void execute(MyInfoRequest request) {
+
         User user = userFacade.getCurrentUser();
 
         String profileImage = s3Service.upload(request.profileImage());
@@ -36,6 +37,7 @@ public class InputMyInfoService {
     }
 
     private List<UserMajor> createUserMajor(MyInfoRequest request, User user) {
+
         return Optional.ofNullable(request.majors())
                 .orElseGet(List::of)
                 .stream()
@@ -47,6 +49,7 @@ public class InputMyInfoService {
     }
 
     private List<UserLink> createUserLink(MyInfoRequest request, User user) {
+
         return Optional.ofNullable(request.links())
                 .orElseGet(List::of)
                 .stream()

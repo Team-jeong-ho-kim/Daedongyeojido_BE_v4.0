@@ -30,6 +30,7 @@ public class UpdateApplicationService {
 
     @Transactional
     public void execute(Long submissionId, SubmissionRequest request) {
+
         User user = userFacade.getCurrentUser();
 
         Submission submission = submissionFacade.getApplicationBySubmissionId(submissionId);
@@ -56,6 +57,7 @@ public class UpdateApplicationService {
     }
 
     private List<ApplicationAnswer> createAnswer(SubmissionRequest request, ApplicationForm applicationForm) {
+
         return request.getAnswer().stream()
                 .map(answerRequest -> {
                     ApplicationQuestion applicationQuestion = validate(applicationForm, answerRequest.getApplicationQuestionId());
@@ -68,6 +70,7 @@ public class UpdateApplicationService {
     }
 
     private ApplicationQuestion validate(ApplicationForm applicationForm, Long applicationQuestionId) {
+
         return applicationForm.getApplicationQuestions().stream()
                 .filter(applicationQuestion -> applicationQuestion.getId().equals(applicationQuestionId))
                 .findFirst()

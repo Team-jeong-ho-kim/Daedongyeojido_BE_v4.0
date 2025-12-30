@@ -33,7 +33,9 @@ public class PassClubService {
 
     @Transactional
     public void execute(Long submissionId, PassClubRequest request) {
+
         User user = userFacade.getCurrentUser();
+
         Submission submission = submissionRepository.findSubmissionById(submissionId)
                         .orElseThrow(() -> ApplicationNotFoundException.EXCEPTION);
 
@@ -45,6 +47,7 @@ public class PassClubService {
     }
 
     private void validate(User user, Submission submission) {
+
         if (!user.getClub().getId().equals(submission.getApplicationForm().getClub().getId())) {
             throw ClubAccessDeniedException.EXCEPTION;
         }

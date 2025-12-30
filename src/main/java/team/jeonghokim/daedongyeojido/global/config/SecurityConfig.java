@@ -63,10 +63,10 @@ public class SecurityConfig {
                         .requestMatchers("/applications/**").hasRole(STUDENT)
 
                         // admin
-                        .requestMatchers(HttpMethod.PATCH, "/admin/clubs/applications/**").hasRole(ADMIN)
-                        .requestMatchers(HttpMethod.DELETE, "/admin/dissolution/**").hasRole(ADMIN)
-                        .requestMatchers(HttpMethod.POST, "/admin/result-duration").hasRole(ADMIN)
-                        .requestMatchers(HttpMethod.PATCH, "/admin/result-duration/**").hasRole(ADMIN)
+                        .requestMatchers(HttpMethod.PATCH, "/admin/clubs/applications/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/admin/dissolution/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/admin/result-duration").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/admin/result-duration/**").permitAll()
 
                         // club
                         .requestMatchers(HttpMethod.POST, "/clubs/applications").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
