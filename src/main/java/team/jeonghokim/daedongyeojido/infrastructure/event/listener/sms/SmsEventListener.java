@@ -81,7 +81,8 @@ public class SmsEventListener {
             smsRedisTemplate.opsForZSet()
                     .remove(RESULT_DURATION_ZSET, event.payload());
 
-        } catch (Exception e) {
+        } catch (HttpServerErrorException |
+                 ResourceAccessException e) {
 
             log.error("유저 SMS 이벤트 실패: phoneNumber={} message={}",
                     event.phoneNumber(), event.message(), e);
