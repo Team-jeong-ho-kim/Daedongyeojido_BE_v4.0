@@ -38,7 +38,7 @@ public class ClubAlarmEventListener {
                     .build());
         } catch (Exception e) {
 
-            log.error("동아리 알림 생성 실패: clubId={}, alarmType={}", event.clubId(), event.alarmType(), e);
+            log.error("동아리 알림 이벤트 실패 clubId={}, alarmType={}", event.clubId(), event.alarmType(), e);
 
             throw e;
         }
