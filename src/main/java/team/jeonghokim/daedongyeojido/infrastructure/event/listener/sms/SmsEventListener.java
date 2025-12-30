@@ -82,8 +82,10 @@ public class SmsEventListener {
                     .remove(RESULT_DURATION_ZSET, event.payload());
 
         } catch (Exception e) {
+
             log.error("유저 SMS 이벤트 실패: phoneNumber={} message={}",
                     event.phoneNumber(), event.message(), e);
+
             throw new HttpApiException(e);
         }
     }
