@@ -17,12 +17,9 @@ import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
-import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.AlarmEventFinalFailedException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
-
-import java.net.SocketTimeoutException;
 
 @Slf4j
 @Component
@@ -45,7 +42,7 @@ public class UserAlarmEventListener {
 
         try {
             User receiver = userRepository.findById(event.userId())
-                    .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+                    .orElseThrow();
 
             userAlarmRepository.save(UserAlarm.builder()
                     .title(event.title())
@@ -53,9 +50,6 @@ public class UserAlarmEventListener {
                     .receiver(receiver)
                     .alarmType(event.alarmType())
                     .build());
-
-        } catch (UserNotFoundException e) {
-            throw e;
 
         } catch(HttpServerErrorException |
                 ResourceAccessException e) {

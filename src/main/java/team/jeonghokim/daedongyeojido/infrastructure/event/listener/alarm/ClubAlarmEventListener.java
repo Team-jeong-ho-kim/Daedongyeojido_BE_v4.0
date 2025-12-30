@@ -17,7 +17,6 @@ import team.jeonghokim.daedongyeojido.domain.alarm.domain.ClubAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.ClubAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
-import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.AlarmEventFinalFailedException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
@@ -43,7 +42,7 @@ public class ClubAlarmEventListener {
 
         try {
             Club club = clubRepository.findById(event.clubId())
-                    .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
+                    .orElseThrow();
 
             clubAlarmRepository.save(ClubAlarm.builder()
                     .title(event.title())
@@ -51,9 +50,6 @@ public class ClubAlarmEventListener {
                     .club(club)
                     .alarmType(event.alarmType())
                     .build());
-
-        } catch (ClubNotFoundException e) {
-            throw e;
 
         } catch (HttpServerErrorException |
                  ResourceAccessException e) {
