@@ -14,6 +14,7 @@ import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubVa
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class CreateClubService {
     private final CreateClubValidator createClubValidator;
     private final S3Service s3Service;
     private final ApplicationEventPublisher eventPublisher;
+    private final AlarmEventFactory alarmEventFactory;
 
     @Transactional
     public void execute(ClubRequest request) {
@@ -84,11 +86,8 @@ public class CreateClubService {
 
     private void createAlarm(Club club, User clubApplicant) {
 
-        eventPublisher.publishEvent(UserAlarmEvent.builder()
-                        .title(AlarmType.CREATE_CLUB_APPLY.formatTitle(club.getClubName()))
-                        .content(AlarmType.CREATE_CLUB_APPLY.formatContent(club.getClubName()))
-                        .userId(clubApplicant.getId())
-                        .alarmType(AlarmType.CREATE_CLUB_APPLY)
-                .build());
+        eventPublisher.publishEvent(
+                alarmEventFactory.createUserAlarmEvent(clubApplicant, club, AlarmType.CREATE_CLUB_APPLY)
+        );
     }
 }
