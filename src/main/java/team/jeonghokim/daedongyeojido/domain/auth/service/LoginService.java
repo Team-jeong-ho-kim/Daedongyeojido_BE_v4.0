@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.request.LoginRequest;
+import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.LoginResponse;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.TokenResponse;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
@@ -23,7 +24,7 @@ public class LoginService {
     private final XquareClient xquareClient;
 
     @Transactional
-    public TokenResponse execute(LoginRequest request) {
+    public LoginResponse execute(LoginRequest request) {
         XquareResponse xquareUser = xquareClient.getUser(request);
 
         if (xquareUser == null || xquareUser.accountId() == null) {
@@ -34,8 +35,14 @@ public class LoginService {
                 .map(existingUser -> coverUserInfo(existingUser, xquareUser))
                 .orElseGet(() -> createUser(xquareUser));
 
+        TokenResponse tokenResponse = jwtTokenProvider.receiveToken(user.getAccountId());
 
-        return jwtTokenProvider.receiveToken(user.getAccountId());
+        return LoginResponse.builder()
+                .refreshToken(tokenResponse.refreshToken())
+                .accessToken(tokenResponse.accessToken())
+                .classNumber(user.getClassNumber())
+                .userName(user.getUserName())
+                .build();
     }
 
     private User createUser(XquareResponse xquareUser) {

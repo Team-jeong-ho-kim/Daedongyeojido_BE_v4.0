@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.request.LoginRequest;
+import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.LoginResponse;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.TokenResponse;
 import team.jeonghokim.daedongyeojido.domain.auth.service.LoginService;
 import team.jeonghokim.daedongyeojido.domain.auth.service.LogoutService;
@@ -27,7 +28,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public TokenResponse login(@RequestBody @Valid LoginRequest request) {
+    public LoginResponse login(@RequestBody @Valid LoginRequest request) {
         return loginService.execute(request);
     }
 
