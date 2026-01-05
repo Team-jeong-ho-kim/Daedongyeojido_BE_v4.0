@@ -9,8 +9,11 @@ import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotFoundExceptio
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.ClubDetailDto;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.ClubMembersDto;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
+import team.jeonghokim.daedongyeojido.global.cache.CacheNames;
 
 import java.util.List;
+
+import static team.jeonghokim.daedongyeojido.global.cache.CacheNames.CLUB_DETAIL;
 
 @Service
 @RequiredArgsConstructor
@@ -18,16 +21,13 @@ public class QueryClubDetailService {
 
     private final ClubRepository clubRepository;
 
-    @Cacheable(value = "club_detail", key = "#clubId")
+    @Cacheable(value = CLUB_DETAIL, key = "#clubId")
     @Transactional(readOnly = true)
     public QueryClubDetailResponse execute(Long clubId) {
-
         ClubDetailDto clubDetail = clubRepository.findClubDetailById(clubId)
-
                 .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
 
         List<ClubMembersDto> clubMembers = clubRepository.findClubMembersById(clubId);
-
         return QueryClubDetailResponse.of(clubDetail, clubMembers);
     }
 }
