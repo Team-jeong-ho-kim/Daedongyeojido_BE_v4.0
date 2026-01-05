@@ -28,7 +28,7 @@ public class SchedulerService {
 
         Set<SchedulerPayload> payloads =
                 smsRedisTemplate.opsForZSet()
-                        .rangeByScore(RESULT_DURATION_ZSET, 0, now + 5);
+                        .rangeByScore(RESULT_DURATION_ZSET, 0, now + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
 
         log.info("SMS 발송 대상 수 = {}",
                 payloads == null ? 0 : payloads.size());
