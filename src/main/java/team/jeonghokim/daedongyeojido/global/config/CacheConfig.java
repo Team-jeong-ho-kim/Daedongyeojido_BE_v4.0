@@ -39,8 +39,9 @@ public class CacheConfig {
                 .allowIfSubType("java.time")
                 .build();
 
-        redisObjectMapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-        GenericJackson2JsonRedisSerializer redisSerializer = new GenericJackson2JsonRedisSerializer(redisObjectMapper);
+        ObjectMapper cacheObjectMapper = redisObjectMapper.copy();
+        cacheObjectMapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+        GenericJackson2JsonRedisSerializer redisSerializer = new GenericJackson2JsonRedisSerializer(cacheObjectMapper);
 
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(30))
@@ -50,7 +51,7 @@ public class CacheConfig {
         return RedisCacheManager.RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactory)
                 .cacheDefaults(redisCacheConfiguration)
-                .withCacheConfiguration(CLUB_DETAIL, clubDetailCacheConfiguration(redisCacheConfiguration, redisObjectMapper))
+                .withCacheConfiguration(CLUB_DETAIL, clubDetailCacheConfiguration(redisCacheConfiguration, cacheObjectMapper))
                 .build();
     }
 
