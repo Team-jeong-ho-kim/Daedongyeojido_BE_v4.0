@@ -26,6 +26,7 @@ public class CacheConfig {
         BasicPolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
                 .allowIfSubType("team.jeonghokim.daedongyeojido")
                 .allowIfSubType("java.util")
+                .allowIfSubType("java.time")
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
