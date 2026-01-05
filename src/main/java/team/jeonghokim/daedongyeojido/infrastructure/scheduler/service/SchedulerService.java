@@ -28,7 +28,10 @@ public class SchedulerService {
 
         Set<SchedulerPayload> payloads =
                 smsRedisTemplate.opsForZSet()
-                        .rangeByScore(RESULT_DURATION_ZSET, 0, now);
+                        .rangeByScore(RESULT_DURATION_ZSET, 0, now + 5);
+
+        log.info("SMS 발송 대상 수 = {}",
+                payloads == null ? 0 : payloads.size());
 
         if (payloads == null || payloads.isEmpty()) {
             return;
@@ -38,6 +41,7 @@ public class SchedulerService {
     }
 
     private void publishEvent(SchedulerPayload payload) {
+
         eventPublisher.publishEvent(
                 LargeScaleSmsEvent.builder()
                         .phoneNumber(payload.phoneNumber())
@@ -47,6 +51,12 @@ public class SchedulerService {
                         .clubName(payload.clubName())
                         .payload(payload)
                         .build()
+        );
+
+        log.info(
+                "이벤트 발행: submissionId={}, phone={}",
+                payload.submissionId(),
+                payload.phoneNumber()
         );
     }
 }
