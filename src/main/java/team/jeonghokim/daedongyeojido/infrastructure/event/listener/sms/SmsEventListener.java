@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.infrastructure.event.listener.sms;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
@@ -67,10 +68,9 @@ public class SmsEventListener {
             maxAttempts = 5,
             backoff = @Backoff(delay = 500, multiplier = 2)
     )
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @EventListener
     public void handleLargeScaleSmsEvent(LargeScaleSmsEvent event) {
-
+        
         try {
             smsService.send(
                     event.phoneNumber(),
