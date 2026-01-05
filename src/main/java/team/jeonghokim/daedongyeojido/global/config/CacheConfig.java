@@ -24,7 +24,8 @@ public class CacheConfig {
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         BasicPolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
-                .allowIfSubType(Object.class)
+                .allowIfSubType("team.jeonghokim.daedongyeojido")
+                .allowIfSubType("java.util")
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
