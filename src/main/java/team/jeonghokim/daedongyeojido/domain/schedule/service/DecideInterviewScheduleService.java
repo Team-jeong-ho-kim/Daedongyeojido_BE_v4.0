@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyApplicantInClubException;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.Schedule;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
@@ -15,6 +16,8 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserReposito
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +55,8 @@ public class DecideInterviewScheduleService {
         scheduleRepository.save(schedule);
 
         executeScheduleAlarm(schedule, interviewer, applicant);
+
+        executeScheduleSMS(interviewer.getClub(), applicant);
     }
 
     private void executeScheduleAlarm(Schedule schedule, User interviewer, User applicant) {
@@ -65,6 +70,15 @@ public class DecideInterviewScheduleService {
                                 schedule.getPlace()))
                         .userId(applicant.getId())
                         .alarmType(AlarmType.INTERVIEW_SCHEDULE_CREATED)
+                .build());
+    }
+
+    private void executeScheduleSMS(Club club, User applicant) {
+
+        eventPublisher.publishEvent(UserSmsEvent.builder()
+                        .clubName(club.getClubName())
+                        .message(Message.INTERVIEW_SCHEDULE_DECIDED)
+                        .phoneNumber(applicant.getPhoneNumber())
                 .build());
     }
 }
