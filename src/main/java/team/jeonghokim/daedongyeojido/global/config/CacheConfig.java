@@ -50,15 +50,15 @@ public class CacheConfig {
         return RedisCacheManager.RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactory)
                 .cacheDefaults(redisCacheConfiguration)
-                .withCacheConfiguration(CLUB_DETAIL, clubDetailCacheConfiguration(redisObjectMapper))
+                .withCacheConfiguration(CLUB_DETAIL, clubDetailCacheConfiguration(redisCacheConfiguration, redisObjectMapper))
                 .build();
     }
 
-    private RedisCacheConfiguration clubDetailCacheConfiguration(ObjectMapper redisObjectMapper) {
+    private RedisCacheConfiguration clubDetailCacheConfiguration(RedisCacheConfiguration redisCacheConfiguration, ObjectMapper redisObjectMapper) {
         Jackson2JsonRedisSerializer<QueryClubDetailResponse> clubDetailSerializer =
                 new Jackson2JsonRedisSerializer<>(redisObjectMapper, QueryClubDetailResponse.class);
 
-        return RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(
+        return redisCacheConfiguration.serializeValuesWith(
                 RedisSerializationContext.SerializationPair.fromSerializer(clubDetailSerializer)
         );
     }
