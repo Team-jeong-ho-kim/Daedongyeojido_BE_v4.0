@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.club.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +14,12 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.Decid
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
+import team.jeonghokim.daedongyeojido.global.cache.CacheNames;
 import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
 
 import java.util.List;
+
+import static team.jeonghokim.daedongyeojido.global.cache.CacheNames.CLUB_DETAIL;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +31,7 @@ public class DecideClubDissolveService {
     private final ApplicationEventPublisher eventPublisher;
     private final AlarmEventFactory alarmEventFactory;
 
+    @CacheEvict(value = CLUB_DETAIL, key = "#clubId", condition = "#request.decision")
     @Transactional
     public void execute(Long clubId, DecideClubDissolveRequest request) {
 
