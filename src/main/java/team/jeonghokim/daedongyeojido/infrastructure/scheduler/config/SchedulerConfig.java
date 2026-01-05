@@ -18,8 +18,8 @@ public class SchedulerConfig {
         scheduler.setPoolSize(1);
         scheduler.setThreadNamePrefix(PREFIX);
         scheduler.setWaitForTasksToCompleteOnShutdown(true);
-        scheduler.initialize();
         scheduler.setAwaitTerminationSeconds(10);
+        scheduler.initialize();
         return scheduler;
     }
 }
