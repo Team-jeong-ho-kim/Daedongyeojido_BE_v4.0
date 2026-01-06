@@ -41,4 +41,12 @@ public class DecideResultDurationService {
 
         taskScheduler.schedule(schedulerService::execute, executeTime);
     }
+
+    public void executeScheduler() {
+
+        ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
+                .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
+
+        resultDuration.requested();
+    }
 }
