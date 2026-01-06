@@ -20,6 +20,7 @@ import org.springframework.web.client.ResourceAccessException;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.enums.Status;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
+import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationAlreadyExecutedException;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
@@ -109,16 +110,16 @@ public class SmsEventListener {
     @EventListener(ApplicationReadyEvent.class)
     public void initSmsSchedule() {
 
-        if (!resultDurationRepository.existsByStatus(Status.PENDING)) {
-            return ;
-        }
+        ResultDuration resultDuration = resultDurationRepository.findPendingResultDuration()
+                .orElseThrow(() -> ResultDurationAlreadyExecutedException.EXCEPTION);
 
-        ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
-                .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
-
-        Instant executeTime = resultDuration.getResultDuration()
+        Instant executeTime = resultDuration.getResultDurationTime()
                 .atZone(ZoneId.of(TIME_ZONE))
                 .toInstant();
+
+        if (executeTime.isBefore(Instant.now())) {
+            schedulerService.execute();
+        }
 
         taskScheduler.schedule(schedulerService::execute, executeTime);
     }
