@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationAlreadyExecutedException;
@@ -24,10 +23,9 @@ public class SchedulerService {
 
     private final RedisTemplate<String, SchedulerPayload> smsRedisTemplate;
     private final ApplicationEventPublisher eventPublisher;
+    private final ResultDurationRepository resultDurationRepository;
 
     public static final String RESULT_DURATION_ZSET = "club:result-duration";
-    private final DecideResultDurationService decideResultDurationService;
-    private final ResultDurationRepository resultDurationRepository;
 
     @Transactional
     public void execute() {
