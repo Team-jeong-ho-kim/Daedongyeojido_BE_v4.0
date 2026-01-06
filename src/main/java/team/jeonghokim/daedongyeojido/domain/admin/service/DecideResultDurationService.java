@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideResultDurationRequest;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
+import team.jeonghokim.daedongyeojido.domain.resultduration.domain.enums.Status;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationAlreadySetException;
+import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.service.SchedulerService;
 
 import java.time.Instant;
@@ -26,7 +28,7 @@ public class DecideResultDurationService {
     @Transactional
     public void execute(DecideResultDurationRequest request) {
 
-        if (resultDurationRepository.findTopByOrderByIdDesc().isPresent()) {
+        if (resultDurationRepository.existsByStatus(Status.PENDING)) {
             throw ResultDurationAlreadySetException.EXCEPTION;
         }
 
