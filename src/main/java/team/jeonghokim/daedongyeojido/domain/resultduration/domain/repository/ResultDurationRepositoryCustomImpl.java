@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.QResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
@@ -20,6 +21,17 @@ public class ResultDurationRepositoryCustomImpl implements ResultDurationReposit
                 jpaQueryFactory
                         .selectFrom(resultDuration)
                         .where(resultDuration.status.eq(Status.PENDING))
+                        .fetchOne()
+        );
+    }
+
+    @Override
+    public Optional<ResultDuration> findPendingResultDurationForUpdate() {
+        return Optional.ofNullable(
+                jpaQueryFactory
+                        .selectFrom(resultDuration)
+                        .where(resultDuration.status.eq(Status.PENDING))
+                        .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                         .fetchOne()
         );
     }
