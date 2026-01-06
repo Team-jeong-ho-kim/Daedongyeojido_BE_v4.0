@@ -16,18 +16,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResultDuration extends BaseIdEntity {
 
-    private LocalDateTime resultDuration;
+    private LocalDateTime resultDurationTime;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
     public ResultDuration(LocalDateTime resultDuration) {
-        this.resultDuration = resultDuration;
+        this.resultDurationTime = resultDuration;
         this.status = Status.PENDING;
     }
 
     public void update(LocalDateTime resultDuration) {
-        this.resultDuration = resultDuration;
+        this.resultDurationTime = resultDuration;
     }
 
     public void requested() {

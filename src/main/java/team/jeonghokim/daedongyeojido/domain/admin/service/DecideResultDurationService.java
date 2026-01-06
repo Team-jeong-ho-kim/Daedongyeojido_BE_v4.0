@@ -35,7 +35,7 @@ public class DecideResultDurationService {
         ResultDuration resultDuration = resultDurationRepository
                 .save(new ResultDuration(request.resultDuration()));
 
-        Instant executeTime = resultDuration.getResultDuration()
+        Instant executeTime = resultDuration.getResultDurationTime()
                 .atZone(ZoneId.of(TIME_ZONE))
                 .toInstant();
 
