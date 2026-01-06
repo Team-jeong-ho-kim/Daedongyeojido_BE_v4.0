@@ -7,7 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.resultduration.presentation.dto.res
 
 import java.util.Optional;
 
-public interface ResultDurationRepository extends JpaRepository<ResultDuration, Long> {
+public interface ResultDurationRepository extends JpaRepository<ResultDuration, Long>, ResultDurationRepositoryCustom {
 
     Optional<ResultDuration> findTopByOrderByIdDesc();
 
