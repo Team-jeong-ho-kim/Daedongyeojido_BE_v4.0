@@ -108,19 +108,20 @@ public class SmsEventListener {
     @EventListener(ApplicationReadyEvent.class)
     public void initSmsSchedule() {
 
-        ResultDuration resultDuration = resultDurationRepository.findPendingResultDuration()
-                .orElseThrow(() -> ResultDurationAlreadyExecutedException.EXCEPTION);
+        resultDurationRepository.findPendingResultDuration()
+                .ifPresent(resultDuration -> {
 
-        Instant executeTime = resultDuration.getResultDurationTime()
-                .atZone(ZoneId.of(TIME_ZONE))
-                .toInstant();
+                    Instant executeTime = resultDuration.getResultDurationTime()
+                            .atZone(ZoneId.of(TIME_ZONE))
+                            .toInstant();
 
-        if (executeTime.isBefore(Instant.now())) {
-            schedulerService.execute();
-            return;
-        }
+                    if (executeTime.isBefore(Instant.now())) {
+                        schedulerService.execute();
+                        return;
+                    }
 
-        taskScheduler.schedule(schedulerService::execute, executeTime);
+                    taskScheduler.schedule(schedulerService::execute, executeTime);
+                });
     }
 
     @Recover
