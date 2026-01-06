@@ -34,8 +34,7 @@ public class SchedulerService {
                 smsRedisTemplate.opsForZSet()
                         .rangeByScore(RESULT_DURATION_ZSET, 0, now + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
 
-        log.info("SMS 발송 대상 수 = {}",
-                payloads == null ? 0 : payloads.size());
+        log.info("SMS 발송 대상 수 = {}", payloads == null ? 0 : payloads.size());
 
         if (payloads == null || payloads.isEmpty()) {
             return;
@@ -57,10 +56,6 @@ public class SchedulerService {
                         .build()
         );
 
-        log.info(
-                "이벤트 발행: submissionId={}, phone={}",
-                payload.submissionId(),
-                payload.phoneNumber()
-        );
+        log.info("이벤트 발행: submissionId={}, phone={}", payload.submissionId(), payload.phoneNumber());
     }
 }
