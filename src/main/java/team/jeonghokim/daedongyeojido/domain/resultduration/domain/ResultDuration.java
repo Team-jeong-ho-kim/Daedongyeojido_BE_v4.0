@@ -29,4 +29,8 @@ public class ResultDuration extends BaseIdEntity {
     public void update(LocalDateTime resultDuration) {
         this.resultDuration = resultDuration;
     }
+
+    public void requested() {
+        this.status = Status.REQUESTED;
+    }
 }
