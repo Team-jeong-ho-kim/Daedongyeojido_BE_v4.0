@@ -119,6 +119,7 @@ public class SmsEventListener {
 
         if (executeTime.isBefore(Instant.now())) {
             schedulerService.execute();
+            return;
         }
 
         taskScheduler.schedule(schedulerService::execute, executeTime);
