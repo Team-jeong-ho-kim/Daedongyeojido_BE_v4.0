@@ -5,6 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
+import team.jeonghokim.daedongyeojido.domain.resultduration.domain.enums.Status;
+import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
+import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
@@ -19,10 +24,17 @@ public class SchedulerService {
 
     private final RedisTemplate<String, SchedulerPayload> smsRedisTemplate;
     private final ApplicationEventPublisher eventPublisher;
+    private final ResultDurationRepository resultDurationRepository;
 
     public static final String RESULT_DURATION_ZSET = "club:result-duration";
 
-    public void execute() {
+    @Transactional
+    public void execute(Long resultDurationId) {
+
+        ResultDuration resultDuration = resultDurationRepository.findById(resultDurationId)
+                .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
+
+        resultDuration.requested();
 
         long now = Instant.now().getEpochSecond();
 
