@@ -18,6 +18,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
+import team.jeonghokim.daedongyeojido.domain.resultduration.domain.enums.Status;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
@@ -107,6 +108,10 @@ public class SmsEventListener {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initSmsSchedule() {
+
+        if (!resultDurationRepository.existsByStatus(Status.PENDING)) {
+            return ;
+        }
 
         ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
                 .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
