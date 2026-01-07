@@ -10,8 +10,6 @@ import java.util.Optional;
 public interface ResultDurationRepository extends JpaRepository<ResultDuration, Long>, ResultDurationRepositoryCustom {
 
     Optional<ResultDuration> findTopByOrderByIdDesc();
-
-    Optional<ResultDurationResponse> findFirstBy();
-
+    
     Boolean existsByStatus(Status status);
 }
