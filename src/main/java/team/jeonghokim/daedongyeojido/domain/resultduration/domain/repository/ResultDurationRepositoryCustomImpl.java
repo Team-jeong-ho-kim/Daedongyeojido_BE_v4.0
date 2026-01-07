@@ -24,7 +24,7 @@ public class ResultDurationRepositoryCustomImpl implements ResultDurationReposit
                         .selectFrom(resultDuration)
                         .where(resultDuration.status.eq(Status.PENDING))
                         .setLockMode(LockModeType.PESSIMISTIC_WRITE)
-                        .fetchOne()
+                        .fetchFirst()
         );
     }
 }
