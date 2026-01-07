@@ -6,7 +6,5 @@ import java.util.Optional;
 
 public interface ResultDurationRepositoryCustom {
 
-    Optional<ResultDuration> findPendingResultDuration();
-
     Optional<ResultDuration> findPendingResultDurationForUpdate();
 }
