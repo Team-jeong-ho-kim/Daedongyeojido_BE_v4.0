@@ -107,7 +107,7 @@ public class SmsEventListener {
     @EventListener(ApplicationReadyEvent.class)
     public void initSmsSchedule() {
 
-        resultDurationRepository.findPendingResultDuration()
+        resultDurationRepository.findPendingResultDurationForUpdate()
                 .ifPresent(resultDuration -> {
 
                     Instant executeTime = resultDuration.getResultDurationTime()
