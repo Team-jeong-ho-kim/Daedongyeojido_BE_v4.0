@@ -81,6 +81,7 @@ public class SmsEventListener {
             backoff = @Backoff(delay = 500, multiplier = 2)
     )
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleLargeScaleSmsEvent(LargeScaleSmsEvent event) {
         
         try {
