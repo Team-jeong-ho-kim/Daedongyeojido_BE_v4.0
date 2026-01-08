@@ -33,12 +33,10 @@ public class SchedulerService {
         ResultDuration resultDuration = resultDurationRepository.findPendingResultDurationForUpdate()
                 .orElseThrow(() -> ResultDurationAlreadyExecutedException.EXCEPTION);
 
-        resultDuration.requested();
-
-        sendSMS();
+        sendSMS(resultDuration);
     }
 
-    private void sendSMS() {
+    private void sendSMS(ResultDuration resultDuration) {
 
         long now = Instant.now().getEpochSecond();
 
@@ -53,6 +51,8 @@ public class SchedulerService {
         }
 
         payloads.forEach(this::publishEvent);
+
+        resultDuration.requested();
     }
 
     private void publishEvent(SchedulerPayload payload) {
