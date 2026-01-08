@@ -33,8 +33,9 @@ public class ResultDurationRepositoryCustomImpl implements ResultDurationReposit
                 jpaQueryFactory
                         .selectFrom(resultDuration)
                         .where(resultDuration.status.eq(Status.PENDING))
+                        .orderBy(resultDuration.id.desc())
                         .setLockMode(LockModeType.PESSIMISTIC_WRITE)
-                        .fetchFirst()
+                        .fetchOne()
         );
     }
 }
