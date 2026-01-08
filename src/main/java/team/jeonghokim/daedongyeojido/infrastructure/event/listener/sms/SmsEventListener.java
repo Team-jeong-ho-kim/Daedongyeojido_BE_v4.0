@@ -17,6 +17,7 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
+import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
@@ -41,6 +42,7 @@ public class SmsEventListener {
     private final SchedulerService schedulerService;
     private final ResultDurationRepository resultDurationRepository;
     private final TaskScheduler taskScheduler;
+    private final DecideResultDurationService decideResultDurationService;
 
     private static final String SMS_EVENT_RETRY = "recoverSmsEvent";
     private static final String LARGE_SCALE_EVENT_RETRY = "recoverLargeScaleSmsEvent";
@@ -93,6 +95,8 @@ public class SmsEventListener {
 
             smsRedisTemplate.opsForZSet()
                     .remove(RESULT_DURATION_ZSET, event.payload());
+
+            decideResultDurationService.executeScheduler(event.resultDuration());
 
         } catch (HttpServerErrorException |
                  ResourceAccessException e) {

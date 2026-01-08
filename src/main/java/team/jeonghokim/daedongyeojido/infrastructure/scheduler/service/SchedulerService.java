@@ -50,12 +50,10 @@ public class SchedulerService {
             return;
         }
 
-        payloads.forEach(this::publishEvent);
-
-        resultDuration.requested();
+        payloads.forEach(payload -> publishEvent(payload, resultDuration));
     }
 
-    private void publishEvent(SchedulerPayload payload) {
+    private void publishEvent(SchedulerPayload payload, ResultDuration resultDuration) {
 
         eventPublisher.publishEvent(
                 LargeScaleSmsEvent.builder()
@@ -65,6 +63,7 @@ public class SchedulerService {
                                 : Message.CLUB_FINAL_REJECTED)
                         .clubName(payload.clubName())
                         .payload(payload)
+                        .resultDuration(resultDuration)
                         .build()
         );
 
