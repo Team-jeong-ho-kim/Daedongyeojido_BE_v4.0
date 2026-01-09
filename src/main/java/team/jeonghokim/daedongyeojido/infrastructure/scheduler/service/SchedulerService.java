@@ -2,20 +2,18 @@ package team.jeonghokim.daedongyeojido.infrastructure.scheduler.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
+import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationAlreadyExecutedException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
 
 import java.time.Instant;
-import java.time.ZoneId;
 import java.util.Set;
 
 @Service
@@ -24,69 +22,51 @@ import java.util.Set;
 public class SchedulerService {
 
     private final RedisTemplate<String, SchedulerPayload> smsRedisTemplate;
-    private final ResultDurationRepository resultDurationRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final ResultDurationRepository resultDurationRepository;
 
     public static final String RESULT_DURATION_ZSET = "club:result-duration";
-    public static final String SEOUL_TIME_ZONE = "Asia/Seoul";
 
-    @Scheduled(fixedRate = 10_000)
-    @SchedulerLock(name = "resultDurationExecute", lockAtMostFor = "9s", lockAtLeastFor = "1s")
+    @Transactional
     public void execute() {
 
-        // 어드민 발표기간 설정 전 스케줄러 대기 상태
-        ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
-                .orElse(null);
+        ResultDuration resultDuration = resultDurationRepository.findPendingResultDurationForUpdate()
+                .orElseThrow(() -> ResultDurationAlreadyExecutedException.EXCEPTION);
 
-        if (resultDuration == null) {
-            return;
-        }
-
-        if (!isResultDuration(resultDuration)) {
-            return;
-        }
-
-        Set<SchedulerPayload> messages = queryMessages();
-        if (messages == null || messages.isEmpty()) {
-            return;
-        }
-
-        for (SchedulerPayload payload : messages) {
-            sendSms(payload);
-        }
+        sendSMS(resultDuration);
     }
 
-    private boolean isResultDuration(ResultDuration resultDuration) {
-
-        if (resultDuration == null) {
-            return false;
-        }
+    private void sendSMS(ResultDuration resultDuration) {
 
         long now = Instant.now().getEpochSecond();
-        long duration = resultDuration.getResultDuration()
-                .atZone(ZoneId.of(SEOUL_TIME_ZONE))
-                .toEpochSecond();
 
-        return now >= duration;
+        Set<SchedulerPayload> payloads =
+                smsRedisTemplate.opsForZSet()
+                        .rangeByScore(RESULT_DURATION_ZSET, 0, now + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
+
+        log.info("SMS 발송 대상 수 = {}", payloads == null ? 0 : payloads.size());
+
+        if (payloads == null || payloads.isEmpty()) {
+            return;
+        }
+
+        payloads.forEach(payload -> publishEvent(payload, resultDuration));
     }
 
-    private Set<SchedulerPayload> queryMessages() {
-        
-        long now = Instant.now().getEpochSecond();
+    private void publishEvent(SchedulerPayload payload, ResultDuration resultDuration) {
 
-        return smsRedisTemplate.opsForZSet()
-                .rangeByScore(RESULT_DURATION_ZSET, 0, now);
-    }
+        eventPublisher.publishEvent(
+                LargeScaleSmsEvent.builder()
+                        .phoneNumber(payload.phoneNumber())
+                        .message(payload.isPassed()
+                                ? Message.CLUB_FINAL_ACCEPTED
+                                : Message.CLUB_FINAL_REJECTED)
+                        .clubName(payload.clubName())
+                        .payload(payload)
+                        .resultDuration(resultDuration)
+                        .build()
+        );
 
-    private void sendSms(SchedulerPayload payload) {
-
-        eventPublisher.publishEvent(LargeScaleSmsEvent.builder()
-                .phoneNumber(payload.phoneNumber())
-                .message(payload.isPassed()
-                        ? Message.CLUB_FINAL_ACCEPTED
-                        : Message.CLUB_FINAL_REJECTED)
-                .clubName(payload.clubName())
-                .payload(payload)
-                .build());
+        log.info("이벤트 발행: submissionId={}, phone={}", payload.submissionId(), payload.phoneNumber());
     }
 }

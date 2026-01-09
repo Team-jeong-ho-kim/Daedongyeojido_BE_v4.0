@@ -62,7 +62,7 @@ public class PassClubService {
         ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
                 .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
 
-        long score = resultDuration.getResultDuration()
+        long score = resultDuration.getResultDurationTime()
                 .atZone(ZoneId.of(SEOUL_TIME_ZONE))
                 .toEpochSecond();
 
