@@ -46,6 +46,7 @@ public class SmsEventListener {
 
     private static final String SMS_EVENT_RETRY = "recoverSmsEvent";
     private static final String LARGE_SCALE_EVENT_RETRY = "recoverLargeScaleSmsEvent";
+    private static final String FAILED_ZSET  = "club:result-duration:failed";
     private static final String TIME_ZONE = "Asia/Seoul";
 
     @Async
@@ -138,6 +139,12 @@ public class SmsEventListener {
 
     @Recover
     public void recoverLargeScaleSmsEvent(HttpApiException e, LargeScaleSmsEvent event) {
+
+        smsRedisTemplate.opsForZSet()
+                .remove(RESULT_DURATION_ZSET, event.payload());
+
+        smsRedisTemplate.opsForZSet()
+                .add(FAILED_ZSET, event.payload(), Instant.now().getEpochSecond());
 
         log.error("SMS 이벤트 최종 실패: phoneNumber={} message={}",
                 event.phoneNumber(), event.message(), e);
