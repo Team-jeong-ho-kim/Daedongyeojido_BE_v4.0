@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.AdminAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubLink;
@@ -11,6 +12,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
+import team.jeonghokim.daedongyeojido.domain.schedule.domain.Schedule;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
@@ -31,6 +33,7 @@ public class CreateClubService {
     private final S3Service s3Service;
     private final ApplicationEventPublisher eventPublisher;
     private final AlarmEventFactory alarmEventFactory;
+    private final AdminAlarmRepository adminAlarmRepository;
 
     @Transactional
     public void execute(ClubRequest request) {
@@ -46,6 +49,8 @@ public class CreateClubService {
         Club club = createClub(request, clubApplicant, clubMajors, clubLinks);
 
         createAlarm(club, clubApplicant);
+
+        createAdminAlarm(club);
 
         clubRepository.save(club);
     }
@@ -89,5 +94,14 @@ public class CreateClubService {
         eventPublisher.publishEvent(
                 alarmEventFactory.createUserAlarmEvent(clubApplicant, club, AlarmType.CREATE_CLUB_APPLY)
         );
+    }
+
+    public void createAdminAlarm(Club club) {
+
+        adminAlarmRepository.save(AdminAlarm.builder()
+                    .title(AlarmType.REQUEST_CLUB_CREATION.formatTitle(club.getClubName()))
+                    .content(AlarmType.REQUEST_CLUB_CREATION.formatContent(club.getClubName()))
+                    .alarmType(AlarmType.REQUEST_CLUB_CREATION)
+                .build());
     }
 }
