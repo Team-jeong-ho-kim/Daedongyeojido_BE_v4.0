@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
-@Entity
+@Entity(name = "tbl_admin")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

@@ -11,7 +11,7 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "tbl_result_duration")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResultDuration extends BaseIdEntity {
