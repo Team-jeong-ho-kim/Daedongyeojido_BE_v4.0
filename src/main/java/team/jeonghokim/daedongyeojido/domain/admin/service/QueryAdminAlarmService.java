@@ -3,7 +3,6 @@ package team.jeonghokim.daedongyeojido.domain.admin.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.jeonghokim.daedongyeojido.domain.admin.domain.Admin;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.AdminAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.AlarmResponse;
 import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.QueryAdminAlarmResponse;

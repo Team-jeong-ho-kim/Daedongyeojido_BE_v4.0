@@ -9,7 +9,6 @@ import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuratio
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.enums.Status;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationAlreadySetException;
-import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.service.SchedulerService;
 
 import java.time.Instant;
