@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import team.jeonghokim.daedongyeojido.domain.admin.domain.repository.AdminRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 
@@ -13,7 +12,6 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserReposito
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final AdminRepository adminRepository;
 
     @Override
     public UserDetails loadUserByUsername(String accountId) {

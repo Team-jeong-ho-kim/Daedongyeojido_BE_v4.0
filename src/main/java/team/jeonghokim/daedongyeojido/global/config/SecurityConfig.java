@@ -47,11 +47,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         // auth
-                        .requestMatchers(HttpMethod.POST, "/auth/admin/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/user/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/auth/logout").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/auth/reissue").permitAll()
-                        .requestMatchers(HttpMethod.POST, "auth/admin").permitAll()
 
                         // user
                         .requestMatchers(HttpMethod.PATCH, "/users/my-info").hasAnyRole(STUDENT, CLUB_MEMBER, CLUB_LEADER)

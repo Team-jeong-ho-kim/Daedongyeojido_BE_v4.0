@@ -26,7 +26,7 @@ public class AuthController {
     private final LogoutService logoutService;
     private final ReissueService reissueService;
 
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public LoginResponse login(@RequestBody @Valid LoginRequest request) {
         return loginUserService.execute(request);
