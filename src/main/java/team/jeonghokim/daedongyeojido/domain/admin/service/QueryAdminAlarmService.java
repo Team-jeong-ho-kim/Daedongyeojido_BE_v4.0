@@ -14,15 +14,17 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class QueryAdminAlarmService {
+
     private final UserFacade userFacade;
     private final AdminAlarmRepository adminAlarmRepository;
 
     @Transactional(readOnly = true)
     public QueryAdminAlarmResponse execute() {
 
-        Admin admin = userFacade.getCurrentAdmin();
-
-        List<AlarmResponse> alarms = adminAlarmRepository.findAllAlarms();
+        List<AlarmResponse> alarms = adminAlarmRepository.findAll()
+                .stream()
+                .map(AlarmResponse::from)
+                .toList();
 
         return QueryAdminAlarmResponse.from(alarms);
     }
