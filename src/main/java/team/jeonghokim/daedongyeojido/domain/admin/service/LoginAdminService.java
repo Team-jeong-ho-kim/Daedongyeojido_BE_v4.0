@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.admin.domain.Admin;
 import team.jeonghokim.daedongyeojido.domain.admin.domain.repository.AdminRepository;
 import team.jeonghokim.daedongyeojido.domain.admin.exeption.AdminNotFoundException;
-import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.LoginAdminRequest;
+import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.AdminRequest;
 import team.jeonghokim.daedongyeojido.global.security.jwt.JwtTokenProvider;
 
 @Service
@@ -17,7 +17,7 @@ public class LoginAdminService {
     private final AdminRepository adminRepository;
 
     @Transactional
-    public void execute(LoginAdminRequest request) {
+    public void execute(AdminRequest request) {
 
         Admin admin = adminRepository.findByAccountId(request.accountId())
                 .orElseThrow(() -> AdminNotFoundException.EXCEPTION);

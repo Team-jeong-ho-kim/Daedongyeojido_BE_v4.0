@@ -1,6 +1,6 @@
 package team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request;
 
-public record LoginAdminRequest(
+public record AdminRequest(
 
         String accountId,
         String password
