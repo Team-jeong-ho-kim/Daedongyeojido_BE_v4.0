@@ -6,16 +6,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.AdminAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.AdminAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubLink;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
-import team.jeonghokim.daedongyeojido.domain.schedule.domain.Schedule;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 
@@ -48,7 +47,7 @@ public class CreateClubService {
 
         Club club = createClub(request, clubApplicant, clubMajors, clubLinks);
 
-        createAlarm(club, clubApplicant);
+        createUserAlarm(club, clubApplicant);
 
         createAdminAlarm(club);
 
@@ -89,7 +88,7 @@ public class CreateClubService {
                 .collect(Collectors.toList());
     }
 
-    private void createAlarm(Club club, User clubApplicant) {
+    private void createUserAlarm(Club club, User clubApplicant) {
 
         eventPublisher.publishEvent(
                 alarmEventFactory.createUserAlarmEvent(clubApplicant, club, AlarmType.CREATE_CLUB_APPLY)
