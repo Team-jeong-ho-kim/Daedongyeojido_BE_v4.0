@@ -17,7 +17,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.feign.xquare.dto.XquareResp
 
 @Service
 @RequiredArgsConstructor
-public class LoginUserService {
+public class LoginService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -70,11 +70,11 @@ public class LoginUserService {
                 xquareUser.num()
         );
 
-         user.coverInfo(
+        user.coverInfo(
                 xquareUser.name(),
-                 classNumber
+                classNumber
         );
-         return user;
+        return user;
     }
 
     private String classNumber(int grade, int classNum, int num) {

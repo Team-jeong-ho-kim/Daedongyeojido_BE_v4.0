@@ -11,13 +11,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.AdminRequest;
-import team.jeonghokim.daedongyeojido.domain.admin.service.CreateAdminService;
-import team.jeonghokim.daedongyeojido.domain.auth.service.LoginAdminService;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.request.LoginRequest;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.LoginResponse;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.TokenResponse;
-import team.jeonghokim.daedongyeojido.domain.auth.service.LoginUserService;
+import team.jeonghokim.daedongyeojido.domain.auth.service.LoginService;
 import team.jeonghokim.daedongyeojido.domain.auth.service.LogoutService;
 import team.jeonghokim.daedongyeojido.domain.auth.service.ReissueService;
 
@@ -25,11 +22,9 @@ import team.jeonghokim.daedongyeojido.domain.auth.service.ReissueService;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final LoginUserService loginUserService;
+    private final LoginService loginUserService;
     private final LogoutService logoutService;
     private final ReissueService reissueService;
-    private final LoginAdminService loginAdminService;
-    private final CreateAdminService createAdminService;
 
     @PostMapping("/user/login")
     @ResponseStatus(HttpStatus.OK)
@@ -47,17 +42,5 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public TokenResponse reissue(@RequestHeader("X-Refresh-Token") String refreshToken) {
         return reissueService.execute(refreshToken);
-    }
-
-    @PostMapping("/admin/login")
-    @ResponseStatus(HttpStatus.OK)
-    public void adminLogin(@RequestBody @Valid AdminRequest request) {
-        loginAdminService.execute(request);
-    }
-
-    @PostMapping("/admin")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createAdmin(@RequestBody @Valid AdminRequest request) {
-        createAdminService.execute(request);
     }
 }

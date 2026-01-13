@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.AdminAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.AlarmResponse;
 import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.QueryAdminAlarmResponse;
-import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+
 
 import java.util.List;
 
@@ -14,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QueryAdminAlarmService {
 
-    private final UserFacade userFacade;
     private final AdminAlarmRepository adminAlarmRepository;
 
     @Transactional(readOnly = true)
