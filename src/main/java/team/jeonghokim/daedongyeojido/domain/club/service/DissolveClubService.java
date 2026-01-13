@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.AdminAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.exception.UserNotInClubException;
@@ -20,6 +21,7 @@ public class DissolveClubService {
     private final UserFacade userFacade;
     private final ApplicationEventPublisher eventPublisher;
     private final AlarmEventFactory alarmEventFactory;
+    private final AdminAlarmRepository adminAlarmRepository;
 
     @Transactional
     public void execute() {
@@ -32,5 +34,16 @@ public class DissolveClubService {
         eventPublisher.publishEvent(
                 alarmEventFactory.createUserAlarmEvent(receiver, club, AlarmType.DISSOLVE_CLUB_APPLY)
         );
+
+        createAdminAlarm(club);
+    }
+
+    public void createAdminAlarm(Club club) {
+
+        adminAlarmRepository.save(AdminAlarm.builder()
+                .title(AlarmType.REQUEST_CLUB_DISSOLUTION.formatTitle(club.getClubName()))
+                .content(AlarmType.REQUEST_CLUB_DISSOLUTION.formatContent(club.getClubName()))
+                .alarmType(AlarmType.REQUEST_CLUB_DISSOLUTION)
+                .build());
     }
 }
