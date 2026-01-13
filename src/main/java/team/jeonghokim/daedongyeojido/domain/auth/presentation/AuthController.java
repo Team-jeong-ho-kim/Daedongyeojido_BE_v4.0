@@ -16,7 +16,7 @@ import team.jeonghokim.daedongyeojido.domain.admin.service.LoginAdminService;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.request.LoginRequest;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.LoginResponse;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.TokenResponse;
-import team.jeonghokim.daedongyeojido.domain.auth.service.LoginService;
+import team.jeonghokim.daedongyeojido.domain.auth.service.LoginUserService;
 import team.jeonghokim.daedongyeojido.domain.auth.service.LogoutService;
 import team.jeonghokim.daedongyeojido.domain.auth.service.ReissueService;
 
@@ -24,15 +24,15 @@ import team.jeonghokim.daedongyeojido.domain.auth.service.ReissueService;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final LoginService loginService;
+    private final LoginUserService loginUserService;
     private final LogoutService logoutService;
     private final ReissueService reissueService;
     private final LoginAdminService loginAdminService;
 
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     @ResponseStatus(HttpStatus.OK)
     public LoginResponse login(@RequestBody @Valid LoginRequest request) {
-        return loginService.execute(request);
+        return loginUserService.execute(request);
     }
 
     @DeleteMapping("/logout")
@@ -47,7 +47,7 @@ public class AuthController {
         return reissueService.execute(refreshToken);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/admin/login")
     @ResponseStatus(HttpStatus.OK)
     public void adminLogin(@RequestBody @Valid LoginAdminRequest request) {
         loginAdminService.execute(request);

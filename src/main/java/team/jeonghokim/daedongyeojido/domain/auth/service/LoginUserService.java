@@ -17,7 +17,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.feign.xquare.dto.XquareResp
 
 @Service
 @RequiredArgsConstructor
-public class LoginService {
+public class LoginUserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
