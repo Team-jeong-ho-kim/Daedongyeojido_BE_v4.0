@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.AdminRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.service.CreateAdminService;
-import team.jeonghokim.daedongyeojido.domain.admin.service.LoginAdminService;
+import team.jeonghokim.daedongyeojido.domain.auth.service.LoginAdminService;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.request.LoginRequest;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.LoginResponse;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.TokenResponse;

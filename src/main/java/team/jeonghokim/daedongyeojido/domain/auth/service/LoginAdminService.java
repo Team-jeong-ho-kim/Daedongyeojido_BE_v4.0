@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.domain.admin.service;
+package team.jeonghokim.daedongyeojido.domain.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
