@@ -64,6 +64,9 @@ public enum ErrorCode {
     RESULT_DURATION_ALREADY_SET(409, "이미 발표시간이 설정되어있습니다."),
     RESULT_DURATION_ALREADY_EXECUTED(409, "이미 결과 처리가 완료되었습니다."),
 
+    // admin
+    ADMIN_NOT_FOUND(404, "존재하지 않는 관리자입니다."),
+
     // redis
     REDIS_SERIALIZE_FAIL(500, "Redis 직렬화 실패"),
     REDIS_DESERIALIZE_FAIL(500, "Redis 역직렬화 실패"),
