@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.LoginAdminRequest;
+import team.jeonghokim.daedongyeojido.domain.admin.service.LoginAdminService;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.request.LoginRequest;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.LoginResponse;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.TokenResponse;
@@ -25,6 +27,7 @@ public class AuthController {
     private final LoginService loginService;
     private final LogoutService logoutService;
     private final ReissueService reissueService;
+    private final LoginAdminService loginAdminService;
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
@@ -42,5 +45,11 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public TokenResponse reissue(@RequestHeader("X-Refresh-Token") String refreshToken) {
         return reissueService.execute(refreshToken);
+    }
+
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public void adminLogin(@RequestBody @Valid LoginAdminRequest request) {
+        loginAdminService.execute(request);
     }
 }
