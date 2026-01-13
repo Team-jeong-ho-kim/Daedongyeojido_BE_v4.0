@@ -66,6 +66,7 @@ public enum ErrorCode {
 
     // admin
     ADMIN_NOT_FOUND(404, "존재하지 않는 관리자입니다."),
+    ADMIN_ALREADY_EXISTS(409, "이미 존재하는 관리자 계정입니다."),
 
     // redis
     REDIS_SERIALIZE_FAIL(500, "Redis 직렬화 실패"),
