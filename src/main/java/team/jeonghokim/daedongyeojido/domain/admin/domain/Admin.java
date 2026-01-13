@@ -4,20 +4,16 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 @Entity(name = "tbl_admin")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Admin extends BaseIdEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String accountId;
 
     @Column(nullable = false)
@@ -26,4 +22,11 @@ public class Admin extends BaseIdEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 5)
     private Role role;
+
+    @Builder
+    public Admin(String accountId, String password) {
+        this.accountId = accountId;
+        this.password = password;
+        this.role = Role.ADMIN;
+    }
 }
