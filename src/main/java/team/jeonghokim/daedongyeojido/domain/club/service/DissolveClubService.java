@@ -46,10 +46,12 @@ public class DissolveClubService {
 
     public void createAdminAlarm(Club club) {
 
-        adminAlarmRepository.save(AdminAlarm.builder()
+        AdminAlarm adminAlarm = AdminAlarm.builder()
                 .title(AlarmType.REQUEST_CLUB_DISSOLUTION.formatTitle(club.getClubName()))
                 .content(AlarmType.REQUEST_CLUB_DISSOLUTION.formatContent(club.getClubName()))
                 .alarmType(AlarmType.REQUEST_CLUB_DISSOLUTION)
-                .build());
+                .build();
+
+        adminAlarmRepository.save(adminAlarm);
     }
 }

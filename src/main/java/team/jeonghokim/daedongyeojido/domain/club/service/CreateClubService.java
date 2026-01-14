@@ -97,10 +97,12 @@ public class CreateClubService {
 
     public void createAdminAlarm(Club club) {
 
-        adminAlarmRepository.save(AdminAlarm.builder()
+        AdminAlarm adminAlarm = AdminAlarm.builder()
                     .title(AlarmType.REQUEST_CLUB_CREATION.formatTitle(club.getClubName()))
                     .content(AlarmType.REQUEST_CLUB_CREATION.formatContent(club.getClubName()))
                     .alarmType(AlarmType.REQUEST_CLUB_CREATION)
-                .build());
+                .build();
+
+        adminAlarmRepository.save(adminAlarm);
     }
 }
