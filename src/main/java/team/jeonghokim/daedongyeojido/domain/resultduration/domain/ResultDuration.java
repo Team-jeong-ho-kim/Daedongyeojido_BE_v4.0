@@ -3,6 +3,7 @@ package team.jeonghokim.daedongyeojido.domain.resultduration.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,8 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "tbl_result_duration")
+@Entity
+@Table(name = "tbl_result_duration")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResultDuration extends BaseIdEntity {

@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
-@Entity(name = "tbl_user_major")
+@Entity
+@Table(name = "tbl_user_major")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserMajor extends BaseIdEntity {

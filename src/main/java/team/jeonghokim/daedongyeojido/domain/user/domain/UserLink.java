@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
-@Entity(name = "tbl_user_link")
+@Entity
+@Table(name = "tbl_user_link")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserLink extends BaseIdEntity {
