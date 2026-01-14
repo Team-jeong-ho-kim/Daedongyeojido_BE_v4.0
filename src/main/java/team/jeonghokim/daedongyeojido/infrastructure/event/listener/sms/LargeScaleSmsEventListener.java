@@ -22,7 +22,7 @@ import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.Re
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.SmsEventFinalFailedException;
-import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
+import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.service.SchedulerService;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.service.SmsService;
 
@@ -37,7 +37,7 @@ import static team.jeonghokim.daedongyeojido.infrastructure.scheduler.service.Sc
 public class LargeScaleSmsEventListener {
 
     private final SmsService smsService;
-    private final RedisTemplate<String, SchedulerPayload> smsRedisTemplate;
+    private final RedisTemplate<String, SchedulerSmsPayload> smsRedisTemplate;
     private final SchedulerService schedulerService;
     private final ResultDurationRepository resultDurationRepository;
     private final TaskScheduler taskScheduler;

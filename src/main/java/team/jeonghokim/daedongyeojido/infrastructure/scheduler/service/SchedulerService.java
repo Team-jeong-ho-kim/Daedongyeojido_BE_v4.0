@@ -10,7 +10,7 @@ import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuratio
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationAlreadyExecutedException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
-import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
+import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
 
 import java.time.Instant;
@@ -21,7 +21,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class SchedulerService {
 
-    private final RedisTemplate<String, SchedulerPayload> smsRedisTemplate;
+    private final RedisTemplate<String, SchedulerSmsPayload> smsRedisTemplate;
     private final ApplicationEventPublisher eventPublisher;
     private final ResultDurationRepository resultDurationRepository;
 
@@ -40,7 +40,7 @@ public class SchedulerService {
 
         long now = Instant.now().getEpochSecond();
 
-        Set<SchedulerPayload> payloads =
+        Set<SchedulerSmsPayload> payloads =
                 smsRedisTemplate.opsForZSet()
                         .rangeByScore(RESULT_DURATION_ZSET, 0, now + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
 
@@ -50,10 +50,10 @@ public class SchedulerService {
             return;
         }
 
-        payloads.forEach(payload -> publishEvent(payload, resultDuration));
+        payloads.forEach(payload -> publishSmsEvent(payload, resultDuration));
     }
 
-    private void publishEvent(SchedulerPayload payload, ResultDuration resultDuration) {
+    private void publishSmsEvent(SchedulerSmsPayload payload, ResultDuration resultDuration) {
 
         eventPublisher.publishEvent(
                 LargeScaleSmsEvent.builder()
@@ -68,5 +68,9 @@ public class SchedulerService {
         );
 
         log.info("이벤트 발행: submissionId={}, phone={}", payload.submissionId(), payload.phoneNumber());
+    }
+
+    private void publishAlarmEvent() {
+
     }
 }

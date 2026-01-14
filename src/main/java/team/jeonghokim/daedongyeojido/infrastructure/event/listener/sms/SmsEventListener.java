@@ -17,7 +17,7 @@ import org.springframework.web.client.ResourceAccessException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.SmsEventFinalFailedException;
-import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
+import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.service.SmsService;
 
 @Slf4j
@@ -26,7 +26,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.sms.service.SmsService;
 public class SmsEventListener {
 
     private final SmsService smsService;
-    private final RedisTemplate<String, SchedulerPayload> smsRedisTemplate;
+    private final RedisTemplate<String, SchedulerSmsPayload> smsRedisTemplate;
 
     private static final String SMS_EVENT_RETRY = "recoverSmsEvent";
 

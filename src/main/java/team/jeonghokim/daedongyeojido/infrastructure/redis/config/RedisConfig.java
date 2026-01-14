@@ -13,7 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import team.jeonghokim.daedongyeojido.infrastructure.redis.serializer.CustomRedisSerializer;
-import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
+import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;
 
 @Configuration
 @EnableRedisRepositories(
@@ -36,12 +36,12 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, SchedulerPayload> schedulerRedisTemplate(RedisConnectionFactory factory) {
+    public RedisTemplate<String, SchedulerSmsPayload> schedulerRedisTemplate(RedisConnectionFactory factory) {
 
         ObjectMapper redisObjectMapper = objectMapper.copy();
         redisObjectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
-        RedisTemplate<String, SchedulerPayload> template = new RedisTemplate<>();
+        RedisTemplate<String, SchedulerSmsPayload> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new CustomRedisSerializer(redisObjectMapper));

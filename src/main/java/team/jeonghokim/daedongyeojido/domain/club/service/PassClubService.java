@@ -11,7 +11,7 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.PassC
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationNotFoundException;
-import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
+import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
@@ -26,7 +26,7 @@ public class PassClubService {
     private final UserFacade userFacade;
     private final SubmissionRepository submissionRepository;
     private final ResultDurationRepository resultDurationRepository;
-    private final RedisTemplate<String, SchedulerPayload> redisTemplate;
+    private final RedisTemplate<String, SchedulerSmsPayload> redisTemplate;
 
     private static final String RESULT_DURATION_ZSET = "club:result-duration";
     public static final String SEOUL_TIME_ZONE = "Asia/Seoul";
@@ -66,7 +66,7 @@ public class PassClubService {
                 .atZone(ZoneId.of(SEOUL_TIME_ZONE))
                 .toEpochSecond();
 
-        SchedulerPayload payload = SchedulerPayload.builder()
+        SchedulerSmsPayload payload = SchedulerSmsPayload.builder()
                 .submissionId(submission.getId())
                 .phoneNumber(submission.getUser().getPhoneNumber())
                 .isPassed(isPassed)
