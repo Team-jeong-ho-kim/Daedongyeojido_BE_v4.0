@@ -22,14 +22,14 @@ import team.jeonghokim.daedongyeojido.domain.auth.service.ReissueService;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final LoginService loginService;
+    private final LoginService loginUserService;
     private final LogoutService logoutService;
     private final ReissueService reissueService;
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public LoginResponse login(@RequestBody @Valid LoginRequest request) {
-        return loginService.execute(request);
+        return loginUserService.execute(request);
     }
 
     @DeleteMapping("/logout")

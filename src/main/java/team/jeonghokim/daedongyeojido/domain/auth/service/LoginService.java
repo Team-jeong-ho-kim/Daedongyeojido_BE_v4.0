@@ -70,11 +70,11 @@ public class LoginService {
                 xquareUser.num()
         );
 
-         user.coverInfo(
+        user.coverInfo(
                 xquareUser.name(),
-                 classNumber
+                classNumber
         );
-         return user;
+        return user;
     }
 
     private String classNumber(int grade, int classNum, int num) {

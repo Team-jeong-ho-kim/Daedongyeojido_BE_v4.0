@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import team.jeonghokim.daedongyeojido.domain.admin.service.QueryAdminAlarmService;
+import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.QueryAdminAlarmResponse;
 import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.QueryClubAlarmResponse;
 import team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response.QueryUserAlarmResponse;
 import team.jeonghokim.daedongyeojido.domain.club.service.QueryClubAlarmService;
@@ -18,6 +20,7 @@ public class AlarmController {
 
     private final QueryClubAlarmService queryClubAlarmService;
     private final QueryUserAlarmService queryUserAlarmService;
+    private final QueryAdminAlarmService queryAdminAlarmService;
 
     @GetMapping("/clubs")
     @ResponseStatus(HttpStatus.OK)
@@ -29,5 +32,11 @@ public class AlarmController {
     @ResponseStatus(HttpStatus.OK)
     public QueryUserAlarmResponse queryUserAlarm() {
         return queryUserAlarmService.execute();
+    }
+
+    @GetMapping("/admins")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryAdminAlarmResponse queryAdminAlarm() {
+        return queryAdminAlarmService.execute();
     }
 }

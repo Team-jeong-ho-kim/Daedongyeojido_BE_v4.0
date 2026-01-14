@@ -11,7 +11,8 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "tbl_user")
+@Entity
+@Table(name = "tbl_user")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

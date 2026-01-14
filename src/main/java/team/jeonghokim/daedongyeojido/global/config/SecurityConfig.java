@@ -63,10 +63,10 @@ public class SecurityConfig {
                         .requestMatchers("/applications/**").hasRole(STUDENT)
 
                         // admin
-                        .requestMatchers(HttpMethod.PATCH, "/admin/clubs/applications/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/admin/dissolution/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/admin/result-duration").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/admin/result-duration/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/admin/clubs/applications/**").hasAnyRole(ADMIN)
+                        .requestMatchers(HttpMethod.DELETE, "/admin/dissolution/**").hasAnyRole(ADMIN)
+                        .requestMatchers(HttpMethod.POST, "/admin/result-duration").hasAnyRole(ADMIN)
+                        .requestMatchers(HttpMethod.PATCH, "/admin/result-duration/**").hasAnyRole(ADMIN)
 
                         // club
                         .requestMatchers(HttpMethod.POST, "/clubs/applications").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
@@ -103,7 +103,8 @@ public class SecurityConfig {
 
                         // alarm
                         .requestMatchers(HttpMethod.GET, "/alarms/clubs").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
-                        .requestMatchers(HttpMethod.GET, "/alarms/users").hasAnyRole(STUDENT, TEACHER, ADMIN, CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.GET, "/alarms/users").hasAnyRole(STUDENT, TEACHER, CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.GET, "/alarms/admins").hasAnyRole(ADMIN)
                         .anyRequest().authenticated()
                 )
                 .with(new SecurityFilterConfig(jwtTokenProvider, objectMapper), Customizer.withDefaults())

@@ -23,7 +23,9 @@ public enum AlarmType {
     USER_SUBMIT_APPLICATION("%s 지원서 제출", "%s님이 동아리 지원서를 제출했습니다."),
     USER_CANCEL_APPLICATION("%s 제출 취소", "%s님이 동아리 지원서 제출을 취소하였습니다."),
     DELETE_CLUB_MEMBER("%s 활동 종료", "%s 동아리에서 활동이 종료되었습니다."),
-    INTERVIEW_SCHEDULE_CREATED("%s 면접 일정 안내", "축하합니다. 지원자님은 %s 동아리 서류에 합격하셨습니다. 면접이 %s %s에 %s에서 진행됩니다.");
+    INTERVIEW_SCHEDULE_CREATED("%s 면접 일정 안내", "축하합니다. 지원자님은 %s 동아리 서류에 합격하셨습니다. 면접이 %s %s에 %s에서 진행됩니다."),
+    REQUEST_CLUB_CREATION("%s 동아리 개설 신청", "%s 동아리 개설 신청 동의 여부를 선택해주세요."),
+    REQUEST_CLUB_DISSOLUTION("%s 동아리 해체 신청", "%s 동아리 해체 동의 여부를 선택해주세요.");
 
     private final String title;
     private final String content;
