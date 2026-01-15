@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import team.jeonghokim.daedongyeojido.infrastructure.redis.serializer.CustomRedisSerializer;
+import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerAlarmPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;
 
 @Configuration
@@ -22,6 +23,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.Scheduler
 )
 @RequiredArgsConstructor
 public class RedisConfig {
+
     @Value("${redis.host}")
     private String host;
 
@@ -35,21 +37,32 @@ public class RedisConfig {
         return new LettuceConnectionFactory(host, port);
     }
 
-    @Bean
-    public RedisTemplate<String, SchedulerSmsPayload> schedulerRedisTemplate(RedisConnectionFactory factory) {
+    private <T> RedisTemplate<String, T> createRedisTemplate(RedisConnectionFactory factory, Class<T> targetClass) {
 
         ObjectMapper redisObjectMapper = objectMapper.copy();
         redisObjectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
-        RedisTemplate<String, SchedulerSmsPayload> template = new RedisTemplate<>();
+        RedisTemplate<String, T> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new CustomRedisSerializer(redisObjectMapper));
         template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(new CustomRedisSerializer(redisObjectMapper));
+        CustomRedisSerializer<T> serializer = new CustomRedisSerializer<>(redisObjectMapper, targetClass);
+        template.setValueSerializer(serializer);
+        template.setHashValueSerializer(serializer);
         template.afterPropertiesSet();
 
         return template;
     }
 
+    @Bean
+    public RedisTemplate<String, SchedulerSmsPayload> smsRedisTemplate(RedisConnectionFactory factory) {
+
+        return createRedisTemplate(factory, SchedulerSmsPayload.class);
+    }
+
+    @Bean
+    public RedisTemplate<String, SchedulerAlarmPayload> alarmRedisTemplate(RedisConnectionFactory factory) {
+
+        return createRedisTemplate(factory, SchedulerAlarmPayload.class);
+    }
 }
