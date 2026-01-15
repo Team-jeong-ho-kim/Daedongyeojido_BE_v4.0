@@ -26,8 +26,6 @@ import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.Scheduler
 
 import java.time.Instant;
 
-import static team.jeonghokim.daedongyeojido.infrastructure.scheduler.service.SchedulerService.RESULT_DURATION_ZSET;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -39,6 +37,7 @@ public class LargeScaleAlarmEventListener {
     private final DecideResultDurationService decideResultDurationService;
 
     private static final String LARGE_SCALE_ALARM_EVENT_RETRY = "recoverLargeScaleAlarmEvent";
+    private static final String RESULT_DURATION_ALARM_ZSET = "club:result-duration-alarm";
     private static final String FAILED_ZSET  = "user:result-duration:failed";
 
     @Async("largeScaleAlarmExecutor")
@@ -64,7 +63,7 @@ public class LargeScaleAlarmEventListener {
                     .build());
 
             smsRedisTemplate.opsForZSet()
-                    .remove(RESULT_DURATION_ZSET, event.payload());
+                    .remove(RESULT_DURATION_ALARM_ZSET, event.payload());
 
             decideResultDurationService.executeAlarmScheduler(event.resultDuration());
 
@@ -81,7 +80,7 @@ public class LargeScaleAlarmEventListener {
     public void recoverLargeScaleAlarmEvent(HttpApiException e, LargeScaleAlarmEvent event) {
 
         smsRedisTemplate.opsForZSet()
-                .remove(RESULT_DURATION_ZSET, event.payload());
+                .remove(RESULT_DURATION_ALARM_ZSET, event.payload());
 
         smsRedisTemplate.opsForZSet()
                 .add(FAILED_ZSET, event.payload(), Instant.now().getEpochSecond());

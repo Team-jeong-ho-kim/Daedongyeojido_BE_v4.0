@@ -31,7 +31,9 @@ public class SchedulerService {
     private final ResultDurationRepository resultDurationRepository;
     private final ClubRepository clubRepository;
 
-    public static final String RESULT_DURATION_ZSET = "club:result-duration";
+    private static final String RESULT_DURATION_SMS_ZSET = "club:result-duration-sms";
+    private static final String RESULT_DURATION_ALARM_ZSET = "club:result-duration-alarm";
+
 
     @Transactional
     public void execute() {
@@ -50,7 +52,7 @@ public class SchedulerService {
 
         Set<SchedulerSmsPayload> payloads =
                 smsRedisTemplate.opsForZSet()
-                        .rangeByScore(RESULT_DURATION_ZSET, 0, now + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
+                        .rangeByScore(RESULT_DURATION_SMS_ZSET, 0, now + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
 
         log.info("SMS 발송 대상 수 = {}", payloads == null ? 0 : payloads.size());
 
@@ -67,7 +69,7 @@ public class SchedulerService {
 
         Set<SchedulerAlarmPayload> payloads =
                 alarmRedisTemplate.opsForZSet()
-                        .rangeByScore(RESULT_DURATION_ZSET, 0, now + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
+                        .rangeByScore(RESULT_DURATION_ALARM_ZSET, 0, now + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
 
         log.info("알람 발송 대상 수 = {}", payloads == null ? 0 : payloads.size());
 
