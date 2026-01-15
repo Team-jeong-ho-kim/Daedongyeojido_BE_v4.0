@@ -5,15 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import team.jeonghokim.daedongyeojido.infrastructure.redis.exception.RedisDeserializeFailedException;
 import team.jeonghokim.daedongyeojido.infrastructure.redis.exception.RedisSerializeFailedException;
-import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;
 
 @RequiredArgsConstructor
-public class CustomRedisSerializer implements RedisSerializer<SchedulerSmsPayload> {
+public class CustomRedisSerializer<T> implements RedisSerializer<T> {
 
     private final ObjectMapper objectMapper;
+    private final Class<T> targetClass;
 
     @Override
-    public byte[] serialize(SchedulerSmsPayload payload) {
+    public byte[] serialize(T payload) {
         try {
             if (payload == null) return null;
             return objectMapper.writeValueAsBytes(payload);
@@ -23,10 +23,10 @@ public class CustomRedisSerializer implements RedisSerializer<SchedulerSmsPayloa
     }
 
     @Override
-    public SchedulerSmsPayload deserialize(byte[] bytes) {
+    public T deserialize(byte[] bytes) {
         try {
             if (bytes == null || bytes.length == 0) return null;
-            return objectMapper.readValue(bytes, SchedulerSmsPayload.class);
+            return objectMapper.readValue(bytes, targetClass);
         } catch (Exception e) {
             throw RedisDeserializeFailedException.EXCEPTION;
         }
