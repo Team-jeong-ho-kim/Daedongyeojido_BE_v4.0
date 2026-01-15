@@ -38,7 +38,7 @@ public class SchedulerService {
     @Transactional
     public void execute() {
 
-        ResultDuration resultDuration = resultDurationRepository.findSmsStatusPendingResultDurationForUpdate()
+        ResultDuration resultDuration = resultDurationRepository.findPendingResultDurationForUpdate()
                 .orElseThrow(() -> ResultDurationAlreadyExecutedException.EXCEPTION);
 
         sendSMS(resultDuration);
