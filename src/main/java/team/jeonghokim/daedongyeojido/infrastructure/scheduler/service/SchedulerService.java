@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationAlreadyExecutedException;
+import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerAlarmPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
 
@@ -22,6 +24,7 @@ import java.util.Set;
 public class SchedulerService {
 
     private final RedisTemplate<String, SchedulerSmsPayload> smsRedisTemplate;
+    private final RedisTemplate<String, SchedulerAlarmPayload> alarmRedisTemplate;
     private final ApplicationEventPublisher eventPublisher;
     private final ResultDurationRepository resultDurationRepository;
 
@@ -34,6 +37,8 @@ public class SchedulerService {
                 .orElseThrow(() -> ResultDurationAlreadyExecutedException.EXCEPTION);
 
         sendSMS(resultDuration);
+
+        sendAlarm(resultDuration);
     }
 
     private void sendSMS(ResultDuration resultDuration) {
@@ -53,6 +58,23 @@ public class SchedulerService {
         payloads.forEach(payload -> publishSmsEvent(payload, resultDuration));
     }
 
+    private void sendAlarm(ResultDuration resultDuration) {
+
+        long now = Instant.now().getEpochSecond();
+
+        Set<SchedulerAlarmPayload> payloads =
+                alarmRedisTemplate.opsForZSet()
+                        .rangeByScore(RESULT_DURATION_ZSET, 0, now + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
+
+        log.info("알람 발송 대상 수 = {}", payloads == null ? 0 : payloads.size());
+
+        if (payloads == null || payloads.isEmpty()) {
+            return;
+        }
+
+        payloads.forEach(payload -> publishAlarmEvent(payload, resultDuration));
+    }
+
     private void publishSmsEvent(SchedulerSmsPayload payload, ResultDuration resultDuration) {
 
         eventPublisher.publishEvent(
@@ -67,10 +89,20 @@ public class SchedulerService {
                         .build()
         );
 
-        log.info("이벤트 발행: submissionId={}, phone={}", payload.submissionId(), payload.phoneNumber());
+        log.info("SMS 이벤트 발행: submissionId={}, phone={}", payload.submissionId(), payload.phoneNumber());
     }
 
-    private void publishAlarmEvent() {
+    private void publishAlarmEvent(SchedulerAlarmPayload payload, ResultDuration resultDuration) {
 
+        eventPublisher.publishEvent(
+                LargeScaleAlarmEvent.builder()
+                        .alarmType(payload.alarmType())
+                        .title(payload.alarmType().formatTitle(payload.club().getClubName()))
+                        .content(payload.alarmType().formatContent(payload.club().getClubName()))
+                        .userId(payload.user().getId())
+                        .resultDuration(resultDuration)
+        );
+
+        log.info("알람 이벤트 발행: userName={}, alarmType={}", payload.user().getUserName(), payload.alarmType());
     }
 }
