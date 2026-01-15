@@ -33,7 +33,7 @@ public class LargeScaleAlarmEventListener {
 
     private final UserAlarmRepository userAlarmRepository;
     private final UserRepository userRepository;
-    private final RedisTemplate<String, SchedulerAlarmPayload> smsRedisTemplate;
+    private final RedisTemplate<String, SchedulerAlarmPayload> alarmRedisTemplate;
     private final DecideResultDurationService decideResultDurationService;
 
     private static final String LARGE_SCALE_ALARM_EVENT_RETRY = "recoverLargeScaleAlarmEvent";
@@ -62,7 +62,7 @@ public class LargeScaleAlarmEventListener {
                     .alarmType(event.alarmType())
                     .build());
 
-            smsRedisTemplate.opsForZSet()
+            alarmRedisTemplate.opsForZSet()
                     .remove(RESULT_DURATION_ALARM_ZSET, event.payload());
 
             decideResultDurationService.executeAlarmScheduler(event.resultDuration());
@@ -79,10 +79,10 @@ public class LargeScaleAlarmEventListener {
     @Recover
     public void recoverLargeScaleAlarmEvent(HttpApiException e, LargeScaleAlarmEvent event) {
 
-        smsRedisTemplate.opsForZSet()
+        alarmRedisTemplate.opsForZSet()
                 .remove(RESULT_DURATION_ALARM_ZSET, event.payload());
 
-        smsRedisTemplate.opsForZSet()
+        alarmRedisTemplate.opsForZSet()
                 .add(FAILED_ZSET, event.payload(), Instant.now().getEpochSecond());
 
         log.error("유저 알람 이벤트 최종 실패 userId={} alarmType={}", event.userId(), event.alarmType(), e);
