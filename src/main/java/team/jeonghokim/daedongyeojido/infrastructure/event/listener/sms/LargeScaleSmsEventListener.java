@@ -83,7 +83,7 @@ public class LargeScaleSmsEventListener {
     @EventListener(ApplicationReadyEvent.class)
     public void initSmsSchedule() {
 
-        resultDurationRepository.findPendingResultDuration()
+        resultDurationRepository.findSmsStatusPendingResultDuration()
                 .ifPresent(resultDuration -> {
 
                     Instant executeTime = resultDuration.getResultDurationTime()

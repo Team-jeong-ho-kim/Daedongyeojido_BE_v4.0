@@ -18,21 +18,21 @@ public class ResultDurationRepositoryCustomImpl implements ResultDurationReposit
     private final QResultDuration resultDuration = QResultDuration.resultDuration;
 
     @Override
-    public Optional<ResultDuration> findPendingResultDuration() {
+    public Optional<ResultDuration> findSmsStatusPendingResultDuration() {
         return Optional.ofNullable(
                 jpaQueryFactory
                         .selectFrom(resultDuration)
-                        .where(resultDuration.status.eq(Status.PENDING))
+                        .where(resultDuration.smsStatus.eq(Status.PENDING))
                         .fetchOne()
         );
     }
 
     @Override
-    public Optional<ResultDuration> findPendingResultDurationForUpdate() {
+    public Optional<ResultDuration> findSmsStatusPendingResultDurationForUpdate() {
         return Optional.ofNullable(
                 jpaQueryFactory
                         .selectFrom(resultDuration)
-                        .where(resultDuration.status.eq(Status.PENDING))
+                        .where(resultDuration.smsStatus.eq(Status.PENDING))
                         .orderBy(resultDuration.id.desc())
                         .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                         .fetchOne()

@@ -10,5 +10,5 @@ public interface ResultDurationRepository extends JpaRepository<ResultDuration, 
 
     Optional<ResultDuration> findTopByOrderByIdDesc();
     
-    Boolean existsByStatus(Status status);
+    Boolean existsBySmsStatus(Status smsStatus);
 }
