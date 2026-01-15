@@ -6,6 +6,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationAlreadyExecutedException;
@@ -27,6 +29,7 @@ public class SchedulerService {
     private final RedisTemplate<String, SchedulerAlarmPayload> alarmRedisTemplate;
     private final ApplicationEventPublisher eventPublisher;
     private final ResultDurationRepository resultDurationRepository;
+    private final ClubRepository clubRepository;
 
     public static final String RESULT_DURATION_ZSET = "club:result-duration";
 
@@ -94,11 +97,13 @@ public class SchedulerService {
 
     private void publishAlarmEvent(SchedulerAlarmPayload payload, ResultDuration resultDuration) {
 
+        Club club = clubRepository.findById(payload.clubId()).orElseThrow();
+
         eventPublisher.publishEvent(
                 LargeScaleAlarmEvent.builder()
                         .alarmType(payload.alarmType())
-                        .title(payload.alarmType().formatTitle(payload.club().getClubName()))
-                        .content(payload.alarmType().formatContent(payload.club().getClubName()))
+                        .title(payload.alarmType().formatTitle(club.getClubName()))
+                        .content(payload.alarmType().formatContent(club.getClubName()))
                         .userId(payload.userId())
                         .resultDuration(resultDuration)
         );

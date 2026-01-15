@@ -94,7 +94,7 @@ public class PassClubService {
 
         SchedulerAlarmPayload payload = SchedulerAlarmPayload.builder()
                     .alarmType(isPassed ? AlarmType.CLUB_FINAL_ACCEPTED : AlarmType.CLUB_FINAL_REJECTED)
-                    .club(submission.getApplicationForm().getClub())
+                    .clubId(submission.getApplicationForm().getClub().getId())
                     .userId(submission.getUser().getId())
                 .build();
 
