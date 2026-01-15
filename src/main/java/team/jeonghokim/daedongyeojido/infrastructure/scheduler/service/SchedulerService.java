@@ -108,6 +108,7 @@ public class SchedulerService {
                         .content(payload.alarmType().formatContent(club.getClubName()))
                         .userId(payload.userId())
                         .resultDuration(resultDuration)
+                        .payload(payload)
         );
 
         log.info("알람 이벤트 발행: userId={}, alarmType={}", payload.userId(), payload.alarmType());
