@@ -32,35 +32,26 @@ public class AsyncConfig implements AsyncConfigurer {
         return executor;
     }
 
-    @Bean(name = "largeScaleSmsExecutor")
-    public Executor smsSchedulerExecutor() {
+    private ThreadPoolTaskExecutor schedulerExecutor(String threadNamePrefix) {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(20);
         executor.setMaxPoolSize(50);
         executor.setQueueCapacity(200);
-        executor.setRejectedExecutionHandler(
-                new ThreadPoolExecutor.CallerRunsPolicy()
-        );
-        executor.setThreadNamePrefix(LARGE_SMS_PREFIX);
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.setThreadNamePrefix(threadNamePrefix);
         executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.setAwaitTerminationSeconds(20);
         executor.initialize();
         return executor;
     }
 
-    @Bean(name = "LargeScaleAlarmExecutor")
+    @Bean(name = "largeScaleSmsExecutor")
+    public Executor smsSchedulerExecutor() {
+        return schedulerExecutor(LARGE_SMS_PREFIX);
+    }
+
+    @Bean(name = "largeScaleAlarmExecutor")
     public Executor alarmSchedulerExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(20);
-        executor.setMaxPoolSize(50);
-        executor.setQueueCapacity(200);
-        executor.setRejectedExecutionHandler(
-                new ThreadPoolExecutor.CallerRunsPolicy()
-        );
-        executor.setThreadNamePrefix(LARGE_ALARM_PREFIX);
-        executor.setWaitForTasksToCompleteOnShutdown(true);
-        executor.setAwaitTerminationSeconds(20);
-        executor.initialize();
-        return executor;
+        return schedulerExecutor(LARGE_ALARM_PREFIX);
     }
 }
