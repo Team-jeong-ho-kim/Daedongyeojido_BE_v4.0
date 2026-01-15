@@ -99,10 +99,10 @@ public class SchedulerService {
                         .alarmType(payload.alarmType())
                         .title(payload.alarmType().formatTitle(payload.club().getClubName()))
                         .content(payload.alarmType().formatContent(payload.club().getClubName()))
-                        .userId(payload.user().getId())
+                        .userId(payload.userId())
                         .resultDuration(resultDuration)
         );
 
-        log.info("알람 이벤트 발행: userName={}, alarmType={}", payload.user().getUserName(), payload.alarmType());
+        log.info("알람 이벤트 발행: userId={}, alarmType={}", payload.userId(), payload.alarmType());
     }
 }
