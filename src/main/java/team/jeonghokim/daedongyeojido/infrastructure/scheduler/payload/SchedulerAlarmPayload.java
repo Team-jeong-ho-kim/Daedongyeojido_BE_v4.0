@@ -1,15 +1,15 @@
 package team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
-import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 
 @Builder
 public record SchedulerAlarmPayload(
 
-        User user,
+        Long userId,
         Club club,
-        AlarmType alarmType
+        @JsonProperty("is_passed") AlarmType alarmType
 ) {
 }
