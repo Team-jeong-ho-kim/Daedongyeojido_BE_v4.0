@@ -43,14 +43,14 @@ public class LargeScaleSmsEventListener {
     private final TaskScheduler taskScheduler;
     private final DecideResultDurationService decideResultDurationService;
 
-    private static final String LARGE_SCALE_EVENT_RETRY = "recoverLargeScaleSmsEvent";
+    private static final String LARGE_SCALE_SMS_EVENT_RETRY = "recoverLargeScaleSmsEvent";
     private static final String FAILED_ZSET  = "club:result-duration:failed";
     private static final String TIME_ZONE = "Asia/Seoul";
 
-    @Async("largeScaleExecutor")
+    @Async("largeScaleSmsExecutor")
     @Retryable(
             retryFor = HttpApiException.class,
-            recover = LARGE_SCALE_EVENT_RETRY,
+            recover = LARGE_SCALE_SMS_EVENT_RETRY,
             maxAttempts = 5,
             backoff = @Backoff(delay = 500, multiplier = 2)
     )
