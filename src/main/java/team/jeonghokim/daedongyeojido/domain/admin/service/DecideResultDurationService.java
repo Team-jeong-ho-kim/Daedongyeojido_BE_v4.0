@@ -27,7 +27,7 @@ public class DecideResultDurationService {
     @Transactional
     public void execute(DecideResultDurationRequest request) {
 
-        if (resultDurationRepository.existsBySmsStatus(Status.PENDING)) {
+        if (resultDurationRepository.existsBySmsStatusOrAlarmStatus(Status.PENDING, Status.PENDING)) {
             throw ResultDurationAlreadySetException.EXCEPTION;
         }
 

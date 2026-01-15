@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface ResultDurationRepository extends JpaRepository<ResultDuration, Long>, ResultDurationRepositoryCustom {
 
     Optional<ResultDuration> findTopByOrderByIdDesc();
-    
-    Boolean existsBySmsStatus(Status smsStatus);
+
+    boolean existsBySmsStatusOrAlarmStatus(Status smsStatus, Status alarmStatus);
 }
