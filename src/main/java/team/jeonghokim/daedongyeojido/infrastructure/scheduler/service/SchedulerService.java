@@ -109,6 +109,7 @@ public class SchedulerService {
                         .userId(payload.userId())
                         .resultDuration(resultDuration)
                         .payload(payload)
+                        .build()
         );
 
         log.info("알람 이벤트 발행: userId={}, alarmType={}", payload.userId(), payload.alarmType());
