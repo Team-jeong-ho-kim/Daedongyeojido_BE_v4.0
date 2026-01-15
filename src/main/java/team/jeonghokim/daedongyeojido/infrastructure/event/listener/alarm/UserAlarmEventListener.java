@@ -18,6 +18,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarm
 @Component
 @RequiredArgsConstructor
 public class UserAlarmEventListener {
+
     private final UserAlarmRepository userAlarmRepository;
     private final UserRepository userRepository;
 

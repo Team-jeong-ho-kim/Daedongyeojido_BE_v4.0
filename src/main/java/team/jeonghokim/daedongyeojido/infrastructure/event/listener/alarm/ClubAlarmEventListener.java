@@ -18,6 +18,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarm
 @Component
 @RequiredArgsConstructor
 public class ClubAlarmEventListener {
+
     private final ClubAlarmRepository clubAlarmRepository;
     private final ClubRepository clubRepository;
 
