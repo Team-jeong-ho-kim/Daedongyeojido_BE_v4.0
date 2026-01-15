@@ -14,6 +14,7 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
+import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
@@ -35,6 +36,7 @@ public class LargeScaleAlarmEventListener {
     private final UserAlarmRepository userAlarmRepository;
     private final UserRepository userRepository;
     private final RedisTemplate<String, SchedulerAlarmPayload> smsRedisTemplate;
+    private final DecideResultDurationService decideResultDurationService;
 
     private static final String LARGE_SCALE_ALARM_EVENT_RETRY = "recoverLargeScaleAlarmEvent";
     private static final String FAILED_ZSET  = "user:result-duration:failed";
@@ -63,6 +65,8 @@ public class LargeScaleAlarmEventListener {
 
             smsRedisTemplate.opsForZSet()
                     .remove(RESULT_DURATION_ZSET, event.payload());
+
+            decideResultDurationService.executeAlarmScheduler(event.resultDuration());
 
         } catch (HttpServerErrorException |
                 ResourceAccessException e) {

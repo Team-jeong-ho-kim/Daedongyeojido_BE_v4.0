@@ -68,7 +68,7 @@ public class LargeScaleSmsEventListener {
             smsRedisTemplate.opsForZSet()
                     .remove(RESULT_DURATION_ZSET, event.payload());
 
-            decideResultDurationService.executeScheduler(event.resultDuration());
+            decideResultDurationService.executeSmsScheduler(event.resultDuration());
 
         } catch (HttpServerErrorException |
                  ResourceAccessException e) {
