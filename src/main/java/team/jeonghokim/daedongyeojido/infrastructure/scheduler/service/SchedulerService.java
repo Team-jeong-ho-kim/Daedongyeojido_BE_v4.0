@@ -11,8 +11,8 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubReposito
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationAlreadyExecutedException;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleAlarmEvent;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.LargeScaleAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.sms.event.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerAlarmPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;

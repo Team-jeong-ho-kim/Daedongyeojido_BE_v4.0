@@ -12,7 +12,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserApplicat
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserApplicationNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideTeamMemberApplicationRequest;
-import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory.AlarmEventFactory;
 
 @Service
 @RequiredArgsConstructor

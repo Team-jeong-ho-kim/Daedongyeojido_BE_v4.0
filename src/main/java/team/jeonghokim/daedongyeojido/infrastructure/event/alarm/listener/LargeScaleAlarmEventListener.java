@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.infrastructure.event.listener.alarm;
+package team.jeonghokim.daedongyeojido.infrastructure.event.alarm.listener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.LargeScaleAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.SmsEventFinalFailedException;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerAlarmPayload;
 

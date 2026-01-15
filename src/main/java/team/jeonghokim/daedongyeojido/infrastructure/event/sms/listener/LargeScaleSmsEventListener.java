@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.infrastructure.event.listener.sms;
+package team.jeonghokim.daedongyeojido.infrastructure.event.sms.listener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.sms.event.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.SmsEventFinalFailedException;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;

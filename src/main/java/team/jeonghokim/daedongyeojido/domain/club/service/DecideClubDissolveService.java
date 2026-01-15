@@ -14,8 +14,7 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.Decid
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
-import team.jeonghokim.daedongyeojido.global.cache.CacheNames;
-import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory.AlarmEventFactory;
 
 import java.util.List;
 

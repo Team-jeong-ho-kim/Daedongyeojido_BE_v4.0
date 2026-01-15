@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.infrastructure.event.listener.alarm;
+package team.jeonghokim.daedongyeojido.infrastructure.event.alarm.listener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import team.jeonghokim.daedongyeojido.domain.alarm.domain.ClubAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.ClubAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.ClubAlarmEvent;
 
 @Slf4j
 @Component

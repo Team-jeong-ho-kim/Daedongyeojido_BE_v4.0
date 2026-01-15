@@ -12,7 +12,7 @@ import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
-import team.jeonghokim.daedongyeojido.infrastructure.event.factory.AlarmEventFactory;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory.AlarmEventFactory;
 
 @Service
 @RequiredArgsConstructor
