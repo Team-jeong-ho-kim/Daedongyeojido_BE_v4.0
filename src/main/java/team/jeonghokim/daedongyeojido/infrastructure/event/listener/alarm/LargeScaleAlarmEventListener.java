@@ -20,7 +20,6 @@ import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRe
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleAlarmEvent;
-import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.SmsEventFinalFailedException;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerAlarmPayload;
 
@@ -71,12 +70,12 @@ public class LargeScaleAlarmEventListener {
 
             log.error("유저 알람 이벤트 실패 userId={} alarmType={}", event.userId(), event.alarmType(), e);
 
-            throw new HttpApiException(e);
+            throw e;
         }
     }
 
     @Recover
-    public void recoverLargeScaleAlarmEvent(Exception e, LargeScaleAlarmEvent event) {
+    public void recoverLargeScaleAlarmEvent(RuntimeException e, LargeScaleAlarmEvent event) {
 
         alarmRedisTemplate.opsForZSet()
                 .remove(RESULT_DURATION_ALARM_ZSET, event.payload());
