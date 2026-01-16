@@ -31,8 +31,8 @@ public class SchedulerService {
     private final ResultDurationRepository resultDurationRepository;
     private final ClubRepository clubRepository;
 
-    private static final String RESULT_DURATION_SMS_ZSET = "club:result-duration-sms";
-    private static final String RESULT_DURATION_ALARM_ZSET = "club:result-duration-alarm";
+    public static final String RESULT_DURATION_SMS_ZSET = "club:result-duration-sms";
+    public static final String RESULT_DURATION_ALARM_ZSET = "club:result-duration-alarm";
 
 
     @Transactional
