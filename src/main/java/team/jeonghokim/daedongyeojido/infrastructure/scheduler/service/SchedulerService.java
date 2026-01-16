@@ -82,17 +82,17 @@ public class SchedulerService {
 
     private void publishSmsEvent(SchedulerSmsPayload payload, ResultDuration resultDuration) {
 
-        eventPublisher.publishEvent(
-                LargeScaleSmsEvent.builder()
-                        .phoneNumber(payload.phoneNumber())
-                        .message(payload.isPassed()
-                                ? Message.CLUB_FINAL_ACCEPTED
-                                : Message.CLUB_FINAL_REJECTED)
-                        .clubName(payload.clubName())
-                        .payload(payload)
-                        .resultDuration(resultDuration)
-                        .build()
-        );
+        LargeScaleSmsEvent event = LargeScaleSmsEvent.builder()
+                .phoneNumber(payload.phoneNumber())
+                .message(payload.isPassed()
+                        ? Message.CLUB_FINAL_ACCEPTED
+                        : Message.CLUB_FINAL_REJECTED)
+                .clubName(payload.clubName())
+                .payload(payload)
+                .resultDuration(resultDuration)
+                .build();
+
+        eventPublisher.publishEvent(event);
 
         log.info("SMS 이벤트 발행: submissionId={}, phone={}", payload.submissionId(), payload.phoneNumber());
     }
@@ -101,16 +101,16 @@ public class SchedulerService {
 
         Club club = clubRepository.findById(payload.clubId()).orElseThrow();
 
-        eventPublisher.publishEvent(
-                LargeScaleAlarmEvent.builder()
-                        .alarmType(payload.alarmType())
-                        .title(payload.alarmType().formatTitle(club.getClubName()))
-                        .content(payload.alarmType().formatContent(club.getClubName()))
-                        .userId(payload.userId())
-                        .resultDuration(resultDuration)
-                        .payload(payload)
-                        .build()
-        );
+        LargeScaleAlarmEvent event = LargeScaleAlarmEvent.builder()
+                .alarmType(payload.alarmType())
+                .title(payload.alarmType().formatTitle(club.getClubName()))
+                .content(payload.alarmType().formatContent(club.getClubName()))
+                .userId(payload.userId())
+                .resultDuration(resultDuration)
+                .payload(payload)
+                .build();
+
+        eventPublisher.publishEvent(event);
 
         log.info("알람 이벤트 발행: userId={}, alarmType={}", payload.userId(), payload.alarmType());
     }
