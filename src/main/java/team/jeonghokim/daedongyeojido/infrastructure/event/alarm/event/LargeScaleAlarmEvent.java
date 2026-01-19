@@ -10,6 +10,7 @@ public record LargeScaleAlarmEvent(
 
         AlarmType alarmType,
         Long userId,
+        Long clubId,
         String title,
         String content,
         SchedulerAlarmPayload payload,
