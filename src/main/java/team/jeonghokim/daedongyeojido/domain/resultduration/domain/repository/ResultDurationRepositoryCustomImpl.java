@@ -22,7 +22,8 @@ public class ResultDurationRepositoryCustomImpl implements ResultDurationReposit
         return Optional.ofNullable(
                 jpaQueryFactory
                         .selectFrom(resultDuration)
-                        .where(resultDuration.status.eq(Status.PENDING))
+                        .where(resultDuration.smsStatus.eq(Status.PENDING)
+                                .or(resultDuration.alarmStatus.eq(Status.PENDING)))
                         .fetchOne()
         );
     }
@@ -32,7 +33,8 @@ public class ResultDurationRepositoryCustomImpl implements ResultDurationReposit
         return Optional.ofNullable(
                 jpaQueryFactory
                         .selectFrom(resultDuration)
-                        .where(resultDuration.status.eq(Status.PENDING))
+                        .where(resultDuration.smsStatus.eq(Status.PENDING)
+                                .or(resultDuration.alarmStatus.eq(Status.PENDING)))
                         .orderBy(resultDuration.id.desc())
                         .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                         .fetchOne()

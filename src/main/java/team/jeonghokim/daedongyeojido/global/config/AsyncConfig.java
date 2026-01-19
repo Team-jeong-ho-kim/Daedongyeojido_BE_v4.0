@@ -16,7 +16,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class AsyncConfig implements AsyncConfigurer {
 
     private static final String PREFIX = "Async-";
-    private static final String LARGE_PREFIX = "Large-Scale-SMS-";
+    private static final String LARGE_SMS_PREFIX = "Large-Scale-SMS-";
+    private static final String LARGE_ALARM_PREFIX = "Large-Scale-ALARM-";
 
     @Override
     public Executor getAsyncExecutor() {
@@ -31,19 +32,26 @@ public class AsyncConfig implements AsyncConfigurer {
         return executor;
     }
 
-    @Bean(name = "largeScaleExecutor")
-    public Executor asyncExecutor() {
+    private ThreadPoolTaskExecutor schedulerExecutor(String threadNamePrefix) {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(20);
         executor.setMaxPoolSize(50);
         executor.setQueueCapacity(200);
-        executor.setRejectedExecutionHandler(
-                new ThreadPoolExecutor.CallerRunsPolicy()
-        );
-        executor.setThreadNamePrefix(LARGE_PREFIX);
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.setThreadNamePrefix(threadNamePrefix);
         executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.setAwaitTerminationSeconds(20);
         executor.initialize();
         return executor;
+    }
+
+    @Bean(name = "largeScaleSmsExecutor")
+    public Executor smsSchedulerExecutor() {
+        return schedulerExecutor(LARGE_SMS_PREFIX);
+    }
+
+    @Bean(name = "largeScaleAlarmExecutor")
+    public Executor alarmSchedulerExecutor() {
+        return schedulerExecutor(LARGE_ALARM_PREFIX);
     }
 }

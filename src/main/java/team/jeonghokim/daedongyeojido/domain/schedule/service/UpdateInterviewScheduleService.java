@@ -12,7 +12,7 @@ import team.jeonghokim.daedongyeojido.domain.schedule.exception.InterviewSchedul
 import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.InterviewScheduleRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.sms.event.UserSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
 
 @Service

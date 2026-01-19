@@ -15,8 +15,8 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.UserAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.sms.event.UserSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
 
 @Service

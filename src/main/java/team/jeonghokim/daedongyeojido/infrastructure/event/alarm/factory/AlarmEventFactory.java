@@ -1,11 +1,11 @@
-package team.jeonghokim.daedongyeojido.infrastructure.event.factory;
+package team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory;
 
 import org.springframework.stereotype.Component;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.club.ClubAlarmEvent;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.ClubAlarmEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.UserAlarmEvent;
 
 @Component
 public class AlarmEventFactory {

@@ -27,7 +27,7 @@ public class DecideResultDurationService {
     @Transactional
     public void execute(DecideResultDurationRequest request) {
 
-        if (resultDurationRepository.existsByStatus(Status.PENDING)) {
+        if (resultDurationRepository.existsBySmsStatusOrAlarmStatus(Status.PENDING, Status.PENDING)) {
             throw ResultDurationAlreadySetException.EXCEPTION;
         }
 
@@ -41,8 +41,13 @@ public class DecideResultDurationService {
         taskScheduler.schedule(schedulerService::execute, executeTime);
     }
 
-    public void executeScheduler(ResultDuration resultDuration) {
+    public void executeSmsScheduler(ResultDuration resultDuration) {
 
-        resultDuration.requested();
+        resultDuration.smsRequested();
+    }
+
+    public void executeAlarmScheduler(ResultDuration resultDuration) {
+
+        resultDuration.alarmRequested();
     }
 }

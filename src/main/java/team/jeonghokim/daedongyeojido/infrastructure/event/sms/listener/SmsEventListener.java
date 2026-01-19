@@ -1,8 +1,7 @@
-package team.jeonghokim.daedongyeojido.infrastructure.event.listener.sms;
+package team.jeonghokim.daedongyeojido.infrastructure.event.sms.listener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
@@ -14,10 +13,9 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.UserSmsEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.sms.event.UserSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.SmsEventFinalFailedException;
-import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.service.SmsService;
 
 @Slf4j
@@ -26,7 +24,6 @@ import team.jeonghokim.daedongyeojido.infrastructure.sms.service.SmsService;
 public class SmsEventListener {
 
     private final SmsService smsService;
-    private final RedisTemplate<String, SchedulerPayload> smsRedisTemplate;
 
     private static final String SMS_EVENT_RETRY = "recoverSmsEvent";
 

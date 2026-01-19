@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.infrastructure.event.listener.sms;
+package team.jeonghokim.daedongyeojido.infrastructure.event.sms.listener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,17 +19,18 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
-import team.jeonghokim.daedongyeojido.infrastructure.event.domain.user.LargeScaleSmsEvent;
+import team.jeonghokim.daedongyeojido.infrastructure.event.sms.event.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.SmsEventFinalFailedException;
-import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerPayload;
+import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.service.SchedulerService;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.service.SmsService;
 
 import java.time.Instant;
 import java.time.ZoneId;
 
-import static team.jeonghokim.daedongyeojido.infrastructure.scheduler.service.SchedulerService.RESULT_DURATION_ZSET;
+import static team.jeonghokim.daedongyeojido.infrastructure.redis.key.RedisKey.FAILED_ZSET;
+import static team.jeonghokim.daedongyeojido.infrastructure.redis.key.RedisKey.RESULT_DURATION_SMS_ZSET;
 
 @Slf4j
 @Component
@@ -37,20 +38,19 @@ import static team.jeonghokim.daedongyeojido.infrastructure.scheduler.service.Sc
 public class LargeScaleSmsEventListener {
 
     private final SmsService smsService;
-    private final RedisTemplate<String, SchedulerPayload> smsRedisTemplate;
+    private final RedisTemplate<String, SchedulerSmsPayload> smsRedisTemplate;
     private final SchedulerService schedulerService;
     private final ResultDurationRepository resultDurationRepository;
     private final TaskScheduler taskScheduler;
     private final DecideResultDurationService decideResultDurationService;
 
-    private static final String LARGE_SCALE_EVENT_RETRY = "recoverLargeScaleSmsEvent";
-    private static final String FAILED_ZSET  = "club:result-duration:failed";
+    private static final String LARGE_SCALE_SMS_EVENT_RETRY = "recoverLargeScaleSmsEvent";
     private static final String TIME_ZONE = "Asia/Seoul";
 
-    @Async("largeScaleExecutor")
+    @Async("largeScaleSmsExecutor")
     @Retryable(
             retryFor = HttpApiException.class,
-            recover = LARGE_SCALE_EVENT_RETRY,
+            recover = LARGE_SCALE_SMS_EVENT_RETRY,
             maxAttempts = 5,
             backoff = @Backoff(delay = 500, multiplier = 2)
     )
@@ -66,9 +66,9 @@ public class LargeScaleSmsEventListener {
             );
 
             smsRedisTemplate.opsForZSet()
-                    .remove(RESULT_DURATION_ZSET, event.payload());
+                    .remove(RESULT_DURATION_SMS_ZSET, event.payload());
 
-            decideResultDurationService.executeScheduler(event.resultDuration());
+            decideResultDurationService.executeSmsScheduler(event.resultDuration());
 
         } catch (HttpServerErrorException |
                  ResourceAccessException e) {
@@ -103,7 +103,7 @@ public class LargeScaleSmsEventListener {
     public void recoverLargeScaleSmsEvent(HttpApiException e, LargeScaleSmsEvent event) {
 
         smsRedisTemplate.opsForZSet()
-                .remove(RESULT_DURATION_ZSET, event.payload());
+                .remove(RESULT_DURATION_SMS_ZSET, event.payload());
 
         smsRedisTemplate.opsForZSet()
                 .add(FAILED_ZSET, event.payload(), Instant.now().getEpochSecond());

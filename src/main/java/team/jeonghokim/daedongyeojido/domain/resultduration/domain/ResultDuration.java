@@ -21,18 +21,26 @@ public class ResultDuration extends BaseIdEntity {
     private LocalDateTime resultDurationTime;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status smsStatus;
+
+    @Enumerated(EnumType.STRING)
+    private Status alarmStatus;
 
     public ResultDuration(LocalDateTime resultDuration) {
         this.resultDurationTime = resultDuration;
-        this.status = Status.PENDING;
+        this.smsStatus = Status.PENDING;
+        this.alarmStatus = Status.PENDING;
     }
 
     public void update(LocalDateTime resultDuration) {
         this.resultDurationTime = resultDuration;
     }
 
-    public void requested() {
-        this.status = Status.REQUESTED;
+    public void smsRequested() {
+        this.smsStatus = Status.REQUESTED;
+    }
+
+    public void alarmRequested() {
+        this.alarmStatus = Status.REQUESTED;
     }
 }

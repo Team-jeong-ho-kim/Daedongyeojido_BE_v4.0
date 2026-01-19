@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.infrastructure.event.domain.user;
+package team.jeonghokim.daedongyeojido.infrastructure.event.sms.event;
 
 import lombok.Builder;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;

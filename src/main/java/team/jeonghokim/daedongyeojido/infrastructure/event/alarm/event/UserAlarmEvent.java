@@ -1,13 +1,13 @@
-package team.jeonghokim.daedongyeojido.infrastructure.event.domain.club;
+package team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event;
 
 import lombok.Builder;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 
 @Builder
-public record ClubAlarmEvent(
+public record UserAlarmEvent(
         String title,
         String content,
-        Long clubId,
+        Long userId,
         AlarmType alarmType
 ) {
 }
