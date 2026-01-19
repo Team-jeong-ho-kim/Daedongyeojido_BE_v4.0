@@ -21,6 +21,9 @@ import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
 import java.time.ZoneId;
 
+import static team.jeonghokim.daedongyeojido.infrastructure.redis.key.RedisKey.RESULT_DURATION_ALARM_ZSET;
+import static team.jeonghokim.daedongyeojido.infrastructure.redis.key.RedisKey.RESULT_DURATION_SMS_ZSET;
+
 @Service
 @RequiredArgsConstructor
 public class PassClubService {
@@ -31,8 +34,6 @@ public class PassClubService {
     private final RedisTemplate<String, SchedulerSmsPayload> smsRedisTemplate;
     private final RedisTemplate<String, SchedulerAlarmPayload> alarmRedisTemplate;
 
-    private static final String RESULT_DURATION_SMS_ZSET = "club:result-duration-sms";
-    private static final String RESULT_DURATION_ALARM_ZSET = "club:result-duration-alarm";
     public static final String SEOUL_TIME_ZONE = "Asia/Seoul";
 
     @Transactional
@@ -45,8 +46,6 @@ public class PassClubService {
 
         validate(user, submission);
 
-        submission.applyPassResult(request.isPassed());
-        
         saveSMS(submission, request.isPassed());
 
         saveAlarm(submission, request.isPassed());
