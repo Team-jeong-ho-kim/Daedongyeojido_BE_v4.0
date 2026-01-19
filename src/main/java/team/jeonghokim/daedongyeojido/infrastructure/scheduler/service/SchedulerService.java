@@ -104,9 +104,11 @@ public class SchedulerService {
                 .alarmType(payload.alarmType())
                 .title(payload.alarmType().formatTitle(club.getClubName()))
                 .content(payload.alarmType().formatContent(club.getClubName()))
+                .clubId(club.getId())
                 .userId(payload.userId())
                 .resultDuration(resultDuration)
                 .payload(payload)
+                .isPassed(payload.isPassed())
                 .build();
 
         eventPublisher.publishEvent(event);
