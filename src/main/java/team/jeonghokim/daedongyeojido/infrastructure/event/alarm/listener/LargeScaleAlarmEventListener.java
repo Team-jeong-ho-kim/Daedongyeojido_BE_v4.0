@@ -25,6 +25,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.Scheduler
 
 import java.time.Instant;
 
+import static team.jeonghokim.daedongyeojido.infrastructure.redis.key.RedisKey.FAILED_ZSET;
 import static team.jeonghokim.daedongyeojido.infrastructure.redis.key.RedisKey.RESULT_DURATION_ALARM_ZSET;
 
 @Slf4j
@@ -38,7 +39,6 @@ public class LargeScaleAlarmEventListener {
     private final DecideResultDurationService decideResultDurationService;
 
     private static final String LARGE_SCALE_ALARM_EVENT_RETRY = "recoverLargeScaleAlarmEvent";
-    private static final String FAILED_ZSET  = "user:result-duration:failed";
 
     @Async("largeScaleAlarmExecutor")
     @Retryable(

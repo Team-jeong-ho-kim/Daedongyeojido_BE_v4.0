@@ -10,5 +10,5 @@ public class RedisKey {
 
     public static final String RESULT_DURATION_ALARM_ZSET = "club:result-duration-alarm";
 
-    public static final String FAILED_ZSET  = "club:result-duration:failed";
+    public static final String FAILED_ZSET  = "user:result-duration:failed";
 }
