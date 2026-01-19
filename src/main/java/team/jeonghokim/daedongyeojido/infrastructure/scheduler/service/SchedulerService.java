@@ -107,6 +107,7 @@ public class SchedulerService {
                 .userId(payload.userId())
                 .resultDuration(resultDuration)
                 .payload(payload)
+                .isPassed(payload.isPassed())
                 .build();
 
         eventPublisher.publishEvent(event);

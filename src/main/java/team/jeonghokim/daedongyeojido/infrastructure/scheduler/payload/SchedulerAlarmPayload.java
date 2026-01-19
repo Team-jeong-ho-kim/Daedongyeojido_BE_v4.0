@@ -9,6 +9,7 @@ public record SchedulerAlarmPayload(
 
         Long userId,
         Long clubId,
-        @JsonProperty("alarm_type") AlarmType alarmType
+        @JsonProperty("alarm_type") AlarmType alarmType,
+        boolean isPassed
 ) {
 }

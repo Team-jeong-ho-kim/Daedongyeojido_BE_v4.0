@@ -95,6 +95,7 @@ public class PassClubService {
                     .alarmType(isPassed ? AlarmType.CLUB_FINAL_ACCEPTED : AlarmType.CLUB_FINAL_REJECTED)
                     .clubId(submission.getApplicationForm().getClub().getId())
                     .userId(submission.getUser().getId())
+                    .isPassed(isPassed)
                 .build();
 
         alarmRedisTemplate.opsForZSet()
