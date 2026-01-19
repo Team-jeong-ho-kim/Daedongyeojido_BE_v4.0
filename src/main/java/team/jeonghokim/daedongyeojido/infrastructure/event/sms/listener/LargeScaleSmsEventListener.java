@@ -29,7 +29,8 @@ import team.jeonghokim.daedongyeojido.infrastructure.sms.service.SmsService;
 import java.time.Instant;
 import java.time.ZoneId;
 
-import static team.jeonghokim.daedongyeojido.infrastructure.scheduler.service.SchedulerService.RESULT_DURATION_SMS_ZSET;
+import static team.jeonghokim.daedongyeojido.infrastructure.redis.key.RedisKey.FAILED_ZSET;
+import static team.jeonghokim.daedongyeojido.infrastructure.redis.key.RedisKey.RESULT_DURATION_SMS_ZSET;
 
 @Slf4j
 @Component
@@ -44,7 +45,6 @@ public class LargeScaleSmsEventListener {
     private final DecideResultDurationService decideResultDurationService;
 
     private static final String LARGE_SCALE_SMS_EVENT_RETRY = "recoverLargeScaleSmsEvent";
-    private static final String FAILED_ZSET  = "club:result-duration:failed";
     private static final String TIME_ZONE = "Asia/Seoul";
 
     @Async("largeScaleSmsExecutor")

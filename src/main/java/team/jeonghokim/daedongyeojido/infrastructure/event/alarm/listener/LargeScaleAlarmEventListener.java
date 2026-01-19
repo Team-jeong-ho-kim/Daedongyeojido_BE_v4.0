@@ -25,7 +25,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.Scheduler
 
 import java.time.Instant;
 
-import static team.jeonghokim.daedongyeojido.infrastructure.scheduler.service.SchedulerService.RESULT_DURATION_ALARM_ZSET;
+import static team.jeonghokim.daedongyeojido.infrastructure.redis.key.RedisKey.RESULT_DURATION_ALARM_ZSET;
 
 @Slf4j
 @Component

@@ -20,6 +20,9 @@ import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
 import java.time.Instant;
 import java.util.Set;
 
+import static team.jeonghokim.daedongyeojido.infrastructure.redis.key.RedisKey.RESULT_DURATION_ALARM_ZSET;
+import static team.jeonghokim.daedongyeojido.infrastructure.redis.key.RedisKey.RESULT_DURATION_SMS_ZSET;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -30,10 +33,6 @@ public class SchedulerService {
     private final ApplicationEventPublisher eventPublisher;
     private final ResultDurationRepository resultDurationRepository;
     private final ClubRepository clubRepository;
-
-    public static final String RESULT_DURATION_SMS_ZSET = "club:result-duration-sms";
-    public static final String RESULT_DURATION_ALARM_ZSET = "club:result-duration-alarm";
-
 
     @Transactional
     public void execute() {
