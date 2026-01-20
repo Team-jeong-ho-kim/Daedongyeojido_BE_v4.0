@@ -2,12 +2,16 @@ FROM gradle:8.14.3-jdk17 AS build
 
 WORKDIR /app
 
-COPY gradlew gradle build.gradle settings.gradle ./
+COPY gradlew ./
+COPY gradle/wrapper ./gradle/wrapper
+COPY build.gradle settings.gradle ./
+
 RUN chmod +x gradlew
 RUN --mount=type=cache,target=/home/gradle/.gradle \
     ./gradlew --no-daemon dependencies
 
 COPY src ./src
+
 RUN --mount=type=cache,target=/home/gradle/.gradle \
     ./gradlew --no-daemon build -x test
 
