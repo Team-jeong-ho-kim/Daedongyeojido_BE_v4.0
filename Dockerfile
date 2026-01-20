@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM gradle:8.14.3-jdk17 AS build
+FROM gradle:8.14.3-jdk17 AS build
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY src /app/src
 
 RUN gradle --no-daemon build -x test
 
-FROM --platform=$TARGETPLATFORM eclipse-temurin:17-jre
+FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 
