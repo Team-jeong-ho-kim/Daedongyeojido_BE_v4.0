@@ -2,15 +2,14 @@ FROM gradle:8.14.3-jdk17 AS build
 
 WORKDIR /app
 
-COPY gradlew /app/gradlew
-COPY gradle /app/gradle
-COPY build.gradle settings.gradle /app/
+COPY gradlew gradle build.gradle settings.gradle ./
+RUN chmod +x gradlew
+RUN --mount=type=cache,target=/home/gradle/.gradle \
+    ./gradlew --no-daemon dependencies
 
-RUN chmod +x /app/gradlew
-
-COPY src /app/src
-
-RUN gradle --no-daemon build -x test
+COPY src ./src
+RUN --mount=type=cache,target=/home/gradle/.gradle \
+    ./gradlew --no-daemon build -x test
 
 FROM eclipse-temurin:17-jre
 
