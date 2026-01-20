@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  app:
+    image: coehgns836/daedongyeojido
+    container_name: daedongyeojido
+    ports:
+      - "8080:8080"
+    restart: always
+    env_file:
+      - .env
