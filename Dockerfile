@@ -8,9 +8,11 @@ COPY build.gradle settings.gradle /app/
 
 RUN chmod +x /app/gradlew
 
+RUN /app/gradlew --no-daemon dependencies
+
 COPY src /app/src
 
-RUN gradle --no-daemon build -x test
+RUN /app/gradlew --no-daemon build -x test --parallel --continue
 
 FROM eclipse-temurin:17-jre
 
