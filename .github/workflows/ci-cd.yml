@@ -46,7 +46,7 @@ jobs:
           chmod 600 ~/.ssh/known_hosts
 
           ssh -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            docker-compose pull
-            docker-compose down
-            docker-compose up -d
+            docker compose pull
+            docker compose down
+            docker compose up -d
           EOF
