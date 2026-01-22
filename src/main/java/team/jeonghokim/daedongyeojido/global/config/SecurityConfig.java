@@ -22,6 +22,7 @@ import java.util.Arrays;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final ObjectMapper objectMapper;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -45,6 +46,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/").permitAll()
 
                         // auth
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
@@ -105,6 +107,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/alarms/clubs").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/alarms/users").hasAnyRole(STUDENT, TEACHER, CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/alarms/admins").hasAnyRole(ADMIN)
+
+                        // monitoring
+                        .requestMatchers("/actuator/prometheus").permitAll()
+                        .requestMatchers("/actuator/health").permitAll()
                         .anyRequest().authenticated()
                 )
                 .with(new SecurityFilterConfig(jwtTokenProvider, objectMapper), Customizer.withDefaults())
