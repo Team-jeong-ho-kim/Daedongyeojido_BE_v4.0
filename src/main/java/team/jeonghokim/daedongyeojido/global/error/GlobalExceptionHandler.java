@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import team.jeonghokim.daedongyeojido.global.error.exception.DaedongException;
 import team.jeonghokim.daedongyeojido.global.error.exception.ErrorCode;
 
@@ -44,6 +45,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatusCode()));
     }
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoResource(NoResourceFoundException e) {
+        ErrorCode errorCode = ErrorCode.NO_RESOURCE_FOUND;
+        ErrorResponse response = ErrorResponse.of(errorCode, e.getMessage());
+        e.printStackTrace();
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatusCode()));
+    }
     //그 외 에러들
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handlerException(Exception e) {
