@@ -68,3 +68,7 @@ management:
     distribution:
       percentiles-histogram:
         http.server.requests: true
+
+security:
+  prometheus:
+    ip-range: ${PROMETHEUS_CIDR}
