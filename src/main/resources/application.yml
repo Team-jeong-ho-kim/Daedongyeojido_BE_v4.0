@@ -56,3 +56,19 @@ solapi-sms:
   secretKey: ${SECRET_KEY}
   from: ${REPRESENTER_PHONE_NUMBER}
   url: ${SOLAPI_URL}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info
+  metrics:
+    tags:
+      application: my-service
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+
+security:
+  prometheus:
+    ip-range: ${PROMETHEUS_CIDR}

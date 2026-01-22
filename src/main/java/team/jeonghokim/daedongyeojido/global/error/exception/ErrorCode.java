@@ -92,6 +92,7 @@ public enum ErrorCode {
 
     // general
     BAD_REQUEST(400, "front fault"),
+    NO_RESOURCE_FOUND(404, "No Resource Found"),
     INTERNAL_SERVER_ERROR(500, "server fault");
 
     private final int statusCode;
