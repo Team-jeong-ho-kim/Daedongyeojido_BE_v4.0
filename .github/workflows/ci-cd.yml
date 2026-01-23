@@ -64,3 +64,25 @@ jobs:
             docker compose pull
             docker compose up -d
           EOF
+      - name: Notify Discord
+        if: always()
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            if [ "${{ job.status }}" == "success" ]; then
+              STATUS="🚀 PR 빌드 성공"
+            else
+              STATUS="🚨 PR 빌드 실패"
+            fi
+          else
+            if [ "${{ job.status }}" == "success" ]; then
+              STATUS="✅ 배포 성공"
+            else
+              STATUS="❌ 배포 실패"
+            fi
+          fi
+
+          MESSAGE="$STATUS\nRepo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\nBy: ${{ github.actor }}"
+
+          curl -H "Content-Type: application/json" \
+            -d "$(jq -n --arg content "$MESSAGE" '{content: $content}')" \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
