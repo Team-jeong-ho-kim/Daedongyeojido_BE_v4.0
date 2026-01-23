@@ -157,10 +157,11 @@ jobs:
                 "description": $desc,
                 "color": $color,
                 "fields": [
-                  { "name": "Repository", "value": $repo, "inline": true },
-                  { "name": "Branch", "value": $branch, "inline": true },
-                  { "name": "Triggered By", "value": $actor, "inline": true },
-                  { "name": "Commit", "value": $commit }
+                  { "name": "Repository", "value": $repo, "inline": false },
+                  { "name": "PR", "value": $pr_title, "inline": false },
+                  { "name": "Branch", "value": $branch, "inline": false },
+                  { "name": "Commit", "value": $commit, "inline": false },
+                  { "name": "Triggered By", "value": $actor, "inline": false },
                 ],
                 "footer": { "text": "CI/CD Pipeline" },
                 "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%S.000Z)'",
