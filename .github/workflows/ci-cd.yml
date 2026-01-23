@@ -146,7 +146,6 @@ jobs:
             --arg title "$TITLE" \
             --arg desc "$DESC" \
             --arg repo "${{ github.repository }}" \
-            --arg pr_title "$PR_TITLE" \
             --arg branch "${{ github.head_ref }}" \
             --arg commit "${{ github.sha }}" \
             --arg actor "${{ github.actor }}" \
@@ -159,10 +158,9 @@ jobs:
                 "color": $color,
                 "fields": [
                   { "name": "Repository", "value": $repo, "inline": false },
-                  { "name": "PR", "value": $pr_title, "inline": false },
                   { "name": "Branch", "value": $branch, "inline": false },
                   { "name": "Commit", "value": $commit, "inline": false },
-                  { "name": "Triggered By", "value": $actor, "inline": false },
+                  { "name": "Triggered By", "value": $actor, "inline": false }
                 ],
                 "footer": { "text": "CI/CD Pipeline" },
                 "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%S.000Z)'",
