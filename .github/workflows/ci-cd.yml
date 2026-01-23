@@ -26,6 +26,8 @@ jobs:
         with:
           context: .
           push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Login to Docker Hub
         if: github.event_name == 'push'
