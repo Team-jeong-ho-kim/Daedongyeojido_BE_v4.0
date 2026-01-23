@@ -49,6 +49,53 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Deploy to EC2
+        if: github.event_name == 'push'
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
+          chmod 600 key.pem
+            
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+            
+          ssh -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            docker rm -f daedongyeojido || true
+            docker compose pull
+            docker compose up -d
+          EOF
+
+      - name: Setup Node
+        if: failure() && github.event_name == 'push'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Collect GitHub Actions failure logs
+        if: failure() && github.event_name == 'push'
+        run: |
+          echo "=== GitHub Actions Failure Context ===" > failure.log
+          echo "Job: ${{ github.job }}" >> failure.log
+          echo "Run ID: ${{ github.run_id }}" >> failure.log
+          echo "Workflow: ${{ github.workflow }}" >> failure.log
+          echo "Branch: ${{ github.ref_name }}" >> failure.log
+          echo "Commit: ${{ github.sha }}" >> failure.log
+          echo "" >> failure.log
+          echo "See full log at:" >> failure.log
+          echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> failure.log
+
+      - name: Summarize with Gemini and create GitHub Issue
+        if: failure() && github.event_name == 'push'
+        run: |
+          npm init -y
+          npm install node-fetch
+          ISSUE_URL=$(node scripts/failure_summary.js | grep ISSUE_URL | cut -d '=' -f2)
+          echo "ISSUE_URL=$ISSUE_URL" >> $GITHUB_ENV
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+
       - name: Notify Discord
         if: always()
         run: |
@@ -56,22 +103,31 @@ jobs:
             if [ "${{ job.status }}" == "success" ]; then
               TITLE="🚀 PR 빌드 성공"
               COLOR=3066993
+              DESC=""
             else
               TITLE="🚨 PR 빌드 실패"
               COLOR=15158332
+              DESC=""
             fi
           else
             if [ "${{ job.status }}" == "success" ]; then
               TITLE="✅ 배포 성공"
               COLOR=3066993
+              DESC=""
             else
               TITLE="❌ 배포 실패"
               COLOR=15158332
+              if [ -n "$ISSUE_URL" ]; then
+                DESC="🔗배포 실패와 관련된 이슈가 자동으로 생성되었습니다!\n$ISSUE_URL"
+              else
+                DESC=""
+              fi
             fi
           fi
 
           jq -n \
             --arg title "$TITLE" \
+            --arg desc "$DESC" \
             --arg repo "${{ github.repository }}" \
             --arg branch "${{ github.ref_name }}" \
             --arg commit "${{ github.sha }}" \
@@ -81,6 +137,7 @@ jobs:
             '{
               "embeds": [{
                 "title": $title,
+                "description": $desc,
                 "color": $color,
                 "fields": [
                   { "name": "Repository", "value": $repo },
