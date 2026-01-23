@@ -49,18 +49,48 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Deploy to EC2
-        if: github.event_name == 'push'
+      - name: Notify Discord
+        if: always()
         run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
-          chmod 600 key.pem
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            if [ "${{ job.status }}" == "success" ]; then
+              TITLE="🚀 PR 빌드 성공"
+              COLOR=3066993
+            else
+              TITLE="🚨 PR 빌드 실패"
+              COLOR=15158332
+            fi
+          else
+            if [ "${{ job.status }}" == "success" ]; then
+              TITLE="✅ 배포 성공"
+              COLOR=3066993
+            else
+              TITLE="❌ 배포 실패"
+              COLOR=15158332
+            fi
+          fi
 
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
-
-          ssh -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            docker rm -f daedongyeojido || true
-            docker compose pull
-            docker compose up -d
-          EOF
+          jq -n \
+            --arg title "$TITLE" \
+            --arg repo "${{ github.repository }}" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg commit "${{ github.sha }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg url "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --argjson color $COLOR \
+            '{
+              "embeds": [{
+                "title": $title,
+                "color": $color,
+                "fields": [
+                  { "name": "Repository", "value": $repo },
+                  { "name": "Branch", "value": $branch },
+                  { "name": "Commit", "value": $commit },
+                  { "name": "Triggered By", "value": $actor }
+                ],
+                "footer": { "text": "CI/CD Pipeline" },
+                "url": $url
+              }]
+            }' | curl -H "Content-Type: application/json" \
+              -d @- \
+              ${{ secrets.DISCORD_WEBHOOK_URL }}
