@@ -146,6 +146,7 @@ jobs:
             --arg title "$TITLE" \
             --arg desc "$DESC" \
             --arg repo "${{ github.repository }}" \
+            --arg pr_title "$PR_TITLE" \
             --arg branch "${{ github.head_ref }}" \
             --arg commit "${{ github.sha }}" \
             --arg actor "${{ github.actor }}" \
