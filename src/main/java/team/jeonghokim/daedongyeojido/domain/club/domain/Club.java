@@ -104,13 +104,13 @@ public class Club extends BaseIdEntity {
     }
 
     public void updateClub(ClubRequest request, String clubImage) {
-        this.clubName = request.getClubName();
+        this.clubName = request.clubName();
         this.clubImage = clubImage;
-        this.oneLiner = request.getOneLiner();
-        this.introduction = request.getIntroduction();
+        this.oneLiner = request.oneLiner();
+        this.introduction = request.introduction();
 
-        updateMajors(request.getMajor());
-        updateLinks(request.getLink());
+        updateMajors(request.major());
+        updateLinks(request.link());
     }
 
     private void updateMajors(List<Major> majors) {
