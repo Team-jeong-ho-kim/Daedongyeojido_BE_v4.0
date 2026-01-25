@@ -24,7 +24,7 @@ public class CreateClubValidator {
             throw AlreadyJoinClubException.EXCEPTION;
         }
 
-        if (clubRepository.existsByClubName(request.getClubName())) {
+        if (clubRepository.existsByClubName(request.clubName())) {
             throw AlreadyExistsClubException.EXCEPTION;
         }
     }

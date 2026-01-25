@@ -57,10 +57,10 @@ public class CreateClubService {
     private Club createClub(ClubRequest request, User clubApplicant, List<ClubMajor> clubMajors, List<ClubLink> clubLinks) {
 
         return Club.builder()
-                .clubName(request.getClubName())
-                .clubImage(s3Service.upload(request.getClubImage()))
-                .oneLiner(request.getOneLiner())
-                .introduction(request.getIntroduction())
+                .clubName(request.clubName())
+                .clubImage(s3Service.upload(request.clubImage()))
+                .oneLiner(request.oneLiner())
+                .introduction(request.introduction())
                 .isOpen(false)
                 .clubApplicant(clubApplicant)
                 .clubMajors(clubMajors)
@@ -70,7 +70,7 @@ public class CreateClubService {
 
     private List<ClubMajor> createClubMajor(ClubRequest request) {
 
-        return request.getMajor().stream().map(major ->
+        return request.major().stream().map(major ->
                 ClubMajor.builder()
                         .major(major)
                         .build())
@@ -79,7 +79,7 @@ public class CreateClubService {
 
     private List<ClubLink> createClubLink(ClubRequest request) {
 
-        return Optional.ofNullable(request.getLink())
+        return Optional.ofNullable(request.link())
                 .orElseGet(List::of)
                 .stream()
                 .map(link -> ClubLink.builder()
