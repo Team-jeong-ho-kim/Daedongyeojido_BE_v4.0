@@ -29,5 +29,7 @@ public record UpdateClubRequest(
         List<Major> major,
 
         List<@URL(message = "유효한 URL 형식이어야 합니다.") String> link,
-        ) {
+
+        Boolean isImageChanged
+) {
 }
