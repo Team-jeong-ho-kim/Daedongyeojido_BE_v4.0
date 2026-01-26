@@ -6,13 +6,15 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import java.util.List;
 
 public record ClubMembersDto(
+        Long userId,
         String userName,
         List<Major> majors,
         String introduction
 ) {
 
     @QueryProjection
-    public ClubMembersDto(String userName, List<Major> majors, String introduction) {
+    public ClubMembersDto(Long userId, String userName, List<Major> majors, String introduction) {
+        this.userId = userId;
         this.userName = userName;
         this.majors = majors;
         this.introduction = introduction;

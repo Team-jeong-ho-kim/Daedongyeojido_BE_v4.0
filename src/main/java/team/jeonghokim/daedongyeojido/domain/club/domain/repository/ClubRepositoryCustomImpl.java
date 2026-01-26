@@ -54,6 +54,7 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
                 .where(user.club.id.eq(clubId))
                 .transform(groupBy(user.id).list(
                         new QClubMembersDto(
+                                user.id,
                                 user.userName,
                                 list(userMajor.major),
                                 user.introduction

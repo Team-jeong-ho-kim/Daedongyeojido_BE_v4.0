@@ -9,7 +9,6 @@ import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotFoundExceptio
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.ClubDetailDto;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.ClubMembersDto;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
-import team.jeonghokim.daedongyeojido.global.cache.CacheNames;
 
 import java.util.List;
 
@@ -28,6 +27,7 @@ public class QueryClubDetailService {
                 .orElseThrow(() -> ClubNotFoundException.EXCEPTION);
 
         List<ClubMembersDto> clubMembers = clubRepository.findClubMembersById(clubId);
+
         return QueryClubDetailResponse.of(clubDetail, clubMembers);
     }
 }
