@@ -9,7 +9,8 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.util.List;
 
-public record ClubRequest(
+public record UpdateClubRequest(
+
         @NotBlank(message = "동아리 이름은 필수입니다.")
         @Size(max = 20, message = "동아리 이름은 최대 20자까지 작성할 수 있습니다.")
         String clubName,
@@ -27,6 +28,8 @@ public record ClubRequest(
         @NotNull(message = "전공 리스트는 필수입니다.")
         List<Major> major,
 
-        List<@URL(message = "유효한 URL 형식이어야 합니다.") String> link
+        List<@URL(message = "유효한 URL 형식이어야 합니다.") String> link,
+
+        Boolean isImageChanged
 ) {
 }

@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.CreateClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.PassClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.TeamMemberRequest;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.UpdateClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.club.service.ApplyTeamMemberService;
@@ -49,7 +50,7 @@ public class ClubController {
 
     @PostMapping("/applications")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createClub(@ModelAttribute @Valid ClubRequest request) {
+    public void createClub(@ModelAttribute @Valid CreateClubRequest request) {
         createClubService.execute(request);
     }
 
@@ -67,7 +68,7 @@ public class ClubController {
 
     @PatchMapping("/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateClub(@PathVariable("club-id") Long clubId, @ModelAttribute @Valid ClubRequest request) {
+    public void updateClub(@PathVariable("club-id") Long clubId, @ModelAttribute @Valid UpdateClubRequest request) {
         updateClubService.execute(clubId, request);
     }
 

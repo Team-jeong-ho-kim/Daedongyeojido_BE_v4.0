@@ -14,7 +14,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.ClubAlarm;
-import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.CreateClubRequest;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.UpdateClubRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -103,7 +104,7 @@ public class Club extends BaseIdEntity {
         this.isOpen = true;
     }
 
-    public void updateClub(ClubRequest request, String clubImage) {
+    public void updateClub(UpdateClubRequest request, String clubImage) {
         this.clubName = request.clubName();
         this.clubImage = clubImage;
         this.oneLiner = request.oneLiner();

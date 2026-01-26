@@ -11,7 +11,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubLink;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
-import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.ClubRequest;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.CreateClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
@@ -35,7 +35,7 @@ public class CreateClubService {
     private final AdminAlarmRepository adminAlarmRepository;
 
     @Transactional
-    public void execute(ClubRequest request) {
+    public void execute(CreateClubRequest request) {
 
         User clubApplicant = userFacade.getCurrentUser();
 
@@ -54,7 +54,7 @@ public class CreateClubService {
         clubRepository.save(club);
     }
 
-    private Club createClub(ClubRequest request, User clubApplicant, List<ClubMajor> clubMajors, List<ClubLink> clubLinks) {
+    private Club createClub(CreateClubRequest request, User clubApplicant, List<ClubMajor> clubMajors, List<ClubLink> clubLinks) {
 
         return Club.builder()
                 .clubName(request.clubName())
@@ -68,7 +68,7 @@ public class CreateClubService {
                 .build();
     }
 
-    private List<ClubMajor> createClubMajor(ClubRequest request) {
+    private List<ClubMajor> createClubMajor(CreateClubRequest request) {
 
         return request.major().stream().map(major ->
                 ClubMajor.builder()
@@ -77,7 +77,7 @@ public class CreateClubService {
                 .collect(Collectors.toList());
     }
 
-    private List<ClubLink> createClubLink(ClubRequest request) {
+    private List<ClubLink> createClubLink(CreateClubRequest request) {
 
         return Optional.ofNullable(request.link())
                 .orElseGet(List::of)
