@@ -22,7 +22,7 @@ public record QueryAnnouncementDetailResponse(
 
     public static QueryAnnouncementDetailResponse from(Announcement announcement) {
         return QueryAnnouncementDetailResponse.builder()
-                .clubId(announcement.getId())
+                .clubId(announcement.getClub().getId())
                 .title(announcement.getTitle())
                 .major(announcement.getAnnouncementMajors().stream().map(AnnouncementMajor::getMajor).toList())
                 .phoneNumber(announcement.getPhoneNumber())
