@@ -10,6 +10,7 @@ import java.util.List;
 
 @Builder
 public record QueryAnnouncementDetailResponse(
+        Long clubId,
         String title,
         List<Major> major,
         String phoneNumber,
@@ -21,6 +22,7 @@ public record QueryAnnouncementDetailResponse(
 
     public static QueryAnnouncementDetailResponse from(Announcement announcement) {
         return QueryAnnouncementDetailResponse.builder()
+                .clubId(announcement.getId())
                 .title(announcement.getTitle())
                 .major(announcement.getAnnouncementMajors().stream().map(AnnouncementMajor::getMajor).toList())
                 .phoneNumber(announcement.getPhoneNumber())
