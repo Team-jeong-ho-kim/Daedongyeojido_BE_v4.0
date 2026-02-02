@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
-import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationFormAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.application.facade.ApplicationFormFacade;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.QueryApplicationFormDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
@@ -20,11 +19,8 @@ public class QueryApplicationFormDetailService {
     public QueryApplicationFormDetailResponse execute(Long applicationFormId) {
 
         User user = userFacade.getCurrentUser();
-        ApplicationForm applicationForm = applicationFormFacade.getApplicationById(applicationFormId);
 
-        if (!applicationForm.getClub().getId().equals(user.getClub().getId())) {
-            throw ApplicationFormAccessDeniedException.EXCEPTION;
-        }
+        ApplicationForm applicationForm = applicationFormFacade.getApplicationById(applicationFormId);
 
         return QueryApplicationFormDetailResponse.from(applicationForm);
     }
