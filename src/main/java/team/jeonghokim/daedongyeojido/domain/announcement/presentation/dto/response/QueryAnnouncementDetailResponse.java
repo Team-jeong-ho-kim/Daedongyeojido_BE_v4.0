@@ -3,6 +3,7 @@ package team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.resp
 import lombok.Builder;
 import team.jeonghokim.daedongyeojido.domain.announcement.domain.Announcement;
 import team.jeonghokim.daedongyeojido.domain.announcement.domain.AnnouncementMajor;
+import team.jeonghokim.daedongyeojido.domain.announcement.domain.enums.Status;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.time.LocalDate;
@@ -17,7 +18,8 @@ public record QueryAnnouncementDetailResponse(
         LocalDate deadline,
         String introduction,
         String talentDescription,
-        String assignment
+        String assignment,
+        Status status
 ) {
 
     public static QueryAnnouncementDetailResponse from(Announcement announcement) {
@@ -30,6 +32,7 @@ public record QueryAnnouncementDetailResponse(
                 .introduction(announcement.getIntroduction())
                 .talentDescription(announcement.getTalentDescription())
                 .assignment(announcement.getAssignment())
+                .status(announcement.getStatus())
                 .build();
     }
 }
