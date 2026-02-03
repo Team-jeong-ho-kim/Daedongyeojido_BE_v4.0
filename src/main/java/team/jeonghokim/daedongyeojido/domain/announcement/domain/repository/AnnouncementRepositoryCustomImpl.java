@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.domain.announcement.domain.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.announcement.domain.enums.Status;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.AnnouncementResponse;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.ClubAnnouncementResponse;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.QAnnouncementResponse;
@@ -27,6 +28,7 @@ public class AnnouncementRepositoryCustomImpl implements AnnouncementRepositoryC
                         announcement.club.clubImage
                 ))
                 .from(announcement)
+                .where(announcement.status.eq(Status.OPEN))
                 .fetch();
     }
 
@@ -41,6 +43,5 @@ public class AnnouncementRepositoryCustomImpl implements AnnouncementRepositoryC
                 .from(announcement)
                 .where(announcement.club.id.eq(clubId))
                 .fetch();
-
     }
 }
