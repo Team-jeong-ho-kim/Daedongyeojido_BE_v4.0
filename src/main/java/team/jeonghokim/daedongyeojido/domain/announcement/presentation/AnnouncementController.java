@@ -29,6 +29,7 @@ public class AnnouncementController {
     private final QueryClubAnnouncementService queryClubAnnouncementService;
     private final UpdateAnnouncementService updateAnnouncementService;
     private final DeleteAnnouncementService deleteAnnouncementService;
+    private final OpenAnnouncementService openAnnouncementService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -58,6 +59,12 @@ public class AnnouncementController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAnnouncement(@PathVariable("announcement-id") Long announcementId, @RequestBody @Valid AnnouncementRequest request) {
         updateAnnouncementService.execute(announcementId, request);
+    }
+
+    @PatchMapping("/open/{announcement-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void openAnnouncement(@PathVariable("announcement-id") Long announcementId) {
+        openAnnouncementService.execute(announcementId);
     }
 
     @DeleteMapping("/{announcement-id}")
