@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.infrastructure.feign.xquare.dto;
+package team.jeonghokim.daedongyeojido.infrastructure.feign.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
