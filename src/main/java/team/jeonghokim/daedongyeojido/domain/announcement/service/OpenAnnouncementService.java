@@ -23,7 +23,7 @@ public class OpenAnnouncementService {
 
         Announcement announcement = announcementFacade.getAnnouncementById(announcementId);
 
-        if (!user.getClub().equals(announcement.getClub())) {
+        if (user.getClub() == null || !user.getClub().equals(announcement.getClub())) {
             throw AnnouncementAccessDeniedException.EXCEPTION;
         }
 
