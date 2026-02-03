@@ -12,8 +12,9 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.global.security.jwt.JwtTokenProvider;
-import team.jeonghokim.daedongyeojido.infrastructure.feign.xquare.XquareClient;
-import team.jeonghokim.daedongyeojido.infrastructure.feign.xquare.dto.XquareResponse;
+import team.jeonghokim.daedongyeojido.infrastructure.feign.client.XquareClient;
+import team.jeonghokim.daedongyeojido.infrastructure.feign.client.dto.XquareLoginRequest;
+import team.jeonghokim.daedongyeojido.infrastructure.feign.client.dto.XquareResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +26,12 @@ public class LoginService {
 
     @Transactional
     public LoginResponse execute(LoginRequest request) {
-        XquareResponse xquareUser = xquareClient.getUser(request);
+        XquareLoginRequest xquareLoginRequest = new XquareLoginRequest(
+                request.accountId(),
+                request.password()
+        );
+
+        XquareResponse xquareUser = xquareClient.getUser(xquareLoginRequest);
 
         if (xquareUser == null || xquareUser.accountId() == null) {
             throw UserNotFoundException.EXCEPTION;
