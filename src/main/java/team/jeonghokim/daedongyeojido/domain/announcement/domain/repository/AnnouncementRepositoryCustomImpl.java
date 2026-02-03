@@ -38,7 +38,8 @@ public class AnnouncementRepositoryCustomImpl implements AnnouncementRepositoryC
                 .select(new QClubAnnouncementResponse(
                         announcement.id,
                         announcement.title,
-                        announcement.deadline
+                        announcement.deadline,
+                        announcement.status
                 ))
                 .from(announcement)
                 .where(announcement.club.id.eq(clubId))
