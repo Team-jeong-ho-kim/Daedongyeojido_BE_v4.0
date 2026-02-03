@@ -101,4 +101,8 @@ public class Announcement extends BaseIdEntity {
                         .build())
                 .forEach(this::addAnnouncementMajor);
     }
+
+    public void open() {
+        this.status = Status.OPEN;
+    }
 }
