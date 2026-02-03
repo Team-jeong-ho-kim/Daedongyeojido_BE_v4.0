@@ -6,7 +6,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jackson:
-    property-naming-strategy: SNAKE_CASE
     time-zone: Asia/Seoul
     serialization:
       write-dates-as-timestamps: false
