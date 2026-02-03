@@ -1,17 +1,11 @@
 package team.jeonghokim.daedongyeojido.domain.announcement.domain;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.announcement.domain.enums.Status;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.AnnouncementRequest;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -48,6 +42,10 @@ public class Announcement extends BaseIdEntity {
     @JoinColumn(name = "club_id", nullable = false)
     private Club club;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status;
+
     @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AnnouncementMajor> announcementMajors = new ArrayList<>();
 
@@ -70,6 +68,7 @@ public class Announcement extends BaseIdEntity {
         this.phoneNumber = phoneNumber;
         this.club = club;
         addAnnouncementMajors(announcementMajors);
+        this.status = Status.CLOSED;
     }
 
     private void addAnnouncementMajors(List<AnnouncementMajor> announcementMajors) {
