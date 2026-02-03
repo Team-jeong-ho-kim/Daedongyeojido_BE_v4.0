@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.announcement.domain.enums.Status;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.AnnouncementRequest;
+import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
@@ -48,6 +49,10 @@ public class Announcement extends BaseIdEntity {
 
     @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AnnouncementMajor> announcementMajors = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "application_form_id")
+    private ApplicationForm applicationForm;
 
     @Builder
     public Announcement(
@@ -102,7 +107,8 @@ public class Announcement extends BaseIdEntity {
                 .forEach(this::addAnnouncementMajor);
     }
 
-    public void open() {
+    public void open(ApplicationForm applicationForm) {
         this.status = Status.OPEN;
+        this.applicationForm = applicationForm;
     }
 }

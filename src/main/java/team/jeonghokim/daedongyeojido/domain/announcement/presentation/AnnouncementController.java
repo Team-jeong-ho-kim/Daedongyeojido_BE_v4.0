@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.AnnouncementRequest;
+import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.OpenAnnouncementRequest;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.QueryAnnouncementDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.QueryAnnouncementListResponse;
 import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.response.QueryClubAnnouncementResponse;
@@ -63,8 +64,11 @@ public class AnnouncementController {
 
     @PatchMapping("/open/{announcement-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void openAnnouncement(@PathVariable("announcement-id") Long announcementId) {
-        openAnnouncementService.execute(announcementId);
+    public void openAnnouncement(
+            @PathVariable("announcement-id") Long announcementId,
+            @RequestBody @Valid OpenAnnouncementRequest request
+    ) {
+        openAnnouncementService.execute(announcementId, request);
     }
 
     @DeleteMapping("/{announcement-id}")
