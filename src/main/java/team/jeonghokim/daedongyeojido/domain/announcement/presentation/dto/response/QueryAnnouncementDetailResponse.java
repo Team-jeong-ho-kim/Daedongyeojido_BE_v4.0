@@ -19,7 +19,8 @@ public record QueryAnnouncementDetailResponse(
         String introduction,
         String talentDescription,
         String assignment,
-        Status status
+        Status status,
+        Long applicationFormId
 ) {
 
     public static QueryAnnouncementDetailResponse from(Announcement announcement) {
@@ -33,6 +34,9 @@ public record QueryAnnouncementDetailResponse(
                 .talentDescription(announcement.getTalentDescription())
                 .assignment(announcement.getAssignment())
                 .status(announcement.getStatus())
+                .applicationFormId(announcement.getApplicationForm() != null
+                        ? announcement.getApplicationForm().getId()
+                        : null)
                 .build();
     }
 }
