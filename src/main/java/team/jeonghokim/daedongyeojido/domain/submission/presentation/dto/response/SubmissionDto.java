@@ -6,12 +6,14 @@ import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationAnswe
 @Builder
 public record SubmissionDto(
         Long questionId,
+        String questionContent,
         String content
 ) {
 
     public static SubmissionDto from(ApplicationAnswer applicationAnswer) {
         return SubmissionDto.builder()
                 .questionId(applicationAnswer.getApplicationQuestion().getId())
+                .questionContent(applicationAnswer.getApplicationQuestion().getContent())
                 .content(applicationAnswer.getContent())
                 .build();
     }
