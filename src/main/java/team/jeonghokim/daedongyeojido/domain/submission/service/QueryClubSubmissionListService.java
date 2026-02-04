@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
 import team.jeonghokim.daedongyeojido.domain.application.domain.repository.ApplicationFormRepository;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationFormNotFoundException;
+import team.jeonghokim.daedongyeojido.domain.club.exception.ClubAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.ApplicantResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionListResponse;
@@ -23,11 +24,14 @@ public class QueryClubSubmissionListService {
     private final SubmissionRepository submissionRepository;
 
     @Transactional(readOnly = true)
-    public QueryClubSubmissionListResponse execute() {
+    public QueryClubSubmissionListResponse execute(Long applicationFormId) {
         User currentUser = userFacade.getCurrentUser();
-
-        ApplicationForm applicationForm = applicationFormRepository.findByClub(currentUser.getClub())
+        ApplicationForm applicationForm = applicationFormRepository.findById(applicationFormId)
                 .orElseThrow(() -> ApplicationFormNotFoundException.EXCEPTION);
+
+        if (currentUser.getClub() != applicationForm.getClub()) {
+            throw ClubAccessDeniedException.EXCEPTION;
+        }
 
         List<ApplicantResponse> applicants =
                 submissionRepository.findAllByApplicationFormIdWithValidStatuses(applicationForm.getId());
