@@ -29,7 +29,7 @@ public class QueryClubSubmissionListService {
         ApplicationForm applicationForm = applicationFormRepository.findById(applicationFormId)
                 .orElseThrow(() -> ApplicationFormNotFoundException.EXCEPTION);
 
-        if (currentUser.getClub() != applicationForm.getClub()) {
+        if (!currentUser.getClub().getId().equals(applicationForm.getClub().getId())) {
             throw ClubAccessDeniedException.EXCEPTION;
         }
 
