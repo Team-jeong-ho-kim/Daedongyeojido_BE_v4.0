@@ -13,10 +13,11 @@ public record QueryClubSubmissionDetailResponse(
         String introduction,
         Major major,
         List<SubmissionDto> answers,
-        Long applicantId
+        Long applicantId,
+        boolean hasInterviewSchedule
 ) {
 
-    public static QueryClubSubmissionDetailResponse from(Submission submission) {
+    public static QueryClubSubmissionDetailResponse from(Submission submission, boolean hasInterviewSchedule) {
         return QueryClubSubmissionDetailResponse.builder()
                 .userName(submission.getUserName())
                 .classNumber(submission.getClassNumber())
@@ -24,6 +25,7 @@ public record QueryClubSubmissionDetailResponse(
                 .major(submission.getMajor())
                 .answers(submission.getApplicationAnswers().stream().map(SubmissionDto::from).toList())
                 .applicantId(submission.getUser().getId())
+                .hasInterviewSchedule(hasInterviewSchedule)
                 .build();
     }
 }
