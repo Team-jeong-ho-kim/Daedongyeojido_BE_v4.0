@@ -90,10 +90,10 @@ public class ClubController {
         deleteTeamMemberService.execute(userId);
     }
 
-    @GetMapping("/submissions")
+    @GetMapping("/submissions/all/{application-form-id}")
     @ResponseStatus(HttpStatus.OK)
-    public QueryClubSubmissionListResponse querySubmissionList() {
-        return queryClubSubmissionListService.execute();
+    public QueryClubSubmissionListResponse querySubmissionList(@PathVariable("application-form-id") Long applicationFormId) {
+        return queryClubSubmissionListService.execute(applicationFormId);
     }
 
     @GetMapping("/submissions/{submission-id}")
