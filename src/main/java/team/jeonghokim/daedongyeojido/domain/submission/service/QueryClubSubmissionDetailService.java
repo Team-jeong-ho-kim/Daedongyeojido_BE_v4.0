@@ -23,6 +23,7 @@ public class QueryClubSubmissionDetailService {
     @Transactional(readOnly = true)
     public QueryClubSubmissionDetailResponse execute(Long submissionId) {
         User user = userFacade.getCurrentUser();
+
         Submission submission = submissionRepository.findById(submissionId)
                 .orElseThrow(() -> ApplicationNotFoundException.EXCEPTION);
 

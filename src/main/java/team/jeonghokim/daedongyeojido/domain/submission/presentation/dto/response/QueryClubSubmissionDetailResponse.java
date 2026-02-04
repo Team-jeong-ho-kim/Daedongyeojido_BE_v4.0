@@ -12,7 +12,8 @@ public record QueryClubSubmissionDetailResponse(
         String classNumber,
         String introduction,
         Major major,
-        List<SubmissionDto> answers
+        List<SubmissionDto> answers,
+        Long applicantId
 ) {
 
     public static QueryClubSubmissionDetailResponse from(Submission submission) {
@@ -22,6 +23,7 @@ public record QueryClubSubmissionDetailResponse(
                 .introduction(submission.getIntroduction())
                 .major(submission.getMajor())
                 .answers(submission.getApplicationAnswers().stream().map(SubmissionDto::from).toList())
+                .applicantId(submission.getUser().getId())
                 .build();
     }
 }
