@@ -7,6 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationAc
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotSubmittedException;
 import team.jeonghokim.daedongyeojido.domain.club.exception.UserNotInClubException;
+import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionDetailResponse;
@@ -18,6 +19,7 @@ import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 public class QueryClubSubmissionDetailService {
 
     private final SubmissionRepository submissionRepository;
+    private final ScheduleRepository scheduleRepository;
     private final UserFacade userFacade;
 
     @Transactional(readOnly = true)
@@ -29,7 +31,12 @@ public class QueryClubSubmissionDetailService {
 
         validate(user, submission);
 
-        return QueryClubSubmissionDetailResponse.from(submission);
+        boolean hasInterviewSchedule = scheduleRepository.existsByApplicantAndClub(
+                submission.getUser(),
+                submission.getApplicationForm().getClub()
+        );
+
+        return QueryClubSubmissionDetailResponse.from(submission, hasInterviewSchedule);
     }
 
     private void validate(User user, Submission submission) {
