@@ -9,6 +9,7 @@ import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationQuest
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.application.exception.InvalidApplicationQuestionException;
 import team.jeonghokim.daedongyeojido.domain.application.facade.ApplicationFormFacade;
+import team.jeonghokim.daedongyeojido.domain.schedule.exception.AlreadyApplicationExistException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.request.SubmissionRequest;
@@ -30,6 +31,10 @@ public class CreateApplicationService {
         User user = userFacade.getCurrentUser();
 
         ApplicationForm applicationForm = applicationFormFacade.getApplicationById(applicationFormId);
+
+        if (submissionRepository.findByApplicantId(user.getId()).isPresent()) {
+            throw AlreadyApplicationExistException.EXCEPTION;
+        }
 
         submissionRepository.save(Submission.builder()
                         .userName(request.getUserName())

@@ -32,6 +32,7 @@ public enum ErrorCode {
     CANNOT_DELETE_APPLICATION(400, "지원서를 삭제할 수 없습니다."),
     APPLICATION_NOT_SUBMITTED(400, "제출하지 않은 지원서입니다."),
     APPLICATION_NOT_ACCEPTED(400, "합격되지 않은 지원서입니다."),
+    ALREADY_APPLICATION_EXIST(409, "해당 동아리의 지원서가 이미 존재합니다."),
 
     // club
     ALREADY_EXISTS_CLUB(409, "해당 동아리가 이미 존재합니다."),
