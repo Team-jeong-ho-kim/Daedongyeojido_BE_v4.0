@@ -50,7 +50,7 @@ public class DecideClubService {
             throw AlreadyJoinClubException.EXCEPTION;
         }
 
-        if (submission.getApplicationStatus() != ApplicationStatus.ACCEPTED) {
+        if (submission.getUserApplicationStatus() != ApplicationStatus.ACCEPTED) {
             throw ApplicationNotAcceptedException.EXCEPTION;
         }
     }

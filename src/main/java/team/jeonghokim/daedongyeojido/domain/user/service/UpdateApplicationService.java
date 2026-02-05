@@ -39,7 +39,7 @@ public class UpdateApplicationService {
             throw ApplicationAccessDeniedException.EXCEPTION;
         }
 
-        if (submission.getApplicationStatus() != ApplicationStatus.WRITING) {
+        if (submission.getUserApplicationStatus() != ApplicationStatus.WRITING) {
             throw CannotModifyApplicationException.EXCEPTION;
         }
 

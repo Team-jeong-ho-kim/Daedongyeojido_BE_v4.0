@@ -20,7 +20,7 @@ public class Submission extends BaseIdEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 13)
-    private ApplicationStatus applicationStatus;
+    private ApplicationStatus userApplicationStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
@@ -46,9 +46,13 @@ public class Submission extends BaseIdEntity {
     @OneToMany(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApplicationAnswer> applicationAnswers = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 13)
+    private ApplicationStatus clubApplicationStatus;
+
     @Builder
     public Submission(
-            ApplicationStatus applicationStatus,
+            ApplicationStatus userApplicationStatus,
             Major major,
             String introduction,
             String userName,
@@ -57,7 +61,8 @@ public class Submission extends BaseIdEntity {
             ApplicationForm applicationForm,
             List<ApplicationAnswer> answers
     ) {
-        this.applicationStatus = applicationStatus;
+        this.userApplicationStatus = userApplicationStatus;
+        this.clubApplicationStatus = ApplicationStatus.WRITING;
         this.major = major;
         this.introduction = introduction;
         this.userName = userName;
@@ -90,18 +95,18 @@ public class Submission extends BaseIdEntity {
     }
 
     public boolean isSubmitted() {
-        return applicationStatus != ApplicationStatus.WRITING;
+        return userApplicationStatus != ApplicationStatus.WRITING;
     }
 
     public void submit() {
-        this.applicationStatus = ApplicationStatus.SUBMITTED;
+        this.userApplicationStatus = ApplicationStatus.SUBMITTED;
     }
 
     public void cancel() {
-        this.applicationStatus = ApplicationStatus.WRITING;
+        this.userApplicationStatus = ApplicationStatus.WRITING;
     }
 
     public void applyPassResult(boolean isPassed) {
-        this.applicationStatus = isPassed ? ApplicationStatus.ACCEPTED : ApplicationStatus.REJECTED;
+        this.clubApplicationStatus = isPassed ? ApplicationStatus.ACCEPTED : ApplicationStatus.REJECTED;
     }
 }

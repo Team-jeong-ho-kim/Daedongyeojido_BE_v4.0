@@ -44,7 +44,7 @@ public class CreateApplicationService {
                         .major(request.getMajor())
                         .user(user)
                         .applicationForm(applicationForm)
-                        .applicationStatus(ApplicationStatus.WRITING)
+                        .userApplicationStatus(ApplicationStatus.WRITING)
                 .build());
     }
 

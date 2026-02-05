@@ -46,6 +46,8 @@ public class PassClubService {
 
         validate(user, submission);
 
+        submission.applyPassResult(request.isPassed());
+
         saveSMS(submission, request.isPassed());
 
         saveAlarm(submission, request.isPassed());

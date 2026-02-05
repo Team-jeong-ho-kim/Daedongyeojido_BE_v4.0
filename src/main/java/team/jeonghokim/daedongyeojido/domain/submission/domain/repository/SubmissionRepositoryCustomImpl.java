@@ -29,12 +29,13 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                         submission.id,
                         submission.userName,
                         submission.classNumber,
-                        submission.major
+                        submission.major,
+                        submission.clubApplicationStatus
                 ))
                 .from(submission)
                 .where(
                         submission.applicationForm.id.eq(applicationFormId),
-                        submission.applicationStatus.in(
+                        submission.userApplicationStatus.in(
                                 ApplicationStatus.SUBMITTED,
                                 ApplicationStatus.ACCEPTED,
                                 ApplicationStatus.REJECTED
@@ -50,7 +51,7 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                         submission.id,
                         submission.applicationForm.club.clubName,
                         submission.applicationForm.club.clubImage,
-                        submission.applicationStatus,
+                        submission.userApplicationStatus,
                         submission.applicationForm.submissionDuration
                 ))
                 .from(submission)
@@ -58,7 +59,7 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                 .join(submission.applicationForm.club)
                 .where(
                         submission.user.id.eq(userId),
-                        submission.applicationStatus.eq(ApplicationStatus.WRITING)
+                        submission.userApplicationStatus.eq(ApplicationStatus.WRITING)
                 )
                 .fetch();
     }
@@ -70,7 +71,7 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                         submission.id,
                         submission.applicationForm.club.clubName,
                         submission.applicationForm.club.clubImage,
-                        submission.applicationStatus,
+                        submission.userApplicationStatus,
                         submission.applicationForm.submissionDuration
                 ))
                 .from(submission)
@@ -78,7 +79,7 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                 .join(submission.applicationForm.club)
                 .where(
                         submission.user.id.eq(userId),
-                        submission.applicationStatus.in(
+                        submission.userApplicationStatus.in(
                                 ApplicationStatus.SUBMITTED,
                                 ApplicationStatus.ACCEPTED,
                                 ApplicationStatus.REJECTED

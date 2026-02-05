@@ -31,7 +31,7 @@ public class DeleteApplicationService {
             throw ApplicationAccessDeniedException.EXCEPTION;
         }
 
-        if (submission.getApplicationStatus() != ApplicationStatus.WRITING) {
+        if (submission.getUserApplicationStatus() != ApplicationStatus.WRITING) {
             throw CannotDeleteApplicationException.EXCEPTION;
         }
 
