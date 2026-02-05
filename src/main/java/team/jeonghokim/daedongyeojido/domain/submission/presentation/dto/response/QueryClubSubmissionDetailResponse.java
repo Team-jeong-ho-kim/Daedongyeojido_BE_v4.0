@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response;
 
 import lombok.Builder;
+import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
@@ -14,7 +15,8 @@ public record QueryClubSubmissionDetailResponse(
         Major major,
         List<SubmissionDto> answers,
         Long applicantId,
-        boolean hasInterviewSchedule
+        boolean hasInterviewSchedule,
+        ApplicationStatus clubApplicationStatus
 ) {
 
     public static QueryClubSubmissionDetailResponse from(Submission submission, boolean hasInterviewSchedule) {
@@ -26,6 +28,7 @@ public record QueryClubSubmissionDetailResponse(
                 .answers(submission.getApplicationAnswers().stream().map(SubmissionDto::from).toList())
                 .applicantId(submission.getUser().getId())
                 .hasInterviewSchedule(hasInterviewSchedule)
+                .clubApplicationStatus(submission.getClubApplicationStatus())
                 .build();
     }
 }
