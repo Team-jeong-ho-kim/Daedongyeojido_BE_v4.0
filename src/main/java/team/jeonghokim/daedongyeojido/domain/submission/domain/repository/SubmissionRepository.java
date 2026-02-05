@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface SubmissionRepository extends JpaRepository<Submission, Long>, SubmissionRepositoryCustom {
 
-    Optional<Submission> findByApplicantId(Long applicantId);
+    Optional<Submission> findByUserId(Long applicantId);
 }
