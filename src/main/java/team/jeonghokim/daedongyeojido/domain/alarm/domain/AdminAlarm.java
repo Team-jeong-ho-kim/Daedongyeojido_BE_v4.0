@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmCategory;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
@@ -23,10 +24,15 @@ public class AdminAlarm extends BaseIdEntity {
     @Column(nullable = false)
     private AlarmType alarmType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AlarmCategory alarmCategory;
+
     @Builder
     public AdminAlarm(String title, String content, AlarmType alarmType) {
         this.title = title;
         this.content = content;
         this.alarmType = alarmType;
+        this.alarmCategory = alarmType.getCategory();
     }
 }
