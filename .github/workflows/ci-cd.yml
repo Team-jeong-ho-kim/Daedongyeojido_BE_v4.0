@@ -29,9 +29,16 @@ jobs:
           ${{ secrets.SECRETS_ENV }}
           EOF
 
-      - name: Build Docker Image (local)
-        run: |
-          docker build -t local-test-image .
+      - name: Build Docker Image (for test)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          load: true
+          tags: local-test-image:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Run Container Health Check
         run: |
