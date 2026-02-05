@@ -102,6 +102,7 @@ public class SchedulerService {
 
         LargeScaleAlarmEvent event = LargeScaleAlarmEvent.builder()
                 .alarmType(payload.alarmType())
+                .category(payload.alarmType().getCategory())
                 .title(payload.alarmType().formatTitle(club.getClubName()))
                 .content(payload.alarmType().formatContent(club.getClubName()))
                 .clubId(club.getId())
