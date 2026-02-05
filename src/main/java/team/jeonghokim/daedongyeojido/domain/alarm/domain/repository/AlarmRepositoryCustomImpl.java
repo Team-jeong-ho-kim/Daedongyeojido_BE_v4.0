@@ -22,7 +22,8 @@ public class AlarmRepositoryCustomImpl implements AlarmRepositoryCustom {
         return queryFactory.select(new QAlarmResponse(
                 clubAlarm.id,
                 clubAlarm.title,
-                clubAlarm.content
+                clubAlarm.content,
+                clubAlarm.alarmCategory
         ))
                 .from(clubAlarm)
                 .join(clubAlarm.club, QClub.club)
@@ -35,7 +36,8 @@ public class AlarmRepositoryCustomImpl implements AlarmRepositoryCustom {
         return queryFactory.select(new QAlarmResponse(
                 userAlarm.id,
                 userAlarm.title,
-                userAlarm.content
+                userAlarm.content,
+                userAlarm.alarmCategory
         ))
                 .from(userAlarm)
                 .join(userAlarm.receiver, QUser.user)

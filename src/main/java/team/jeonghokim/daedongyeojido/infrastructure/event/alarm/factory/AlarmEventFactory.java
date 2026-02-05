@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory;
 
 import org.springframework.stereotype.Component;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmCategory;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
@@ -20,6 +21,7 @@ public class AlarmEventFactory {
                 .alarmType(alarmType)
                 .title(alarmType.formatTitle(club.getClubName()))
                 .content(alarmType.formatContent(club.getClubName()))
+                .category(alarmType.getCategory())
                 .build();
     }
 
@@ -33,6 +35,7 @@ public class AlarmEventFactory {
                 .alarmType(alarmType)
                 .title(alarmType.formatTitle(user.getUserName()))
                 .content(alarmType.formatContent(user.getUserName()))
+                .category(alarmType.getCategory())
                 .build();
     }
 }

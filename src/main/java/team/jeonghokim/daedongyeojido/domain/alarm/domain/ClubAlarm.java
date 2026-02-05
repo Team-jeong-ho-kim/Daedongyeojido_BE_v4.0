@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.domain.alarm.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmCategory;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.global.entity.BaseTimeIdEntity;
@@ -26,11 +27,16 @@ public class ClubAlarm extends BaseTimeIdEntity {
     @Column(nullable = false)
     private AlarmType alarmType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AlarmCategory alarmCategory;
+
     @Builder
     public ClubAlarm(String title, String content, Club club, AlarmType alarmType) {
         this.title = title;
         this.content = content;
         this.club = club;
         this.alarmType = alarmType;
+        this.alarmCategory = alarmType.getCategory();
     }
 }

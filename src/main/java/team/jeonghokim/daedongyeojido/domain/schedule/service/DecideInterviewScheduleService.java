@@ -70,6 +70,7 @@ public class DecideInterviewScheduleService {
                                 schedule.getPlace()))
                         .userId(applicant.getId())
                         .alarmType(AlarmType.INTERVIEW_SCHEDULE_CREATED)
+                        .category(AlarmType.INTERVIEW_SCHEDULE_CREATED.getCategory())
                 .build());
     }
 
