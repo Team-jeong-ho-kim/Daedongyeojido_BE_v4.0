@@ -10,6 +10,7 @@ import java.time.LocalTime;
 
 @Builder
 public record QueryInterviewScheduleDetailResponse(
+        Long scheduleId,
         String userName,
         String classNumber,
         Major major,
@@ -20,6 +21,7 @@ public record QueryInterviewScheduleDetailResponse(
 
     public static QueryInterviewScheduleDetailResponse of(Schedule schedule, Submission submission) {
         return QueryInterviewScheduleDetailResponse.builder()
+                .scheduleId(schedule.getId())
                 .userName(schedule.getApplicant().getUserName())
                 .classNumber(schedule.getApplicant().getClassNumber())
                 .major(submission.getMajor())
