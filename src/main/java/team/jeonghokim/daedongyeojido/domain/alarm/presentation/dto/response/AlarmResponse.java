@@ -2,17 +2,20 @@ package team.jeonghokim.daedongyeojido.domain.alarm.presentation.dto.response;
 
 import com.querydsl.core.annotations.QueryProjection;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.AdminAlarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmCategory;
 
 public record AlarmResponse(
         Long id,
         String title,
-        String content
+        String content,
+        AlarmCategory category
 ) {
     @QueryProjection
-    public AlarmResponse(Long id, String title, String content) {
+    public AlarmResponse(Long id, String title, String content, AlarmCategory category) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.category = category;
     }
 
     public static AlarmResponse from(AdminAlarm adminAlarm) {
