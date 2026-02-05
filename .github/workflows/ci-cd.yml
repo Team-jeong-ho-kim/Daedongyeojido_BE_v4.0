@@ -23,14 +23,69 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build - PULL REQUEST
-        if: github.event_name == 'pull_request'
+      - name: Create .env from GitHub Secret
+        run: |
+          cat << 'EOF' > .env
+          ${{ secrets.SECRETS_ENV }}
+          EOF
+
+      - name: Start Redis Container (CI)
+        run: |
+          docker network create ci-network || true
+
+          docker run -d --name redis \
+            --network ci-network \
+            -p 6379:6379 \
+            redis:7
+
+      - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Dockerfile
           push: false
+          load: true
+          tags: local-test-image:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Run Container Health Check
+        run: |
+          echo "🚀 Running container for health check..."
+
+          docker run -d --name app-test \
+            --network ci-network \
+            --env-file .env \
+            -p 8080:8080 \
+            local-test-image:latest
+
+          echo "⏳ Waiting for Spring Boot..."
+
+          for i in {1..30}; do
+            if [ "$(docker inspect -f '{{.State.Running}}' app-test)" != "true" ]; then
+              echo "❌ Container exited early"
+              docker logs app-test
+              docker rm -f app-test || true
+              docker rm -f redis || true
+              exit 1
+            fi
+
+            if curl -f http://localhost:8080/actuator/health; then
+              echo "✅ Health check passed!"
+              docker rm -f app-test || true
+              docker rm -f redis || true
+              exit 0
+            fi
+
+            echo "⏳ Not ready yet ($i/30)"
+            sleep 2
+          done
+
+          echo "❌ Health check failed. Showing logs..."
+          docker logs app-test
+          docker rm -f app-test || true
+          docker rm -f redis || true
+          exit 1
 
       - name: Login to Docker Hub
         if: github.event_name == 'push'
@@ -57,11 +112,11 @@ jobs:
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
           chmod 600 key.pem
-          
+
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
-          
+
           ssh -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             docker rm -f daedongyeojido || true
             docker compose pull
