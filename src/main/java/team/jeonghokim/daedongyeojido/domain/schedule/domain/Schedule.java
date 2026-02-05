@@ -41,6 +41,9 @@ public class Schedule extends BaseIdEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    @Column(nullable = false)
+    private boolean hasInterviewSchedule;
+
     @Builder
     public Schedule(LocalDate interviewSchedule, String place, LocalTime interviewTime, User applicant, Club club) {
         this.interviewSchedule = interviewSchedule;
@@ -48,6 +51,7 @@ public class Schedule extends BaseIdEntity {
         this.interviewTime = interviewTime;
         this.applicant = applicant;
         this.club = club;
+        this.hasInterviewSchedule = false;
     }
 
     public void updateSchedule(InterviewScheduleRequest request) {
