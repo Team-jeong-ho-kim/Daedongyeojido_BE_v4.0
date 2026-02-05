@@ -47,9 +47,9 @@ public class ScheduleController {
         return queryInterviewScheduleListService.execute();
     }
 
-    @GetMapping("/{schedule-id}")
+    @GetMapping("/{applicant-id}")
     @ResponseStatus(HttpStatus.OK)
-    public QueryInterviewScheduleDetailResponse queryInterviewScheduleDetail(@PathVariable("schedule-id") Long scheduleId) {
-        return queryInterviewScheduleDetailService.execute(scheduleId);
+    public QueryInterviewScheduleDetailResponse queryInterviewScheduleDetail(@PathVariable("applicant-id") Long applicantId) {
+        return queryInterviewScheduleDetailService.execute(applicantId);
     }
 }

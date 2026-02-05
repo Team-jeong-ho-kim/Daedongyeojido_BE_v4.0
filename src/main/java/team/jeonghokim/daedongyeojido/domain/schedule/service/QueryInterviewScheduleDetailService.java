@@ -12,6 +12,8 @@ import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.submission.exception.SubmissionNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
+import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
 @Service
@@ -21,13 +23,17 @@ public class QueryInterviewScheduleDetailService {
     private final ScheduleRepository scheduleRepository;
     private final SubmissionRepository submissionRepository;
     private final UserFacade userFacade;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public QueryInterviewScheduleDetailResponse execute(Long scheduleId) {
+    public QueryInterviewScheduleDetailResponse execute(Long applicantId) {
 
         User user = userFacade.getCurrentUser();
 
-        Schedule schedule = scheduleRepository.findById(scheduleId)
+        User applicant = userRepository.findById(applicantId)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+
+        Schedule schedule = scheduleRepository.findByApplicantId(applicant.getId())
                 .orElseThrow(() -> InterviewScheduleNotFoundException.EXCEPTION);
 
         if (!user.getClub().getId().equals(schedule.getClub().getId())) {
