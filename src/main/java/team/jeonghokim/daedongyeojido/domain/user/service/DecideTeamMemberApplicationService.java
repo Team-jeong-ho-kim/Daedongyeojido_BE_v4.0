@@ -13,6 +13,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserApplication;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserApplicationRepository;
+import team.jeonghokim.daedongyeojido.domain.user.exception.AlreadyUserApplicationExistException;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserApplicationNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideTeamMemberApplicationRequest;
@@ -41,6 +42,10 @@ public class DecideTeamMemberApplicationService {
 
         UserApplication userApplication = userApplicationRepository.findByUserIdAndClubId(user.getId(), alarm.getClub().getId())
                 .orElseThrow(() -> UserApplicationNotFoundException.EXCEPTION);
+
+        if (userApplication.getUser().getId().equals(user.getId())) {
+            throw AlreadyUserApplicationExistException.EXCEPTION;
+        }
 
         if (request.getIsApproved()) {
             user.approvedTeamMember(userApplication.getClub());
