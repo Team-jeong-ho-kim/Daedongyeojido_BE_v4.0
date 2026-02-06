@@ -27,7 +27,7 @@ public class DecideTeamMemberApplicationService {
 
         User user = userFacade.getCurrentUser();
 
-        UserApplication userApplication = userApplicationRepository.findByUserId(user.getId())
+        UserApplication userApplication = userApplicationRepository.findByUserIdAndClubId(user.getId(), request.getClubId())
                 .orElseThrow(() -> UserApplicationNotFoundException.EXCEPTION);
 
         if (request.getIsApproved()) {

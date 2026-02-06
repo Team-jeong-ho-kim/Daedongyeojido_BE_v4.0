@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface UserApplicationRepository extends JpaRepository<UserApplication, Long> {
 
     Optional<UserApplication> findByUserId(Long userId);
+
+    Optional<UserApplication> findByUserIdAndClubId(Long userId, Long clubId);
 }
