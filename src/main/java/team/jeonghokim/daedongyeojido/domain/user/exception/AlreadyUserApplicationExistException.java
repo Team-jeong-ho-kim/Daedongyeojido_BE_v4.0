@@ -8,6 +8,6 @@ public class AlreadyUserApplicationExistException extends DaedongException {
     public static final DaedongException EXCEPTION = new AlreadyUserApplicationExistException();
 
     private AlreadyUserApplicationExistException() {
-        super(ErrorCode);
+        super(ErrorCode.ALREADY_USER_APPLICATION_EXIST);
     }
 }
