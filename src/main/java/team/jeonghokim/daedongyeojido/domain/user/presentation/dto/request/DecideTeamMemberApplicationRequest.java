@@ -8,6 +8,6 @@ public class DecideTeamMemberApplicationRequest {
     @NotNull(message = "팀원 신청 수락 및 거절 여부는 null일 수 없습니다.")
     Boolean isApproved;
 
-    @NotNull(message = "동아리 ID는 null일 수 없습니다.")
-    Long clubId;
+    @NotNull(message = "알람 ID를 입력해주세요.")
+    Long alarmId;
 }

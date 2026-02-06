@@ -4,7 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
+import team.jeonghokim.daedongyeojido.domain.alarm.exception.AlarmAccessDeniedException;
+import team.jeonghokim.daedongyeojido.domain.alarm.exception.AlarmNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserApplication;
@@ -21,13 +25,21 @@ public class DecideTeamMemberApplicationService {
     private final UserApplicationRepository userApplicationRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final AlarmEventFactory alarmEventFactory;
+    private final UserAlarmRepository userAlarmRepository;
 
     @Transactional
     public void execute(DecideTeamMemberApplicationRequest request) {
 
         User user = userFacade.getCurrentUser();
 
-        UserApplication userApplication = userApplicationRepository.findByUser_IdAndClub_Id(user.getId(), request.getClubId())
+        UserAlarm alarm = userAlarmRepository.findById(request.getAlarmId())
+                .orElseThrow(() -> AlarmNotFoundException.EXCEPTION);
+
+        if (!alarm.getReceiver().getId().equals(user.getId())) {
+            throw AlarmAccessDeniedException.EXCEPTION;
+        }
+
+        UserApplication userApplication = userApplicationRepository.findByUserId(user.getId())
                 .orElseThrow(() -> UserApplicationNotFoundException.EXCEPTION);
 
         if (request.getIsApproved()) {

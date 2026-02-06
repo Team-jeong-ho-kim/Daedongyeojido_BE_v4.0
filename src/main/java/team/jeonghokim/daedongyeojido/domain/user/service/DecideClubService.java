@@ -4,7 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
+import team.jeonghokim.daedongyeojido.domain.alarm.exception.AlarmAccessDeniedException;
+import team.jeonghokim.daedongyeojido.domain.alarm.exception.AlarmNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotAcceptedException;
@@ -24,14 +28,18 @@ public class DecideClubService {
     private final SubmissionFacade submissionFacade;
     private final ApplicationEventPublisher eventPublisher;
     private final AlarmEventFactory alarmEventFactory;
+    private final UserAlarmRepository userAlarmRepository;
 
     @Transactional
     public void execute(Long submissionId, DecideClubRequest request) {
         User applicant = userFacade.getCurrentUser();
 
+        UserAlarm alarm = userAlarmRepository.findById(request.getAlarmId())
+                .orElseThrow(() -> AlarmNotFoundException.EXCEPTION);
+
         Submission submission = submissionFacade.getApplicationBySubmissionId(submissionId);
 
-        validate(applicant, submission);
+        validate(applicant, submission, alarm);
 
         if (request.getIsSelected()) {
             applicant.selectedClub(submission.getApplicationForm().getClub());
@@ -41,7 +49,7 @@ public class DecideClubService {
         }
     }
 
-    private void validate(User applicant, Submission submission) {
+    private void validate(User applicant, Submission submission, UserAlarm alarm) {
         if (!applicant.getId().equals(submission.getUser().getId())) {
             throw ApplicationAccessDeniedException.EXCEPTION;
         }
@@ -52,6 +60,10 @@ public class DecideClubService {
 
         if (submission.getUserApplicationStatus() != ApplicationStatus.ACCEPTED) {
             throw ApplicationNotAcceptedException.EXCEPTION;
+        }
+
+        if (!alarm.getReceiver().getId().equals(applicant.getId())) {
+            throw AlarmAccessDeniedException.EXCEPTION;
         }
     }
 

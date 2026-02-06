@@ -47,6 +47,7 @@ public enum ErrorCode {
 
     // alarm
     ALARM_NOT_FOUND(404, "알람을 찾을 수 없습니다."),
+    ALARM_ACCESS_DENIED(403, "해당 알림 관련 권한이 없습니다."),
 
     // announcement
     ANNOUNCEMENT_NOT_FOUND(404, "공고를 찾을 수 없습니다."),
