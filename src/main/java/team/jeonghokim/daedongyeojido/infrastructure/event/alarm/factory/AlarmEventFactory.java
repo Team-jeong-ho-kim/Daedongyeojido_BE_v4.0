@@ -18,6 +18,7 @@ public class AlarmEventFactory {
     ) {
         return UserAlarmEvent.builder()
                 .userId(user.getId())
+                .clubId(club.getId())
                 .alarmType(alarmType)
                 .title(alarmType.formatTitle(club.getClubName()))
                 .content(alarmType.formatContent(club.getClubName()))

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmCategory;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.global.entity.BaseTimeIdEntity;
 
@@ -31,12 +32,17 @@ public class UserAlarm extends BaseTimeIdEntity {
     @Column(nullable = false)
     private AlarmCategory alarmCategory;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_id")
+    private Club club;
+
     @Builder
-    public UserAlarm(String title, String content, User receiver, AlarmType alarmType) {
+    public UserAlarm(String title, String content, User receiver, AlarmType alarmType, Club club) {
         this.title = title;
         this.content = content;
         this.receiver = receiver;
         this.alarmType = alarmType;
         this.alarmCategory = alarmType.getCategory();
+        this.club = club;
     }
 }
