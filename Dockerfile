@@ -8,12 +8,12 @@ COPY build.gradle settings.gradle ./
 
 RUN chmod +x gradlew
 RUN --mount=type=cache,target=/home/gradle/.gradle \
-    gradle --no-daemon dependencies
+    gradle --no-daemon dependencies --stacktrace --info
 
 COPY src ./src
 
 RUN --mount=type=cache,target=/home/gradle/.gradle \
-    gradle --no-daemon build -x test
+    gradle --no-daemon build -x test --stacktrace --info
 
 FROM eclipse-temurin:17-jre
 
