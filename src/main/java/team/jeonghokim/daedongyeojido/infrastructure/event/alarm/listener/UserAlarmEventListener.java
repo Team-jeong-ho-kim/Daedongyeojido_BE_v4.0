@@ -10,6 +10,8 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.UserAlarmEvent;
@@ -21,6 +23,7 @@ public class UserAlarmEventListener {
 
     private final UserAlarmRepository userAlarmRepository;
     private final UserRepository userRepository;
+    private final ClubRepository clubRepository;
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
@@ -31,11 +34,17 @@ public class UserAlarmEventListener {
             User receiver = userRepository.findById(event.userId())
                     .orElseThrow();
 
+            Club club = event.clubId() != null
+                    ? clubRepository.findById(event.clubId()).orElse(null)
+                    : null;
+
             userAlarmRepository.save(UserAlarm.builder()
                     .title(event.title())
                     .content(event.content())
                     .receiver(receiver)
                     .alarmType(event.alarmType())
+                    .club(club)
+                    .referenceId(event.referenceId())
                     .build());
         } catch (Exception e) {
 

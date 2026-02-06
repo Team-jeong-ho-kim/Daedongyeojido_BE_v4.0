@@ -32,12 +32,20 @@ public class UserAlarm extends BaseTimeIdEntity {
     @Column(nullable = false)
     private AlarmCategory alarmCategory;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_id")
+    private Club club;
+
+    private Long referenceId;
+
     @Builder
-    public UserAlarm(String title, String content, User receiver, AlarmType alarmType) {
+    public UserAlarm(String title, String content, User receiver, AlarmType alarmType, Club club, Long referenceId) {
         this.title = title;
         this.content = content;
         this.receiver = receiver;
         this.alarmType = alarmType;
         this.alarmCategory = alarmType.getCategory();
+        this.club = club;
+        this.referenceId = referenceId;
     }
 }

@@ -17,6 +17,7 @@ public record LargeScaleAlarmEvent(
         String content,
         SchedulerAlarmPayload payload,
         ResultDuration resultDuration,
-        boolean isPassed
+        boolean isPassed,
+        Long referenceId
 ) {
 }

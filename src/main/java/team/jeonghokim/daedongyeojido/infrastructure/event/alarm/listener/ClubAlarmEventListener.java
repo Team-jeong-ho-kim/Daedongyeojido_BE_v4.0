@@ -36,6 +36,7 @@ public class ClubAlarmEventListener {
                     .content(event.content())
                     .club(club)
                     .alarmType(event.alarmType())
+                    .referenceId(event.referenceId())
                     .build());
         } catch (Exception e) {
 

@@ -10,6 +10,7 @@ public record ClubAlarmEvent(
         String content,
         Long clubId,
         AlarmType alarmType,
-        AlarmCategory category
+        AlarmCategory category,
+        Long referenceId
 ) {
 }
