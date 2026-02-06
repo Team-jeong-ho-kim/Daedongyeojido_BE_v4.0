@@ -31,15 +31,12 @@ public class ClubAlarm extends BaseTimeIdEntity {
     @Column(nullable = false)
     private AlarmCategory alarmCategory;
 
-    private Long referenceId;
-
     @Builder
-    public ClubAlarm(String title, String content, Club club, AlarmType alarmType, Long referenceId) {
+    public ClubAlarm(String title, String content, Club club, AlarmType alarmType) {
         this.title = title;
         this.content = content;
         this.club = club;
         this.alarmType = alarmType;
         this.alarmCategory = alarmType.getCategory();
-        this.referenceId = referenceId;
     }
 }

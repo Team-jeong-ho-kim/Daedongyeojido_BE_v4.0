@@ -17,8 +17,6 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
-import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
-import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.submission.exception.SubmissionNotFoundException;
@@ -40,7 +38,6 @@ public class LargeScaleAlarmEventListener {
 
     private final UserAlarmRepository userAlarmRepository;
     private final UserRepository userRepository;
-    private final ClubRepository clubRepository;
     private final RedisTemplate<String, SchedulerAlarmPayload> alarmRedisTemplate;
     private final DecideResultDurationService decideResultDurationService;
 
@@ -65,8 +62,6 @@ public class LargeScaleAlarmEventListener {
             Submission submission = submissionRepository.findByUserIdAndClubId(receiver.getId(), event.clubId())
                     .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION);
 
-            Club club = clubRepository.findById(event.clubId()).orElse(null);
-
             submission.applyPassResult(event.isPassed());
 
             userAlarmRepository.save(UserAlarm.builder()
@@ -74,8 +69,6 @@ public class LargeScaleAlarmEventListener {
                     .content(event.content())
                     .receiver(receiver)
                     .alarmType(event.alarmType())
-                    .club(club)
-                    .referenceId(submission.getId())
                     .build());
 
             alarmRedisTemplate.opsForZSet()

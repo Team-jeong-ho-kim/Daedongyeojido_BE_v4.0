@@ -10,18 +10,14 @@ public record AlarmResponse(
         Long id,
         String title,
         String content,
-        AlarmCategory category,
-        Long clubId,
-        Long referenceId
+        AlarmCategory category
 ) {
     @QueryProjection
-    public AlarmResponse(Long id, String title, String content, AlarmCategory category, Long clubId, Long referenceId) {
+    public AlarmResponse(Long id, String title, String content, AlarmCategory category) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.category = category;
-        this.clubId = clubId;
-        this.referenceId = referenceId;
     }
 
     public static AlarmResponse from(AdminAlarm adminAlarm) {
@@ -29,8 +25,6 @@ public record AlarmResponse(
                 .id(adminAlarm.getId())
                 .title(adminAlarm.getTitle())
                 .content(adminAlarm.getContent())
-                .clubId(null)
-                .referenceId(null)
                 .build();
     }
 }

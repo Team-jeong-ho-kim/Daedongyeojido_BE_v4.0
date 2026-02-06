@@ -16,23 +16,12 @@ public class AlarmEventFactory {
             Club club,
             AlarmType alarmType
     ) {
-        return createUserAlarmEvent(user, club, alarmType, null);
-    }
-
-    public UserAlarmEvent createUserAlarmEvent(
-            User user,
-            Club club,
-            AlarmType alarmType,
-            Long referenceId
-    ) {
         return UserAlarmEvent.builder()
                 .userId(user.getId())
                 .alarmType(alarmType)
                 .title(alarmType.formatTitle(club.getClubName()))
                 .content(alarmType.formatContent(club.getClubName()))
                 .category(alarmType.getCategory())
-                .clubId(club.getId())
-                .referenceId(referenceId)
                 .build();
     }
 
@@ -41,22 +30,12 @@ public class AlarmEventFactory {
             User user,
             AlarmType alarmType
     ) {
-        return createClubAlarmEvent(club, user, alarmType, null);
-    }
-
-    public ClubAlarmEvent createClubAlarmEvent(
-            Club club,
-            User user,
-            AlarmType alarmType,
-            Long referenceId
-    ) {
         return ClubAlarmEvent.builder()
                 .clubId(club.getId())
                 .alarmType(alarmType)
                 .title(alarmType.formatTitle(user.getUserName()))
                 .content(alarmType.formatContent(user.getUserName()))
                 .category(alarmType.getCategory())
-                .referenceId(referenceId)
                 .build();
     }
 }

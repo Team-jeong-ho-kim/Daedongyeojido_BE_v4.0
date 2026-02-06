@@ -11,7 +11,6 @@ public record UserAlarmEvent(
         Long userId,
         AlarmType alarmType,
         AlarmCategory category,
-        Long clubId,
-        Long referenceId
+        Long alarmId
 ) {
 }
