@@ -10,4 +10,7 @@ public class DecideTeamMemberApplicationRequest {
 
     @NotNull(message = "알람 ID를 입력해주세요.")
     Long alarmId;
+
+    @NotNull(message = "실행 여부를 입력해주세요.")
+    boolean isExecuted;
 }

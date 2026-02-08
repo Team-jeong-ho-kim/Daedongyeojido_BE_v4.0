@@ -31,6 +31,9 @@ public class ClubAlarm extends BaseTimeIdEntity {
     @Column(nullable = false)
     private AlarmCategory alarmCategory;
 
+    @Column(nullable = false)
+    private boolean isExecuted;
+
     @Builder
     public ClubAlarm(String title, String content, Club club, AlarmType alarmType) {
         this.title = title;
@@ -38,5 +41,6 @@ public class ClubAlarm extends BaseTimeIdEntity {
         this.club = club;
         this.alarmType = alarmType;
         this.alarmCategory = alarmType.getCategory();
+        this.isExecuted = false;
     }
 }

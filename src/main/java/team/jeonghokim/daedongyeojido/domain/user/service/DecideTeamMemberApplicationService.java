@@ -42,6 +42,8 @@ public class DecideTeamMemberApplicationService {
         UserApplication userApplication = userApplicationRepository.findByUserIdAndClubId(user.getId(), alarm.getClub().getId())
                 .orElseThrow(() -> UserApplicationNotFoundException.EXCEPTION);
 
+        alarm.executed();
+
         if (request.getIsApproved()) {
             user.approvedTeamMember(userApplication.getClub());
             userApplication.approved();

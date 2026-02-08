@@ -23,7 +23,8 @@ public class AlarmRepositoryCustomImpl implements AlarmRepositoryCustom {
                 clubAlarm.id,
                 clubAlarm.title,
                 clubAlarm.content,
-                clubAlarm.alarmCategory
+                clubAlarm.alarmCategory,
+                clubAlarm.isExecuted
         ))
                 .from(clubAlarm)
                 .join(clubAlarm.club, QClub.club)
@@ -37,7 +38,8 @@ public class AlarmRepositoryCustomImpl implements AlarmRepositoryCustom {
                 userAlarm.id,
                 userAlarm.title,
                 userAlarm.content,
-                userAlarm.alarmCategory
+                userAlarm.alarmCategory,
+                userAlarm.isExecuted
         ))
                 .from(userAlarm)
                 .join(userAlarm.receiver, QUser.user)

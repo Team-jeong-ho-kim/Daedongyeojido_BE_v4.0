@@ -10,14 +10,16 @@ public record AlarmResponse(
         Long id,
         String title,
         String content,
-        AlarmCategory category
+        AlarmCategory category,
+        boolean isExecuted
 ) {
     @QueryProjection
-    public AlarmResponse(Long id, String title, String content, AlarmCategory category) {
+    public AlarmResponse(Long id, String title, String content, AlarmCategory category, boolean isExecuted) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.category = category;
+        this.isExecuted = isExecuted;
     }
 
     public static AlarmResponse from(AdminAlarm adminAlarm) {

@@ -36,6 +36,9 @@ public class UserAlarm extends BaseTimeIdEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    @Column(nullable = false)
+    private boolean isExecuted;
+
     @Builder
     public UserAlarm(String title, String content, User receiver, AlarmType alarmType, Club club) {
         this.title = title;
@@ -44,5 +47,10 @@ public class UserAlarm extends BaseTimeIdEntity {
         this.alarmType = alarmType;
         this.alarmCategory = alarmType.getCategory();
         this.club = club;
+        this.isExecuted = false;
+    }
+
+    public void executed() {
+        this.isExecuted = true;
     }
 }
