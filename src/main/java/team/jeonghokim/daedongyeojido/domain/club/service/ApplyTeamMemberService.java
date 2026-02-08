@@ -11,6 +11,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserApplication;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserApplicationRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
+import team.jeonghokim.daedongyeojido.domain.user.exception.AlreadyUserApplicationExistException;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory.AlarmEventFactory;
@@ -29,16 +30,20 @@ public class ApplyTeamMemberService {
 
         User user = userFacade.getCurrentUser();
 
-        User userApplication = userRepository.findByUserNameAndClassNumber(request.getUserName(), request.getClassNumber())
+        User userApplicant = userRepository.findByUserNameAndClassNumber(request.getUserName(), request.getClassNumber())
                         .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        userApplicationRepository.save(UserApplication.builder()
-                .user(userApplication)
+        UserApplication userApplication = userApplicationRepository.save(UserApplication.builder()
+                .user(userApplicant)
                 .isApproved(false)
                 .club(user.getClub())
                 .build());
 
-        createAlarm(user.getClub(), userApplication);
+        if (userApplication.getUser().getId().equals(user.getId())) {
+            throw AlreadyUserApplicationExistException.EXCEPTION;
+        }
+
+        createAlarm(user.getClub(), userApplicant);
     }
 
     private void createAlarm(Club club, User userApplication) {
