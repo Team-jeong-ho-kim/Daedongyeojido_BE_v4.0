@@ -37,6 +37,8 @@ public class DecideClubService {
         UserAlarm alarm = userAlarmRepository.findById(request.getAlarmId())
                 .orElseThrow(() -> AlarmNotFoundException.EXCEPTION);
 
+        alarm.executed();
+
         Submission submission = submissionFacade.getApplicationBySubmissionId(submissionId);
 
         validate(applicant, submission, alarm);
