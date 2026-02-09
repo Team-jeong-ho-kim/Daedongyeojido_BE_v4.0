@@ -22,12 +22,11 @@ public class DeleteTeamMemberService {
     private final UserFacade userFacade;
     private final ApplicationEventPublisher eventPublisher;
     private final AlarmEventFactory alarmEventFactory;
+    private final ClubCacheEvictor clubCacheEvictor;
 
     @Transactional
     public void execute(Long userId) {
-
         User clubLeader = userFacade.getCurrentUser();
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
@@ -39,13 +38,14 @@ public class DeleteTeamMemberService {
             throw ClubMisMatchException.EXCEPTION;
         }
 
-        user.leaveClub();
+        Long clubId = clubLeader.getClub().getId();
 
+        user.leaveClub();
+        clubCacheEvictor.evictClubDetail(clubId);
         deleteClubMember(clubLeader.getClub(), user);
     }
 
     private void deleteClubMember(Club club, User user) {
-
         eventPublisher.publishEvent(
                 alarmEventFactory.createUserAlarmEvent(user, club, AlarmType.DELETE_CLUB_MEMBER)
         );
