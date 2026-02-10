@@ -6,6 +6,4 @@ import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import java.util.Optional;
 
 public interface SubmissionRepository extends JpaRepository<Submission, Long>, SubmissionRepositoryCustom {
-
-    Optional<Submission> findByUserId(Long applicantId);
 }
