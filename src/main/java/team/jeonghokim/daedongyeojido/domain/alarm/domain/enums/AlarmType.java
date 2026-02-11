@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+@JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum AlarmType {
 
     CREATE_CLUB_APPLY("%s 개설 신청", "%s의 동아리 개설 신청이 접수되었습니다", AlarmCategory.COMMON),
