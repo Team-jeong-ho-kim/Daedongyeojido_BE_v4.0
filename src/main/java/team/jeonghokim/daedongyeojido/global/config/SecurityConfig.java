@@ -132,6 +132,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(
                 List.of(
+                        "http://localhost:*",
                         "https://dsm.daedongyeojido.site",
                         "https://student.dsm.daedongyeojido.site",
                         "https://admin.dsm.daedongyeojido.site"
