@@ -106,7 +106,11 @@ public class Submission extends BaseIdEntity {
         this.userApplicationStatus = ApplicationStatus.WRITING;
     }
 
-    public void applyPassResult(boolean isPassed) {
+    public void applyUserPassResult(boolean isPassed) {
+        this.userApplicationStatus = isPassed ? ApplicationStatus.ACCEPTED : ApplicationStatus.REJECTED;
+    }
+
+    public void applyClubPassResult(boolean isPassed) {
         this.clubApplicationStatus = isPassed ? ApplicationStatus.ACCEPTED : ApplicationStatus.REJECTED;
     }
 }

@@ -46,7 +46,7 @@ public class PassClubService {
 
         validate(user, submission);
 
-        submission.applyPassResult(request.isPassed());
+        submission.applyClubPassResult(request.isPassed());
 
         saveSMS(submission, request.isPassed());
 

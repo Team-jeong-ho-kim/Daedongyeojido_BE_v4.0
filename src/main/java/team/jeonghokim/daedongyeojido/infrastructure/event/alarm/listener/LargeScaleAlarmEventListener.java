@@ -68,7 +68,7 @@ public class LargeScaleAlarmEventListener {
             Submission submission = submissionRepository.findByUserIdAndClubId(receiver.getId(), event.clubId())
                     .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION);
 
-            submission.applyPassResult(event.isPassed());
+            submission.applyUserPassResult(event.isPassed());
 
             userAlarmRepository.save(UserAlarm.builder()
                     .title(event.title())
