@@ -130,7 +130,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("http://localhost:*", "https://dsm.hs.daedongyeojido.site"));
+        configuration.setAllowedOriginPatterns(
+                List.of(
+                        "https://dsm.daedongyeojido.site",
+                        "https://student.dsm.daedongyeojido.site",
+                        "https://admin.dsm.daedongyeojido.site"
+                )
+        );
         configuration.setAllowedMethods(Arrays.asList("OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"));
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
