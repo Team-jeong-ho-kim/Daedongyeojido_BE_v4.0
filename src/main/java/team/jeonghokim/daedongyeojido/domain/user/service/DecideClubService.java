@@ -15,7 +15,8 @@ import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNo
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.exception.AlreadyJoinClubException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
-import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
+import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
+import team.jeonghokim.daedongyeojido.domain.submission.exception.SubmissionNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideClubRequest;
@@ -25,13 +26,13 @@ import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory.AlarmEv
 @RequiredArgsConstructor
 public class DecideClubService {
     private final UserFacade userFacade;
-    private final SubmissionFacade submissionFacade;
+    private final SubmissionRepository submissionRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final AlarmEventFactory alarmEventFactory;
     private final UserAlarmRepository userAlarmRepository;
 
     @Transactional
-    public void execute(Long submissionId, DecideClubRequest request) {
+    public void execute(DecideClubRequest request) {
         User applicant = userFacade.getCurrentUser();
 
         UserAlarm alarm = userAlarmRepository.findById(request.getAlarmId())
@@ -39,7 +40,8 @@ public class DecideClubService {
 
         alarm.executed();
 
-        Submission submission = submissionFacade.getApplicationBySubmissionId(submissionId);
+        Submission submission = submissionRepository.findByUserIdAndClubId(applicant.getId(), alarm.getClub().getId())
+                .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION);
 
         validate(applicant, submission, alarm);
 

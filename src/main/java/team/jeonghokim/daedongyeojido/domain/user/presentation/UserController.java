@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -66,9 +65,9 @@ public class UserController {
         return queryUserSubmissionListService.execute();
     }
 
-    @PatchMapping("/submissions/{submission-id}")
+    @PatchMapping("/submissions")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void decideClub(@PathVariable("submission-id") Long submissionId, @RequestBody @Valid DecideClubRequest request) {
-        decideClubService.execute(submissionId, request);
+    public void decideClub(@RequestBody @Valid DecideClubRequest request) {
+        decideClubService.execute(request);
     }
 }
