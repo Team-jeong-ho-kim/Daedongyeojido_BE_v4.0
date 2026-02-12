@@ -19,14 +19,7 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.TeamM
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.UpdateClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
-import team.jeonghokim.daedongyeojido.domain.club.service.ApplyTeamMemberService;
-import team.jeonghokim.daedongyeojido.domain.club.service.CreateClubService;
-import team.jeonghokim.daedongyeojido.domain.club.service.DeleteTeamMemberService;
-import team.jeonghokim.daedongyeojido.domain.club.service.DissolveClubService;
-import team.jeonghokim.daedongyeojido.domain.club.service.PassClubService;
-import team.jeonghokim.daedongyeojido.domain.club.service.QueryClubDetailService;
-import team.jeonghokim.daedongyeojido.domain.club.service.QueryClubListService;
-import team.jeonghokim.daedongyeojido.domain.club.service.UpdateClubService;
+import team.jeonghokim.daedongyeojido.domain.club.service.*;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionListResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.service.QueryClubSubmissionDetailService;
@@ -44,6 +37,7 @@ public class ClubController {
     private final ApplyTeamMemberService applyTeamMemberService;
     private final DissolveClubService dissolveClubService;
     private final DeleteTeamMemberService deleteTeamMemberService;
+    private final DeleteClubAlarmService deleteClubAlarmService;
     private final QueryClubSubmissionListService queryClubSubmissionListService;
     private final QueryClubSubmissionDetailService queryClubSubmissionDetailService;
     private final PassClubService passClubService;
@@ -88,6 +82,12 @@ public class ClubController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTeamMember(@PathVariable("user-id") Long userId) {
         deleteTeamMemberService.execute(userId);
+    }
+
+    @DeleteMapping("/alarms/{alarm-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteClubAlarm(@PathVariable("alarm-id") Long alarmId) {
+        deleteClubAlarmService.execute(alarmId);
     }
 
     @GetMapping("/submissions/all/{application-form-id}")
