@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Announcement extends BaseIdEntity {
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 30)
     private String title;
 
     @Column(nullable = false)

@@ -10,7 +10,7 @@ import java.util.List;
 public record AnnouncementRequest(
 
         @NotBlank(message = "공고 제목은 필수입니다.")
-        @Size(max = 20, message = "공고 제목은 20자를 초과할 수 없습니다.")
+        @Size(max = 30, message = "공고 제목은 20자를 초과할 수 없습니다.")
         String title,
 
         @NotBlank(message = "소개글은 필수입니다.")
