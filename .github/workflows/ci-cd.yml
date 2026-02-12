@@ -118,9 +118,9 @@ jobs:
           chmod 600 ~/.ssh/known_hosts
 
           ssh -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            docker rm -f daedongyeojido || true
             docker compose pull
             docker compose up -d
+            docker image prune -af
           EOF
 
       - name: Setup Node.js
