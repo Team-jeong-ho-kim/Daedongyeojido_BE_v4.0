@@ -3,13 +3,7 @@ package team.jeonghokim.daedongyeojido.domain.user.presentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryUserSubmissionListResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.service.QueryUserSubmissionListService;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideClubRequest;
@@ -17,11 +11,7 @@ import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.Decid
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInfoRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.UpdateMyInfoRequest;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response.QueryMyInfoResponse;
-import team.jeonghokim.daedongyeojido.domain.user.service.DecideClubService;
-import team.jeonghokim.daedongyeojido.domain.user.service.DecideTeamMemberApplicationService;
-import team.jeonghokim.daedongyeojido.domain.user.service.InputMyInfoService;
-import team.jeonghokim.daedongyeojido.domain.user.service.QueryMyInfoService;
-import team.jeonghokim.daedongyeojido.domain.user.service.UpdateMyInfoService;
+import team.jeonghokim.daedongyeojido.domain.user.service.*;
 
 @RestController
 @RequestMapping("/users")
@@ -34,6 +24,7 @@ public class UserController {
     private final DecideTeamMemberApplicationService decideTeamMemberApplicationService;
     private final QueryUserSubmissionListService queryUserSubmissionListService;
     private final DecideClubService decideClubService;
+    private final DeleteUserAlarmService deleteUserAlarmService;
 
     @PatchMapping("/my-info")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -69,5 +60,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void decideClub(@RequestBody @Valid DecideClubRequest request) {
         decideClubService.execute(request);
+    }
+
+    @DeleteMapping("/alarms/{alarm-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserAlarm(@PathVariable("alarm-id") Long alarmId) {
+        deleteUserAlarmService.execute(alarmId);
     }
 }
