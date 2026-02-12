@@ -1,9 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
@@ -23,6 +21,8 @@ public class ApplicationFormRequest {
             String> content;
 
     @NotNull(message = "제출 기한을 설정해주세요.")
+    @FutureOrPresent(message = "제출 기한은 과거일 수 없습니다.")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate submissionDuration;
 
     @NotEmpty(message = "전공 리스트를 입력해주세요.")
