@@ -134,8 +134,8 @@ public class SecurityConfig {
                 List.of(
                         "http://localhost:*",
                         "https://dsm.daedongyeojido.site",
-                        "https://student.dsm.daedongyeojido.site",
-                        "https://admin.dsm.daedongyeojido.site"
+                        "https://student.daedongyeojido.site",
+                        "https://admin.daedongyeojido.site"
                 )
         );
         configuration.setAllowedMethods(Arrays.asList("OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"));
