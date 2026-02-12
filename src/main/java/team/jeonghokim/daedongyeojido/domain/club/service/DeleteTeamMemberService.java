@@ -22,7 +22,6 @@ public class DeleteTeamMemberService {
     private final UserFacade userFacade;
     private final ApplicationEventPublisher eventPublisher;
     private final AlarmEventFactory alarmEventFactory;
-    private final ClubCacheEvictor clubCacheEvictor;
 
     @Transactional
     public void execute(Long userId) {
@@ -38,10 +37,7 @@ public class DeleteTeamMemberService {
             throw ClubMisMatchException.EXCEPTION;
         }
 
-        Long clubId = clubLeader.getClub().getId();
-
         user.leaveClub();
-        clubCacheEvictor.evictClubDetail(clubId);
         deleteClubMember(clubLeader.getClub(), user);
     }
 

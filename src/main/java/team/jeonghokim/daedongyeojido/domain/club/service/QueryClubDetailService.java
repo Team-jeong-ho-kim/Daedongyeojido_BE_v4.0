@@ -1,7 +1,6 @@
 package team.jeonghokim.daedongyeojido.domain.club.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
@@ -12,15 +11,12 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.Quer
 
 import java.util.List;
 
-import static team.jeonghokim.daedongyeojido.global.cache.CacheNames.CLUB_DETAIL;
-
 @Service
 @RequiredArgsConstructor
 public class QueryClubDetailService {
 
     private final ClubRepository clubRepository;
 
-    @Cacheable(value = CLUB_DETAIL, key = "#clubId")
     @Transactional(readOnly = true)
     public QueryClubDetailResponse execute(Long clubId) {
         ClubDetailDto clubDetail = clubRepository.findClubDetailById(clubId)
