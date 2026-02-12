@@ -9,14 +9,16 @@ public record ClubMembersDto(
         Long userId,
         String userName,
         List<Major> majors,
-        String introduction
+        String introduction,
+        String profileImage
 ) {
 
     @QueryProjection
-    public ClubMembersDto(Long userId, String userName, List<Major> majors, String introduction) {
+    public ClubMembersDto(Long userId, String userName, List<Major> majors, String introduction, String profileImage) {
         this.userId = userId;
         this.userName = userName;
         this.majors = majors;
         this.introduction = introduction;
+        this.profileImage = profileImage;
     }
 }

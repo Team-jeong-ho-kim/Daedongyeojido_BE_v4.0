@@ -57,7 +57,8 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
                                 user.id,
                                 user.userName,
                                 list(userMajor.major),
-                                user.introduction
+                                user.introduction,
+                                user.profileImage
                         )
                 ));
     }
