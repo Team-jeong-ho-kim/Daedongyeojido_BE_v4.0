@@ -38,6 +38,16 @@ jobs:
             -p 6379:6379 \
             redis:7
 
+      - name: Start MySQL Container (CI)
+        run: |
+          docker run -d --name mysql \
+            --network ci-network \
+            -p 3306:3306 \
+            -e MYSQL_ROOT_PASSWORD=root \
+            -e MYSQL_DATABASE=daedongyeojido \
+            -e TZ=Asia/Seoul \
+            mysql:8.0
+
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
@@ -67,6 +77,7 @@ jobs:
               docker logs app-test
               docker rm -f app-test || true
               docker rm -f redis || true
+              docker rm -f mysql || true
               exit 1
             fi
 
@@ -74,6 +85,7 @@ jobs:
               echo "✅ Health check passed!"
               docker rm -f app-test || true
               docker rm -f redis || true
+              docker rm -f mysql || true
               exit 0
             fi
 
@@ -85,6 +97,7 @@ jobs:
           docker logs app-test
           docker rm -f app-test || true
           docker rm -f redis || true
+          docker rm -f mysql || true
           exit 1
 
       - name: Login to Docker Hub
