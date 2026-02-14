@@ -40,14 +40,16 @@ jobs:
 
       - name: Start MySQL Container (CI)
         run: |
+          source .env
+
           docker run -d --name mysql \
             --network ci-network \
             -p 3306:3306 \
-            -e MYSQL_ROOT_PASSWORD=root \
-            -e MYSQL_DATABASE=daedongyeojido \
+            -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD \
+            -e MYSQL_DATABASE=$MYSQL_DATABASE \
             -e TZ=Asia/Seoul \
             mysql:8.0
-
+      
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
