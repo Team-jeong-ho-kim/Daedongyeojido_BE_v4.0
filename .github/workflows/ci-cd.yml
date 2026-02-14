@@ -44,12 +44,11 @@ jobs:
 
           docker run -d --name mysql \
             --network ci-network \
-            -p 3306:3306 \
             -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD \
             -e MYSQL_DATABASE=$MYSQL_DATABASE \
             -e TZ=Asia/Seoul \
             mysql:8.0
-
+      
       - name: Wait for MySQL to be Ready
         run: |
           echo "⏳ Waiting for MySQL to be ready..."
