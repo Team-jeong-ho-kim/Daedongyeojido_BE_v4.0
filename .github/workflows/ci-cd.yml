@@ -48,25 +48,7 @@ jobs:
             -e MYSQL_DATABASE=$DB_NAME \
             -e TZ=Asia/Seoul \
             mysql:8.0
-      
-      - name: Wait for MySQL to be Ready
-        run: |
-          echo "⏳ Waiting for MySQL to be ready..."
-
-          for i in {1..30}; do
-            if docker exec mysql mysqladmin ping -h "localhost" --silent; then
-              echo "✅ MySQL is ready!"
-              exit 0
-            fi
-
-            echo "⏳ MySQL not ready yet ($i/30)"
-            sleep 2
-          done
-
-          echo "❌ MySQL did not become ready in time"
-          docker logs mysql
-          exit 1
-
+            
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
