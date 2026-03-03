@@ -68,6 +68,9 @@ public enum ErrorCode {
     RESULT_DURATION_ALREADY_SET(409, "이미 발표시간이 설정되어있습니다."),
     RESULT_DURATION_ALREADY_EXECUTED(409, "이미 결과 처리가 완료되었습니다."),
 
+    // clubCreationForm
+    ALREADY_CLUB_CREATION_FORM_EXISTS(409, "이미 동아리 신청 양식이 존재합니다."),
+
     // admin
     ADMIN_NOT_FOUND(404, "존재하지 않는 관리자입니다."),
     ADMIN_ALREADY_EXISTS(409, "이미 존재하는 관리자 계정입니다."),

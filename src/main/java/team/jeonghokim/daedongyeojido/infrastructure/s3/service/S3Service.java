@@ -12,6 +12,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.FailedDeleteEx
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.FailedUploadException;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.ImageNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.InvalidExtensionException;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.type.FileType;
 
 import java.net.URI;
 import java.net.URL;
@@ -23,7 +24,11 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class S3Service {
-    private static final Set<String> FILE_EXTENSIONS = Set.of("jpg", "jpeg", "png", "webp");
+    private static final Set<String> IMAGE_EXTENSIONS = Set.of("jpg", "jpeg", "png", "webp");
+
+    private static final Set<String> DOCUMENT_EXTENSIONS = Set.of("hwp", "pdf");
+
+    private static final String DOWNLOAD_CONTENT_TYPE = "application/octet-stream";
 
     private final S3Client s3Client;
 
@@ -33,22 +38,27 @@ public class S3Service {
     @Value("${cloud.aws.s3.url-prefix}")
     private String urlPrefix;
 
-    public String upload(MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-        validate(fileName);
+    public String upload(MultipartFile file, FileType fileType) {
 
-        String key = UUID.randomUUID() + "." + getExtension(fileName);
+        String fileName = file.getOriginalFilename();
+        validate(fileName, fileType);
+
+        String extension = getExtension(fileName);
+        String key = UUID.randomUUID() + "." + extension;
 
         try {
             PutObjectRequest object = PutObjectRequest.builder()
                     .bucket(bucket)
                     .key(key)
-                    .contentType(file.getContentType())
+                    .contentType(resolveContentType(file))
                     .contentLength(file.getSize())
                     .build();
 
-            s3Client.putObject(object, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+            s3Client.putObject(object,
+                    RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+
             return urlPrefix + key;
+
         } catch (Exception e) {
             throw FailedUploadException.EXCEPTION;
         }
@@ -71,7 +81,7 @@ public class S3Service {
         }
     }
 
-    public String update(String oldFile, MultipartFile file) {
+    public String update(String oldFile, MultipartFile file, FileType fileType) {
 
         if (file == null || file.isEmpty()) {
             return oldFile;
@@ -85,22 +95,36 @@ public class S3Service {
             }
         }
 
-        return upload(file);
+        return upload(file, fileType);
     }
 
-    private void validate(String fileName) {
+    private void validate(String fileName, FileType fileType) {
+
         if (fileName == null || fileName.isEmpty()) {
             throw ImageNotFoundException.EXCEPTION;
         }
 
         String extension = getExtension(fileName);
-        if (!FILE_EXTENSIONS.contains(extension)) {
-            throw InvalidExtensionException.EXCEPTION;
+
+        if (fileType == FileType.IMAGE) {
+            if (!IMAGE_EXTENSIONS.contains(extension)) {
+                throw InvalidExtensionException.EXCEPTION;
+            }
+        }
+
+        if (fileType == FileType.DOCUMENT) {
+            if (!DOCUMENT_EXTENSIONS.contains(extension)) {
+                throw InvalidExtensionException.EXCEPTION;
+            }
         }
     }
 
     private String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+    }
+
+    private String resolveContentType(MultipartFile file) {
+        return file.getContentType() != null ? file.getContentType() : DOWNLOAD_CONTENT_TYPE;
     }
 }
 

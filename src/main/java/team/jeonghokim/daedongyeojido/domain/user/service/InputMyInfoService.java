@@ -9,6 +9,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.UserMajor;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInfoRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.type.FileType;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class InputMyInfoService {
 
         User user = userFacade.getCurrentUser();
 
-        String profileImage = s3Service.upload(request.profileImage());
+        String profileImage = s3Service.upload(request.profileImage(), FileType.IMAGE);
 
         user.inputMyInfo(
                 request.phoneNumber(),
