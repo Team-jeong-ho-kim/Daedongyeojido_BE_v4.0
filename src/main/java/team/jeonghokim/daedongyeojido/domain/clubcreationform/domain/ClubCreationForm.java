@@ -11,7 +11,7 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClubCreationForm extends BaseIdEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String fileName;
 
     @Column(nullable = false)
