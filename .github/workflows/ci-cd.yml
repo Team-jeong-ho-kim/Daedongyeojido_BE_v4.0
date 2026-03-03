@@ -95,9 +95,7 @@ jobs:
 
           echo "❌ Health check failed. Showing logs..."
           docker logs app-test
-          docker rm -f app-test || true
-          docker rm -f redis || true
-          docker rm -f mysql || true
+          docker rm -f app-test redis mysql
           exit 1
 
   docker_push:
@@ -111,8 +109,15 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Set image tag & service
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            echo "TAG=prod" >> $GITHUB_ENV
+            echo "SERVICE=prod" >> $GITHUB_ENV
+          else
+            echo "TAG=stag" >> $GITHUB_ENV
+            echo "SERVICE=stag" >> $GITHUB_ENV
+          fi
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -120,7 +125,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push Docker Image - PUSH
+      - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -128,7 +133,7 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:${{ env.TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -140,6 +145,16 @@ jobs:
       contents: read
 
     steps:
+      - name: Set deploy target
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            echo "TAG=prod" >> $GITHUB_ENV
+            echo "SERVICE=prod" >> $GITHUB_ENV
+          else
+            echo "TAG=stag" >> $GITHUB_ENV
+            echo "SERVICE=stag" >> $GITHUB_ENV
+          fi
+
       - name: Deploy to EC2
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
@@ -147,11 +162,10 @@ jobs:
 
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
 
-          ssh -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            docker compose pull
-            docker compose up -d
+          ssh -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+            docker pull ${{ env.IMAGE_NAME }}:${{ env.TAG }}
+            docker compose up -d ${{ env.SERVICE }}
             docker image prune -af
           EOF
 
