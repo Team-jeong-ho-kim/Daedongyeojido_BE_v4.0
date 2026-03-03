@@ -3,17 +3,12 @@ package team.jeonghokim.daedongyeojido.domain.admin.presentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideClubCreationRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideResultDurationRequest;
+import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.UploadClubCreationFormRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
+import team.jeonghokim.daedongyeojido.domain.admin.service.UploadClubCreationFormService;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubCreationService;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubDissolveService;
@@ -29,6 +24,7 @@ public class AdminController {
     private final DecideClubDissolveService decideClubDissolveService;
     private final DecideResultDurationService decideResultDurationService;
     private final UpdateResultDurationService updateResultDurationService;
+    private final UploadClubCreationFormService uploadClubCreationFormService;
 
     @PatchMapping("/clubs/applications/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -52,6 +48,12 @@ public class AdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateResultDuration(@PathVariable("result-duration-id") Long resultDurationId, @RequestBody @Valid UpdateResultDurationRequest request) {
         updateResultDurationService.execute(resultDurationId, request);
+    }
+
+    @PostMapping("/club-creation-form")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void uploadClubCreationForm(@ModelAttribute @Valid UploadClubCreationFormRequest request) {
+        uploadClubCreationFormService.execute(request);
     }
     
 }
