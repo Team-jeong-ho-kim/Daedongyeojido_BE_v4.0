@@ -7,6 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.UpdateMyInfoRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.type.FileType;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class UpdateMyInfoService {
 
         User user = userFacade.getCurrentUser();
 
-        String profileImage = s3Service.update(user.getProfileImage(), request.profileImage());
+        String profileImage = s3Service.update(user.getProfileImage(), request.profileImage(), FileType.IMAGE);
 
         user.update(
                 request.introduction(),
