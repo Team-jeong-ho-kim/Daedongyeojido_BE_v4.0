@@ -17,6 +17,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory.AlarmEventFactory;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.type.FileType;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +59,7 @@ public class CreateClubService {
 
         return Club.builder()
                 .clubName(request.clubName())
-                .clubImage(s3Service.upload(request.clubImage()))
+                .clubImage(s3Service.upload(request.clubImage(), FileType.IMAGE))
                 .oneLiner(request.oneLiner())
                 .introduction(request.introduction())
                 .isOpen(false)
