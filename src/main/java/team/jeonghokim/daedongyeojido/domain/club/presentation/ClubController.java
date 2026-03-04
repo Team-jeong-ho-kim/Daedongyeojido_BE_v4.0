@@ -31,39 +31,21 @@ import team.jeonghokim.daedongyeojido.domain.submission.service.QueryClubSubmiss
 public class ClubController {
 
     private final CreateClubService createClubService;
-    private final QueryClubListService queryClubListService;
-    private final QueryClubDetailService queryClubDetailService;
-    private final UpdateClubService updateClubService;
     private final ApplyTeamMemberService applyTeamMemberService;
     private final DissolveClubService dissolveClubService;
-    private final DeleteTeamMemberService deleteTeamMemberService;
-    private final DeleteClubAlarmService deleteClubAlarmService;
+    private final QueryClubListService queryClubListService;
+    private final QueryClubDetailService queryClubDetailService;
     private final QueryClubSubmissionListService queryClubSubmissionListService;
     private final QueryClubSubmissionDetailService queryClubSubmissionDetailService;
+    private final UpdateClubService updateClubService;
     private final PassClubService passClubService;
+    private final DeleteTeamMemberService deleteTeamMemberService;
+    private final DeleteClubAlarmService deleteClubAlarmService;
 
     @PostMapping("/applications")
     @ResponseStatus(HttpStatus.CREATED)
     public void createClub(@ModelAttribute @Valid CreateClubRequest request) {
         createClubService.execute(request);
-    }
-
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public QueryClubListResponse queryClubList() {
-        return queryClubListService.execute();
-    }
-
-    @GetMapping("/{club-id}")
-    @ResponseStatus(HttpStatus.OK)
-    public QueryClubDetailResponse queryClubDetail(@PathVariable("club-id") Long clubId) {
-        return queryClubDetailService.execute(clubId);
-    }
-
-    @PatchMapping("/{club-id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateClub(@PathVariable("club-id") Long clubId, @ModelAttribute @Valid UpdateClubRequest request) {
-        updateClubService.execute(clubId, request);
     }
 
     @PostMapping("/members")
@@ -78,16 +60,16 @@ public class ClubController {
         dissolveClubService.execute();
     }
 
-    @DeleteMapping("/members/{user-id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTeamMember(@PathVariable("user-id") Long userId) {
-        deleteTeamMemberService.execute(userId);
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public QueryClubListResponse queryClubList() {
+        return queryClubListService.execute();
     }
 
-    @DeleteMapping("/alarms/{alarm-id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteClubAlarm(@PathVariable("alarm-id") Long alarmId) {
-        deleteClubAlarmService.execute(alarmId);
+    @GetMapping("/{club-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryClubDetailResponse queryClubDetail(@PathVariable("club-id") Long clubId) {
+        return queryClubDetailService.execute(clubId);
     }
 
     @GetMapping("/submissions/all/{application-form-id}")
@@ -102,9 +84,27 @@ public class ClubController {
         return queryClubSubmissionDetailService.execute(submissionId);
     }
 
+    @PatchMapping("/{club-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateClub(@PathVariable("club-id") Long clubId, @ModelAttribute @Valid UpdateClubRequest request) {
+        updateClubService.execute(clubId, request);
+    }
+
     @PatchMapping("/pass/{submission-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void passClub(@PathVariable("submission-id") Long submissionId, @RequestBody @Valid PassClubRequest request) {
         passClubService.execute(submissionId, request);
+    }
+
+    @DeleteMapping("/members/{user-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTeamMember(@PathVariable("user-id") Long userId) {
+        deleteTeamMemberService.execute(userId);
+    }
+
+    @DeleteMapping("/alarms/{alarm-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteClubAlarm(@PathVariable("alarm-id") Long alarmId) {
+        deleteClubAlarmService.execute(alarmId);
     }
 }
