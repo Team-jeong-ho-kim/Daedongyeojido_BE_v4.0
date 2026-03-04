@@ -220,7 +220,7 @@ jobs:
 
   notify:
     runs-on: ubuntu-22.04
-    needs: [ci, docker_push, deploy, failure_analysis]
+    needs: [ ci, docker_push, deploy, failure_analysis ]
     if: always()
     permissions:
       contents: read
@@ -259,7 +259,7 @@ jobs:
               TITLE="❌ 배포 실패"
               COLOR=15158332
               if [ -n "$ISSUE_URL" ]; then
-                DESC="🔗 배포 실패와 관련된 이슈가 자동으로 생성되었습니다!\n[$ISSUE_URL]($ISSUE_URL)"
+                DESC=$'🔗 배포 실패와 관련된 이슈가 자동으로 생성되었습니다!\n[이슈 바로가기]('"$ISSUE_URL"')'
               else
                 DESC="배포 과정에서 오류가 발생했습니다."
               fi
