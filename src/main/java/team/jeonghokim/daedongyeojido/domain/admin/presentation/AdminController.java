@@ -8,6 +8,7 @@ import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.Deci
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideResultDurationRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.UploadClubCreationFormRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
+import team.jeonghokim.daedongyeojido.domain.admin.service.DeleteClubCreationFormService;
 import team.jeonghokim.daedongyeojido.domain.admin.service.UploadClubCreationFormService;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.ClubCreationInformationResponse;
@@ -28,6 +29,7 @@ public class AdminController {
     private final UpdateResultDurationService updateResultDurationService;
     private final UploadClubCreationFormService uploadClubCreationFormService;
     private final QueryClubCreationInformationService queryClubCreationInformationService;
+    private final DeleteClubCreationFormService deleteClubCreationFormService;
 
     @PatchMapping("/clubs/applications/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,4 +67,9 @@ public class AdminController {
         return queryClubCreationInformationService.execute(clubId);
     }
 
+    @DeleteMapping("/club-creation-form/{club-creation-form}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteClubCreationForm(@PathVariable("club-creation-form") Long clubCreationFormId) {
+        deleteClubCreationFormService.execute(clubCreationFormId);
+    }
 }
