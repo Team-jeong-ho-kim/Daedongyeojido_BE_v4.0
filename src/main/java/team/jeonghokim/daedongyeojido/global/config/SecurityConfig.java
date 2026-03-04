@@ -92,6 +92,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/clubs/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.DELETE, "/clubs/members/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
 
+                        // club-creation-form
+                        .requestMatchers(HttpMethod.GET, "/club-creation-form/**").permitAll()
+
                         // announcement
                         .requestMatchers(HttpMethod.POST, "/announcements").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.PATCH, "/announcements/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
