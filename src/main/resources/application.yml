@@ -28,6 +28,7 @@ spring:
 redis:
   host: ${REDIS_HOST}
   port: ${REDIS_PORT}
+  database: ${REDIS_DATABASE}
 
 cloud:
   aws:
