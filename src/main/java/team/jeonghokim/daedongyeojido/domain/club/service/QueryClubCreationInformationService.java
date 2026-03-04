@@ -30,6 +30,6 @@ public class QueryClubCreationInformationService {
 
         User proposer = userFacade.getUserById(club.getClubApplicant().getId());
 
-        return ClubCreationInformationResponse.of(clubDetail, proposer.getUserName(), proposer.getClassNumber());
+        return ClubCreationInformationResponse.of(clubDetail, proposer.getUserName(), proposer.getClassNumber(), club.getClubCreationForm());
     }
 }

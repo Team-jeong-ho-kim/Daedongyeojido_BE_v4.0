@@ -7,14 +7,16 @@ public record ClubCreationInformationResponse(
 
         ClubDetailDto club,
         String userName,
-        String classNumber
+        String classNumber,
+        String clubCreationForm
 ) {
 
-    public static ClubCreationInformationResponse of(ClubDetailDto clubDetailDto, String userName, String classNumber) {
+    public static ClubCreationInformationResponse of(ClubDetailDto clubDetailDto, String userName, String classNumber, String clubCreationForm) {
         return ClubCreationInformationResponse.builder()
                 .club(clubDetailDto)
                 .userName(userName)
                 .classNumber(classNumber)
+                .clubCreationForm(clubCreationForm)
                 .build();
     }
 }
