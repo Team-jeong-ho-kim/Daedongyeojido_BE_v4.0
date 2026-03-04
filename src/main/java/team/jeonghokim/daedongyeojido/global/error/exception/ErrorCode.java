@@ -70,6 +70,7 @@ public enum ErrorCode {
 
     // clubCreationForm
     ALREADY_CLUB_CREATION_FORM_EXISTS(409, "이미 동아리 신청 양식이 존재합니다."),
+    CLUB_CREATION_FORM_NOT_FOUND(404, "동아리 신청 폼을 찾을 수 없습니다."),
 
     // admin
     ADMIN_NOT_FOUND(404, "존재하지 않는 관리자입니다."),
