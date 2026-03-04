@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.domain.clubcreationform.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 @Entity
+@Table(name = "tbl_club_creation_form")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClubCreationForm extends BaseIdEntity {
