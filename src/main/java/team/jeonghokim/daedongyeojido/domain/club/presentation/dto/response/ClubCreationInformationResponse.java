@@ -9,4 +9,12 @@ public record ClubCreationInformationResponse(
         String userName,
         String classNumber
 ) {
+
+    public static ClubCreationInformationResponse of(ClubDetailDto clubDetailDto, String userName, String classNumber) {
+        return ClubCreationInformationResponse.builder()
+                .club(clubDetailDto)
+                .userName(userName)
+                .classNumber(classNumber)
+                .build();
+    }
 }
