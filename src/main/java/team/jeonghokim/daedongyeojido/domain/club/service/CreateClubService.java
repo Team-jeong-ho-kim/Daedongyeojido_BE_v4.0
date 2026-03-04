@@ -60,6 +60,7 @@ public class CreateClubService {
         return Club.builder()
                 .clubName(request.clubName())
                 .clubImage(s3Service.upload(request.clubImage(), FileType.IMAGE))
+                .clubCreationForm(s3Service.upload(request.clubCreationForm(), FileType.DOCUMENT))
                 .oneLiner(request.oneLiner())
                 .introduction(request.introduction())
                 .isOpen(false)
