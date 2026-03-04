@@ -17,6 +17,9 @@ public record CreateClubRequest(
 
         MultipartFile clubImage,
 
+        @NotNull(message = "동아리 신청 양식은 필수입니다.")
+        MultipartFile clubCreationForm,
+
         @NotBlank(message = "한 줄 소개는 필수입니다.")
         @Size(max = 30, message = "한 줄 소개는 최대 30자까지 작성할 수 있습니다.")
         String oneLiner,

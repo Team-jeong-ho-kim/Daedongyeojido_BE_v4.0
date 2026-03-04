@@ -77,6 +77,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/admin/dissolution/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.POST, "/admin/result-duration").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.PATCH, "/admin/result-duration/**").hasAnyRole(ADMIN)
+                        .requestMatchers(HttpMethod.POST, "/admin/club-creation-form").hasAnyRole(ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/admin/club-creation-form/**").hasAnyRole(ADMIN)
 
                         // club
                         .requestMatchers(HttpMethod.POST, "/clubs/applications").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
