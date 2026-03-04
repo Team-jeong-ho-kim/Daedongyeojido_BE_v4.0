@@ -10,10 +10,12 @@ import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.Uplo
 import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
 import team.jeonghokim.daedongyeojido.domain.admin.service.UploadClubCreationFormService;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.ClubCreationInformationResponse;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubCreationService;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubDissolveService;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.UpdateResultDurationRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.service.UpdateResultDurationService;
+import team.jeonghokim.daedongyeojido.domain.club.service.QueryClubCreationInformationService;
 
 @RestController
 @RequestMapping("/admin")
@@ -25,6 +27,7 @@ public class AdminController {
     private final DecideResultDurationService decideResultDurationService;
     private final UpdateResultDurationService updateResultDurationService;
     private final UploadClubCreationFormService uploadClubCreationFormService;
+    private final QueryClubCreationInformationService queryClubCreationInformationService;
 
     @PatchMapping("/clubs/applications/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -55,5 +58,11 @@ public class AdminController {
     public void uploadClubCreationForm(@ModelAttribute @Valid UploadClubCreationFormRequest request) {
         uploadClubCreationFormService.execute(request);
     }
-    
+
+    @GetMapping("/club-creation-form/{club-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ClubCreationInformationResponse queryClubCreationInformation(@PathVariable("club-id") Long clubId) {
+        return queryClubCreationInformationService.execute(clubId);
+    }
+
 }
