@@ -48,6 +48,7 @@ public class LoginService {
                 .accessToken(tokenResponse.accessToken())
                 .classNumber(user.getClassNumber())
                 .userName(user.getUserName())
+                .role(user.getRole())
                 .build();
     }
 
@@ -57,6 +58,7 @@ public class LoginService {
                 xquareUser.classNum(),
                 xquareUser.num()
         );
+        Role role = toRole(xquareUser.userRole());
 
         return userRepository.save(
                 User.builder()
@@ -64,7 +66,7 @@ public class LoginService {
                         .password(passwordEncoder.encode(xquareUser.password()))
                         .userName(xquareUser.name())
                         .classNumber(classNumber)
-                        .role(Role.STUDENT)
+                        .role(role)
                         .build()
         );
     }
@@ -81,6 +83,13 @@ public class LoginService {
                 classNumber
         );
         return user;
+    }
+
+    private Role toRole(String userRole) {
+        if ("SCH".equals(userRole)) {
+            return Role.ADMIN;
+        }
+        return Role.STUDENT;
     }
 
     private String classNumber(int grade, int classNum, int num) {
