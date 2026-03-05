@@ -9,6 +9,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.FailedDeleteException;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.FileSizeExceededException;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.FailedUploadException;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.ImageNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.InvalidExtensionException;
@@ -114,7 +115,7 @@ public class S3Service {
 
     private void validateFileSize(MultipartFile file) {
         if (file.getSize() > MAX_FILE_SIZE) {
-            throw FailedUploadException.EXCEPTION;
+            throw FileSizeExceededException.EXCEPTION;
         }
     }
 

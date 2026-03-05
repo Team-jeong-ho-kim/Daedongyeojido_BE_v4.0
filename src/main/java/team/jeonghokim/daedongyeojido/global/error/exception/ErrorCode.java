@@ -85,6 +85,7 @@ public enum ErrorCode {
     FAILED_UPLOAD(500, "업로드 실패"),
     FAILED_DELETE(500, "삭제 실패"),
     INVALID_EXTENSION(400, "유효하지 않은 파일 확장자입니다."),
+    FILE_SIZE_EXCEEDED(413, "파일 크기 제한을 초과했습니다."),
 
     // feign
     FEIGN_BAD_REQUEST(400, "Feign Bad Request"),
