@@ -34,7 +34,11 @@ public class S3Service {
 
     private static final Set<String> IMAGE_MIME_TYPES = Set.of("image/jpeg", "image/png", "image/webp");
 
-    private static final Set<String> DOCUMENT_MIME_TYPES = Set.of("application/pdf", "application/x-hwp");
+    private static final Set<String> DOCUMENT_MIME_TYPES = Set.of(
+            "application/pdf",
+            "application/x-hwp",
+            "application/x-hwp-v5"
+    );
 
     private static final String DOWNLOAD_CONTENT_TYPE = "application/octet-stream";
 
