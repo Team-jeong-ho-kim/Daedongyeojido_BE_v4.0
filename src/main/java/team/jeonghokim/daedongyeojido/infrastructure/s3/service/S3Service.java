@@ -9,6 +9,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.FailedDeleteException;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.FileSizeExceededException;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.FailedUploadException;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.ImageNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.exception.InvalidExtensionException;
@@ -24,11 +25,11 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class S3Service {
+    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
+
     private static final Set<String> IMAGE_EXTENSIONS = Set.of("jpg", "jpeg", "png", "webp");
 
     private static final Set<String> DOCUMENT_EXTENSIONS = Set.of("hwp", "pdf");
-
-    private static final String DOWNLOAD_CONTENT_TYPE = "application/octet-stream";
 
     private final S3Client s3Client;
 
@@ -39,10 +40,9 @@ public class S3Service {
     private String urlPrefix;
 
     public String upload(MultipartFile file, FileType fileType) {
+        validateFile(file, fileType);
 
         String fileName = file.getOriginalFilename();
-        validate(fileName, fileType);
-
         String extension = getExtension(fileName);
         String key = UUID.randomUUID() + "." + extension;
 
@@ -50,7 +50,6 @@ public class S3Service {
             PutObjectRequest object = PutObjectRequest.builder()
                     .bucket(bucket)
                     .key(key)
-                    .contentType(resolveContentType(file))
                     .contentLength(file.getSize())
                     .build();
 
@@ -98,14 +97,29 @@ public class S3Service {
         return upload(file, fileType);
     }
 
-    private void validate(String fileName, FileType fileType) {
+    private void validateFile(MultipartFile file, FileType fileType) {
+        if (file == null || file.isEmpty()) {
+            throw ImageNotFoundException.EXCEPTION;
+        }
 
+        validateFileSize(file);
+
+        String fileName = file.getOriginalFilename();
         if (fileName == null || fileName.isEmpty()) {
             throw ImageNotFoundException.EXCEPTION;
         }
 
         String extension = getExtension(fileName);
+        validateExtension(extension, fileType);
+    }
 
+    private void validateFileSize(MultipartFile file) {
+        if (file.getSize() > MAX_FILE_SIZE) {
+            throw FileSizeExceededException.EXCEPTION;
+        }
+    }
+
+    private void validateExtension(String extension, FileType fileType) {
         if (fileType == FileType.IMAGE) {
             if (!IMAGE_EXTENSIONS.contains(extension)) {
                 throw InvalidExtensionException.EXCEPTION;
@@ -120,11 +134,10 @@ public class S3Service {
     }
 
     private String getExtension(String fileName) {
-        return fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-    }
-
-    private String resolveContentType(MultipartFile file) {
-        return file.getContentType() != null ? file.getContentType() : DOWNLOAD_CONTENT_TYPE;
+        int lastDotIndex = fileName.lastIndexOf(".");
+        if (lastDotIndex < 0 || lastDotIndex == fileName.length() - 1) {
+            throw InvalidExtensionException.EXCEPTION;
+        }
+        return fileName.substring(lastDotIndex + 1).toLowerCase();
     }
 }
-
