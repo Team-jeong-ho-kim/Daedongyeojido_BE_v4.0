@@ -68,10 +68,9 @@ public class User extends BaseIdEntity {
         this.profileImage = profileImage;
     }
 
-    public void coverInfo(String userName, String classNumber, Role role) {
+    public void coverInfo(String userName, String classNumber) {
         this.userName = userName;
         this.classNumber = classNumber;
-        this.role = role;
     }
 
     public void update(String introduction, List<Major> majors, List<String> links, String profileImage) {

@@ -77,12 +77,10 @@ public class LoginService {
                 xquareUser.classNum(),
                 xquareUser.num()
         );
-        Role role = toRole(xquareUser.userRole());
 
         user.coverInfo(
                 xquareUser.name(),
-                classNumber,
-                role
+                classNumber
         );
         return user;
     }
