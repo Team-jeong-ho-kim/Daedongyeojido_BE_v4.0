@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.club.exception.CannotDeleteClubLeaderException;
 import team.jeonghokim.daedongyeojido.domain.club.exception.ClubMisMatchException;
 import team.jeonghokim.daedongyeojido.domain.club.exception.UserNotInClubException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
@@ -35,6 +36,10 @@ public class DeleteTeamMemberService {
 
         if (!(clubLeader.getClub().equals(user.getClub()))) {
             throw ClubMisMatchException.EXCEPTION;
+        }
+
+        if (userId.equals(clubLeader.getId())) {
+            throw CannotDeleteClubLeaderException.EXCEPTION;
         }
 
         user.leaveClub();

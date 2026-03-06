@@ -45,6 +45,7 @@ public enum ErrorCode {
     CLUB_MISMATCH(403, "동아리장이 속한 동아리와 동아리원이 속한 동아리가 일치하지 않습니다."),
     ALREADY_APPLICANT_IN_CLUB_EXCEPTION(409, "지원자가 이미 동아리에 소속되어있습니다."),
     CLUB_ACCESS_DENIED(403, "해당 동아리에 대한 권한이 없습니다."),
+    CANNOT_DELETE_CLUB_LEADER(409, "동아리 팀장은 삭제할 수 없습니다."),
 
     // alarm
     ALARM_NOT_FOUND(404, "알람을 찾을 수 없습니다."),
