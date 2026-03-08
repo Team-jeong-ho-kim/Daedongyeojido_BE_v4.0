@@ -13,9 +13,9 @@ public class ClubCreationFormController {
 
     private final QueryClubCreationFormService queryClubCreationFormService;
 
-    @GetMapping("/{club-creation-form}")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ClubCreationFormResponse queryClubCreationForm(@PathVariable("club-creation-form") Long clubCreationFormId) {
-        return queryClubCreationFormService.execute(clubCreationFormId);
+    public ClubCreationFormResponse queryClubCreationForm() {
+        return queryClubCreationFormService.execute();
     }
 }

@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ClubCreationFormRepository extends JpaRepository<ClubCreationForm, Long> {
 
     Optional<ClubCreationForm> findByFileName(String fileName);
+
+    Optional<ClubCreationForm> findTopByOrderByIdDesc();
 }

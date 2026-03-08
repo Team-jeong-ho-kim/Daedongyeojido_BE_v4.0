@@ -14,9 +14,9 @@ public class QueryClubCreationFormService {
     private final ClubCreationFormRepository clubCreationFormRepository;
 
     @Transactional(readOnly = true)
-    public ClubCreationFormResponse execute(Long clubCreationFormId) {
+    public ClubCreationFormResponse execute() {
 
-        ClubCreationForm clubCreationForm = clubCreationFormRepository.findById(clubCreationFormId)
+        ClubCreationForm clubCreationForm = clubCreationFormRepository.findTopByOrderByIdDesc()
                 .orElseThrow(() -> ClubCreationFormNotFoundException.EXCEPTION);
 
         return new ClubCreationFormResponse(clubCreationForm.getFileName(), clubCreationForm.getFileUrl());
