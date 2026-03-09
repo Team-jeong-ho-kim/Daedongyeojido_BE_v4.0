@@ -1,0 +1,35 @@
+package team.jeonghokim.daedongyeojido.domain.schedule.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
+import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
+import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.response.InterviewScheduleResponse;
+import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.response.QueryInterviewScheduleListResponse;
+import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class QueryInterviewScheduleListService {
+
+    private final ScheduleRepository scheduleRepository;
+    private final ClubFacade clubFacade;
+    private final UserFacade userFacade;
+
+    @Transactional(readOnly = true)
+    public QueryInterviewScheduleListResponse execute() {
+
+        User user = userFacade.getCurrentUser();
+
+        Club club = clubFacade.getClubById(user.getClub().getId());
+
+        List<InterviewScheduleResponse> schedules = scheduleRepository.findAllSchedulesByClubId(club.getId());
+
+        return QueryInterviewScheduleListResponse.from(schedules);
+    }
+}

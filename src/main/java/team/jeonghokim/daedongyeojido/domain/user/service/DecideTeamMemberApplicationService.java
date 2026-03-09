@@ -1,0 +1,69 @@
+package team.jeonghokim.daedongyeojido.domain.user.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
+import team.jeonghokim.daedongyeojido.domain.alarm.exception.AlarmAccessDeniedException;
+import team.jeonghokim.daedongyeojido.domain.alarm.exception.AlarmNotFoundException;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.domain.UserApplication;
+import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserApplicationRepository;
+import team.jeonghokim.daedongyeojido.domain.user.exception.UserApplicationNotFoundException;
+import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideTeamMemberApplicationRequest;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory.AlarmEventFactory;
+
+@Service
+@RequiredArgsConstructor
+public class DecideTeamMemberApplicationService {
+    private final UserFacade userFacade;
+    private final UserApplicationRepository userApplicationRepository;
+    private final ApplicationEventPublisher eventPublisher;
+    private final AlarmEventFactory alarmEventFactory;
+    private final UserAlarmRepository userAlarmRepository;
+
+    @Transactional
+    public void execute(DecideTeamMemberApplicationRequest request) {
+
+        User user = userFacade.getCurrentUser();
+
+        UserAlarm alarm = userAlarmRepository.findById(request.getAlarmId())
+                .orElseThrow(() -> AlarmNotFoundException.EXCEPTION);
+
+        if (!alarm.getReceiver().getId().equals(user.getId())) {
+            throw AlarmAccessDeniedException.EXCEPTION;
+        }
+
+        UserApplication userApplication = userApplicationRepository.findByUserIdAndClubId(user.getId(), alarm.getClub().getId())
+                .orElseThrow(() -> UserApplicationNotFoundException.EXCEPTION);
+
+        alarm.executed();
+
+        if (request.getIsApproved()) {
+            user.approvedTeamMember(userApplication.getClub());
+            userApplication.approved();
+            joinClub(userApplication.getClub(), user);
+        } else {
+            refuseClub(userApplication.getClub(), user);
+        }
+    }
+
+    private void joinClub(Club club, User user) {
+
+        eventPublisher.publishEvent(
+                alarmEventFactory.createClubAlarmEvent(club, user, AlarmType.USER_JOINED_CLUB)
+        );
+    }
+
+    private void refuseClub(Club club, User user) {
+
+        eventPublisher.publishEvent(
+                alarmEventFactory.createClubAlarmEvent(club, user, AlarmType.USER_REFUSED_CLUB)
+        );
+    }
+}

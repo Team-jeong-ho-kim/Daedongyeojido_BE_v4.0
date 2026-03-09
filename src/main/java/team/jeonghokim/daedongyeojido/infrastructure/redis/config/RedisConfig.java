@@ -1,0 +1,74 @@
+package team.jeonghokim.daedongyeojido.infrastructure.redis.config;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisKeyValueAdapter;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import team.jeonghokim.daedongyeojido.infrastructure.redis.serializer.CustomRedisSerializer;
+import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerAlarmPayload;
+import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;
+
+@Configuration
+@EnableRedisRepositories(
+        enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP,
+        keyspaceNotificationsConfigParameter = "" //Elasticache는 CONFIG 명령어를 제한 -> 우회
+)
+@RequiredArgsConstructor
+public class RedisConfig {
+
+    @Value("${redis.host}")
+    private String host;
+
+    @Value("${redis.port}")
+    private Integer port;
+
+    @Value("${redis.database}")
+    private Integer database;
+
+    private final ObjectMapper objectMapper;
+
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(host, port);
+        config.setDatabase(database);
+        return new LettuceConnectionFactory(host, port);
+    }
+
+    private <T> RedisTemplate<String, T> createRedisTemplate(RedisConnectionFactory factory, Class<T> targetClass) {
+
+        ObjectMapper redisObjectMapper = objectMapper.copy();
+        redisObjectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+
+        RedisTemplate<String, T> template = new RedisTemplate<>();
+        template.setConnectionFactory(factory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+        CustomRedisSerializer<T> serializer = new CustomRedisSerializer<>(redisObjectMapper, targetClass);
+        template.setValueSerializer(serializer);
+        template.setHashValueSerializer(serializer);
+        template.afterPropertiesSet();
+
+        return template;
+    }
+
+    @Bean
+    public RedisTemplate<String, SchedulerSmsPayload> smsRedisTemplate(RedisConnectionFactory factory) {
+
+        return createRedisTemplate(factory, SchedulerSmsPayload.class);
+    }
+
+    @Bean
+    public RedisTemplate<String, SchedulerAlarmPayload> alarmRedisTemplate(RedisConnectionFactory factory) {
+
+        return createRedisTemplate(factory, SchedulerAlarmPayload.class);
+    }
+}

@@ -1,0 +1,27 @@
+package team.jeonghokim.daedongyeojido.domain.application.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
+import team.jeonghokim.daedongyeojido.domain.application.facade.ApplicationFormFacade;
+import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.QueryApplicationFormDetailResponse;
+import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+
+@Service
+@RequiredArgsConstructor
+public class QueryApplicationFormDetailService {
+    private final ApplicationFormFacade applicationFormFacade;
+    private final UserFacade userFacade;
+
+    @Transactional(readOnly = true)
+    public QueryApplicationFormDetailResponse execute(Long applicationFormId) {
+
+        User user = userFacade.getCurrentUser();
+
+        ApplicationForm applicationForm = applicationFormFacade.getApplicationById(applicationFormId);
+
+        return QueryApplicationFormDetailResponse.from(applicationForm);
+    }
+}

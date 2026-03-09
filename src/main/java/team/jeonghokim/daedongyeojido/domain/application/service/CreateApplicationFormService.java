@@ -1,0 +1,58 @@
+package team.jeonghokim.daedongyeojido.domain.application.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
+import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationMajor;
+import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationQuestion;
+import team.jeonghokim.daedongyeojido.domain.application.domain.repository.ApplicationFormRepository;
+import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.request.ApplicationFormRequest;
+import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class CreateApplicationFormService {
+    private final ApplicationFormRepository applicationFormRepository;
+    private final UserFacade userFacade;
+
+    @Transactional
+    public void execute(ApplicationFormRequest request) {
+        User user = userFacade.getCurrentUser();
+
+        List<ApplicationQuestion> questions = createApplicationQuestion(request);
+
+        applicationFormRepository.save(ApplicationForm.builder()
+                .applicationFormTitle(request.getApplicationFormTitle())
+                .club(user.getClub())
+                .user(user)
+                .applicationQuestions(questions)
+                .applicationMajors(createApplicationMajor(request))
+                .submissionDuration(request.getSubmissionDuration())
+                .build());
+    }
+
+    private List<ApplicationQuestion> createApplicationQuestion(ApplicationFormRequest request) {
+        return Optional.ofNullable(request.getContent())
+                .orElseGet(List::of)
+                .stream()
+                .map(content -> ApplicationQuestion.builder()
+                        .content(content)
+                        .build())
+                .toList();
+    }
+
+    private List<ApplicationMajor> createApplicationMajor(ApplicationFormRequest request) {
+        return Optional.ofNullable(request.getMajors())
+                .orElseGet(List::of)
+                .stream()
+                .map(major -> ApplicationMajor.builder()
+                        .major(major)
+                        .build())
+                .toList();
+    }
+}

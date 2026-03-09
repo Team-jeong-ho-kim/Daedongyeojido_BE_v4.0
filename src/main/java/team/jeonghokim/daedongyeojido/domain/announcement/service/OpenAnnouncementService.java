@@ -1,0 +1,37 @@
+package team.jeonghokim.daedongyeojido.domain.announcement.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.announcement.domain.Announcement;
+import team.jeonghokim.daedongyeojido.domain.announcement.exception.AnnouncementAccessDeniedException;
+import team.jeonghokim.daedongyeojido.domain.announcement.facade.AnnouncementFacade;
+import team.jeonghokim.daedongyeojido.domain.announcement.presentation.dto.request.OpenAnnouncementRequest;
+import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
+import team.jeonghokim.daedongyeojido.domain.application.facade.ApplicationFormFacade;
+import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+
+@Service
+@RequiredArgsConstructor
+public class OpenAnnouncementService {
+
+    private final UserFacade userFacade;
+    private final AnnouncementFacade announcementFacade;
+    private final ApplicationFormFacade applicationFormFacade;
+
+    @Transactional
+    public void execute(Long announcementId, OpenAnnouncementRequest request) {
+        User user = userFacade.getCurrentUser();
+
+        Announcement announcement = announcementFacade.getAnnouncementById(announcementId);
+
+        if (user.getClub() == null || !user.getClub().equals(announcement.getClub())) {
+            throw AnnouncementAccessDeniedException.EXCEPTION;
+        }
+
+        ApplicationForm applicationForm = applicationFormFacade.getApplicationById(request.applicationFormId());
+
+        announcement.open(applicationForm);
+    }
+}
