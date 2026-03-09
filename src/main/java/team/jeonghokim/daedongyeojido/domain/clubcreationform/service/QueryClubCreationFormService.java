@@ -19,6 +19,6 @@ public class QueryClubCreationFormService {
         ClubCreationForm clubCreationForm = clubCreationFormRepository.findTopByOrderByIdDesc()
                 .orElseThrow(() -> ClubCreationFormNotFoundException.EXCEPTION);
 
-        return new ClubCreationFormResponse(clubCreationForm.getFileName(), clubCreationForm.getFileUrl());
+        return new ClubCreationFormResponse(clubCreationForm.getId(), clubCreationForm.getFileName(), clubCreationForm.getFileUrl());
     }
 }
