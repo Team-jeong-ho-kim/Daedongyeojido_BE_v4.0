@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.domain.resultduration.service;
+package team.jeonghokim.daedongyeojido.domain.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,19 +6,18 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationNotFoundException;
-import team.jeonghokim.daedongyeojido.domain.resultduration.presentation.dto.response.ResultDurationResponse;
 
 @Service
 @RequiredArgsConstructor
-public class QueryResultDurationService {
+public class DeleteResultDurationService {
     private final ResultDurationRepository resultDurationRepository;
 
-    @Transactional(readOnly = true)
-    public ResultDurationResponse execute() {
+    @Transactional
+    public void execute(Long resultDurationId) {
 
-        ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
+        ResultDuration resultDuration = resultDurationRepository.findById(resultDurationId)
                 .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
 
-        return new ResultDurationResponse(resultDuration.getId(), resultDuration.getResultDurationTime());
+        resultDurationRepository.delete(resultDuration);
     }
 }

@@ -7,15 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideClubCreationRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideResultDurationRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.UploadClubCreationFormRequest;
-import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
-import team.jeonghokim.daedongyeojido.domain.admin.service.DeleteClubCreationFormService;
-import team.jeonghokim.daedongyeojido.domain.admin.service.UploadClubCreationFormService;
+import team.jeonghokim.daedongyeojido.domain.admin.service.*;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.ClubCreationInformationResponse;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubCreationService;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubDissolveService;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.UpdateResultDurationRequest;
-import team.jeonghokim.daedongyeojido.domain.admin.service.UpdateResultDurationService;
 import team.jeonghokim.daedongyeojido.domain.club.service.QueryClubCreationInformationService;
 
 @RestController
@@ -30,6 +27,7 @@ public class AdminController {
     private final UploadClubCreationFormService uploadClubCreationFormService;
     private final QueryClubCreationInformationService queryClubCreationInformationService;
     private final DeleteClubCreationFormService deleteClubCreationFormService;
+    private final DeleteResultDurationService deleteResultDurationService;
 
     @PatchMapping("/clubs/applications/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -71,5 +69,11 @@ public class AdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteClubCreationForm(@PathVariable("club-creation-form") Long clubCreationFormId) {
         deleteClubCreationFormService.execute(clubCreationFormId);
+    }
+
+    @DeleteMapping("/result-duration/{result-duration-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteResultDuration(@PathVariable("result-duration-id") Long resultDurationId) {
+        deleteResultDurationService.execute(resultDurationId);
     }
 }
