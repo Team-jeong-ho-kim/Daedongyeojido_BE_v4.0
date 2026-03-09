@@ -19,6 +19,6 @@ public class QueryResultDurationService {
         ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
                 .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
 
-        return new ResultDurationResponse(resultDuration.getResultDurationTime());
+        return new ResultDurationResponse(resultDuration.getId(), resultDuration.getResultDurationTime());
     }
 }

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public record ResultDurationResponse(
 
+        Long id,
         LocalDateTime resultDuration
 ) {
 }
