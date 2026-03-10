@@ -150,7 +150,7 @@ jobs:
     if: github.event_name == 'push'
 
     environment:
-      name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Staging' }}
+      name: ${{ github.ref == 'refs/heads/main' && 'prod' || 'stag' }}
 
     steps:
       - name: Set deploy target
