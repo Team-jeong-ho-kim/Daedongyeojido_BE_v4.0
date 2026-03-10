@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideClubCreationRequest;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
@@ -21,6 +22,7 @@ public class DecideClubCreationService {
     private final ClubFacade clubFacade;
     private final ApplicationEventPublisher eventPublisher;
     private final AlarmEventFactory alarmEventFactory;
+    private final ClubRepository clubRepository;
 
     @Transactional
     public void execute(Long clubId, DecideClubCreationRequest request) {
@@ -40,6 +42,8 @@ public class DecideClubCreationService {
         } else {
 
             rejectClub(club, user);
+
+            clubRepository.delete(club);
         }
     }
 
