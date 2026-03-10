@@ -83,4 +83,25 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
                 .stream()
                 .findFirst();
     }
+
+    @Override
+    public List<ClubVO> findAllByIsOpenIsFalse() {
+        return jpaQueryFactory
+                .from(club)
+                .leftJoin(club.clubMajors, clubMajor)
+                .where(club.isOpen.isFalse())
+                .transform(
+                        GroupBy.groupBy(club.id).list(
+                                Projections.constructor(
+                                        ClubVO.class,
+                                        club.id,
+                                        club.clubName,
+                                        club.clubImage,
+                                        club.introduction,
+                                        GroupBy.list(clubMajor.major)
+                                )
+                        )
+                );
+    }
+
 }

@@ -146,6 +146,10 @@ jobs:
     if: github.event_name == 'push'
     permissions:
       contents: read
+      deployments: write
+
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Staging' }}
 
     steps:
       - name: Set deploy target
