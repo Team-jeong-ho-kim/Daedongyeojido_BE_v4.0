@@ -15,5 +15,5 @@ public interface ClubRepositoryCustom {
 
     Optional<ClubDetailDto> findClubDetailById(Long clubId);
 
-    List<ClubVO> findAllByIsCloseIsFalse();
+    List<ClubVO> findAllByIsOpenIsFalse();
 }

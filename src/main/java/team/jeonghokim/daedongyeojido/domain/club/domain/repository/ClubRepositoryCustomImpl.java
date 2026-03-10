@@ -85,7 +85,7 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
     }
 
     @Override
-    public List<ClubVO> findAllByIsCloseIsFalse() {
+    public List<ClubVO> findAllByIsOpenIsFalse() {
         return jpaQueryFactory
                 .from(club)
                 .leftJoin(club.clubMajors, clubMajor)
