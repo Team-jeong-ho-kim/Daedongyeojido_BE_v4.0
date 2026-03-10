@@ -10,6 +10,7 @@ import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.Uplo
 import team.jeonghokim.daedongyeojido.domain.admin.service.*;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.ClubCreationInformationResponse;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubCreationService;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubDissolveService;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.UpdateResultDurationRequest;
@@ -26,6 +27,7 @@ public class AdminController {
     private final UpdateResultDurationService updateResultDurationService;
     private final UploadClubCreationFormService uploadClubCreationFormService;
     private final QueryClubCreationInformationService queryClubCreationInformationService;
+    private final QueryClubCreationApplicationListService queryClubCreationApplicationListService;
     private final DeleteClubCreationFormService deleteClubCreationFormService;
     private final DeleteResultDurationService deleteResultDurationService;
 
@@ -63,6 +65,12 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     public ClubCreationInformationResponse queryClubCreationInformation(@PathVariable("club-id") Long clubId) {
         return queryClubCreationInformationService.execute(clubId);
+    }
+
+    @GetMapping("/club-creation-application")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryClubListResponse queryClubCreationApplication() {
+        return queryClubCreationApplicationListService.execute();
     }
 
     @DeleteMapping("/club-creation-form/{club-creation-form}")
