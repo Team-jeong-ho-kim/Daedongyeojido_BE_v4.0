@@ -70,7 +70,10 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
                 .from(club)
                 .leftJoin(club.clubMajors, clubMajor)
                 .leftJoin(club.clubLinks, clubLink)
-                .where(club.id.eq(clubId))
+                .where(
+                        club.id.eq(clubId),
+                        club.clubStatus.in(ClubStatus.OPEN, ClubStatus.CLOSE)
+                )
                 .transform(groupBy(club.id).list(
                         new QClubDetailDto(
                                 club.clubName,
