@@ -17,7 +17,7 @@ public class QueryClubCreationApplicationListService {
     @Transactional(readOnly = true)
     public QueryClubListResponse execute() {
 
-        List<ClubVO> clubs = clubRepository.findAllByIsOpenIsFalse();
+        List<ClubVO> clubs = clubRepository.findAllByCloseStatus();
 
         return QueryClubListResponse.from(clubs);
     }
