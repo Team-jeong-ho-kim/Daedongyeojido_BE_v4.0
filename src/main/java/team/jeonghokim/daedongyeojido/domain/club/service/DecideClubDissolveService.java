@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.club.domain.enums.ClubStatus;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotOpenException;
 import team.jeonghokim.daedongyeojido.domain.club.facade.ClubFacade;
@@ -35,7 +36,7 @@ public class DecideClubDissolveService {
         User user = userRepository.findById(club.getClubApplicant().getId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        if (!club.getIsOpen()) {
+        if (!club.getClubStatus().equals(ClubStatus.OPEN)) {
             throw ClubNotOpenException.EXCEPTION;
         }
 
