@@ -4,6 +4,7 @@ import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.club.domain.enums.ClubStatus;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.vo.ClubVO;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.ClubDetailDto;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.ClubMembersDto;
@@ -27,11 +28,11 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ClubVO> findAllByIsOpenIsTrue() {
+    public List<ClubVO> findAllByOpenStatus() {
         return jpaQueryFactory
                 .from(club)
                 .leftJoin(club.clubMajors, clubMajor)
-                .where(club.isOpen.isTrue())
+                .where(club.clubStatus.eq(ClubStatus.OPEN))
                 .transform(
                         GroupBy.groupBy(club.id).list(
                                 Projections.constructor(
@@ -85,11 +86,11 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
     }
 
     @Override
-    public List<ClubVO> findAllByIsOpenIsFalse() {
+    public List<ClubVO> findAllByCloseStatus() {
         return jpaQueryFactory
                 .from(club)
                 .leftJoin(club.clubMajors, clubMajor)
-                .where(club.isOpen.isFalse())
+                .where(club.clubStatus.eq(ClubStatus.CLOSE))
                 .transform(
                         GroupBy.groupBy(club.id).list(
                                 Projections.constructor(
