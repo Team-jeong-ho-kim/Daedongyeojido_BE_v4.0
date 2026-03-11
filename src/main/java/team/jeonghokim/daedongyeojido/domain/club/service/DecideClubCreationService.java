@@ -40,10 +40,9 @@ public class DecideClubCreationService {
 
             acceptClub(club, user);
         } else {
+            club.clubRejected();
 
             rejectClub(club, user);
-
-            clubRepository.delete(club);
         }
     }
 

@@ -9,11 +9,11 @@ import java.util.Optional;
 
 public interface ClubRepositoryCustom {
 
-    List<ClubVO> findAllByIsOpenIsTrue();
+    List<ClubVO> findAllByOpenStatus();
 
     List<ClubMembersDto> findClubMembersById(Long clubId);
 
     Optional<ClubDetailDto> findClubDetailById(Long clubId);
 
-    List<ClubVO> findAllByIsOpenIsFalse();
+    List<ClubVO> findAllByCloseStatus();
 }

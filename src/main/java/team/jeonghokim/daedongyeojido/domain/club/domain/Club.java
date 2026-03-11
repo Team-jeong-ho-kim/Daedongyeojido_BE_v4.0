@@ -1,19 +1,13 @@
 package team.jeonghokim.daedongyeojido.domain.club.domain;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.ClubAlarm;
+import team.jeonghokim.daedongyeojido.domain.club.domain.enums.ClubStatus;
+import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.UpdateClubRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -50,8 +44,9 @@ public class Club extends BaseIdEntity {
     @Column(length = 500, nullable = false)
     private String introduction;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Boolean isOpen;
+    private ClubStatus clubStatus;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
@@ -73,7 +68,7 @@ public class Club extends BaseIdEntity {
             String clubCreationForm,
             String oneLiner,
             String introduction,
-            Boolean isOpen,
+            ClubStatus clubStatus,
             User clubApplicant,
             List<ClubMajor> clubMajors,
             List<ClubLink> clubLinks
@@ -83,7 +78,7 @@ public class Club extends BaseIdEntity {
         this.clubCreationForm = clubCreationForm;
         this.oneLiner = oneLiner;
         this.introduction = introduction;
-        this.isOpen = isOpen;
+        this.clubStatus = clubStatus;
         this.clubApplicant = clubApplicant;
         addClubMajors(clubMajors);
         addClubLinks(clubLinks);
@@ -104,7 +99,11 @@ public class Club extends BaseIdEntity {
     }
 
     public void clubOpen() {
-        this.isOpen = true;
+        this.clubStatus = ClubStatus.OPEN;
+    }
+
+    public void clubRejected() {
+        this.clubStatus = ClubStatus.REJECTED;
     }
 
     public void updateClub(
