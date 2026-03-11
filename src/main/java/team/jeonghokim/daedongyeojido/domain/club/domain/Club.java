@@ -14,7 +14,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.ClubAlarm;
-import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.UpdateClubRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -108,14 +107,26 @@ public class Club extends BaseIdEntity {
         this.isOpen = true;
     }
 
-    public void updateClub(UpdateClubRequest request, String clubImage) {
-        this.clubName = request.clubName();
-        this.clubImage = clubImage;
-        this.oneLiner = request.oneLiner();
-        this.introduction = request.introduction();
+    public void updateClub(
+            String clubName,
+            String clubImage,
+            String oneLiner,
+            String introduction,
+            List<Major> majors,
+            List<String> links
+    ) {
+        this.clubName = clubName != null ? clubName : this.clubName;
+        this.clubImage = clubImage != null ? clubImage : this.clubImage;
+        this.oneLiner = oneLiner != null ? oneLiner : this.oneLiner;
+        this.introduction = introduction != null ? introduction : this.introduction;
 
-        updateMajors(request.major());
-        updateLinks(request.link());
+        if (majors != null) {
+            updateMajors(majors);
+        }
+
+        if (links != null) {
+            updateLinks(links);
+        }
     }
 
     private void updateMajors(List<Major> majors) {
