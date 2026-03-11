@@ -19,8 +19,19 @@ public class UpdateClubService {
     @Transactional
     public void execute(Long clubId, UpdateClubRequest request) {
         Club club = clubFacade.getClubById(clubId);
-        String clubImage = s3Service.upload(request.clubImage(), FileType.IMAGE);
+        String clubImage = null;
 
-        club.updateClub(request, clubImage);
+        if (request.clubImage() != null && !request.clubImage().isEmpty()) {
+            clubImage = s3Service.update(club.getClubImage(), request.clubImage(), FileType.IMAGE);
+        }
+
+        club.updateClub(
+                request.clubName(),
+                clubImage,
+                request.oneLiner(),
+                request.introduction(),
+                request.major(),
+                request.link()
+        );
     }
 }

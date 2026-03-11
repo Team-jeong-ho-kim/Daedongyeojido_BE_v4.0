@@ -38,19 +38,16 @@ public class CreateClubService {
 
     @Transactional
     public void execute(CreateClubRequest request) {
-
         User clubApplicant = userFacade.getCurrentUser();
 
         createClubValidator.validate(request, clubApplicant);
 
         List<ClubMajor> clubMajors = createClubMajor(request);
-
         List<ClubLink> clubLinks = createClubLink(request);
 
         Club club = createClub(request, clubApplicant, clubMajors, clubLinks);
 
         createUserAlarm(club, clubApplicant);
-
         createAdminAlarm(club);
 
         clubRepository.save(club);
