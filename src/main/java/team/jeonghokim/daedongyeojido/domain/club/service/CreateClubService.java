@@ -10,6 +10,7 @@ import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.AdminAlarmR
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubLink;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
+import team.jeonghokim.daedongyeojido.domain.club.domain.enums.ClubStatus;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.CreateClubRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
@@ -63,7 +64,7 @@ public class CreateClubService {
                 .clubCreationForm(s3Service.upload(request.clubCreationForm(), FileType.DOCUMENT))
                 .oneLiner(request.oneLiner())
                 .introduction(request.introduction())
-                .isOpen(false)
+                .clubStatus(ClubStatus.CLOSE)
                 .clubApplicant(clubApplicant)
                 .clubMajors(clubMajors)
                 .clubLinks(clubLinks)
