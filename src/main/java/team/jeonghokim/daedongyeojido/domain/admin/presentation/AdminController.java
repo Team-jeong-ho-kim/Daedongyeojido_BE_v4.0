@@ -25,10 +25,10 @@ public class AdminController {
     private final DecideClubDissolveService decideClubDissolveService;
     private final DecideResultDurationService decideResultDurationService;
     private final UpdateResultDurationService updateResultDurationService;
-    private final UploadClubCreationFormService uploadClubCreationFormService;
+    private final UploadFileService uploadFileService;
     private final QueryClubCreationInformationService queryClubCreationInformationService;
     private final QueryClubCreationApplicationListService queryClubCreationApplicationListService;
-    private final DeleteClubCreationFormService deleteClubCreationFormService;
+    private final DeleteFileService deleteFileService;
     private final DeleteResultDurationService deleteResultDurationService;
 
     @PatchMapping("/clubs/applications/{club-id}")
@@ -58,7 +58,7 @@ public class AdminController {
     @PostMapping("/club-creation-form")
     @ResponseStatus(HttpStatus.CREATED)
     public void uploadClubCreationForm(@ModelAttribute @Valid UploadClubCreationFormRequest request) {
-        uploadClubCreationFormService.execute(request);
+        uploadFileService.execute(request);
     }
 
     @GetMapping("/club-creation-form/{club-id}")
@@ -76,7 +76,7 @@ public class AdminController {
     @DeleteMapping("/club-creation-form/{club-creation-form}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteClubCreationForm(@PathVariable("club-creation-form") Long clubCreationFormId) {
-        deleteClubCreationFormService.execute(clubCreationFormId);
+        deleteFileService.execute(clubCreationFormId);
     }
 
     @DeleteMapping("/result-duration/{result-duration-id}")

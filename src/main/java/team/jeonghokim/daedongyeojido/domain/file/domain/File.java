@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.domain.clubcreationform.domain;
+package team.jeonghokim.daedongyeojido.domain.file.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 @Entity
-@Table(name = "tbl_club_creation_form")
+@Table(name = "tbl_file")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ClubCreationForm extends BaseIdEntity {
+public class File extends BaseIdEntity {
 
     @Column(nullable = false, unique = true)
     private String fileName;
@@ -22,7 +22,7 @@ public class ClubCreationForm extends BaseIdEntity {
     private String fileUrl;
 
     @Builder
-    public ClubCreationForm(String fileName, String fileUrl) {
+    public File(String fileName, String fileUrl) {
         this.fileName = fileName;
         this.fileUrl = fileUrl;
     }
