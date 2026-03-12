@@ -59,7 +59,7 @@ public class SecurityConfig {
 
                         // auth
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/auth/logout").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/auth/logout").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/auth/reissue").permitAll()
 
                         // user
@@ -79,6 +79,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/admin/result-duration").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.PATCH, "/admin/result-duration/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.POST, "/admin/club-creation-form").hasAnyRole(ADMIN)
+                        .requestMatchers(HttpMethod.POST, "/admin/teachers").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.GET, "/admin/club-creation-form/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.GET, "/admin/club-creation-application").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/club-creation-form/**").hasAnyRole(ADMIN)
@@ -119,7 +120,7 @@ public class SecurityConfig {
 
                         // alarm
                         .requestMatchers(HttpMethod.GET, "/alarms/clubs").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
-                        .requestMatchers(HttpMethod.GET, "/alarms/users").hasAnyRole(STUDENT, TEACHER, CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.GET, "/alarms/users").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/alarms/admins").hasAnyRole(ADMIN)
 
                         // file

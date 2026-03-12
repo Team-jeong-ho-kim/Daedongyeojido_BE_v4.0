@@ -15,6 +15,8 @@ import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubCreationServ
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubDissolveService;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.UpdateResultDurationRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.QueryClubCreationInformationService;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateTeacherRequest;
+import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateTeacherService;
 
 @RestController
 @RequestMapping("/admin")
@@ -30,6 +32,7 @@ public class AdminController {
     private final QueryClubCreationApplicationListService queryClubCreationApplicationListService;
     private final DeleteFileService deleteFileService;
     private final DeleteResultDurationService deleteResultDurationService;
+    private final CreateTeacherService createTeacherService;
 
     @PatchMapping("/clubs/applications/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -83,5 +86,11 @@ public class AdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteResultDuration(@PathVariable("result-duration-id") Long resultDurationId) {
         deleteResultDurationService.execute(resultDurationId);
+    }
+
+    @PostMapping("/teachers")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createTeacher(@RequestBody @Valid CreateTeacherRequest request) {
+        createTeacherService.execute(request);
     }
 }

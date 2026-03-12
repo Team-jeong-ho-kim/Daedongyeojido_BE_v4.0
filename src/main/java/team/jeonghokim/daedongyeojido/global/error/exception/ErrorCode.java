@@ -17,6 +17,8 @@ public enum ErrorCode {
 
     // user
     USER_NOT_FOUND(404, "해당 유저가 존재 하지 않습니다."),
+    TEACHER_NOT_FOUND(404, "해당 선생님이 존재 하지 않습니다."),
+    TEACHER_ALREADY_EXISTS(409, "이미 존재하는 선생님 계정입니다."),
     USER_MISMATCH(401, "유저가 일치 하지 않습니다."),
     PASSWORD_MISMATCH(401, "비밀 번호가 일치 하지 않습니다."),
     INVALID_USER(401, "유효 하지 않은 사용자입니다."),
