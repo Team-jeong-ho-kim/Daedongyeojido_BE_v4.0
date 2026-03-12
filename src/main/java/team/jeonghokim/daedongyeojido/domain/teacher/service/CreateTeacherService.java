@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.teacher.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +24,16 @@ public class CreateTeacherService {
                     throw TeacherAlreadyExistsException.EXCEPTION;
                 });
 
-        teacherRepository.save(
-                Teacher.builder()
-                        .accountId(request.accountId())
-                        .teacherName(request.teacherName())
-                        .password(passwordEncoder.encode(request.password()))
-                        .build()
-        );
+        try {
+            teacherRepository.saveAndFlush(
+                    Teacher.builder()
+                            .accountId(request.accountId())
+                            .teacherName(request.teacherName())
+                            .password(passwordEncoder.encode(request.password()))
+                            .build()
+            );
+        } catch (DataIntegrityViolationException e) {
+            throw TeacherAlreadyExistsException.EXCEPTION;
+        }
     }
 }
