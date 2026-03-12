@@ -7,10 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.request.LoginRequest;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.LoginResponse;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.TokenResponse;
+import team.jeonghokim.daedongyeojido.domain.teacher.service.TeacherLoginService;
+import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Division;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserNotFoundException;
+import team.jeonghokim.daedongyeojido.global.security.auth.PrincipalDetailsService;
 import team.jeonghokim.daedongyeojido.global.security.jwt.JwtTokenProvider;
 import team.jeonghokim.daedongyeojido.infrastructure.feign.client.XquareClient;
 import team.jeonghokim.daedongyeojido.infrastructure.feign.client.dto.XquareLoginRequest;
@@ -23,9 +26,15 @@ public class LoginService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final XquareClient xquareClient;
+    private final TeacherLoginService teacherLoginService;
+    private final PrincipalDetailsService principalDetailsService;
 
     @Transactional
     public LoginResponse execute(LoginRequest request) {
+        if (request.division() == Division.TEACHER) {
+            return teacherLoginService.execute(request);
+        }
+
         XquareLoginRequest xquareLoginRequest = new XquareLoginRequest(
                 request.accountId(),
                 request.password()
@@ -41,7 +50,9 @@ public class LoginService {
                 .map(existingUser -> coverUserInfo(existingUser, xquareUser))
                 .orElseGet(() -> createUser(xquareUser));
 
-        TokenResponse tokenResponse = jwtTokenProvider.receiveToken(user.getAccountId());
+        TokenResponse tokenResponse = jwtTokenProvider.receiveToken(
+                principalDetailsService.createPrincipalKey(Division.STUDENT, user.getAccountId())
+        );
 
         return LoginResponse.builder()
                 .refreshToken(tokenResponse.refreshToken())
