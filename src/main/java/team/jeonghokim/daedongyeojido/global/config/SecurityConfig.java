@@ -124,6 +124,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/alarms/users").hasAnyRole(STUDENT, TEACHER, CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/alarms/admins").hasAnyRole(ADMIN)
 
+                        // file
+                        .requestMatchers(HttpMethod.GET, "/files/**").permitAll()
+
                         // monitoring
                         .requestMatchers("/actuator/prometheus")
                         .access(new WebExpressionAuthorizationManager(
