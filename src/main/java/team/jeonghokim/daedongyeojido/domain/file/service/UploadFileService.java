@@ -1,9 +1,9 @@
-package team.jeonghokim.daedongyeojido.domain.admin.service;
+package team.jeonghokim.daedongyeojido.domain.file.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.UploadClubCreationFormRequest;
+import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.UploadFileRequest;
 import team.jeonghokim.daedongyeojido.domain.file.domain.File;
 import team.jeonghokim.daedongyeojido.domain.file.domain.repository.FileRepository;
 import team.jeonghokim.daedongyeojido.domain.file.exception.AlreadyFileExistsException;
@@ -18,7 +18,7 @@ public class UploadFileService {
     private final S3Service s3Service;
 
     @Transactional
-    public void execute(UploadClubCreationFormRequest request) {
+    public void execute(UploadFileRequest request) {
          if (fileRepository.findByFileName(request.fileName()).isPresent()) {
              throw AlreadyFileExistsException.EXCEPTION;
          }
