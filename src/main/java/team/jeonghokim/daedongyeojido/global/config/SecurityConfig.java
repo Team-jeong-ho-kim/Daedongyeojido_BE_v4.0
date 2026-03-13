@@ -80,7 +80,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/admin/result-duration/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.POST, "/admin/club-creation-form").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.POST, "/admin/teachers").hasAnyRole(ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/admin/club-creation-form/**").hasAnyRole(ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/admin/club-creation-application/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.GET, "/admin/club-creation-application").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/club-creation-form/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/result-duration/**").hasAnyRole(ADMIN)
