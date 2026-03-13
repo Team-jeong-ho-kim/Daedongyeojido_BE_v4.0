@@ -22,7 +22,7 @@ import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateTeacherServic
 @RequiredArgsConstructor
 public class AdminController {
 
-    //private final DecideClubCreationService decideClubCreationService;
+    private final DecideClubCreationService decideClubCreationService;
     private final DecideClubDissolveService decideClubDissolveService;
     private final DecideResultDurationService decideResultDurationService;
     private final UpdateResultDurationService updateResultDurationService;
@@ -33,7 +33,8 @@ public class AdminController {
 
     @PatchMapping("/clubs/applications/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void decideClubCreation(@PathVariable("club-id") Long clubId, @RequestBody @Valid DecideClubCreationRequest request) {decideClubCreationService.execute(clubId, request);
+    public void decideClubCreation(@PathVariable("club-id") Long clubId, @RequestBody @Valid DecideClubCreationRequest request) {
+        decideClubCreationService.execute(clubId, request);
     }
 
     @DeleteMapping("/dissolution/{club-id}")
