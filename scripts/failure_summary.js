@@ -18,10 +18,12 @@ const path = require('path');
 // Configuration
 const CONFIG = {
     logFile: 'failure.log',
-    geminiModel: 'gemini-2.5-flash', // Latest Gemini 2.5 Flash model
+    geminiModel: 'gemini-2.5-flash',
     geminiApiVersion: 'v1beta',
     issueLabel: 'fix',
     maxLogSize: 100000, // Maximum characters to send to Gemini
+    maxJobsToAnalyze: 3,
+    maxLogExcerptPerJob: 12000,
 };
 
 /**
@@ -68,6 +70,152 @@ async function readFailureLog() {
     }
 }
 
+function parseGitHubContext() {
+    return JSON.parse(process.env.GITHUB_CONTEXT);
+}
+
+function getRepoInfo(context) {
+    const { repository } = context;
+    if (!repository) {
+        throw new Error('Repository information not found in GITHUB_CONTEXT');
+    }
+
+    const [owner, repo] = repository.split('/');
+    return { owner, repo };
+}
+
+async function githubApiRequest(url, options = {}) {
+    const token = process.env.GITHUB_TOKEN;
+    const response = await fetch(url, {
+        ...options,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+            'User-Agent': 'GitHub-Actions-Failure-Analyzer',
+            ...(options.headers || {}),
+        },
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`GitHub API error (${response.status}): ${errorText}`);
+    }
+
+    return response;
+}
+
+function stripAnsi(text) {
+    return text.replace(/\u001b\[[0-9;]*m/g, '');
+}
+
+function summarizeFailedSteps(steps = []) {
+    return steps
+        .filter(step => step.conclusion === 'failure')
+        .map(step => `${step.number}. ${step.name}`)
+        .join(', ');
+}
+
+async function fetchFailedJobs(context) {
+    const { owner, repo } = getRepoInfo(context);
+    const runId = context.run_id;
+    const runAttempt = context.run_attempt || 1;
+    const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs/${runId}/attempts/${runAttempt}/jobs?per_page=100`;
+
+    console.log(`Fetching failed jobs for run ${runId} (attempt ${runAttempt})...`);
+    const response = await githubApiRequest(url);
+    const data = await response.json();
+
+    if (!data.jobs || data.jobs.length === 0) {
+        throw new Error('No workflow jobs returned from GitHub Actions API');
+    }
+
+    const failedConclusions = new Set(['failure', 'timed_out', 'startup_failure', 'action_required']);
+    const failedJobs = data.jobs
+        .filter(job => failedConclusions.has(job.conclusion))
+        .slice(0, CONFIG.maxJobsToAnalyze);
+
+    console.log(`Found ${failedJobs.length} failed job(s)`);
+    return failedJobs;
+}
+
+async function fetchJobLog(owner, repo, jobId) {
+    const url = `https://api.github.com/repos/${owner}/${repo}/actions/jobs/${jobId}/logs`;
+    const response = await githubApiRequest(url);
+    const rawLog = await response.text();
+
+    return stripAnsi(rawLog).trim();
+}
+
+function buildFailureLog(context, failedJobs, jobLogs) {
+    const workflowUrl = `https://github.com/${context.repository}/actions/runs/${context.run_id}`;
+    const lines = [
+        '=== GitHub Actions Failure Context ===',
+        `Repository: ${context.repository}`,
+        `Workflow: ${context.workflow}`,
+        `Run ID: ${context.run_id}`,
+        `Run Attempt: ${context.run_attempt || 1}`,
+        `Branch: ${context.ref_name}`,
+        `Commit: ${context.sha}`,
+        `Actor: ${context.actor}`,
+        `Event: ${context.event_name}`,
+        `Workflow URL: ${workflowUrl}`,
+        '',
+        '=== Failed Jobs Summary ===',
+    ];
+
+    if (failedJobs.length === 0) {
+        lines.push('No failed jobs were identified by the GitHub Actions API.');
+    }
+
+    for (const job of failedJobs) {
+        const failedSteps = summarizeFailedSteps(job.steps);
+        lines.push(`- Job: ${job.name}`);
+        lines.push(`  Conclusion: ${job.conclusion}`);
+        lines.push(`  Started: ${job.started_at}`);
+        lines.push(`  Completed: ${job.completed_at}`);
+        lines.push(`  Failed steps: ${failedSteps || 'No failed step information available'}`);
+    }
+
+    lines.push('');
+    lines.push('=== Failed Job Logs ===');
+
+    for (const job of failedJobs) {
+        const logText = jobLogs[job.id] || 'Failed to retrieve job log.';
+        const excerpt = logText.length > CONFIG.maxLogExcerptPerJob
+            ? logText.slice(-CONFIG.maxLogExcerptPerJob)
+            : logText;
+
+        lines.push('');
+        lines.push(`--- Job: ${job.name} (ID: ${job.id}) ---`);
+        lines.push(excerpt);
+    }
+
+    return lines.join('\n');
+}
+
+async function collectFailureLog() {
+    const context = parseGitHubContext();
+    const { owner, repo } = getRepoInfo(context);
+    const failedJobs = await fetchFailedJobs(context);
+    const jobLogs = {};
+
+    for (const job of failedJobs) {
+        console.log(`Fetching log for failed job: ${job.name} (${job.id})`);
+
+        try {
+            jobLogs[job.id] = await fetchJobLog(owner, repo, job.id);
+        } catch (error) {
+            jobLogs[job.id] = `Failed to retrieve log for job ${job.name}: ${error.message}`;
+        }
+    }
+
+    const failureLog = buildFailureLog(context, failedJobs, jobLogs);
+    const logPath = path.join(process.cwd(), CONFIG.logFile);
+    await fs.writeFile(logPath, failureLog, 'utf-8');
+
+    console.log(`✓ Wrote enriched failure log to ${logPath}`);
+}
+
 /**
  * Calls Google Gemini API to analyze the failure log
  */
@@ -75,18 +223,25 @@ async function analyzeWithGemini(logContent) {
     const apiKey = process.env.GEMINI_API_KEY;
     const url = `https://generativelanguage.googleapis.com/${CONFIG.geminiApiVersion}/models/${CONFIG.geminiModel}:generateContent?key=${apiKey}`;
 
-    const prompt = `You are a DevOps expert analyzing a CI/CD failure log. 
+    const prompt = `You are a DevOps expert analyzing a CI/CD failure log.
 Analyze this failure log and provide a structured response in STRICT JSON format.
 All response values MUST be in Korean language.
+
+CRITICAL RULES:
+1. Use only evidence that explicitly appears in the log.
+2. Do NOT guess or list generic possibilities when the error is not shown.
+3. If the log is insufficient, clearly say that the exact root cause is not confirmed.
+4. Mention the failed job and failed step names when they exist.
+5. The solution must be concrete and tied to the observed error.
 
 CRITICAL: Your response must be ONLY valid JSON. Do not include any text before or after the JSON object.
 
 Required JSON structure:
 {
   "title": "Korean issue title (concise, max 80 chars)",
-  "summary": "What failed (Korean, 2-3 sentences)",
-  "cause": "Root cause analysis (Korean, detailed)",
-  "solution": "How to fix this issue (Korean, actionable steps)"
+  "summary": "What failed (Korean, 2-3 sentences, include failed job/step if known)",
+  "cause": "Root cause analysis (Korean, based only on explicit evidence)",
+  "solution": "How to fix this issue (Korean, actionable steps based on evidence)"
 }
 
 Failure Log:
@@ -200,16 +355,10 @@ function parseGeminiResponse(rawText) {
  * Creates a GitHub issue with the analysis
  */
 async function createGitHubIssue(analysis) {
-    const context = JSON.parse(process.env.GITHUB_CONTEXT);
+    const context = parseGitHubContext();
     const token = process.env.GITHUB_TOKEN;
-
-    // Extract repository information
-    const { repository } = context;
-    if (!repository) {
-        throw new Error('Repository information not found in GITHUB_CONTEXT');
-    }
-
-    const [owner, repo] = repository.split('/');
+    const { owner, repo } = getRepoInfo(context);
+    const workflowUrl = `https://github.com/${context.repository}/actions/runs/${context.run_id}`;
 
     const issueBody = `## 🔍 요약 (Summary)
 
@@ -222,6 +371,11 @@ ${analysis.cause}
 ## ✅ 해결 방법 (Solution)
 
 ${analysis.solution}
+
+## 🔗 참고 링크
+
+- Workflow Run: ${workflowUrl}
+- Commit: ${context.sha}
 
 ---
 *이 이슈는 자동으로 생성되었습니다 / This issue was automatically generated*`;
@@ -267,7 +421,8 @@ async function main() {
         validateEnvironment();
         console.log('✓ Environment validated\n');
 
-        // Step 2: Read failure log
+        // Step 2: Collect and read failure log
+        await collectFailureLog();
         const logContent = await readFailureLog();
         console.log(`✓ Read ${logContent.length} characters from failure log\n`);
 
