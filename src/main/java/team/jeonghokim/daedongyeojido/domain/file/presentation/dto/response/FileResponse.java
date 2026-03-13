@@ -6,14 +6,14 @@ import lombok.Builder;
 @Builder
 public record FileResponse(
 
-        Long clubCreationFormId,
+        Long fileId,
         String fileName,
         String fileUrl
 ) {
 
     @QueryProjection
-    public FileResponse(Long clubCreationFormId, String fileName, String fileUrl) {
-        this.clubCreationFormId = clubCreationFormId;
+    public FileResponse(Long fileId, String fileName, String fileUrl) {
+        this.fileId = fileId;
         this.fileName = fileName;
         this.fileUrl = fileUrl;
     }
