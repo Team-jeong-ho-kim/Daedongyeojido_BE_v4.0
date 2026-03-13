@@ -124,7 +124,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/alarms/admins").hasAnyRole(ADMIN)
 
                         // file
+                        .requestMatchers(HttpMethod.POST, "/files").hasAnyRole(ADMIN, STUDENT, CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.GET, "/files/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/files/**").hasAnyRole(ADMIN, STUDENT, CLUB_MEMBER, CLUB_LEADER)
 
                         // monitoring
                         .requestMatchers("/actuator/prometheus")
