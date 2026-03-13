@@ -183,6 +183,7 @@ jobs:
     needs: [ci, docker_push, deploy]
     if: ${{ always() && github.event_name == 'push' && (needs.ci.result == 'failure' || needs.docker_push.result == 'failure' || needs.deploy.result == 'failure') }}
     permissions:
+      actions: read
       contents: read
       issues: write
     outputs:
@@ -196,24 +197,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Collect GitHub Actions failure logs
-        run: |
-          echo "=== GitHub Actions Failure Context ===" > failure.log
-          echo "Job: ${{ github.job }}" >> failure.log
-          echo "Run ID: ${{ github.run_id }}" >> failure.log
-          echo "Workflow: ${{ github.workflow }}" >> failure.log
-          echo "Branch: ${{ github.ref_name }}" >> failure.log
-          echo "Commit: ${{ github.sha }}" >> failure.log
-          echo "Actor: ${{ github.actor }}" >> failure.log
-          echo "Event: ${{ github.event_name }}" >> failure.log
-          echo "" >> failure.log
-          echo "=== Failed Step Details ===" >> failure.log
-          echo "Previous step status: ${{ job.status }}" >> failure.log
-          echo "" >> failure.log
-          echo "Full workflow log:" >> failure.log
-          echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> failure.log
-          echo "" >> failure.log
 
       - name: Summarize with Gemini and create GitHub Issue
         id: create_issue
