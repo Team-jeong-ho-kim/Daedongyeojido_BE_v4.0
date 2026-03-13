@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideClubCreationRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideResultDurationRequest;
-import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.UploadClubCreationFormRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.service.*;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.ClubCreationInformationResponse;
@@ -27,10 +26,8 @@ public class AdminController {
     private final DecideClubDissolveService decideClubDissolveService;
     private final DecideResultDurationService decideResultDurationService;
     private final UpdateResultDurationService updateResultDurationService;
-    private final UploadFileService uploadFileService;
     private final QueryClubCreationInformationService queryClubCreationInformationService;
     private final QueryClubCreationApplicationListService queryClubCreationApplicationListService;
-    private final DeleteFileService deleteFileService;
     private final DeleteResultDurationService deleteResultDurationService;
     private final CreateTeacherService createTeacherService;
 
@@ -58,28 +55,16 @@ public class AdminController {
         updateResultDurationService.execute(resultDurationId, request);
     }
 
-    @PostMapping("/club-creation-form")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void uploadClubCreationForm(@ModelAttribute @Valid UploadClubCreationFormRequest request) {
-        uploadFileService.execute(request);
-    }
-
-    @GetMapping("/club-creation-form/{club-id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ClubCreationInformationResponse queryClubCreationInformation(@PathVariable("club-id") Long clubId) {
-        return queryClubCreationInformationService.execute(clubId);
-    }
-
     @GetMapping("/club-creation-application")
     @ResponseStatus(HttpStatus.OK)
     public QueryClubListResponse queryClubCreationApplication() {
         return queryClubCreationApplicationListService.execute();
     }
 
-    @DeleteMapping("/club-creation-form/{club-creation-form}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteClubCreationForm(@PathVariable("club-creation-form") Long clubCreationFormId) {
-        deleteFileService.execute(clubCreationFormId);
+    @GetMapping("/club-creation-application/{club-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ClubCreationInformationResponse queryClubCreationInformation(@PathVariable("club-id") Long clubId) {
+        return queryClubCreationInformationService.execute(clubId);
     }
 
     @DeleteMapping("/result-duration/{result-duration-id}")
