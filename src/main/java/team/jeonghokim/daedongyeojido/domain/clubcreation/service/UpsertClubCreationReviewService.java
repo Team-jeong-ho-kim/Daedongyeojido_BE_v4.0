@@ -91,13 +91,13 @@ public class UpsertClubCreationReviewService {
                 .anyMatch(review -> review.getReviewerType() == ReviewerType.TEACHER
                         && review.getDecision() == ClubCreationReviewDecision.APPROVED);
 
-        if (adminApproved && teacherApproved) {
-            finalizeClubCreationApplicationService.execute(application);
+        if (hasChangesRequested) {
+            application.requestChanges();
             return;
         }
 
-        if (hasChangesRequested) {
-            application.requestChanges();
+        if (adminApproved && teacherApproved) {
+            finalizeClubCreationApplicationService.execute(application);
             return;
         }
 
