@@ -17,10 +17,7 @@ public class QueryClubCreationReviewListService {
 
     @Transactional(readOnly = true)
     public QueryClubCreationApplicationListResponse execute() {
-        List<ClubCreationApplicationSummaryResponse> applications = clubCreationApplicationRepository.findAllByOrderByIdDesc()
-                .stream()
-                .map(ClubCreationApplicationSummaryResponse::from)
-                .toList();
+        List<ClubCreationApplicationSummaryResponse> applications = clubCreationApplicationRepository.findAllSummary();
 
         return QueryClubCreationApplicationListResponse.from(applications);
     }

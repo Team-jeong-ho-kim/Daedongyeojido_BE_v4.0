@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface ClubCreationApplicationRepository extends JpaRepository<ClubCreationApplication, Long> {
+public interface ClubCreationApplicationRepository extends JpaRepository<ClubCreationApplication, Long>, ClubCreationApplicationRepositoryCustom {
 
     boolean existsByApplicantAndStatusIn(User applicant, Collection<ClubCreationApplicationStatus> statuses);
 
@@ -21,7 +21,4 @@ public interface ClubCreationApplicationRepository extends JpaRepository<ClubCre
 
     @EntityGraph(attributePaths = {"applicant"})
     Optional<ClubCreationApplication> findWithApplicantById(Long applicationId);
-
-    @EntityGraph(attributePaths = {"applicant"})
-    List<ClubCreationApplication> findAllByOrderByIdDesc();
 }
