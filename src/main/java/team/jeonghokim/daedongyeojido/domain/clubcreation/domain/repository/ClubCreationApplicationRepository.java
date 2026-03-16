@@ -7,7 +7,6 @@ import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.enums.ClubCreat
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 public interface ClubCreationApplicationRepository extends JpaRepository<ClubCreationApplication, Long>, ClubCreationApplicationRepositoryCustom {
@@ -18,7 +17,4 @@ public interface ClubCreationApplicationRepository extends JpaRepository<ClubCre
 
     @EntityGraph(attributePaths = {"applicant"})
     Optional<ClubCreationApplication> findTopByApplicantOrderByIdDesc(User applicant);
-
-    @EntityGraph(attributePaths = {"applicant"})
-    Optional<ClubCreationApplication> findWithApplicantById(Long applicationId);
 }
