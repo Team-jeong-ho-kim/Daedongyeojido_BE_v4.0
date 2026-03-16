@@ -18,8 +18,8 @@ import team.jeonghokim.daedongyeojido.domain.clubcreation.presentation.dto.reque
 import team.jeonghokim.daedongyeojido.domain.clubcreation.presentation.dto.response.ClubCreationApplicationDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.presentation.dto.response.QueryClubCreationApplicationListResponse;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.service.QueryClubCreationApplicationDetailService;
-import team.jeonghokim.daedongyeojido.domain.clubcreation.service.QueryClubCreationApplicationListService;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.service.QueryMyClubCreationApplicationService;
+import team.jeonghokim.daedongyeojido.domain.clubcreation.service.QueryClubCreationReviewListService;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.service.SubmitClubCreationApplicationService;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.service.UpdateClubCreationApplicationService;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.service.UpsertClubCreationReviewService;
@@ -32,7 +32,7 @@ public class ClubCreationApplicationController {
     private final QueryMyClubCreationApplicationService queryMyClubCreationApplicationService;
     private final UpdateClubCreationApplicationService updateClubCreationApplicationService;
     private final SubmitClubCreationApplicationService submitClubCreationApplicationService;
-    private final QueryClubCreationApplicationListService queryClubCreationApplicationListService;
+    private final QueryClubCreationReviewListService queryClubCreationReviewListService;
     private final QueryClubCreationApplicationDetailService queryClubCreationApplicationDetailService;
     private final UpsertClubCreationReviewService upsertClubCreationReviewService;
 
@@ -60,7 +60,7 @@ public class ClubCreationApplicationController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public QueryClubCreationApplicationListResponse queryApplications() {
-        return queryClubCreationApplicationListService.execute();
+        return queryClubCreationReviewListService.execute();
     }
 
     @GetMapping("/{application-id}")
