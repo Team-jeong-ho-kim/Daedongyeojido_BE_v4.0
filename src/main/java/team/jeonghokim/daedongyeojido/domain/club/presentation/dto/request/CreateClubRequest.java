@@ -31,6 +31,9 @@ public record CreateClubRequest(
         @NotNull(message = "전공 리스트는 필수입니다.")
         List<Major> major,
 
-        List<@URL(message = "유효한 URL 형식이어야 합니다.") String> link
+        List<@URL(message = "유효한 URL 형식이어야 합니다.") String> link,
+
+         @NotNull(message = "지도 교사 Id는 필수입니다.")
+         Long teacherId
 ) {
 }
