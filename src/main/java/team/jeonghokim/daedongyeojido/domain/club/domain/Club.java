@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.ClubAlarm;
 import team.jeonghokim.daedongyeojido.domain.club.domain.enums.ClubStatus;
-import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.UpdateClubRequest;
+import team.jeonghokim.daedongyeojido.domain.teacher.domain.Teacher;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -61,6 +61,10 @@ public class Club extends BaseIdEntity {
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClubAlarm> alarms = new ArrayList<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private Teacher teacher;
+
     @Builder
     public Club(
             String clubName,
@@ -71,7 +75,8 @@ public class Club extends BaseIdEntity {
             ClubStatus clubStatus,
             User clubApplicant,
             List<ClubMajor> clubMajors,
-            List<ClubLink> clubLinks
+            List<ClubLink> clubLinks,
+            Teacher teacher
     ) {
         this.clubName = clubName;
         this.clubImage = clubImage;
@@ -82,6 +87,7 @@ public class Club extends BaseIdEntity {
         this.clubApplicant = clubApplicant;
         addClubMajors(clubMajors);
         addClubLinks(clubLinks);
+        this.teacher = teacher;
     }
 
     private void addClubMajors(List<ClubMajor> clubMajors) {

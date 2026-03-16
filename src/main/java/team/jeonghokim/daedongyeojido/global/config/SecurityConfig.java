@@ -85,6 +85,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/admin/club-creation-form/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/result-duration/**").hasAnyRole(ADMIN)
 
+                        // teacher
+                        .requestMatchers(HttpMethod.GET, "/teachers").hasAnyRole(STUDENT, ADMIN)
+
                         // club
                         .requestMatchers(HttpMethod.POST, "/clubs/applications").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.POST, "/clubs/dissolution").hasRole(CLUB_LEADER)
