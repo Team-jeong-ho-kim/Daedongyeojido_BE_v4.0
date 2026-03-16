@@ -48,6 +48,10 @@ public enum ErrorCode {
     ALREADY_APPLICANT_IN_CLUB_EXCEPTION(409, "지원자가 이미 동아리에 소속되어있습니다."),
     CLUB_ACCESS_DENIED(403, "해당 동아리에 대한 권한이 없습니다."),
     CANNOT_DELETE_CLUB_LEADER(409, "동아리 팀장은 삭제할 수 없습니다."),
+    CLUB_CREATION_APPLICATION_NOT_FOUND(404, "동아리 개설 신청을 찾을 수 없습니다."),
+    CLUB_CREATION_APPLICATION_ACCESS_DENIED(403, "해당 동아리 개설 신청에 접근할 수 없습니다."),
+    CANNOT_MODIFY_CLUB_CREATION_APPLICATION(400, "현재 상태에서는 동아리 개설 신청을 수정할 수 없습니다."),
+    CLUB_CREATION_REVIEW_ACCESS_DENIED(403, "해당 동아리 개설 신청을 검토할 수 없습니다."),
 
     // alarm
     ALARM_NOT_FOUND(404, "알람을 찾을 수 없습니다."),

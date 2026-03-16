@@ -89,7 +89,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/teachers").hasAnyRole(STUDENT, ADMIN)
 
                         // club
-                        .requestMatchers(HttpMethod.POST, "/clubs/applications").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.POST, "/clubs/applications").hasRole(STUDENT)
                         .requestMatchers(HttpMethod.POST, "/clubs/dissolution").hasRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.POST, "/clubs/members").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/clubs/submissions").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
@@ -117,6 +117,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/schedules/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.PATCH, "/schedules/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/schedules/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
+
+                        // club-creation-application
+                        .requestMatchers(HttpMethod.GET, "/club-creation-applications/me").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.PATCH, "/club-creation-applications/**").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.POST, "/club-creation-applications/**").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.GET, "/club-creation-applications").hasAnyRole(ADMIN, TEACHER)
+                        .requestMatchers(HttpMethod.GET, "/club-creation-applications/**").hasAnyRole(ADMIN, TEACHER)
+                        .requestMatchers(HttpMethod.PUT, "/club-creation-applications/**").hasAnyRole(ADMIN, TEACHER)
 
                         // result-duration
                         .requestMatchers(HttpMethod.GET, "/result-duration").permitAll()
