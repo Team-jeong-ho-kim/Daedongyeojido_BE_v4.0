@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.clubcreation.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.ClubCreationApplication;
@@ -46,26 +47,46 @@ public class UpsertClubCreationReviewService {
             CurrentReviewer currentReviewer,
             UpsertClubCreationReviewRequest request
     ) {
-        clubCreationReviewRepository.findByApplicationAndRevisionAndReviewerTypeAndReviewerId(
-                        application,
-                        application.getRevision(),
-                        currentReviewer.reviewerType(),
-                        currentReviewer.reviewerId()
-                )
+        findReview(application, currentReviewer)
                 .ifPresentOrElse(
                         review -> review.update(request.decision(), request.feedback()),
-                        () -> clubCreationReviewRepository.save(
-                                ClubCreationReview.builder()
-                                        .application(application)
-                                        .reviewerType(currentReviewer.reviewerType())
-                                        .reviewerId(currentReviewer.reviewerId())
-                                        .reviewerName(currentReviewer.reviewerName())
-                                        .revision(application.getRevision())
-                                        .decision(request.decision())
-                                        .feedback(request.feedback())
-                                        .build()
-                        )
+                        () -> createReview(application, currentReviewer, request)
                 );
+    }
+
+    private void createReview(
+            ClubCreationApplication application,
+            CurrentReviewer currentReviewer,
+            UpsertClubCreationReviewRequest request
+    ) {
+        try {
+            clubCreationReviewRepository.saveAndFlush(
+                    ClubCreationReview.builder()
+                            .application(application)
+                            .reviewerType(currentReviewer.reviewerType())
+                            .reviewerId(currentReviewer.reviewerId())
+                            .reviewerName(currentReviewer.reviewerName())
+                            .revision(application.getRevision())
+                            .decision(request.decision())
+                            .feedback(request.feedback())
+                            .build()
+            );
+        } catch (DataIntegrityViolationException e) {
+            findReview(application, currentReviewer)
+                    .ifPresent(review -> review.update(request.decision(), request.feedback()));
+        }
+    }
+
+    private java.util.Optional<ClubCreationReview> findReview(
+            ClubCreationApplication application,
+            CurrentReviewer currentReviewer
+    ) {
+        return clubCreationReviewRepository.findByApplicationAndRevisionAndReviewerTypeAndReviewerId(
+                application,
+                application.getRevision(),
+                currentReviewer.reviewerType(),
+                currentReviewer.reviewerId()
+        );
     }
 
     private void recalculate(ClubCreationApplication application) {
