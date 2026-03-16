@@ -22,6 +22,11 @@ public class ClubCreationReviewerFacade {
 
     public CurrentReviewer getCurrentReviewer() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            throw ClubCreationReviewAccessDeniedException.EXCEPTION;
+        }
+
         String accountId = authentication.getName();
 
         boolean isTeacher = authentication.getAuthorities().stream()
