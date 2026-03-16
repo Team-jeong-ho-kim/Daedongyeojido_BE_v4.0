@@ -7,6 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Builder
 public record ClubCreationApplicationSummaryResponse(
@@ -20,6 +21,12 @@ public record ClubCreationApplicationSummaryResponse(
         String applicantName,
         LocalDateTime lastSubmittedAt
 ) {
+    public ClubCreationApplicationSummaryResponse {
+        majors = majors == null ? List.of() : majors.stream()
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
     public static ClubCreationApplicationSummaryResponse from(ClubCreationApplication application) {
         return ClubCreationApplicationSummaryResponse.builder()
                 .applicationId(application.getId())
