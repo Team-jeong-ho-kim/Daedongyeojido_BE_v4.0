@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response;
 
 import lombok.Builder;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.teacher.domain.Teacher;
 
 @Builder
 public record QueryTeacherMyInfoResponse(
@@ -11,12 +12,12 @@ public record QueryTeacherMyInfoResponse(
         String clubName
 ) {
 
-    public static QueryTeacherMyInfoResponse from(Club club) {
+    public static QueryTeacherMyInfoResponse of(Teacher teacher, Club club) {
         return QueryTeacherMyInfoResponse.builder()
-                .accountId(club.getTeacher().getAccountId())
-                .teacherName(club.getTeacher().getTeacherName())
-                .clubId(club.getId())
-                .clubName(club.getClubName())
+                .accountId(teacher.getAccountId())
+                .teacherName(teacher.getTeacherName())
+                .clubId(club != null ? club.getId() : null)
+                .clubName(club != null ? club.getClubName() : null)
                 .build();
     }
 }
