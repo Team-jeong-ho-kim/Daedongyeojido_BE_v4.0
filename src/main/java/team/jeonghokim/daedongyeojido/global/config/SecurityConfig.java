@@ -87,6 +87,7 @@ public class SecurityConfig {
 
                         // teacher
                         .requestMatchers(HttpMethod.GET, "/teachers").hasAnyRole(STUDENT, ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/teachers/my-info").hasAnyRole(TEACHER)
 
                         // club
                         .requestMatchers(HttpMethod.POST, "/clubs/applications").hasRole(STUDENT)
