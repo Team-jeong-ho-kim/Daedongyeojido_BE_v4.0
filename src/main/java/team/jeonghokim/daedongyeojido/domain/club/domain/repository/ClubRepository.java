@@ -12,5 +12,5 @@ public interface ClubRepository extends JpaRepository<Club, Long>, ClubRepositor
 
     boolean existsByClubApplicant(User clubApplicant);
 
-    Optional<Club> findByTeacherAccountId(String accountId);
+    Club findByTeacherAccountId(String accountId);
 }
