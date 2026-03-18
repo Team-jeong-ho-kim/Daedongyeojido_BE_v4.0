@@ -2,8 +2,10 @@ package team.jeonghokim.daedongyeojido.domain.clubcreation.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.ClubCreationApplication;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.ClubCreationReview;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.enums.ClubCreationApplicationStatus;
@@ -15,6 +17,8 @@ import team.jeonghokim.daedongyeojido.domain.clubcreation.facade.ClubCreationApp
 import team.jeonghokim.daedongyeojido.domain.clubcreation.facade.ClubCreationReviewerFacade;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.facade.CurrentReviewer;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.presentation.dto.request.UpsertClubCreationReviewRequest;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory.AlarmEventFactory;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.UserAlarmEvent;
 
 import java.util.List;
 
@@ -27,6 +31,8 @@ public class UpsertClubCreationReviewService {
     private final ClubCreationReviewerFacade clubCreationReviewerFacade;
     private final ClubCreationReviewAccessService clubCreationReviewAccessService;
     private final FinalizeClubCreationApplicationService finalizeClubCreationApplicationService;
+    private final ApplicationEventPublisher eventPublisher;
+    private final AlarmEventFactory alarmEventFactory;
 
     @Transactional
     public void execute(Long applicationId, UpsertClubCreationReviewRequest request) {
@@ -127,6 +133,13 @@ public class UpsertClubCreationReviewService {
 
         if (adminRejected && teacherRejected) {
             application.reject();
+            eventPublisher.publishEvent(UserAlarmEvent.builder()
+                    .userId(application.getApplicant().getId())
+                    .alarmType(AlarmType.CLUB_CREATION_REJECTED)
+                    .title(AlarmType.CLUB_CREATION_REJECTED.formatTitle(application.getClubName()))
+                    .content(AlarmType.CLUB_CREATION_REJECTED.formatContent(application.getClubName()))
+                    .category(AlarmType.CLUB_CREATION_REJECTED.getCategory())
+                    .build());
             return;
         }
 

@@ -1,8 +1,10 @@
 package team.jeonghokim.daedongyeojido.domain.clubcreation.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubLink;
 import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
@@ -10,6 +12,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.enums.ClubStatus;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.ClubCreationApplication;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
+import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory.AlarmEventFactory;
 
 import java.util.List;
 
@@ -18,6 +21,8 @@ import java.util.List;
 public class FinalizeClubCreationApplicationService {
 
     private final ClubRepository clubRepository;
+    private final ApplicationEventPublisher eventPublisher;
+    private final AlarmEventFactory alarmEventFactory;
 
     @Transactional
     public void execute(ClubCreationApplication application) {
@@ -43,6 +48,10 @@ public class FinalizeClubCreationApplicationService {
         User applicant = application.getApplicant();
         applicant.approvedClub(club);
         application.approve();
+
+        eventPublisher.publishEvent(
+                alarmEventFactory.createUserAlarmEvent(applicant, club, AlarmType.CLUB_CREATION_ACCEPTED)
+        );
     }
 
     private List<ClubMajor> toClubMajors(ClubCreationApplication application) {
