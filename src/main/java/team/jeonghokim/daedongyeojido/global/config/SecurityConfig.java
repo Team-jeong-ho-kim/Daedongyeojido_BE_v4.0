@@ -74,14 +74,11 @@ public class SecurityConfig {
                         .requestMatchers("/applications/**").hasRole(STUDENT)
 
                         // admin
-                        .requestMatchers(HttpMethod.PATCH, "/admin/clubs/applications/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/dissolution/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.POST, "/admin/result-duration").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.PATCH, "/admin/result-duration/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.POST, "/admin/club-creation-form").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.POST, "/admin/teachers").hasAnyRole(ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/admin/club-creation-application/**").hasAnyRole(ADMIN, TEACHER)
-                        .requestMatchers(HttpMethod.GET, "/admin/club-creation-application").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/club-creation-form/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/result-duration/**").hasAnyRole(ADMIN)
 
