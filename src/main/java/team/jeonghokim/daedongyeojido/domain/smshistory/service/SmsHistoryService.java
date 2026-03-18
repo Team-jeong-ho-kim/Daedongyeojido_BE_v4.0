@@ -9,6 +9,7 @@ import team.jeonghokim.daedongyeojido.domain.smshistory.domain.SmsHistory;
 import team.jeonghokim.daedongyeojido.domain.smshistory.domain.enums.SmsHistoryStatus;
 import team.jeonghokim.daedongyeojido.domain.smshistory.domain.enums.SmsReferenceType;
 import team.jeonghokim.daedongyeojido.domain.smshistory.domain.repository.SmsHistoryRepository;
+import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
 
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class SmsHistoryService {
     public Long createImmediate(
             SmsReferenceType referenceType,
             Long referenceId,
-            String phoneNumber,
+            User receiver,
             Message message,
             String clubName
     ) {
@@ -33,7 +34,9 @@ public class SmsHistoryService {
                 SmsHistory.builder()
                         .referenceType(referenceType)
                         .referenceId(referenceId)
-                        .phoneNumber(phoneNumber)
+                        .phoneNumber(receiver.getPhoneNumber())
+                        .userName(receiver.getUserName())
+                        .classNumber(receiver.getClassNumber())
                         .messageType(message.name())
                         .clubName(clubName)
                         .status(SmsHistoryStatus.REQUESTED)
@@ -45,7 +48,7 @@ public class SmsHistoryService {
     public Long createQueued(
             SmsReferenceType referenceType,
             Long referenceId,
-            String phoneNumber,
+            User receiver,
             Message message,
             String clubName,
             LocalDateTime scheduledAt
@@ -54,7 +57,9 @@ public class SmsHistoryService {
                 SmsHistory.builder()
                         .referenceType(referenceType)
                         .referenceId(referenceId)
-                        .phoneNumber(phoneNumber)
+                        .phoneNumber(receiver.getPhoneNumber())
+                        .userName(receiver.getUserName())
+                        .classNumber(receiver.getClassNumber())
                         .messageType(message.name())
                         .clubName(clubName)
                         .status(SmsHistoryStatus.QUEUED)

@@ -51,7 +51,7 @@ public class UpdateInterviewScheduleService {
         Long smsHistoryId = smsHistoryService.createImmediate(
                 SmsReferenceType.INTERVIEW_SCHEDULE,
                 schedule.getId(),
-                user.getPhoneNumber(),
+                user,
                 Message.INTERVIEW_SCHEDULE_CHANGED,
                 club.getClubName()
         );

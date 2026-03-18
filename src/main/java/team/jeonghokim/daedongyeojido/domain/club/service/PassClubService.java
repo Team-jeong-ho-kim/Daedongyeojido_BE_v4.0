@@ -80,7 +80,7 @@ public class PassClubService {
         Long smsHistoryId = smsHistoryService.createQueued(
                 SmsReferenceType.CLUB_RESULT,
                 submission.getId(),
-                submission.getUser().getPhoneNumber(),
+                submission.getUser(),
                 isPassed ? Message.CLUB_FINAL_ACCEPTED : Message.CLUB_FINAL_REJECTED,
                 submission.getApplicationForm().getClub().getClubName(),
                 resultDuration.getResultDurationTime()

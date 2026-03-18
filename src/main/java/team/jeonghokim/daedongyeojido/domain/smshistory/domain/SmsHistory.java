@@ -31,6 +31,12 @@ public class SmsHistory extends BaseTimeIdEntity {
     @Column(nullable = false, length = 30)
     private String phoneNumber;
 
+    @Column(nullable = false, length = 4)
+    private String userName;
+
+    @Column(nullable = false, length = 4)
+    private String classNumber;
+
     @Column(nullable = false, length = 50)
     private String messageType;
 
@@ -53,6 +59,8 @@ public class SmsHistory extends BaseTimeIdEntity {
             SmsReferenceType referenceType,
             Long referenceId,
             String phoneNumber,
+            String userName,
+            String classNumber,
             String messageType,
             String clubName,
             SmsHistoryStatus status,
@@ -61,6 +69,8 @@ public class SmsHistory extends BaseTimeIdEntity {
         this.referenceType = referenceType;
         this.referenceId = referenceId;
         this.phoneNumber = phoneNumber;
+        this.userName = userName;
+        this.classNumber = classNumber;
         this.messageType = messageType;
         this.clubName = clubName;
         this.status = status;

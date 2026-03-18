@@ -81,7 +81,7 @@ public class DecideInterviewScheduleService {
         Long smsHistoryId = smsHistoryService.createImmediate(
                 SmsReferenceType.INTERVIEW_SCHEDULE,
                 schedule.getId(),
-                applicant.getPhoneNumber(),
+                applicant,
                 Message.INTERVIEW_SCHEDULE_DECIDED,
                 club.getClubName()
         );
