@@ -33,7 +33,8 @@ public class UpsertClubCreationReviewService {
         ClubCreationApplication application = clubCreationApplicationFacade.getById(applicationId);
 
         if (!(application.getStatus() == ClubCreationApplicationStatus.SUBMITTED
-                || application.getStatus() == ClubCreationApplicationStatus.UNDER_REVIEW)) {
+                || application.getStatus() == ClubCreationApplicationStatus.UNDER_REVIEW
+                || application.getStatus() == ClubCreationApplicationStatus.CHANGES_REQUESTED)) {
             throw ClubCreationReviewAccessDeniedException.EXCEPTION;
         }
 
