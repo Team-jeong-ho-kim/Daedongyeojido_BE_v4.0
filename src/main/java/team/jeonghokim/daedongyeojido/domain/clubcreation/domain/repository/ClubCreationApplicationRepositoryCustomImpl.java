@@ -6,6 +6,7 @@ import com.querydsl.core.types.dsl.EnumPath;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.enums.ClubCreationApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.presentation.dto.response.ClubCreationApplicationSummaryResponse;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
@@ -37,7 +38,14 @@ public class ClubCreationApplicationRepositoryCustomImpl implements ClubCreation
                 .from(clubCreationApplication)
                 .join(clubCreationApplication.applicant, user)
                 .leftJoin(clubCreationApplication.majors, major)
-                .where(predicate)
+                .where(
+                        predicate,
+                        clubCreationApplication.status.in(
+                                ClubCreationApplicationStatus.SUBMITTED,
+                                ClubCreationApplicationStatus.UNDER_REVIEW,
+                                ClubCreationApplicationStatus.CHANGES_REQUESTED
+                        )
+                )
                 .orderBy(clubCreationApplication.id.desc())
                 .transform(groupBy(clubCreationApplication.id).list(
                         com.querydsl.core.types.Projections.constructor(
