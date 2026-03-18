@@ -2,12 +2,16 @@ package team.jeonghokim.daedongyeojido.domain.admin.presentation;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideResultDurationRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.service.*;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubDissolveService;
+import team.jeonghokim.daedongyeojido.domain.smshistory.service.DownloadSmsHistoryExcelService;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.UpdateResultDurationRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateTeacherRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateTeacherService;
@@ -22,6 +26,7 @@ public class AdminController {
     private final UpdateResultDurationService updateResultDurationService;
     private final DeleteResultDurationService deleteResultDurationService;
     private final CreateTeacherService createTeacherService;
+    private final DownloadSmsHistoryExcelService downloadSmsHistoryExcelService;
 
     @DeleteMapping("/dissolution/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -51,5 +56,15 @@ public class AdminController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createTeacher(@RequestBody @Valid CreateTeacherRequest request) {
         createTeacherService.execute(request);
+    }
+
+    @GetMapping("/sms-histories/excel")
+    public ResponseEntity<byte[]> downloadSmsHistoriesExcel() {
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=sms-histories.xlsx")
+                .contentType(MediaType.parseMediaType(
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ))
+                .body(downloadSmsHistoryExcelService.execute());
     }
 }
