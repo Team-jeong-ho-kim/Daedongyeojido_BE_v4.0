@@ -11,6 +11,9 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.Creat
 import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.ClubCreationApplication;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.enums.ClubCreationApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.repository.ClubCreationApplicationRepository;
+import team.jeonghokim.daedongyeojido.domain.teacher.domain.Teacher;
+import team.jeonghokim.daedongyeojido.domain.teacher.domain.repository.TeacherRepository;
+import team.jeonghokim.daedongyeojido.domain.teacher.exception.TeacherNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
@@ -25,17 +28,21 @@ public class CreateClubCreationApplicationService {
 
     private final ClubCreationApplicationRepository clubCreationApplicationRepository;
     private final ClubRepository clubRepository;
+    private final TeacherRepository teacherRepository;
     private final UserFacade userFacade;
     private final S3Service s3Service;
 
     @Transactional
     public void execute(CreateClubRequest request) {
         User applicant = userFacade.getCurrentUser();
+        Teacher teacher = teacherRepository.findById(request.teacherId())
+                .orElseThrow(() -> TeacherNotFoundException.EXCEPTION);
 
         validate(request, applicant);
 
         ClubCreationApplication application = ClubCreationApplication.builder()
                 .applicant(applicant)
+                .teacher(teacher)
                 .clubName(request.clubName())
                 .clubImage(request.clubImage() != null ? s3Service.upload(request.clubImage(), FileType.IMAGE) : "")
                 .clubCreationForm(s3Service.upload(request.clubCreationForm(), FileType.DOCUMENT))

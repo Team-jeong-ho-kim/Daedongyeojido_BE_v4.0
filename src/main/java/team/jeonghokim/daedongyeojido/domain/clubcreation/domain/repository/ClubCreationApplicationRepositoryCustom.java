@@ -7,4 +7,6 @@ import java.util.List;
 public interface ClubCreationApplicationRepositoryCustom {
 
     List<ClubCreationApplicationSummaryResponse> findAllSummary();
+
+    List<ClubCreationApplicationSummaryResponse> findAllSummaryByTeacherId(Long teacherId);
 }

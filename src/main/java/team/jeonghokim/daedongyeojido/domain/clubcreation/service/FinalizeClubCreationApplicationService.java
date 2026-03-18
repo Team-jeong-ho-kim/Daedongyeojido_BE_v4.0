@@ -35,6 +35,7 @@ public class FinalizeClubCreationApplicationService {
                 .clubApplicant(application.getApplicant())
                 .clubMajors(toClubMajors(application))
                 .clubLinks(toClubLinks(application))
+                .teacher(application.getTeacher())
                 .build();
 
         clubRepository.save(club);

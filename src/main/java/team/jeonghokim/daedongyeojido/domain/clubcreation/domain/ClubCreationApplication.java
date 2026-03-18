@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.enums.ClubCreationApplicationStatus;
+import team.jeonghokim.daedongyeojido.domain.teacher.domain.Teacher;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseTimeIdEntity;
@@ -33,6 +34,10 @@ public class ClubCreationApplication extends BaseTimeIdEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "applicant_id", nullable = false)
     private User applicant;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private Teacher teacher;
 
     @Column(length = 20, nullable = false)
     private String clubName;
@@ -81,6 +86,7 @@ public class ClubCreationApplication extends BaseTimeIdEntity {
     @Builder
     public ClubCreationApplication(
             User applicant,
+            Teacher teacher,
             String clubName,
             String clubImage,
             String clubCreationForm,
@@ -92,6 +98,7 @@ public class ClubCreationApplication extends BaseTimeIdEntity {
             List<String> links
     ) {
         this.applicant = applicant;
+        this.teacher = teacher;
         this.clubName = clubName;
         this.clubImage = clubImage;
         this.clubCreationForm = clubCreationForm;

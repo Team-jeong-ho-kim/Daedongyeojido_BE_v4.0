@@ -25,6 +25,7 @@ public class UpsertClubCreationReviewService {
     private final ClubCreationApplicationFacade clubCreationApplicationFacade;
     private final ClubCreationReviewRepository clubCreationReviewRepository;
     private final ClubCreationReviewerFacade clubCreationReviewerFacade;
+    private final ClubCreationReviewAccessService clubCreationReviewAccessService;
     private final FinalizeClubCreationApplicationService finalizeClubCreationApplicationService;
 
     @Transactional
@@ -37,6 +38,7 @@ public class UpsertClubCreationReviewService {
         }
 
         CurrentReviewer currentReviewer = clubCreationReviewerFacade.getCurrentReviewer();
+        clubCreationReviewAccessService.validateReviewerAccess(application, currentReviewer);
         upsertReview(application, currentReviewer, request);
 
         recalculate(application);
@@ -93,14 +95,6 @@ public class UpsertClubCreationReviewService {
         List<ClubCreationReview> reviews = clubCreationReviewRepository
                 .findByApplicationAndRevisionOrderByUpdatedAtAsc(application, application.getRevision());
 
-        boolean hasRejected = reviews.stream()
-                .anyMatch(review -> review.getDecision() == ClubCreationReviewDecision.REJECTED);
-
-        if (hasRejected) {
-            application.reject();
-            return;
-        }
-
         boolean hasChangesRequested = reviews.stream()
                 .anyMatch(review -> review.getDecision() == ClubCreationReviewDecision.CHANGES_REQUESTED);
 
@@ -112,6 +106,14 @@ public class UpsertClubCreationReviewService {
                 .anyMatch(review -> review.getReviewerType() == ReviewerType.TEACHER
                         && review.getDecision() == ClubCreationReviewDecision.APPROVED);
 
+        boolean adminRejected = reviews.stream()
+                .anyMatch(review -> review.getReviewerType() == ReviewerType.ADMIN
+                        && review.getDecision() == ClubCreationReviewDecision.REJECTED);
+
+        boolean teacherRejected = reviews.stream()
+                .anyMatch(review -> review.getReviewerType() == ReviewerType.TEACHER
+                        && review.getDecision() == ClubCreationReviewDecision.REJECTED);
+
         if (hasChangesRequested) {
             application.requestChanges();
             return;
@@ -119,6 +121,11 @@ public class UpsertClubCreationReviewService {
 
         if (adminApproved && teacherApproved) {
             finalizeClubCreationApplicationService.execute(application);
+            return;
+        }
+
+        if (adminRejected && teacherRejected) {
+            application.reject();
             return;
         }
 
