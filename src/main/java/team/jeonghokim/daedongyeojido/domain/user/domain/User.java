@@ -10,6 +10,7 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_user")
@@ -83,6 +84,7 @@ public class User extends BaseIdEntity {
     private void updateMajors(List<Major> majors) {
         this.majors.clear();
         majors.stream()
+                .filter(Objects::nonNull)
                 .map(major -> UserMajor.builder()
                         .major(major)
                         .build())
@@ -92,6 +94,7 @@ public class User extends BaseIdEntity {
     private void updateLinks(List<String> links) {
         this.links.clear();
         links.stream()
+                .filter(Objects::nonNull)
                 .map(link -> UserLink.builder()
                         .link(link)
                         .build())

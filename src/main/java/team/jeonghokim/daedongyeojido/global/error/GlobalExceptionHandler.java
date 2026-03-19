@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.global.error;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         ErrorCode errorCode = ErrorCode.BAD_REQUEST;
         ErrorResponse response = ErrorResponse.of(errorCode, e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        e.printStackTrace();
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatusCode()));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST;
+        ErrorResponse response = ErrorResponse.of(errorCode, "요청 데이터 제약 조건을 확인해주세요.");
         e.printStackTrace();
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatusCode()));
