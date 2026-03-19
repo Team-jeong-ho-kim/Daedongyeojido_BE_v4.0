@@ -14,6 +14,7 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_announcement")
@@ -101,6 +102,7 @@ public class Announcement extends BaseIdEntity {
     private void updateAnnouncementMajors(AnnouncementRequest request) {
         this.announcementMajors.clear();
         request.major().stream()
+                .filter(Objects::nonNull)
                 .map(major -> AnnouncementMajor.builder()
                         .major(major)
                         .build())
