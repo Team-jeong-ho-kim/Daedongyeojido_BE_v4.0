@@ -12,6 +12,7 @@ import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuratio
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationAlreadyExecutedException;
 import team.jeonghokim.daedongyeojido.domain.smshistory.service.SmsHistoryService;
+import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.submission.exception.SubmissionNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.LargeScaleAlarmEvent;
@@ -104,9 +105,7 @@ public class SchedulerService {
     }
 
     private void publishAlarmEvent(SchedulerAlarmPayload payload, ResultDuration resultDuration) {
-        submissionRepository.findByUserIdAndClubId(payload.userId(), payload.clubId())
-                .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION)
-                .applyUserPassResult(payload.isPassed());
+        resolveSubmission(payload).applyUserPassResult(payload.isPassed());
 
         Club club = clubRepository.findById(payload.clubId()).orElseThrow();
 
@@ -125,5 +124,17 @@ public class SchedulerService {
         eventPublisher.publishEvent(event);
 
         log.info("알람 이벤트 발행: userId={}, alarmType={}", payload.userId(), payload.alarmType());
+    }
+
+    private Submission resolveSubmission(SchedulerAlarmPayload payload) {
+        if (payload.submissionId() != null) {
+            return submissionRepository.findById(payload.submissionId())
+                    .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION);
+        }
+
+        // Backward compatibility for old payloads already queued in Redis.
+        return submissionRepository
+                .findTopByUserIdAndApplicationFormClubIdOrderByIdDesc(payload.userId(), payload.clubId())
+                .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION);
     }
 }

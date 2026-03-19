@@ -8,6 +8,7 @@ public record SchedulerAlarmPayload(
 
         Long userId,
         Long clubId,
+        Long submissionId,
         AlarmType alarmType,
         boolean isPassed
 ) {
