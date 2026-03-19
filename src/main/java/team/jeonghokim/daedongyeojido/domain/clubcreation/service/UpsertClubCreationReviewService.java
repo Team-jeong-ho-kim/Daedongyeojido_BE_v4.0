@@ -19,7 +19,9 @@ import team.jeonghokim.daedongyeojido.domain.clubcreation.facade.CurrentReviewer
 import team.jeonghokim.daedongyeojido.domain.clubcreation.presentation.dto.request.UpsertClubCreationReviewRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.UserAlarmEvent;
 
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -98,23 +100,15 @@ public class UpsertClubCreationReviewService {
 
     private void recalculate(ClubCreationApplication application) {
         List<ClubCreationReview> reviews = clubCreationReviewRepository
-                .findByApplicationAndRevisionOrderByUpdatedAtAsc(application, application.getRevision());
+                .findByApplicationOrderByRevisionAscUpdatedAtAsc(application);
 
-        boolean hasChangesRequested = reviews.stream()
-                .anyMatch(review -> review.getDecision() == ClubCreationReviewDecision.CHANGES_REQUESTED);
+        Map<ReviewerType, ClubCreationReviewDecision> latestDecisionByReviewerType = getLatestDecisionByReviewerType(reviews);
 
-        boolean adminApproved = reviews.stream()
-                .anyMatch(review -> review.getReviewerType() == ReviewerType.ADMIN
-                        && review.getDecision() == ClubCreationReviewDecision.APPROVED);
+        ClubCreationReviewDecision adminDecision = latestDecisionByReviewerType.get(ReviewerType.ADMIN);
+        ClubCreationReviewDecision teacherDecision = latestDecisionByReviewerType.get(ReviewerType.TEACHER);
 
-        boolean teacherApproved = reviews.stream()
-                .anyMatch(review -> review.getReviewerType() == ReviewerType.TEACHER
-                        && review.getDecision() == ClubCreationReviewDecision.APPROVED);
-
-        boolean hasRejected = reviews.stream()
-                .anyMatch(review -> review.getDecision() == ClubCreationReviewDecision.REJECTED);
-
-        if (hasRejected) {
+        if (adminDecision == ClubCreationReviewDecision.REJECTED
+                || teacherDecision == ClubCreationReviewDecision.REJECTED) {
             application.reject();
             eventPublisher.publishEvent(UserAlarmEvent.builder()
                     .userId(application.getApplicant().getId())
@@ -126,16 +120,29 @@ public class UpsertClubCreationReviewService {
             return;
         }
 
-        if (hasChangesRequested) {
+        if (adminDecision == ClubCreationReviewDecision.CHANGES_REQUESTED
+                || teacherDecision == ClubCreationReviewDecision.CHANGES_REQUESTED) {
             application.requestChanges();
             return;
         }
 
-        if (adminApproved && teacherApproved) {
+        if (adminDecision == ClubCreationReviewDecision.APPROVED
+                && teacherDecision == ClubCreationReviewDecision.APPROVED) {
             finalizeClubCreationApplicationService.execute(application);
             return;
         }
 
         application.startReview();
+    }
+
+    private Map<ReviewerType, ClubCreationReviewDecision> getLatestDecisionByReviewerType(List<ClubCreationReview> reviews) {
+        Map<ReviewerType, ClubCreationReviewDecision> latestDecisionByReviewerType = new EnumMap<>(ReviewerType.class);
+
+        reviews.forEach(review -> latestDecisionByReviewerType.put(
+                review.getReviewerType(),
+                review.getDecision()
+        ));
+
+        return latestDecisionByReviewerType;
     }
 }
