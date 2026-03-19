@@ -12,6 +12,8 @@ import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuratio
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationAlreadyExecutedException;
 import team.jeonghokim.daedongyeojido.domain.smshistory.service.SmsHistoryService;
+import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
+import team.jeonghokim.daedongyeojido.domain.submission.exception.SubmissionNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.LargeScaleAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.sms.event.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerAlarmPayload;
@@ -35,6 +37,7 @@ public class SchedulerService {
     private final ResultDurationRepository resultDurationRepository;
     private final ClubRepository clubRepository;
     private final SmsHistoryService smsHistoryService;
+    private final SubmissionRepository submissionRepository;
 
     @Transactional
     public void execute() {
@@ -101,6 +104,9 @@ public class SchedulerService {
     }
 
     private void publishAlarmEvent(SchedulerAlarmPayload payload, ResultDuration resultDuration) {
+        submissionRepository.findByUserIdAndClubId(payload.userId(), payload.clubId())
+                .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION)
+                .applyUserPassResult(payload.isPassed());
 
         Club club = clubRepository.findById(payload.clubId()).orElseThrow();
 

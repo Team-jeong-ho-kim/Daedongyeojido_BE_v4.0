@@ -19,9 +19,6 @@ import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
-import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
-import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
-import team.jeonghokim.daedongyeojido.domain.submission.exception.SubmissionNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.LargeScaleAlarmEvent;
@@ -45,7 +42,6 @@ public class LargeScaleAlarmEventListener {
     private final DecideResultDurationService decideResultDurationService;
 
     private static final String LARGE_SCALE_ALARM_EVENT_RETRY = "recoverLargeScaleAlarmEvent";
-    private final SubmissionRepository submissionRepository;
 
     @Async("largeScaleAlarmExecutor")
     @Retryable(
@@ -64,11 +60,6 @@ public class LargeScaleAlarmEventListener {
 
             Club club = clubRepository.findById(event.clubId())
                     .orElse(null);
-
-            Submission submission = submissionRepository.findByUserIdAndClubId(receiver.getId(), event.clubId())
-                    .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION);
-
-            submission.applyUserPassResult(event.isPassed());
 
             userAlarmRepository.save(UserAlarm.builder()
                     .title(event.title())
