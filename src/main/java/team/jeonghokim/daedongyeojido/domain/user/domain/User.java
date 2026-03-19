@@ -75,8 +75,8 @@ public class User extends BaseIdEntity {
 
     public void update(String introduction, List<Major> majors, List<String> links, String profileImage) {
         this.introduction = introduction;
-        updateMajors(majors);
-        updateLinks(links);
+        updateMajors(majors == null ? List.of() : majors);
+        updateLinks(links == null ? List.of() : links);
         this.profileImage = profileImage;
     }
 
