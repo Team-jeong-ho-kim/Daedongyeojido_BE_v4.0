@@ -17,7 +17,6 @@ import team.jeonghokim.daedongyeojido.domain.clubcreation.facade.ClubCreationApp
 import team.jeonghokim.daedongyeojido.domain.clubcreation.facade.ClubCreationReviewerFacade;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.facade.CurrentReviewer;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.presentation.dto.request.UpsertClubCreationReviewRequest;
-import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory.AlarmEventFactory;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.UserAlarmEvent;
 
 import java.util.List;
@@ -32,7 +31,6 @@ public class UpsertClubCreationReviewService {
     private final ClubCreationReviewAccessService clubCreationReviewAccessService;
     private final FinalizeClubCreationApplicationService finalizeClubCreationApplicationService;
     private final ApplicationEventPublisher eventPublisher;
-    private final AlarmEventFactory alarmEventFactory;
 
     @Transactional
     public void execute(Long applicationId, UpsertClubCreationReviewRequest request) {
@@ -113,25 +111,10 @@ public class UpsertClubCreationReviewService {
                 .anyMatch(review -> review.getReviewerType() == ReviewerType.TEACHER
                         && review.getDecision() == ClubCreationReviewDecision.APPROVED);
 
-        boolean adminRejected = reviews.stream()
-                .anyMatch(review -> review.getReviewerType() == ReviewerType.ADMIN
-                        && review.getDecision() == ClubCreationReviewDecision.REJECTED);
+        boolean hasRejected = reviews.stream()
+                .anyMatch(review -> review.getDecision() == ClubCreationReviewDecision.REJECTED);
 
-        boolean teacherRejected = reviews.stream()
-                .anyMatch(review -> review.getReviewerType() == ReviewerType.TEACHER
-                        && review.getDecision() == ClubCreationReviewDecision.REJECTED);
-
-        if (hasChangesRequested) {
-            application.requestChanges();
-            return;
-        }
-
-        if (adminApproved && teacherApproved) {
-            finalizeClubCreationApplicationService.execute(application);
-            return;
-        }
-
-        if (adminRejected && teacherRejected) {
+        if (hasRejected) {
             application.reject();
             eventPublisher.publishEvent(UserAlarmEvent.builder()
                     .userId(application.getApplicant().getId())
@@ -140,6 +123,16 @@ public class UpsertClubCreationReviewService {
                     .content(AlarmType.CLUB_CREATION_REJECTED.formatContent(application.getClubName()))
                     .category(AlarmType.CLUB_CREATION_REJECTED.getCategory())
                     .build());
+            return;
+        }
+
+        if (hasChangesRequested) {
+            application.requestChanges();
+            return;
+        }
+
+        if (adminApproved && teacherApproved) {
+            finalizeClubCreationApplicationService.execute(application);
             return;
         }
 
