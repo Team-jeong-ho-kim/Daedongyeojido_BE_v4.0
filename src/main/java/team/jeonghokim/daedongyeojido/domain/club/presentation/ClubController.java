@@ -20,6 +20,7 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.Updat
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubListResponse;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.response.QueryClubDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.club.service.*;
+import team.jeonghokim.daedongyeojido.domain.clubcreation.service.CreateClubCreationApplicationService;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.response.QueryClubSubmissionListResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.service.QueryClubSubmissionDetailService;
@@ -30,7 +31,7 @@ import team.jeonghokim.daedongyeojido.domain.submission.service.QueryClubSubmiss
 @RequiredArgsConstructor
 public class ClubController {
 
-    private final CreateClubService createClubService;
+    private final CreateClubCreationApplicationService createClubCreationApplicationService;
     private final ApplyTeamMemberService applyTeamMemberService;
     private final DissolveClubService dissolveClubService;
     private final QueryClubListService queryClubListService;
@@ -45,7 +46,7 @@ public class ClubController {
     @PostMapping("/applications")
     @ResponseStatus(HttpStatus.CREATED)
     public void createClub(@ModelAttribute @Valid CreateClubRequest request) {
-        createClubService.execute(request);
+        createClubCreationApplicationService.execute(request);
     }
 
     @PostMapping("/members")

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-public record CustomUserDetails(User user) implements UserDetails {
+public record CustomUserDetails(User user) implements DaedongUserDetails {
     @Override
     public String getUsername() {
         return user.getAccountId();
@@ -45,4 +45,13 @@ public record CustomUserDetails(User user) implements UserDetails {
         return true;
     }
 
+    @Override
+    public String getPrincipalKey() {
+        return "student:" + user.getAccountId();
+    }
+
+    @Override
+    public String getAccountId() {
+        return user.getAccountId();
+    }
 }

@@ -52,13 +52,14 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/actuator/prometheus").permitAll()
 
                         // auth
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/auth/logout").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/auth/logout").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/auth/reissue").permitAll()
 
                         // user
@@ -73,18 +74,21 @@ public class SecurityConfig {
                         .requestMatchers("/applications/**").hasRole(STUDENT)
 
                         // admin
-                        .requestMatchers(HttpMethod.PATCH, "/admin/clubs/applications/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/dissolution/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.POST, "/admin/result-duration").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.PATCH, "/admin/result-duration/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.POST, "/admin/club-creation-form").hasAnyRole(ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/admin/club-creation-form/**").hasAnyRole(ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/admin/club-creation-application").hasAnyRole(ADMIN)
+                        .requestMatchers(HttpMethod.POST, "/admin/teachers").hasAnyRole(ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/admin/sms-histories/excel").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/club-creation-form/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/result-duration/**").hasAnyRole(ADMIN)
 
+                        // teacher
+                        .requestMatchers(HttpMethod.GET, "/teachers").hasAnyRole(STUDENT, ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/teachers/my-info").hasAnyRole(TEACHER)
+
                         // club
-                        .requestMatchers(HttpMethod.POST, "/clubs/applications").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.POST, "/clubs/applications").hasRole(STUDENT)
                         .requestMatchers(HttpMethod.POST, "/clubs/dissolution").hasRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.POST, "/clubs/members").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/clubs/submissions").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
@@ -93,9 +97,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/clubs/pass/**").hasAnyRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.PATCH, "/clubs/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.DELETE, "/clubs/members/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
-
-                        // club-creation-form
-                        .requestMatchers(HttpMethod.GET, "/club-creation-form").permitAll()
 
                         // announcement
                         .requestMatchers(HttpMethod.POST, "/announcements").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
@@ -116,13 +117,26 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/schedules/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/schedules/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
 
+                        // club-creation-application
+                        .requestMatchers(HttpMethod.GET, "/club-creation-applications/me").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.PATCH, "/club-creation-applications/**").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.POST, "/club-creation-applications/**").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.GET, "/club-creation-applications").hasAnyRole(ADMIN, TEACHER)
+                        .requestMatchers(HttpMethod.GET, "/club-creation-applications/**").hasAnyRole(ADMIN, TEACHER)
+                        .requestMatchers(HttpMethod.PUT, "/club-creation-applications/**").hasAnyRole(ADMIN, TEACHER)
+
                         // result-duration
                         .requestMatchers(HttpMethod.GET, "/result-duration").permitAll()
 
                         // alarm
                         .requestMatchers(HttpMethod.GET, "/alarms/clubs").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
-                        .requestMatchers(HttpMethod.GET, "/alarms/users").hasAnyRole(STUDENT, TEACHER, CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.GET, "/alarms/users").hasAnyRole(STUDENT, CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/alarms/admins").hasAnyRole(ADMIN)
+
+                        // file
+                        .requestMatchers(HttpMethod.POST, "/files").hasAnyRole(ADMIN, STUDENT, CLUB_MEMBER, CLUB_LEADER)
+                        .requestMatchers(HttpMethod.GET, "/files/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/files/**").hasAnyRole(ADMIN, STUDENT, CLUB_MEMBER, CLUB_LEADER)
 
                         // monitoring
                         .requestMatchers("/actuator/prometheus")
@@ -144,7 +158,8 @@ public class SecurityConfig {
                         "http://localhost:*",
                         "https://dsm.daedongyeojido.site",
                         "https://student.daedongyeojido.site",
-                        "https://admin.daedongyeojido.site"
+                        "https://admin.daedongyeojido.site",
+                        "https://teacher.daedongyeojido.site"
                 )
         );
         configuration.setAllowedMethods(Arrays.asList("OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"));

@@ -13,6 +13,7 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
+import team.jeonghokim.daedongyeojido.domain.smshistory.service.SmsHistoryService;
 import team.jeonghokim.daedongyeojido.infrastructure.event.sms.event.UserSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.SmsEventFinalFailedException;
@@ -24,6 +25,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.sms.service.SmsService;
 public class SmsEventListener {
 
     private final SmsService smsService;
+    private final SmsHistoryService smsHistoryService;
 
     private static final String SMS_EVENT_RETRY = "recoverSmsEvent";
 
@@ -44,6 +46,8 @@ public class SmsEventListener {
                     event.clubName()
             );
 
+            smsHistoryService.markSent(event.smsHistoryId());
+
         } catch (HttpServerErrorException |
                  ResourceAccessException e) {
 
@@ -56,6 +60,7 @@ public class SmsEventListener {
 
     @Recover
     public void recoverSmsEvent(HttpApiException e, UserSmsEvent event) {
+        smsHistoryService.markFailed(event.smsHistoryId(), e);
 
         log.error("SMS 이벤트 최종 실패: phoneNumber={} message={}",
                 event.phoneNumber(), event.message(), e);

@@ -7,6 +7,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.sms.type.Message;
 
 @Builder
 public record LargeScaleSmsEvent(
+        Long smsHistoryId,
         String phoneNumber,
         Message message,
         String clubName,

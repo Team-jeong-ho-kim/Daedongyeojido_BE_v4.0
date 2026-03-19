@@ -8,13 +8,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import team.jeonghokim.daedongyeojido.domain.auth.domain.RefreshToken;
 import team.jeonghokim.daedongyeojido.domain.auth.domain.repository.RefreshTokenRepository;
 import team.jeonghokim.daedongyeojido.domain.auth.presentation.dto.response.TokenResponse;
-import team.jeonghokim.daedongyeojido.global.security.auth.CustomUserDetailsService;
+import team.jeonghokim.daedongyeojido.global.security.auth.DaedongUserDetails;
+import team.jeonghokim.daedongyeojido.global.security.auth.PrincipalDetailsService;
 import team.jeonghokim.daedongyeojido.global.security.exception.ExpiredTokenException;
 import team.jeonghokim.daedongyeojido.global.security.exception.InvalidTokenException;
 
@@ -25,7 +25,7 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final PrincipalDetailsService principalDetailsService;
     private final RefreshTokenRepository refreshTokenRepository;
 
     private static final String CLAIM_TYPE = "typ";
@@ -34,11 +34,11 @@ public class JwtTokenProvider {
     private static final int MILLISECONDS = 1000;
 
     //access token 생성
-    public String createAccessToken(String accountId) {
+    public String createAccessToken(String principalKey) {
         Date now = new Date(); //코드를 실행한 시점의 현재 날짜와 시간이 저장(일시적)
 
         return Jwts.builder()
-                .setSubject(accountId) //토큰의 소유자
+                .setSubject(principalKey) //토큰의 소유자
                 .claim(CLAIM_TYPE, ACCESS_TYPE) //액세스 토큰임을 나타냄
                 .setIssuedAt(now) //토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + jwtProperties.getAccessExpiration() * MILLISECONDS)) //토큰의 만료 시간 설정
@@ -48,11 +48,11 @@ public class JwtTokenProvider {
     }
 
     //refresh token 생성
-    public String createRefreshToken(String accountId) {
+    public String createRefreshToken(String principalKey) {
         Date now = new Date();
 
         String refreshToken = Jwts.builder()
-                .setSubject(accountId)
+                .setSubject(principalKey)
                 .claim(CLAIM_TYPE, REFRESH_TYPE)  //refresh 토큰임을 나타냄
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + jwtProperties.getRefreshExpiration() * MILLISECONDS))
@@ -61,7 +61,7 @@ public class JwtTokenProvider {
 
         refreshTokenRepository.save(
                 RefreshToken.builder()
-                        .accountId(accountId)
+                        .accountId(principalKey)
                         .refreshToken(refreshToken)
                         .timeToLive((jwtProperties.getRefreshExpiration()))
                         .build()
@@ -73,7 +73,7 @@ public class JwtTokenProvider {
     // 토큰에 담겨 있는 userId로 SpringSecurity Authentication 정보를 반환 하는 메서드
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(claims.getSubject());
+        DaedongUserDetails userDetails = principalDetailsService.loadByPrincipal(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -93,11 +93,11 @@ public class JwtTokenProvider {
         }
     }
 
-    public TokenResponse receiveToken(String accountId) {
+    public TokenResponse receiveToken(String principalKey) {
 
         return TokenResponse.builder()
-                .accessToken(createAccessToken(accountId))
-                .refreshToken(createRefreshToken(accountId))
+                .accessToken(createAccessToken(principalKey))
+                .refreshToken(createRefreshToken(principalKey))
                 .build();
     }
 

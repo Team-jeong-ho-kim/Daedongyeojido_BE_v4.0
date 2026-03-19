@@ -17,6 +17,8 @@ public enum ErrorCode {
 
     // user
     USER_NOT_FOUND(404, "해당 유저가 존재 하지 않습니다."),
+    TEACHER_NOT_FOUND(404, "해당 선생님이 존재 하지 않습니다."),
+    TEACHER_ALREADY_EXISTS(409, "이미 존재하는 선생님 계정입니다."),
     USER_MISMATCH(401, "유저가 일치 하지 않습니다."),
     PASSWORD_MISMATCH(401, "비밀 번호가 일치 하지 않습니다."),
     INVALID_USER(401, "유효 하지 않은 사용자입니다."),
@@ -46,6 +48,10 @@ public enum ErrorCode {
     ALREADY_APPLICANT_IN_CLUB_EXCEPTION(409, "지원자가 이미 동아리에 소속되어있습니다."),
     CLUB_ACCESS_DENIED(403, "해당 동아리에 대한 권한이 없습니다."),
     CANNOT_DELETE_CLUB_LEADER(409, "동아리 팀장은 삭제할 수 없습니다."),
+    CLUB_CREATION_APPLICATION_NOT_FOUND(404, "동아리 개설 신청을 찾을 수 없습니다."),
+    CLUB_CREATION_APPLICATION_ACCESS_DENIED(403, "해당 동아리 개설 신청에 접근할 수 없습니다."),
+    CANNOT_MODIFY_CLUB_CREATION_APPLICATION(400, "현재 상태에서는 동아리 개설 신청을 수정할 수 없습니다."),
+    CLUB_CREATION_REVIEW_ACCESS_DENIED(403, "해당 동아리 개설 신청을 검토할 수 없습니다."),
 
     // alarm
     ALARM_NOT_FOUND(404, "알람을 찾을 수 없습니다."),
@@ -70,8 +76,8 @@ public enum ErrorCode {
     RESULT_DURATION_ALREADY_EXECUTED(409, "이미 결과 처리가 완료되었습니다."),
 
     // clubCreationForm
-    ALREADY_CLUB_CREATION_FORM_EXISTS(409, "이미 동아리 신청 양식이 존재합니다."),
-    CLUB_CREATION_FORM_NOT_FOUND(404, "동아리 신청 폼을 찾을 수 없습니다."),
+    ALREADY_FILE_EXISTS(409, "이미 해당 파일 양식이 존재합니다."),
+    FILE_NOT_FOUND(404, "파일 양식을 찾을 수 없습니다."),
 
     // admin
     ADMIN_NOT_FOUND(404, "존재하지 않는 관리자입니다."),

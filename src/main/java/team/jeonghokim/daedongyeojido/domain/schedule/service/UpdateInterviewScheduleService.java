@@ -11,6 +11,8 @@ import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.Schedule
 import team.jeonghokim.daedongyeojido.domain.schedule.exception.InterviewScheduleAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.schedule.exception.InterviewScheduleNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.InterviewScheduleRequest;
+import team.jeonghokim.daedongyeojido.domain.smshistory.domain.enums.SmsReferenceType;
+import team.jeonghokim.daedongyeojido.domain.smshistory.service.SmsHistoryService;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.UserAlarmEvent;
@@ -24,6 +26,7 @@ public class UpdateInterviewScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserFacade userFacade;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final SmsHistoryService smsHistoryService;
 
     @Transactional
     public void execute(Long scheduleId, InterviewScheduleRequest request) {
@@ -39,14 +42,22 @@ public class UpdateInterviewScheduleService {
 
         schedule.updateSchedule(request);
 
-        executeScheduleSMS(interviewer.getClub(), schedule.getApplicant());
+        executeScheduleSMS(schedule, interviewer.getClub(), schedule.getApplicant());
 
         executeScheduleAlarm(schedule, interviewer, schedule.getApplicant());
     }
 
-    private void executeScheduleSMS(Club club, User user) {
+    private void executeScheduleSMS(Schedule schedule, Club club, User user) {
+        Long smsHistoryId = smsHistoryService.createImmediate(
+                SmsReferenceType.INTERVIEW_SCHEDULE,
+                schedule.getId(),
+                user,
+                Message.INTERVIEW_SCHEDULE_CHANGED,
+                club.getClubName()
+        );
 
         applicationEventPublisher.publishEvent(UserSmsEvent.builder()
+                        .smsHistoryId(smsHistoryId)
                         .clubName(club.getClubName())
                         .message(Message.INTERVIEW_SCHEDULE_CHANGED)
                         .phoneNumber(user.getPhoneNumber())

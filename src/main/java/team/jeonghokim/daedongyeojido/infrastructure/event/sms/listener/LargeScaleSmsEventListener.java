@@ -19,6 +19,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
+import team.jeonghokim.daedongyeojido.domain.smshistory.service.SmsHistoryService;
 import team.jeonghokim.daedongyeojido.infrastructure.event.sms.event.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.HttpApiException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.exception.SmsEventFinalFailedException;
@@ -43,6 +44,7 @@ public class LargeScaleSmsEventListener {
     private final ResultDurationRepository resultDurationRepository;
     private final TaskScheduler taskScheduler;
     private final DecideResultDurationService decideResultDurationService;
+    private final SmsHistoryService smsHistoryService;
 
     private static final String LARGE_SCALE_SMS_EVENT_RETRY = "recoverLargeScaleSmsEvent";
     private static final String TIME_ZONE = "Asia/Seoul";
@@ -69,6 +71,7 @@ public class LargeScaleSmsEventListener {
                     .remove(RESULT_DURATION_SMS_ZSET, event.payload());
 
             decideResultDurationService.executeSmsScheduler(event.resultDuration());
+            smsHistoryService.markSent(event.smsHistoryId());
 
         } catch (HttpServerErrorException |
                  ResourceAccessException e) {
@@ -101,6 +104,7 @@ public class LargeScaleSmsEventListener {
 
     @Recover
     public void recoverLargeScaleSmsEvent(HttpApiException e, LargeScaleSmsEvent event) {
+        smsHistoryService.markFailed(event.smsHistoryId(), e);
 
         smsRedisTemplate.opsForZSet()
                 .remove(RESULT_DURATION_SMS_ZSET, event.payload());
