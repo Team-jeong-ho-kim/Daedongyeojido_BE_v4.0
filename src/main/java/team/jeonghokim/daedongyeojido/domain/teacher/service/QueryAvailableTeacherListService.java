@@ -17,7 +17,7 @@ public class QueryAvailableTeacherListService {
 
     @Transactional(readOnly = true)
     public QueryTeacherListResponse execute() {
-        List<TeacherResponse> teachers = teacherRepository.findAllAvailableTeachers().stream()
+        List<TeacherResponse> teachers = teacherRepository.findAllTeachersWithMatchedStatus().stream()
                 .map(TeacherResponse::from)
                 .toList();
 
