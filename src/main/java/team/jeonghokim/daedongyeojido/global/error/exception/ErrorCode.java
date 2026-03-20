@@ -19,6 +19,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(404, "해당 유저가 존재 하지 않습니다."),
     TEACHER_NOT_FOUND(404, "해당 선생님이 존재 하지 않습니다."),
     TEACHER_ALREADY_EXISTS(409, "이미 존재하는 선생님 계정입니다."),
+    TEACHER_ALREADY_MATCHED(409, "이미 다른 동아리에 매칭된 지도교사입니다."),
     USER_PHONE_NUMBER_ALREADY_EXISTS(409, "이미 사용 중인 전화번호입니다."),
     USER_MISMATCH(401, "유저가 일치 하지 않습니다."),
     PASSWORD_MISMATCH(401, "비밀 번호가 일치 하지 않습니다."),
