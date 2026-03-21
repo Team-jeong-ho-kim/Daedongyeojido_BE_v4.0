@@ -40,7 +40,10 @@ public class QueryInterviewScheduleDetailService {
             throw InterviewScheduleAccessDeniedException.EXCEPTION;
         }
 
-        Submission submission = submissionRepository.findByUserIdAndClubId(schedule.getApplicant().getId(), schedule.getClub().getId())
+        Submission submission = submissionRepository.findTopByUserIdAndApplicationFormClubIdOrderByIdDesc(
+                        schedule.getApplicant().getId(),
+                        schedule.getClub().getId()
+                )
                 .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION);
 
         return QueryInterviewScheduleDetailResponse.of(schedule, submission);

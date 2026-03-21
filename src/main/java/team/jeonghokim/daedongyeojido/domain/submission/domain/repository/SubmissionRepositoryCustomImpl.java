@@ -30,7 +30,8 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                         submission.userName,
                         submission.classNumber,
                         submission.major,
-                        submission.clubApplicationStatus
+                        submission.clubApplicationStatus,
+                        submission.interviewStatus
                 ))
                 .from(submission)
                 .where(

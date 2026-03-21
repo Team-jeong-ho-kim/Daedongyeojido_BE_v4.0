@@ -97,6 +97,15 @@ public class ClubController {
         passClubService.execute(submissionId, request);
     }
 
+    @PatchMapping("/interviews/{submission-id}/complete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void completeInterview(
+            @PathVariable("submission-id") Long submissionId,
+            @RequestBody @Valid PassClubRequest request
+    ) {
+        passClubService.execute(submissionId, request);
+    }
+
     @DeleteMapping("/members/{user-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTeamMember(@PathVariable("user-id") Long userId) {

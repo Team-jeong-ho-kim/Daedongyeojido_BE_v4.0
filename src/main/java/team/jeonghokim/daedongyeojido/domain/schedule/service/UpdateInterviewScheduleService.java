@@ -13,6 +13,8 @@ import team.jeonghokim.daedongyeojido.domain.schedule.exception.InterviewSchedul
 import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.InterviewScheduleRequest;
 import team.jeonghokim.daedongyeojido.domain.smshistory.domain.enums.SmsReferenceType;
 import team.jeonghokim.daedongyeojido.domain.smshistory.service.SmsHistoryService;
+import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
+import team.jeonghokim.daedongyeojido.domain.submission.exception.SubmissionNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.UserAlarmEvent;
@@ -27,6 +29,7 @@ public class UpdateInterviewScheduleService {
     private final UserFacade userFacade;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final SmsHistoryService smsHistoryService;
+    private final SubmissionRepository submissionRepository;
 
     @Transactional
     public void execute(Long scheduleId, InterviewScheduleRequest request) {
@@ -41,6 +44,12 @@ public class UpdateInterviewScheduleService {
         }
 
         schedule.updateSchedule(request);
+        submissionRepository.findTopByUserIdAndApplicationFormClubIdOrderByIdDesc(
+                        schedule.getApplicant().getId(),
+                        schedule.getClub().getId()
+                )
+                .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION)
+                .markInterviewScheduled();
 
         executeScheduleSMS(schedule, interviewer.getClub(), schedule.getApplicant());
 

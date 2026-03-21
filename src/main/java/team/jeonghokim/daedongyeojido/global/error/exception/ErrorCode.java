@@ -71,6 +71,8 @@ public enum ErrorCode {
     ALREADY_INTERVIEW_SCHEDULE_EXISTS(409, "이미 지원자 면접 일정이 존재합니다."),
     INTERVIEW_SCHEDULE_NOT_FOUND(404, "면접 일정을 찾을 수 없습니다."),
     INTERVIEW_SCHEDULE_ACCESS_DENIED(403, "해당 면접 일정 관련 권한이 없습니다."),
+    INTERVIEW_NOT_SCHEDULED(400, "면접 일정이 확정되지 않았습니다."),
+    INTERVIEW_ALREADY_COMPLETED(409, "이미 면접 완료 처리된 지원서입니다."),
 
     // resultDuration
     RESULT_DURATION_NOT_FOUND(404, "발표시간이 설정되지 않았습니다."),

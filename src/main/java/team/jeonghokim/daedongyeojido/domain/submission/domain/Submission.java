@@ -5,6 +5,7 @@ import lombok.*;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationAnswer;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationForm;
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
+import team.jeonghokim.daedongyeojido.domain.submission.domain.enums.InterviewStatus;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -50,6 +51,10 @@ public class Submission extends BaseIdEntity {
     @Column(nullable = false, length = 13)
     private ApplicationStatus clubApplicationStatus;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private InterviewStatus interviewStatus;
+
     @Builder
     public Submission(
             ApplicationStatus userApplicationStatus,
@@ -70,6 +75,7 @@ public class Submission extends BaseIdEntity {
         this.user = user;
         this.applicationForm = applicationForm;
         addAnswers(answers);
+        this.interviewStatus = InterviewStatus.NOT_SCHEDULED;
     }
 
     private void addAnswers(List<ApplicationAnswer> answers) {
@@ -112,5 +118,17 @@ public class Submission extends BaseIdEntity {
 
     public void applyClubPassResult(boolean isPassed) {
         this.clubApplicationStatus = isPassed ? ApplicationStatus.ACCEPTED : ApplicationStatus.REJECTED;
+    }
+
+    public void markInterviewScheduled() {
+        this.interviewStatus = InterviewStatus.SCHEDULED;
+    }
+
+    public void markInterviewCompleted() {
+        this.interviewStatus = InterviewStatus.COMPLETED;
+    }
+
+    public boolean isInterviewCompleted() {
+        return this.interviewStatus == InterviewStatus.COMPLETED;
     }
 }

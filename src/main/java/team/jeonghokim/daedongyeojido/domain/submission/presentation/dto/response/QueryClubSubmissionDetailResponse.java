@@ -3,6 +3,7 @@ package team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.respon
 import lombok.Builder;
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
+import team.jeonghokim.daedongyeojido.domain.submission.domain.enums.InterviewStatus;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.util.List;
@@ -16,7 +17,8 @@ public record QueryClubSubmissionDetailResponse(
         List<SubmissionDto> answers,
         Long applicantId,
         boolean hasInterviewSchedule,
-        ApplicationStatus clubApplicationStatus
+        ApplicationStatus clubApplicationStatus,
+        InterviewStatus interviewStatus
 ) {
 
     public static QueryClubSubmissionDetailResponse from(Submission submission, boolean hasInterviewSchedule) {
@@ -29,6 +31,7 @@ public record QueryClubSubmissionDetailResponse(
                 .applicantId(submission.getUser().getId())
                 .hasInterviewSchedule(hasInterviewSchedule)
                 .clubApplicationStatus(submission.getClubApplicationStatus())
+                .interviewStatus(submission.getInterviewStatus())
                 .build();
     }
 }
