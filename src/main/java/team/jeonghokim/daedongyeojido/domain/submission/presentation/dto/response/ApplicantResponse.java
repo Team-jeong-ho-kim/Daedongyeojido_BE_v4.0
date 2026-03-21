@@ -2,7 +2,6 @@ package team.jeonghokim.daedongyeojido.domain.submission.presentation.dto.respon
 
 import com.querydsl.core.annotations.QueryProjection;
 import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
-import team.jeonghokim.daedongyeojido.domain.submission.domain.enums.InterviewStatus;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 public record ApplicantResponse(
@@ -10,8 +9,7 @@ public record ApplicantResponse(
         String userName,
         String classNumber,
         Major major,
-        ApplicationStatus clubApplicationStatus,
-        InterviewStatus interviewStatus
+        ApplicationStatus clubApplicationStatus
 ) {
 
     @QueryProjection
@@ -20,14 +18,12 @@ public record ApplicantResponse(
             String userName,
             String classNumber,
             Major major,
-            ApplicationStatus clubApplicationStatus,
-            InterviewStatus interviewStatus
+            ApplicationStatus clubApplicationStatus
     ) {
         this.submissionId = submissionId;
         this.userName = userName;
         this.classNumber = classNumber;
         this.major = major;
         this.clubApplicationStatus = clubApplicationStatus;
-        this.interviewStatus = interviewStatus;
     }
 }

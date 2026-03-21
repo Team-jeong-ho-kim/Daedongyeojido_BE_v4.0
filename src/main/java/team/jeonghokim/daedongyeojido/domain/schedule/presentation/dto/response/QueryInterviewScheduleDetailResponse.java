@@ -3,7 +3,6 @@ package team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.response
 import lombok.Builder;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.Schedule;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
-import team.jeonghokim.daedongyeojido.domain.submission.domain.enums.InterviewStatus;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
 
 import java.time.LocalDate;
@@ -17,8 +16,7 @@ public record QueryInterviewScheduleDetailResponse(
         Major major,
         String place,
         LocalTime interviewTime,
-        LocalDate interviewSchedule,
-        InterviewStatus interviewStatus
+        LocalDate interviewSchedule
 ) {
 
     public static QueryInterviewScheduleDetailResponse of(Schedule schedule, Submission submission) {
@@ -30,7 +28,6 @@ public record QueryInterviewScheduleDetailResponse(
                 .place(schedule.getPlace())
                 .interviewTime(schedule.getInterviewTime())
                 .interviewSchedule(schedule.getInterviewSchedule())
-                .interviewStatus(submission.getInterviewStatus())
                 .build();
     }
 }

@@ -12,15 +12,12 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.PassC
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationNotFoundException;
-import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
-import team.jeonghokim.daedongyeojido.domain.schedule.exception.InterviewAlreadyCompletedException;
-import team.jeonghokim.daedongyeojido.domain.schedule.exception.InterviewNotScheduledException;
+import team.jeonghokim.daedongyeojido.domain.schedule.exception.InterviewNotCompletedException;
 import team.jeonghokim.daedongyeojido.domain.smshistory.domain.enums.SmsReferenceType;
 import team.jeonghokim.daedongyeojido.domain.smshistory.service.SmsHistoryService;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerAlarmPayload;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerSmsPayload;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
-import team.jeonghokim.daedongyeojido.domain.submission.domain.enums.InterviewStatus;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
@@ -38,7 +35,6 @@ public class PassClubService {
     private final UserFacade userFacade;
     private final SubmissionRepository submissionRepository;
     private final ResultDurationRepository resultDurationRepository;
-    private final ScheduleRepository scheduleRepository;
     private final RedisTemplate<String, SchedulerSmsPayload> smsRedisTemplate;
     private final RedisTemplate<String, SchedulerAlarmPayload> alarmRedisTemplate;
     private final SmsHistoryService smsHistoryService;
@@ -56,7 +52,6 @@ public class PassClubService {
         validate(user, submission);
 
         submission.applyClubPassResult(request.isPassed());
-        submission.markInterviewCompleted();
 
         saveSMS(submission, request.isPassed());
 
@@ -73,13 +68,8 @@ public class PassClubService {
             throw AlreadyJoinClubException.EXCEPTION;
         }
 
-        if (!scheduleRepository.existsByApplicantAndClub(submission.getUser(), submission.getApplicationForm().getClub())
-                || submission.getInterviewStatus() == InterviewStatus.NOT_SCHEDULED) {
-            throw InterviewNotScheduledException.EXCEPTION;
-        }
-
-        if (submission.isInterviewCompleted()) {
-            throw InterviewAlreadyCompletedException.EXCEPTION;
+        if (!submission.isInterviewCompleted()) {
+            throw InterviewNotCompletedException.EXCEPTION;
         }
     }
 
