@@ -67,7 +67,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users").hasAnyRole(STUDENT, CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.PATCH, "/users").hasAnyRole(STUDENT, CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.PATCH, "/users/members").hasRole(STUDENT)
-                        .requestMatchers(HttpMethod.GET, "/users/submissions").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.GET, "/users/submissions").hasAnyRole(STUDENT, CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.PATCH, "/users/submissions/**").hasRole(STUDENT)
 
                         // application
