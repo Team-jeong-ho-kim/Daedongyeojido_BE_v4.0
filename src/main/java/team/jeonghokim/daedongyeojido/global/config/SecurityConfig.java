@@ -163,7 +163,11 @@ public class SecurityConfig {
                         "https://dsm.daedongyeojido.site",
                         "https://student.daedongyeojido.site",
                         "https://admin.daedongyeojido.site",
-                        "https://teacher.daedongyeojido.site"
+                        "https://teacher.daedongyeojido.site",
+                        "https://dsm-stag.daedongyeojido.site",
+                        "https://student-stag.daedongyeojido.site",
+                        "https://admin-stag.daedongyeojido.site",
+                        "https://teacher-stag.daedongyeojido.site"
                 )
         );
         configuration.setAllowedMethods(Arrays.asList("OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"));
