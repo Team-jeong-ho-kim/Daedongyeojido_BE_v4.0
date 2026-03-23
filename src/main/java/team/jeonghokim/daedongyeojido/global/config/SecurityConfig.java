@@ -71,7 +71,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/users/submissions/**").hasRole(STUDENT)
 
                         // application
-                        .requestMatchers("/applications/**").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.GET, "/applications/**").hasAnyRole(STUDENT, CLUB_MEMBER, CLUB_LEADER)
+                        .requestMatchers(HttpMethod.POST, "/applications/**").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.PATCH, "/applications/**").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.DELETE, "/applications/**").hasRole(STUDENT)
 
                         // admin
                         .requestMatchers(HttpMethod.DELETE, "/admin/dissolution/**").hasAnyRole(ADMIN)
