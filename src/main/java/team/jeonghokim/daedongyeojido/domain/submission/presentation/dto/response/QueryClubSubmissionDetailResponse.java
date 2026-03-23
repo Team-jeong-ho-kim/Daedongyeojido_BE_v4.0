@@ -16,7 +16,8 @@ public record QueryClubSubmissionDetailResponse(
         List<SubmissionDto> answers,
         Long applicantId,
         boolean hasInterviewSchedule,
-        ApplicationStatus clubApplicationStatus
+        ApplicationStatus clubApplicationStatus,
+        boolean isInterviewCompleted
 ) {
 
     public static QueryClubSubmissionDetailResponse from(Submission submission, boolean hasInterviewSchedule) {
@@ -29,6 +30,7 @@ public record QueryClubSubmissionDetailResponse(
                 .applicantId(submission.getUser().getId())
                 .hasInterviewSchedule(hasInterviewSchedule)
                 .clubApplicationStatus(submission.getClubApplicationStatus())
+                .isInterviewCompleted(submission.isInterviewCompleted())
                 .build();
     }
 }

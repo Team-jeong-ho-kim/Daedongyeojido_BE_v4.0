@@ -12,6 +12,8 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.PassC
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationNotFoundException;
+import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
+import team.jeonghokim.daedongyeojido.domain.schedule.exception.InterviewNotScheduledException;
 import team.jeonghokim.daedongyeojido.domain.smshistory.domain.enums.SmsReferenceType;
 import team.jeonghokim.daedongyeojido.domain.smshistory.service.SmsHistoryService;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerAlarmPayload;
@@ -34,6 +36,7 @@ public class PassClubService {
     private final UserFacade userFacade;
     private final SubmissionRepository submissionRepository;
     private final ResultDurationRepository resultDurationRepository;
+    private final ScheduleRepository scheduleRepository;
     private final RedisTemplate<String, SchedulerSmsPayload> smsRedisTemplate;
     private final RedisTemplate<String, SchedulerAlarmPayload> alarmRedisTemplate;
     private final SmsHistoryService smsHistoryService;
@@ -50,11 +53,15 @@ public class PassClubService {
 
         validate(user, submission);
 
+        ResultDuration resultDuration = resultDurationRepository.findPendingResultDuration()
+                .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
+
         submission.applyClubPassResult(request.isPassed());
+        submission.markInterviewCompleted();
 
-        saveSMS(submission, request.isPassed());
+        saveSMS(submission, request.isPassed(), resultDuration);
 
-        saveAlarm(submission, request.isPassed());
+        saveAlarm(submission, request.isPassed(), resultDuration);
     }
 
     private void validate(User user, Submission submission) {
@@ -66,12 +73,13 @@ public class PassClubService {
         if (!(submission.getUser().getClub() == null)) {
             throw AlreadyJoinClubException.EXCEPTION;
         }
+
+        if (!scheduleRepository.existsByApplicantAndClub(submission.getUser(), submission.getApplicationForm().getClub())) {
+            throw InterviewNotScheduledException.EXCEPTION;
+        }
     }
 
-    private void saveSMS(Submission submission, boolean isPassed) {
-
-        ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
-                .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
+    private void saveSMS(Submission submission, boolean isPassed, ResultDuration resultDuration) {
 
         long score = resultDuration.getResultDurationTime()
                 .atZone(ZoneId.of(SEOUL_TIME_ZONE))
@@ -98,10 +106,7 @@ public class PassClubService {
                 .add(RESULT_DURATION_SMS_ZSET, payload, score);
     }
 
-    private void saveAlarm(Submission submission, boolean isPassed) {
-
-        ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
-                .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
+    private void saveAlarm(Submission submission, boolean isPassed, ResultDuration resultDuration) {
 
         long score = resultDuration.getResultDurationTime()
                 .atZone(ZoneId.of(SEOUL_TIME_ZONE))
@@ -110,6 +115,7 @@ public class PassClubService {
         SchedulerAlarmPayload payload = SchedulerAlarmPayload.builder()
                     .alarmType(isPassed ? AlarmType.CLUB_FINAL_ACCEPTED : AlarmType.CLUB_FINAL_REJECTED)
                     .clubId(submission.getApplicationForm().getClub().getId())
+                    .submissionId(submission.getId())
                     .userId(submission.getUser().getId())
                     .isPassed(isPassed)
                 .build();

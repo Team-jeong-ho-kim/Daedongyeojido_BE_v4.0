@@ -6,12 +6,15 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserLink;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserMajor;
+import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
+import team.jeonghokim.daedongyeojido.domain.user.exception.UserPhoneNumberAlreadyExistsException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.MyInfoRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.type.FileType;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -20,11 +23,13 @@ import java.util.stream.Collectors;
 public class InputMyInfoService {
     private final UserFacade userFacade;
     private final S3Service s3Service;
+    private final UserRepository userRepository;
 
     @Transactional
     public void execute(MyInfoRequest request) {
 
         User user = userFacade.getCurrentUser();
+        validatePhoneNumber(request.phoneNumber(), user.getId());
 
         String profileImage = s3Service.upload(request.profileImage(), FileType.IMAGE);
 
@@ -42,6 +47,7 @@ public class InputMyInfoService {
         return Optional.ofNullable(request.majors())
                 .orElseGet(List::of)
                 .stream()
+                .filter(Objects::nonNull)
                 .map(major -> UserMajor.builder()
                         .user(user)
                         .major(major)
@@ -54,10 +60,19 @@ public class InputMyInfoService {
         return Optional.ofNullable(request.links())
                 .orElseGet(List::of)
                 .stream()
+                .filter(Objects::nonNull)
                 .map(link -> UserLink.builder()
                         .user(user)
                         .link(link)
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    private void validatePhoneNumber(String phoneNumber, Long currentUserId) {
+        userRepository.findByPhoneNumber(phoneNumber)
+                .filter(foundUser -> !foundUser.getId().equals(currentUserId))
+                .ifPresent(foundUser -> {
+                    throw UserPhoneNumberAlreadyExistsException.EXCEPTION;
+                });
     }
 }

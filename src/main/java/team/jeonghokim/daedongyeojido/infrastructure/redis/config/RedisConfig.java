@@ -40,7 +40,7 @@ public class RedisConfig {
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(host, port);
         config.setDatabase(database);
-        return new LettuceConnectionFactory(host, port);
+        return new LettuceConnectionFactory(config);
     }
 
     private <T> RedisTemplate<String, T> createRedisTemplate(RedisConnectionFactory factory, Class<T> targetClass) {

@@ -50,6 +50,9 @@ public class Submission extends BaseIdEntity {
     @Column(nullable = false, length = 13)
     private ApplicationStatus clubApplicationStatus;
 
+    @Column(nullable = false)
+    private boolean isInterviewCompleted;
+
     @Builder
     public Submission(
             ApplicationStatus userApplicationStatus,
@@ -70,6 +73,7 @@ public class Submission extends BaseIdEntity {
         this.user = user;
         this.applicationForm = applicationForm;
         addAnswers(answers);
+        this.isInterviewCompleted = false;
     }
 
     private void addAnswers(List<ApplicationAnswer> answers) {
@@ -112,5 +116,9 @@ public class Submission extends BaseIdEntity {
 
     public void applyClubPassResult(boolean isPassed) {
         this.clubApplicationStatus = isPassed ? ApplicationStatus.ACCEPTED : ApplicationStatus.REJECTED;
+    }
+
+    public void markInterviewCompleted() {
+        this.isInterviewCompleted = true;
     }
 }

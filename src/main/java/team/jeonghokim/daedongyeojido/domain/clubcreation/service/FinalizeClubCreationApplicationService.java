@@ -11,6 +11,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.ClubMajor;
 import team.jeonghokim.daedongyeojido.domain.club.domain.enums.ClubStatus;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.ClubCreationApplication;
+import team.jeonghokim.daedongyeojido.domain.teacher.exception.TeacherAlreadyMatchedException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.factory.AlarmEventFactory;
 
@@ -28,6 +29,10 @@ public class FinalizeClubCreationApplicationService {
     public void execute(ClubCreationApplication application) {
         if (application.getApplicant().getClub() != null) {
             return;
+        }
+
+        if (clubRepository.existsByTeacher(application.getTeacher())) {
+            throw TeacherAlreadyMatchedException.EXCEPTION;
         }
 
         Club club = Club.builder()

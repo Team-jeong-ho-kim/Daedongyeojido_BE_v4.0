@@ -51,7 +51,7 @@ public class Schedule extends BaseIdEntity {
         this.interviewTime = interviewTime;
         this.applicant = applicant;
         this.club = club;
-        this.hasInterviewSchedule = false;
+        this.hasInterviewSchedule = true;
     }
 
     public void updateSchedule(InterviewScheduleRequest request) {

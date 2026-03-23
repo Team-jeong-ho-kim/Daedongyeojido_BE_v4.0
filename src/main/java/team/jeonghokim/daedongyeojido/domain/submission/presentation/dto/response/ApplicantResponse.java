@@ -13,7 +13,13 @@ public record ApplicantResponse(
 ) {
 
     @QueryProjection
-    public ApplicantResponse(Long submissionId, String userName, String classNumber, Major major, ApplicationStatus clubApplicationStatus) {
+    public ApplicantResponse(
+            Long submissionId,
+            String userName,
+            String classNumber,
+            Major major,
+            ApplicationStatus clubApplicationStatus
+    ) {
         this.submissionId = submissionId;
         this.userName = userName;
         this.classNumber = classNumber;

@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.user.presentation.dto.response;
 
 import lombok.Builder;
+import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.application.presentation.dto.response.ApplicationQuestionAndAnswerResponse;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Major;
@@ -16,6 +17,8 @@ public record QueryApplicationDetailResponse(
         String classNumber,
         String introduction,
         Major major,
+        ApplicationStatus userApplicationStatus,
+        ApplicationStatus clubApplicationStatus,
         List<ApplicationQuestionAndAnswerResponse> contents,
         LocalDate submissionDuration
 ) {
@@ -27,6 +30,8 @@ public record QueryApplicationDetailResponse(
                 .classNumber(submission.getClassNumber())
                 .introduction(submission.getIntroduction())
                 .major(submission.getMajor())
+                .userApplicationStatus(submission.getUserApplicationStatus())
+                .clubApplicationStatus(submission.getClubApplicationStatus())
                 .contents(ApplicationQuestionAndAnswerResponse.from(submission))
                 .submissionDuration(submission.getApplicationForm().getSubmissionDuration())
                 .build();

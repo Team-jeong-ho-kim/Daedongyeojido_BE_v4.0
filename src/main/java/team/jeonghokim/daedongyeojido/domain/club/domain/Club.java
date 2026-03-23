@@ -14,6 +14,7 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -137,6 +138,7 @@ public class Club extends BaseIdEntity {
     private void updateMajors(List<Major> majors) {
         this.clubMajors.clear();
         majors.stream()
+                .filter(Objects::nonNull)
                 .map(major -> ClubMajor.builder()
                         .major(major)
                         .build())
@@ -146,6 +148,8 @@ public class Club extends BaseIdEntity {
     private void updateLinks(List<String> links) {
         this.clubLinks.clear();
         links.stream()
+                .filter(Objects::nonNull)
+                .filter(link -> !link.isBlank())
                 .map(link -> ClubLink.builder()
                         .link(link)
                         .build())

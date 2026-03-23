@@ -40,6 +40,7 @@ public class ClubController {
     private final QueryClubSubmissionDetailService queryClubSubmissionDetailService;
     private final UpdateClubService updateClubService;
     private final PassClubService passClubService;
+    private final CompleteInterviewService completeInterviewService;
     private final DeleteTeamMemberService deleteTeamMemberService;
     private final DeleteClubAlarmService deleteClubAlarmService;
 
@@ -95,6 +96,12 @@ public class ClubController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void passClub(@PathVariable("submission-id") Long submissionId, @RequestBody @Valid PassClubRequest request) {
         passClubService.execute(submissionId, request);
+    }
+
+    @PatchMapping("/interviews/{submission-id}/complete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void completeInterview(@PathVariable("submission-id") Long submissionId) {
+        completeInterviewService.execute(submissionId);
     }
 
     @DeleteMapping("/members/{user-id}")

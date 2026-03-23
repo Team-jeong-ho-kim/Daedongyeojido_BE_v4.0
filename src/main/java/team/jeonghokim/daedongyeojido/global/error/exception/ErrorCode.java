@@ -19,6 +19,8 @@ public enum ErrorCode {
     USER_NOT_FOUND(404, "해당 유저가 존재 하지 않습니다."),
     TEACHER_NOT_FOUND(404, "해당 선생님이 존재 하지 않습니다."),
     TEACHER_ALREADY_EXISTS(409, "이미 존재하는 선생님 계정입니다."),
+    TEACHER_ALREADY_MATCHED(409, "이미 다른 동아리에 매칭된 지도교사입니다."),
+    USER_PHONE_NUMBER_ALREADY_EXISTS(409, "이미 사용 중인 전화번호입니다."),
     USER_MISMATCH(401, "유저가 일치 하지 않습니다."),
     PASSWORD_MISMATCH(401, "비밀 번호가 일치 하지 않습니다."),
     INVALID_USER(401, "유효 하지 않은 사용자입니다."),
@@ -69,6 +71,9 @@ public enum ErrorCode {
     ALREADY_INTERVIEW_SCHEDULE_EXISTS(409, "이미 지원자 면접 일정이 존재합니다."),
     INTERVIEW_SCHEDULE_NOT_FOUND(404, "면접 일정을 찾을 수 없습니다."),
     INTERVIEW_SCHEDULE_ACCESS_DENIED(403, "해당 면접 일정 관련 권한이 없습니다."),
+    INTERVIEW_NOT_SCHEDULED(400, "면접 일정이 확정되지 않았습니다."),
+    INTERVIEW_NOT_COMPLETED(400, "면접 완료 처리 후 합격/불합격을 선택할 수 있습니다."),
+    INTERVIEW_ALREADY_COMPLETED(409, "이미 면접 완료 처리된 지원서입니다."),
 
     // resultDuration
     RESULT_DURATION_NOT_FOUND(404, "발표시간이 설정되지 않았습니다."),

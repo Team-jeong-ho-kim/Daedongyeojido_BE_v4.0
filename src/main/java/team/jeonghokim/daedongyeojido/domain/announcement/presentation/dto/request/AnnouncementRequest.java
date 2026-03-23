@@ -18,7 +18,7 @@ public record AnnouncementRequest(
         String introduction,
 
         @NotEmpty(message = "최소 하나 이상의 모집 전공이 필요합니다.")
-        List<Major> major,
+        List<@NotNull(message = "모집 전공은 null일 수 없습니다.") Major> major,
 
         @NotNull(message = "지원 마감일은 필수입니다.")
         @FutureOrPresent(message = "지원 마감일은 과거일 수 없습니다.")

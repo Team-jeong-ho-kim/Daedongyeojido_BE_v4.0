@@ -67,11 +67,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users").hasAnyRole(STUDENT, CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.PATCH, "/users").hasAnyRole(STUDENT, CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.PATCH, "/users/members").hasRole(STUDENT)
-                        .requestMatchers(HttpMethod.GET, "/users/submissions").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.GET, "/users/submissions").hasAnyRole(STUDENT, CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.PATCH, "/users/submissions/**").hasRole(STUDENT)
 
                         // application
-                        .requestMatchers("/applications/**").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.GET, "/applications/**").hasAnyRole(STUDENT, CLUB_MEMBER, CLUB_LEADER)
+                        .requestMatchers(HttpMethod.POST, "/applications/**").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.PATCH, "/applications/**").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.DELETE, "/applications/**").hasRole(STUDENT)
 
                         // admin
                         .requestMatchers(HttpMethod.DELETE, "/admin/dissolution/**").hasAnyRole(ADMIN)
@@ -94,6 +97,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/clubs/submissions").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/clubs/submissions/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/clubs/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/clubs/interviews/**").hasAnyRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.PATCH, "/clubs/pass/**").hasAnyRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.PATCH, "/clubs/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.DELETE, "/clubs/members/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
