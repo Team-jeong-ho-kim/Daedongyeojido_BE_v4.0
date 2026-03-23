@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
-import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationAlreadyExecutedException;
 import team.jeonghokim.daedongyeojido.domain.smshistory.service.SmsHistoryService;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
@@ -43,12 +43,20 @@ public class SchedulerService {
     @Transactional
     public void execute() {
 
-        ResultDuration resultDuration = resultDurationRepository.findPendingResultDurationForUpdate()
-                .orElseThrow(() -> ResultDurationAlreadyExecutedException.EXCEPTION);
+        ResultDuration resultDuration = resolveExecutableResultDuration();
+        if (resultDuration == null) {
+            log.info("처리 가능한 발표 기간이 없습니다.");
+            return;
+        }
 
         sendSMS(resultDuration);
 
         sendAlarm(resultDuration);
+    }
+
+    @Scheduled(fixedDelay = 5000, initialDelay = 5000)
+    public void pollAndExecutePendingResultDuration() {
+        execute();
     }
 
     private void sendSMS(ResultDuration resultDuration) {
@@ -65,7 +73,12 @@ public class SchedulerService {
             return;
         }
 
-        payloads.forEach(payload -> publishSmsEvent(payload, resultDuration));
+        payloads.forEach(payload -> {
+            if (!claimSmsPayload(payload)) {
+                return;
+            }
+            publishSmsEvent(payload, resultDuration);
+        });
     }
 
     private void sendAlarm(ResultDuration resultDuration) {
@@ -82,7 +95,12 @@ public class SchedulerService {
             return;
         }
 
-        payloads.forEach(payload -> publishAlarmEvent(payload, resultDuration));
+        payloads.forEach(payload -> {
+            if (!claimAlarmPayload(payload)) {
+                return;
+            }
+            publishAlarmEvent(payload, resultDuration);
+        });
     }
 
     private void publishSmsEvent(SchedulerSmsPayload payload, ResultDuration resultDuration) {
@@ -136,5 +154,21 @@ public class SchedulerService {
         return submissionRepository
                 .findTopByUserIdAndApplicationFormClubIdOrderByIdDesc(payload.userId(), payload.clubId())
                 .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION);
+    }
+
+    private ResultDuration resolveExecutableResultDuration() {
+        return resultDurationRepository.findPendingResultDurationForUpdate()
+                .or(() -> resultDurationRepository.findTopByOrderByIdDesc())
+                .orElse(null);
+    }
+
+    private boolean claimSmsPayload(SchedulerSmsPayload payload) {
+        Long removed = smsRedisTemplate.opsForZSet().remove(RESULT_DURATION_SMS_ZSET, payload);
+        return removed != null && removed > 0;
+    }
+
+    private boolean claimAlarmPayload(SchedulerAlarmPayload payload) {
+        Long removed = alarmRedisTemplate.opsForZSet().remove(RESULT_DURATION_ALARM_ZSET, payload);
+        return removed != null && removed > 0;
     }
 }
