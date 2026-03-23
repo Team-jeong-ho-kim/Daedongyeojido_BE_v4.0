@@ -3,6 +3,7 @@ package team.jeonghokim.daedongyeojido.infrastructure.event.alarm.listener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.retry.annotation.Backoff;
@@ -12,13 +13,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.UserAlarm;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.repository.UserAlarmRepository;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
+import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.LargeScaleAlarmEvent;
@@ -38,6 +38,7 @@ public class LargeScaleAlarmEventListener {
     private final UserAlarmRepository userAlarmRepository;
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
+    private final SubmissionRepository submissionRepository;
     private final RedisTemplate<String, SchedulerAlarmPayload> alarmRedisTemplate;
     private final DecideResultDurationService decideResultDurationService;
 
@@ -50,11 +51,16 @@ public class LargeScaleAlarmEventListener {
             maxAttempts = 5,
             backoff = @Backoff(delay = 500, multiplier = 2)
     )
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @EventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleLargeScaleAlarmEvent(LargeScaleAlarmEvent event) {
 
         try {
+            if (event.payload().submissionId() != null) {
+                submissionRepository.findById(event.payload().submissionId())
+                        .ifPresent(submission -> submission.applyUserPassResult(event.isPassed()));
+            }
+
             User receiver = userRepository.findById(event.userId())
                     .orElseThrow();
 

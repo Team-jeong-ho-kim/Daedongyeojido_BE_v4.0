@@ -12,9 +12,6 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubReposito
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.smshistory.service.SmsHistoryService;
-import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
-import team.jeonghokim.daedongyeojido.domain.submission.domain.repository.SubmissionRepository;
-import team.jeonghokim.daedongyeojido.domain.submission.exception.SubmissionNotFoundException;
 import team.jeonghokim.daedongyeojido.infrastructure.event.alarm.event.LargeScaleAlarmEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.event.sms.event.LargeScaleSmsEvent;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerAlarmPayload;
@@ -38,7 +35,6 @@ public class SchedulerService {
     private final ResultDurationRepository resultDurationRepository;
     private final ClubRepository clubRepository;
     private final SmsHistoryService smsHistoryService;
-    private final SubmissionRepository submissionRepository;
 
     @Transactional
     public void execute() {
@@ -74,10 +70,16 @@ public class SchedulerService {
         }
 
         payloads.forEach(payload -> {
-            if (!claimSmsPayload(payload)) {
-                return;
+            try {
+                if (!claimSmsPayload(payload)) {
+                    return;
+                }
+                publishSmsEvent(payload, resultDuration);
+            } catch (Exception e) {
+                log.error("SMS 이벤트 발행 준비 실패: submissionId={}, smsHistoryId={}",
+                        payload.submissionId(), payload.smsHistoryId(), e);
+                restoreSmsPayload(payload, resultDuration);
             }
-            publishSmsEvent(payload, resultDuration);
         });
     }
 
@@ -96,10 +98,16 @@ public class SchedulerService {
         }
 
         payloads.forEach(payload -> {
-            if (!claimAlarmPayload(payload)) {
-                return;
+            try {
+                if (!claimAlarmPayload(payload)) {
+                    return;
+                }
+                publishAlarmEvent(payload, resultDuration);
+            } catch (Exception e) {
+                log.error("알람 이벤트 발행 준비 실패: userId={}, submissionId={}",
+                        payload.userId(), payload.submissionId(), e);
+                restoreAlarmPayload(payload, resultDuration);
             }
-            publishAlarmEvent(payload, resultDuration);
         });
     }
 
@@ -123,8 +131,6 @@ public class SchedulerService {
     }
 
     private void publishAlarmEvent(SchedulerAlarmPayload payload, ResultDuration resultDuration) {
-        resolveSubmission(payload).applyUserPassResult(payload.isPassed());
-
         Club club = clubRepository.findById(payload.clubId()).orElseThrow();
 
         LargeScaleAlarmEvent event = LargeScaleAlarmEvent.builder()
@@ -144,18 +150,6 @@ public class SchedulerService {
         log.info("알람 이벤트 발행: userId={}, alarmType={}", payload.userId(), payload.alarmType());
     }
 
-    private Submission resolveSubmission(SchedulerAlarmPayload payload) {
-        if (payload.submissionId() != null) {
-            return submissionRepository.findById(payload.submissionId())
-                    .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION);
-        }
-
-        // Backward compatibility for old payloads already queued in Redis.
-        return submissionRepository
-                .findTopByUserIdAndApplicationFormClubIdOrderByIdDesc(payload.userId(), payload.clubId())
-                .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION);
-    }
-
     private ResultDuration resolveExecutableResultDuration() {
         return resultDurationRepository.findPendingResultDurationForUpdate()
                 .or(() -> resultDurationRepository.findTopByOrderByIdDesc())
@@ -170,5 +164,15 @@ public class SchedulerService {
     private boolean claimAlarmPayload(SchedulerAlarmPayload payload) {
         Long removed = alarmRedisTemplate.opsForZSet().remove(RESULT_DURATION_ALARM_ZSET, payload);
         return removed != null && removed > 0;
+    }
+
+    private void restoreSmsPayload(SchedulerSmsPayload payload, ResultDuration resultDuration) {
+        long score = resultDuration.getResultDurationTime().atZone(java.time.ZoneId.of("Asia/Seoul")).toEpochSecond();
+        smsRedisTemplate.opsForZSet().add(RESULT_DURATION_SMS_ZSET, payload, score);
+    }
+
+    private void restoreAlarmPayload(SchedulerAlarmPayload payload, ResultDuration resultDuration) {
+        long score = resultDuration.getResultDurationTime().atZone(java.time.ZoneId.of("Asia/Seoul")).toEpochSecond();
+        alarmRedisTemplate.opsForZSet().add(RESULT_DURATION_ALARM_ZSET, payload, score);
     }
 }

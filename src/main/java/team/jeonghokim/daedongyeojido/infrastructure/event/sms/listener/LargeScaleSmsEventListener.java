@@ -13,8 +13,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
@@ -56,7 +54,7 @@ public class LargeScaleSmsEventListener {
             maxAttempts = 5,
             backoff = @Backoff(delay = 500, multiplier = 2)
     )
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @EventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleLargeScaleSmsEvent(LargeScaleSmsEvent event) {
 
