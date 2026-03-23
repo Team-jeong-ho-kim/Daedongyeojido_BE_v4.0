@@ -53,12 +53,15 @@ public class PassClubService {
 
         validate(user, submission);
 
+        ResultDuration resultDuration = resultDurationRepository.findPendingResultDuration()
+                .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
+
         submission.applyClubPassResult(request.isPassed());
         submission.markInterviewCompleted();
 
-        saveSMS(submission, request.isPassed());
+        saveSMS(submission, request.isPassed(), resultDuration);
 
-        saveAlarm(submission, request.isPassed());
+        saveAlarm(submission, request.isPassed(), resultDuration);
     }
 
     private void validate(User user, Submission submission) {
@@ -76,10 +79,7 @@ public class PassClubService {
         }
     }
 
-    private void saveSMS(Submission submission, boolean isPassed) {
-
-        ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
-                .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
+    private void saveSMS(Submission submission, boolean isPassed, ResultDuration resultDuration) {
 
         long score = resultDuration.getResultDurationTime()
                 .atZone(ZoneId.of(SEOUL_TIME_ZONE))
@@ -106,10 +106,7 @@ public class PassClubService {
                 .add(RESULT_DURATION_SMS_ZSET, payload, score);
     }
 
-    private void saveAlarm(Submission submission, boolean isPassed) {
-
-        ResultDuration resultDuration = resultDurationRepository.findTopByOrderByIdDesc()
-                .orElseThrow(() -> ResultDurationNotFoundException.EXCEPTION);
+    private void saveAlarm(Submission submission, boolean isPassed, ResultDuration resultDuration) {
 
         long score = resultDuration.getResultDurationTime()
                 .atZone(ZoneId.of(SEOUL_TIME_ZONE))
