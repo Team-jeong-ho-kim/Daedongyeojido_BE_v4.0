@@ -12,7 +12,8 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.PassC
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.ResultDuration;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.resultduration.exception.ResultDurationNotFoundException;
-import team.jeonghokim.daedongyeojido.domain.schedule.exception.InterviewNotCompletedException;
+import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
+import team.jeonghokim.daedongyeojido.domain.schedule.exception.InterviewNotScheduledException;
 import team.jeonghokim.daedongyeojido.domain.smshistory.domain.enums.SmsReferenceType;
 import team.jeonghokim.daedongyeojido.domain.smshistory.service.SmsHistoryService;
 import team.jeonghokim.daedongyeojido.infrastructure.scheduler.payload.SchedulerAlarmPayload;
@@ -35,6 +36,7 @@ public class PassClubService {
     private final UserFacade userFacade;
     private final SubmissionRepository submissionRepository;
     private final ResultDurationRepository resultDurationRepository;
+    private final ScheduleRepository scheduleRepository;
     private final RedisTemplate<String, SchedulerSmsPayload> smsRedisTemplate;
     private final RedisTemplate<String, SchedulerAlarmPayload> alarmRedisTemplate;
     private final SmsHistoryService smsHistoryService;
@@ -52,6 +54,7 @@ public class PassClubService {
         validate(user, submission);
 
         submission.applyClubPassResult(request.isPassed());
+        submission.markInterviewCompleted();
 
         saveSMS(submission, request.isPassed());
 
@@ -68,8 +71,8 @@ public class PassClubService {
             throw AlreadyJoinClubException.EXCEPTION;
         }
 
-        if (!submission.isInterviewCompleted()) {
-            throw InterviewNotCompletedException.EXCEPTION;
+        if (!scheduleRepository.existsByApplicantAndClub(submission.getUser(), submission.getApplicationForm().getClub())) {
+            throw InterviewNotScheduledException.EXCEPTION;
         }
     }
 
