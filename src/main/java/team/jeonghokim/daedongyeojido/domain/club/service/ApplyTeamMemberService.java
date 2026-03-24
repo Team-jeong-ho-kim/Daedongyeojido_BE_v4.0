@@ -29,21 +29,26 @@ public class ApplyTeamMemberService {
     public void execute(TeamMemberRequest request) {
 
         User user = userFacade.getCurrentUser();
+        Club club = user.getClub();
 
         User userApplicant = userRepository.findByUserNameAndClassNumber(request.getUserName(), request.getClassNumber())
                         .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        UserApplication userApplication = userApplicationRepository.save(UserApplication.builder()
-                .user(userApplicant)
-                .isApproved(false)
-                .club(user.getClub())
-                .build());
-
-        if (userApplication.getUser().getId().equals(user.getId())) {
+        if (userApplicant.getId().equals(user.getId())) {
             throw AlreadyUserApplicationExistException.EXCEPTION;
         }
 
-        createAlarm(user.getClub(), userApplicant);
+        if (userApplicationRepository.existsByUserIdAndClubId(userApplicant.getId(), club.getId())) {
+            throw AlreadyUserApplicationExistException.EXCEPTION;
+        }
+
+        userApplicationRepository.save(UserApplication.builder()
+                .user(userApplicant)
+                .isApproved(false)
+                .club(club)
+                .build());
+
+        createAlarm(club, userApplicant);
     }
 
     private void createAlarm(Club club, User userApplication) {

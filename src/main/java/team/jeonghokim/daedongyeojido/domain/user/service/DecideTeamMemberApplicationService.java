@@ -39,7 +39,8 @@ public class DecideTeamMemberApplicationService {
             throw AlarmAccessDeniedException.EXCEPTION;
         }
 
-        UserApplication userApplication = userApplicationRepository.findByUserIdAndClubId(user.getId(), alarm.getClub().getId())
+        UserApplication userApplication = userApplicationRepository
+                .findTopByUserIdAndClubIdAndIsApprovedFalseOrderByIdDesc(user.getId(), alarm.getClub().getId())
                 .orElseThrow(() -> UserApplicationNotFoundException.EXCEPTION);
 
         alarm.executed();

@@ -9,5 +9,7 @@ public interface UserApplicationRepository extends JpaRepository<UserApplication
 
     Optional<UserApplication> findByUserId(Long userId);
 
-    Optional<UserApplication> findByUserIdAndClubId(Long userId, Long clubId);
+    boolean existsByUserIdAndClubId(Long userId, Long clubId);
+
+    Optional<UserApplication> findTopByUserIdAndClubIdAndIsApprovedFalseOrderByIdDesc(Long userId, Long clubId);
 }
