@@ -16,7 +16,6 @@ import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.Creat
 import team.jeonghokim.daedongyeojido.domain.club.service.validator.CreateClubValidator;
 import team.jeonghokim.daedongyeojido.domain.teacher.domain.Teacher;
 import team.jeonghokim.daedongyeojido.domain.teacher.domain.repository.TeacherRepository;
-import team.jeonghokim.daedongyeojido.domain.teacher.exception.TeacherAlreadyMatchedException;
 import team.jeonghokim.daedongyeojido.domain.teacher.exception.TeacherNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
@@ -51,10 +50,6 @@ public class CreateClubService {
         List<ClubLink> clubLinks = createClubLink(request);
         Teacher teacher = teacherRepository.findById(request.teacherId())
                 .orElseThrow(() -> TeacherNotFoundException.EXCEPTION);
-
-        if (clubRepository.existsByTeacher(teacher)) {
-            throw TeacherAlreadyMatchedException.EXCEPTION;
-        }
 
         Club club = createClub(request, clubApplicant, clubMajors, clubLinks, teacher);
 

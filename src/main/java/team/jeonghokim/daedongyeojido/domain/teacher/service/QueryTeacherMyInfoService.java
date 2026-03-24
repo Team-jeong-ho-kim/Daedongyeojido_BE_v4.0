@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.club.domain.repository.ClubRepository;
-import team.jeonghokim.daedongyeojido.domain.club.exception.ClubNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.teacher.domain.Teacher;
 import team.jeonghokim.daedongyeojido.domain.teacher.facade.TeacherFacade;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherMyInfoResponse;
@@ -20,7 +19,8 @@ public class QueryTeacherMyInfoService {
     @Transactional(readOnly = true)
     public QueryTeacherMyInfoResponse execute() {
         Teacher teacher = teacherFacade.getCurrentTeacher();
-        Club club = clubRepository.findByTeacherAccountId(teacher.getAccountId());
+        Club club = clubRepository.findTopByTeacherAccountIdOrderByIdDesc(teacher.getAccountId())
+                .orElse(null);
 
         return QueryTeacherMyInfoResponse.of(teacher, club);
     }

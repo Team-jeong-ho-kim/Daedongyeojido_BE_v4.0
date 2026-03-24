@@ -13,7 +13,6 @@ import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.enums.ClubCreat
 import team.jeonghokim.daedongyeojido.domain.clubcreation.domain.repository.ClubCreationApplicationRepository;
 import team.jeonghokim.daedongyeojido.domain.teacher.domain.Teacher;
 import team.jeonghokim.daedongyeojido.domain.teacher.domain.repository.TeacherRepository;
-import team.jeonghokim.daedongyeojido.domain.teacher.exception.TeacherAlreadyMatchedException;
 import team.jeonghokim.daedongyeojido.domain.teacher.exception.TeacherNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
@@ -63,10 +62,6 @@ public class CreateClubCreationApplicationService {
     private void validate(CreateClubRequest request, User applicant, Teacher teacher) {
         if (applicant.getClub() != null) {
             throw AlreadyJoinClubException.EXCEPTION;
-        }
-
-        if (clubRepository.existsByTeacher(teacher)) {
-            throw TeacherAlreadyMatchedException.EXCEPTION;
         }
 
         if (clubRepository.existsByClubName(request.clubName())) {
