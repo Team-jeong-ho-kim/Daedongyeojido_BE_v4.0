@@ -13,6 +13,7 @@ import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.UserApplication;
 import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserApplicationRepository;
+import team.jeonghokim.daedongyeojido.domain.user.exception.AlreadyJoinedClubException;
 import team.jeonghokim.daedongyeojido.domain.user.exception.UserApplicationNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 import team.jeonghokim.daedongyeojido.domain.user.presentation.dto.request.DecideTeamMemberApplicationRequest;
@@ -31,6 +32,10 @@ public class DecideTeamMemberApplicationService {
     public void execute(DecideTeamMemberApplicationRequest request) {
 
         User user = userFacade.getCurrentUser();
+
+        if (user.getClub() != null) {
+            throw AlreadyJoinedClubException.EXCEPTION;
+        }
 
         UserAlarm alarm = userAlarmRepository.findById(request.getAlarmId())
                 .orElseThrow(() -> AlarmNotFoundException.EXCEPTION);
