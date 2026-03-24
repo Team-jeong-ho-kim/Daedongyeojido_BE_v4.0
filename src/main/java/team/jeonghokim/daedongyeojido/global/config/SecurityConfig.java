@@ -125,6 +125,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/club-creation-applications/me").hasRole(STUDENT)
                         .requestMatchers(HttpMethod.PATCH, "/club-creation-applications/**").hasRole(STUDENT)
                         .requestMatchers(HttpMethod.POST, "/club-creation-applications/**").hasRole(STUDENT)
+                        .requestMatchers(HttpMethod.DELETE, "/club-creation-applications/**").hasRole(STUDENT)
                         .requestMatchers(HttpMethod.GET, "/club-creation-applications").hasAnyRole(ADMIN, TEACHER)
                         .requestMatchers(HttpMethod.GET, "/club-creation-applications/**").hasAnyRole(ADMIN, TEACHER)
                         .requestMatchers(HttpMethod.PUT, "/club-creation-applications/**").hasAnyRole(ADMIN, TEACHER)

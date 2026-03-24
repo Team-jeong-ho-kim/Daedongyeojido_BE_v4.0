@@ -25,4 +25,6 @@ public interface ClubCreationReviewRepository extends JpaRepository<ClubCreation
     List<ClubCreationReview> findByApplicationOrderByRevisionAscUpdatedAtAsc(
             ClubCreationApplication application
     );
+
+    void deleteAllByApplication(ClubCreationApplication application);
 }

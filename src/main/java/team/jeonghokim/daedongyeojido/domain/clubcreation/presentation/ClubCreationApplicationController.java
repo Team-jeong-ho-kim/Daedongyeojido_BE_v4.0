@@ -3,6 +3,7 @@ package team.jeonghokim.daedongyeojido.domain.clubcreation.presentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,6 +24,7 @@ import team.jeonghokim.daedongyeojido.domain.clubcreation.service.QueryClubCreat
 import team.jeonghokim.daedongyeojido.domain.clubcreation.service.SubmitClubCreationApplicationService;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.service.UpdateClubCreationApplicationService;
 import team.jeonghokim.daedongyeojido.domain.clubcreation.service.UpsertClubCreationReviewService;
+import team.jeonghokim.daedongyeojido.domain.clubcreation.service.DeleteClubCreationApplicationService;
 
 @RestController
 @RequestMapping("/club-creation-applications")
@@ -35,6 +37,7 @@ public class ClubCreationApplicationController {
     private final QueryClubCreationReviewListService queryClubCreationReviewListService;
     private final QueryClubCreationApplicationDetailService queryClubCreationApplicationDetailService;
     private final UpsertClubCreationReviewService upsertClubCreationReviewService;
+    private final DeleteClubCreationApplicationService deleteClubCreationApplicationService;
 
     @GetMapping("/me")
     @ResponseStatus(HttpStatus.OK)
@@ -55,6 +58,12 @@ public class ClubCreationApplicationController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void submitApplication(@PathVariable("application-id") Long applicationId) {
         submitClubCreationApplicationService.execute(applicationId);
+    }
+
+    @DeleteMapping("/{application-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteApplication(@PathVariable("application-id") Long applicationId) {
+        deleteClubCreationApplicationService.execute(applicationId);
     }
 
     @GetMapping
