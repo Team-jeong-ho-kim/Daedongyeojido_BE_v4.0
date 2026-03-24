@@ -97,7 +97,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/clubs/submissions").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/clubs/submissions/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/clubs/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/clubs/interviews/**").hasAnyRole(CLUB_LEADER)
+                        .requestMatchers(HttpMethod.PATCH, "/clubs/interviews/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.PATCH, "/clubs/pass/**").hasAnyRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.PATCH, "/clubs/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.DELETE, "/clubs/members/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
