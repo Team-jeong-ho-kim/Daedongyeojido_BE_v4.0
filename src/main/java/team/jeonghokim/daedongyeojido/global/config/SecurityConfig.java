@@ -106,7 +106,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/announcements").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.PATCH, "/announcements/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.DELETE, "/announcements/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
-                        .requestMatchers(HttpMethod.GET, "/announcements/clubs/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER, STUDENT)
+                        .requestMatchers(HttpMethod.GET, "/announcements/clubs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/announcements/**").permitAll()
 
                         // application-form
