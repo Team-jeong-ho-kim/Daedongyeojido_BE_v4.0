@@ -11,5 +11,6 @@ public enum Major {
     AI,
     DESIGN,
     SECURITY,
-    GAME
+    GAME,
+    ETC
 }
