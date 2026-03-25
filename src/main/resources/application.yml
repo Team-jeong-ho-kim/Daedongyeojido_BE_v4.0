@@ -20,6 +20,10 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
     open-in-view: false
 
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
   servlet:
     multipart:
       max-file-size: 10MB
