@@ -11,6 +11,75 @@ CREATE TABLE `tbl_admin_alarm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ========================================
+-- Table: tbl_teacher
+-- ========================================
+CREATE TABLE `tbl_teacher` (
+    `id` bigint NOT NULL AUTO_INCREMENT,
+    `account_id` varchar(255) NOT NULL,
+    `password` varchar(255) NOT NULL,
+    `teacher_name` varchar(20) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `UK_cf3gdp8f5vuuob9836umgg3b3` (`account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ========================================
+-- Table: tbl_user
+-- ========================================
+CREATE TABLE `tbl_user` (
+    `id` bigint NOT NULL AUTO_INCREMENT,
+    `account_id` varchar(255) NOT NULL,
+    `class_number` varchar(4) NOT NULL,
+    `introduction` varchar(30) DEFAULT NULL,
+    `password` varchar(255) NOT NULL,
+    `phone_number` varchar(11) DEFAULT NULL,
+    `profile_image` varchar(300) DEFAULT NULL,
+    `role` enum('STUDENT','ADMIN','TEACHER','CLUB_MEMBER','CLUB_LEADER') NOT NULL,
+    `user_name` varchar(4) NOT NULL,
+    `club_id` bigint DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `UK_fluav7nuwmv5hni5guxjrdwbw` (`account_id`),
+    UNIQUE KEY `UK_crr34qvg2qqdfhc1sv0eg5km2` (`phone_number`),
+    KEY `FK7vvnjl5gmaufavexhta4iokoc` (`club_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ========================================
+-- Table: tbl_club
+-- ========================================
+CREATE TABLE `tbl_club` (
+    `id` bigint NOT NULL AUTO_INCREMENT,
+    `club_creation_form` varchar(255) NOT NULL,
+    `club_image` varchar(200) NOT NULL,
+    `club_name` varchar(20) NOT NULL,
+    `club_status` enum('OPEN','CLOSE','REJECTED') NOT NULL,
+    `introduction` varchar(500) NOT NULL,
+    `one_liner` varchar(30) NOT NULL,
+    `account_id` bigint NOT NULL,
+    `teacher_id` bigint NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `unique_idx_club` (`club_name`,`account_id`),
+    UNIQUE KEY `UK_bk3dht7s6afbb59lj5gicnbv9` (`account_id`),
+    UNIQUE KEY `UK_lxmggy4ym4x9e9my2onkphw8f` (`teacher_id`),
+    KEY `FK8ux2p46lys4gfrr2xa4f66kcs` (`account_id`),
+    KEY `FKlnewf7jgb7j5l9xagnrxihdlv` (`teacher_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ========================================
+-- Table: tbl_application_form
+-- ========================================
+CREATE TABLE `tbl_application_form` (
+    `id` bigint NOT NULL AUTO_INCREMENT,
+    `application_form_title` varchar(30) NOT NULL,
+    `submission_duration` date NOT NULL,
+    `club_id` bigint NOT NULL,
+    `account_id` bigint NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `FK7why0e9pg51f6yb207hrg346g` (`club_id`),
+    KEY `FK6wa0mpp1aq0owugion9qbebw6` (`account_id`),
+    CONSTRAINT `FK6wa0mpp1aq0owugion9qbebw6` FOREIGN KEY (`account_id`) REFERENCES `tbl_user` (`id`),
+    CONSTRAINT `FK7why0e9pg51f6yb207hrg346g` FOREIGN KEY (`club_id`) REFERENCES `tbl_club` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ========================================
 -- Table: tbl_announcement
 -- ========================================
 CREATE TABLE `tbl_announcement` (
@@ -44,49 +113,6 @@ CREATE TABLE `tbl_announcement_major` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ========================================
--- Table: tbl_application_answer
--- ========================================
-CREATE TABLE `tbl_application_answer` (
-    `id` bigint NOT NULL AUTO_INCREMENT,
-    `content` varchar(200) DEFAULT NULL,
-    `application_question_id` bigint NOT NULL,
-    `submission_id` bigint NOT NULL,
-    PRIMARY KEY (`id`),
-    KEY `FKra4h78d7j1j7u1tf6l1odr8ec` (`application_question_id`),
-    KEY `FK2yvf456u48uf7lg5ru7vh3fso` (`submission_id`),
-    CONSTRAINT `FK2yvf456u48uf7lg5ru7vh3fso` FOREIGN KEY (`submission_id`) REFERENCES `tbl_submission` (`id`),
-    CONSTRAINT `FKra4h78d7j1j7u1tf6l1odr8ec` FOREIGN KEY (`application_question_id`) REFERENCES `tbl_application_question` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- ========================================
--- Table: tbl_application_form
--- ========================================
-CREATE TABLE `tbl_application_form` (
-    `id` bigint NOT NULL AUTO_INCREMENT,
-    `application_form_title` varchar(30) NOT NULL,
-    `submission_duration` date NOT NULL,
-    `club_id` bigint NOT NULL,
-    `account_id` bigint NOT NULL,
-    PRIMARY KEY (`id`),
-    KEY `FK7why0e9pg51f6yb207hrg346g` (`club_id`),
-    KEY `FK6wa0mpp1aq0owugion9qbebw6` (`account_id`),
-    CONSTRAINT `FK6wa0mpp1aq0owugion9qbebw6` FOREIGN KEY (`account_id`) REFERENCES `tbl_user` (`id`),
-    CONSTRAINT `FK7why0e9pg51f6yb207hrg346g` FOREIGN KEY (`club_id`) REFERENCES `tbl_club` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- ========================================
--- Table: tbl_application_major
--- ========================================
-CREATE TABLE `tbl_application_major` (
-    `id` bigint NOT NULL AUTO_INCREMENT,
-    `major` enum('BE','FE','DEVOPS','IOS','ANDROID','FLUTTER','EMBEDDED','AI','DESIGN','SECURITY','GAME') NOT NULL,
-    `application_form_id` bigint NOT NULL,
-    PRIMARY KEY (`id`),
-    KEY `FKq4h9d54x89mycf7v007i4cvaj` (`application_form_id`),
-    CONSTRAINT `FKq4h9d54x89mycf7v007i4cvaj` FOREIGN KEY (`application_form_id`) REFERENCES `tbl_application_form` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- ========================================
 -- Table: tbl_application_question
 -- ========================================
 CREATE TABLE `tbl_application_question` (
@@ -99,24 +125,15 @@ CREATE TABLE `tbl_application_question` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ========================================
--- Table: tbl_club
+-- Table: tbl_application_major
 -- ========================================
-CREATE TABLE `tbl_club` (
+CREATE TABLE `tbl_application_major` (
     `id` bigint NOT NULL AUTO_INCREMENT,
-    `club_creation_form` varchar(255) NOT NULL,
-    `club_image` varchar(200) NOT NULL,
-    `club_name` varchar(20) NOT NULL,
-    `club_status` enum('OPEN','CLOSE','REJECTED') NOT NULL,
-    `introduction` varchar(500) NOT NULL,
-    `one_liner` varchar(30) NOT NULL,
-    `account_id` bigint NOT NULL,
-    `teacher_id` bigint NOT NULL,
+    `major` enum('BE','FE','DEVOPS','IOS','ANDROID','FLUTTER','EMBEDDED','AI','DESIGN','SECURITY','GAME') NOT NULL,
+    `application_form_id` bigint NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `unique_idx_club` (`club_name`,`account_id`),
-    UNIQUE KEY `UK_bk3dht7s6afbb59lj5gicnbv9` (`account_id`),
-    UNIQUE KEY `UK_lxmggy4ym4x9e9my2onkphw8f` (`teacher_id`),
-    CONSTRAINT `FK8ux2p46lys4gfrr2xa4f66kcs` FOREIGN KEY (`account_id`) REFERENCES `tbl_user` (`id`),
-    CONSTRAINT `FKlnewf7jgb7j5l9xagnrxihdlv` FOREIGN KEY (`teacher_id`) REFERENCES `tbl_teacher` (`id`)
+    KEY `FKq4h9d54x89mycf7v007i4cvaj` (`application_form_id`),
+    CONSTRAINT `FKq4h9d54x89mycf7v007i4cvaj` FOREIGN KEY (`application_form_id`) REFERENCES `tbl_application_form` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ========================================
@@ -333,36 +350,18 @@ CREATE TABLE `tbl_submission` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ========================================
--- Table: tbl_teacher
+-- Table: tbl_application_answer
 -- ========================================
-CREATE TABLE `tbl_teacher` (
+CREATE TABLE `tbl_application_answer` (
     `id` bigint NOT NULL AUTO_INCREMENT,
-    `account_id` varchar(255) NOT NULL,
-    `password` varchar(255) NOT NULL,
-    `teacher_name` varchar(20) NOT NULL,
+    `content` varchar(200) DEFAULT NULL,
+    `application_question_id` bigint NOT NULL,
+    `submission_id` bigint NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `UK_cf3gdp8f5vuuob9836umgg3b3` (`account_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- ========================================
--- Table: tbl_user
--- ========================================
-CREATE TABLE `tbl_user` (
-    `id` bigint NOT NULL AUTO_INCREMENT,
-    `account_id` varchar(255) NOT NULL,
-    `class_number` varchar(4) NOT NULL,
-    `introduction` varchar(30) DEFAULT NULL,
-    `password` varchar(255) NOT NULL,
-    `phone_number` varchar(11) DEFAULT NULL,
-    `profile_image` varchar(300) DEFAULT NULL,
-    `role` enum('STUDENT','ADMIN','TEACHER','CLUB_MEMBER','CLUB_LEADER') NOT NULL,
-    `user_name` varchar(4) NOT NULL,
-    `club_id` bigint DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `UK_fluav7nuwmv5hni5guxjrdwbw` (`account_id`),
-    UNIQUE KEY `UK_crr34qvg2qqdfhc1sv0eg5km2` (`phone_number`),
-    KEY `FK7vvnjl5gmaufavexhta4iokoc` (`club_id`),
-    CONSTRAINT `FK7vvnjl5gmaufavexhta4iokoc` FOREIGN KEY (`club_id`) REFERENCES `tbl_club` (`id`)
+    KEY `FKra4h78d7j1j7u1tf6l1odr8ec` (`application_question_id`),
+    KEY `FK2yvf456u48uf7lg5ru7vh3fso` (`submission_id`),
+    CONSTRAINT `FK2yvf456u48uf7lg5ru7vh3fso` FOREIGN KEY (`submission_id`) REFERENCES `tbl_submission` (`id`),
+    CONSTRAINT `FKra4h78d7j1j7u1tf6l1odr8ec` FOREIGN KEY (`application_question_id`) REFERENCES `tbl_application_question` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ========================================
@@ -443,3 +442,13 @@ CREATE TABLE `tbl_user_major` (
     KEY `FKk3jkqs669y9is95qa4fysd3c9` (`user_id`),
     CONSTRAINT `FKk3jkqs669y9is95qa4fysd3c9` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ========================================
+-- Delayed FK for cyclic dependency: tbl_user <-> tbl_club
+-- ========================================
+ALTER TABLE `tbl_club`
+    ADD CONSTRAINT `FK8ux2p46lys4gfrr2xa4f66kcs` FOREIGN KEY (`account_id`) REFERENCES `tbl_user` (`id`),
+    ADD CONSTRAINT `FKlnewf7jgb7j5l9xagnrxihdlv` FOREIGN KEY (`teacher_id`) REFERENCES `tbl_teacher` (`id`);
+
+ALTER TABLE `tbl_user`
+    ADD CONSTRAINT `FK7vvnjl5gmaufavexhta4iokoc` FOREIGN KEY (`club_id`) REFERENCES `tbl_club` (`id`);
