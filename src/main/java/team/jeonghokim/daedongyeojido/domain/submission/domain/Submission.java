@@ -26,7 +26,7 @@ public class Submission extends BaseIdEntity {
     @Column(nullable = false, length = 10)
     private Major major;
 
-    @Column(length = 300)
+    @Column(length = 500)
     private String introduction;
 
     @Column(nullable = false, length = 4)
