@@ -13,7 +13,7 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 @NoArgsConstructor
 public class ApplicationAnswer extends BaseIdEntity {
 
-    @Column(length = 200)
+    @Column(length = 500)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
