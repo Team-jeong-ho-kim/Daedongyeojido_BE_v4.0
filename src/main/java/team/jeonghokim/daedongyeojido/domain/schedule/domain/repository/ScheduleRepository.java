@@ -11,5 +11,5 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long>, Sched
 
     boolean existsByApplicantAndClub(User applicant, Club club);
 
-    Optional<Schedule> findByApplicantId(Long applicantId);
+    Optional<Schedule> findByApplicantIdAndClubId(Long applicantId, Long clubId);
 }
