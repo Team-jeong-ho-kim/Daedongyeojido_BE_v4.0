@@ -23,9 +23,10 @@ public class QueryInterviewScheduleDetailService {
     private final UserFacade userFacade;
 
     @Transactional(readOnly = true)
-    public QueryInterviewScheduleDetailResponse execute(Long applicantId, Long clubId) {
+    public QueryInterviewScheduleDetailResponse execute(Long applicantId) {
 
         User user = userFacade.getCurrentUser();
+        Long clubId = user.getClub().getId();
 
         Schedule schedule = scheduleRepository.findByApplicantIdAndClubId(applicantId, clubId)
                 .orElseThrow(() -> InterviewScheduleNotFoundException.EXCEPTION);
