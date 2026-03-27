@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import team.jeonghokim.daedongyeojido.domain.schedule.presentation.dto.request.InterviewScheduleRequest;
@@ -49,7 +50,10 @@ public class ScheduleController {
 
     @GetMapping("/{applicant-id}")
     @ResponseStatus(HttpStatus.OK)
-    public QueryInterviewScheduleDetailResponse queryInterviewScheduleDetail(@PathVariable("applicant-id") Long applicantId) {
-        return queryInterviewScheduleDetailService.execute(applicantId);
+    public QueryInterviewScheduleDetailResponse queryInterviewScheduleDetail(
+            @PathVariable("applicant-id") Long applicantId,
+            @RequestParam("club-id") Long clubId
+    ) {
+        return queryInterviewScheduleDetailService.execute(applicantId, clubId);
     }
 }
