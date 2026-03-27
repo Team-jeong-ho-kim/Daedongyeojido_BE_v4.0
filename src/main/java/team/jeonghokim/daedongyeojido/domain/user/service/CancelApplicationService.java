@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotSubmittedException;
+import team.jeonghokim.daedongyeojido.domain.application.exception.CannotCancelApplicationWithInterviewScheduleException;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
-import team.jeonghokim.daedongyeojido.domain.schedule.exception.AlreadyInterviewScheduleExistsException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
@@ -41,7 +41,7 @@ public class CancelApplicationService {
         }
 
         if (scheduleRepository.existsByApplicantAndClub(submission.getUser(), submission.getApplicationForm().getClub())) {
-            throw AlreadyInterviewScheduleExistsException.EXCEPTION;
+            throw CannotCancelApplicationWithInterviewScheduleException.EXCEPTION;
         }
 
         submission.cancel();
