@@ -8,6 +8,8 @@ import team.jeonghokim.daedongyeojido.domain.alarm.domain.enums.AlarmType;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationAccessDeniedException;
 import team.jeonghokim.daedongyeojido.domain.application.exception.ApplicationNotSubmittedException;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.schedule.domain.repository.ScheduleRepository;
+import team.jeonghokim.daedongyeojido.domain.schedule.exception.AlreadyInterviewScheduleExistsException;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 import team.jeonghokim.daedongyeojido.domain.submission.facade.SubmissionFacade;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
@@ -21,6 +23,7 @@ public class CancelApplicationService {
     private final UserFacade userFacade;
     private final ApplicationEventPublisher eventPublisher;
     private final AlarmEventFactory alarmEventFactory;
+    private final ScheduleRepository scheduleRepository;
 
     @Transactional
     public void execute(Long submissionId) {
@@ -35,6 +38,10 @@ public class CancelApplicationService {
 
         if (!(submission.isSubmitted())) {
             throw ApplicationNotSubmittedException.EXCEPTION;
+        }
+
+        if (scheduleRepository.existsByApplicantAndClub(submission.getUser(), submission.getApplicationForm().getClub())) {
+            throw AlreadyInterviewScheduleExistsException.EXCEPTION;
         }
 
         submission.cancel();
