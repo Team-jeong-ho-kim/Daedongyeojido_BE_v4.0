@@ -51,6 +51,7 @@ public class SchedulerService {
     }
 
     @Scheduled(fixedDelay = 5000, initialDelay = 5000)
+    @Transactional
     public void pollAndExecutePendingResultDuration() {
         execute();
     }
