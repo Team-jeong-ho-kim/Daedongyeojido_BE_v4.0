@@ -75,7 +75,7 @@ public class RebuildResultDurationQueueFromSmsHistoryService {
             Submission submission = submissionMap.get(smsHistory.getReferenceId());
             Message message = resolveMessageType(smsHistory.getMessageType());
 
-            if (submission == null || message == null) {
+            if (submission == null || message == null || hasBrokenSubmissionRelation(submission)) {
                 skippedCount++;
                 continue;
             }
@@ -148,6 +148,12 @@ public class RebuildResultDurationQueueFromSmsHistoryService {
     private <T> long zsetSize(RedisTemplate<String, T> redisTemplate, String key) {
         Long size = redisTemplate.opsForZSet().zCard(key);
         return size == null ? 0L : size;
+    }
+
+    private boolean hasBrokenSubmissionRelation(Submission submission) {
+        return submission.getUser() == null
+                || submission.getApplicationForm() == null
+                || submission.getApplicationForm().getClub() == null;
     }
 
     private <T> void swapZset(RedisTemplate<String, T> redisTemplate, String tempKey, String targetKey) {
