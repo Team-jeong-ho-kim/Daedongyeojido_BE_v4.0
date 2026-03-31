@@ -130,6 +130,10 @@ public class RebuildResultDurationQueueFromSmsHistoryService {
     }
 
     private Message resolveMessageType(String messageType) {
+        if (messageType == null || messageType.isBlank()) {
+            return null;
+        }
+
         try {
             Message message = Message.valueOf(messageType);
             if (message == Message.CLUB_FINAL_ACCEPTED || message == Message.CLUB_FINAL_REJECTED) {
