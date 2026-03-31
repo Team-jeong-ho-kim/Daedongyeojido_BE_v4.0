@@ -87,6 +87,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/admin/result-duration/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.POST, "/admin/club-creation-form").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.POST, "/admin/teachers").hasAnyRole(ADMIN)
+                        .requestMatchers(HttpMethod.POST, "/admin/sms-histories/rebuild-result-duration-queues").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.GET, "/admin/sms-histories/excel").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/club-creation-form/**").hasAnyRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/admin/result-duration/**").hasAnyRole(ADMIN)
