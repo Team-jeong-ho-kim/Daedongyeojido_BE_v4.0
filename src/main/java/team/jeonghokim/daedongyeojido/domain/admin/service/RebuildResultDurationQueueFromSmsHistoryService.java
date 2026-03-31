@@ -22,6 +22,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static team.jeonghokim.daedongyeojido.infrastructure.redis.key.RedisKey.RESULT_DURATION_ALARM_ZSET;
@@ -48,9 +49,6 @@ public class RebuildResultDurationQueueFromSmsHistoryService {
         long deletedSmsZsetCount = zsetSize(smsRedisTemplate, RESULT_DURATION_SMS_ZSET);
         long deletedAlarmZsetCount = zsetSize(alarmRedisTemplate, RESULT_DURATION_ALARM_ZSET);
 
-        smsRedisTemplate.delete(RESULT_DURATION_SMS_ZSET);
-        alarmRedisTemplate.delete(RESULT_DURATION_ALARM_ZSET);
-
         List<SmsHistory> histories = smsHistoryRepository.findAllByReferenceTypeAndStatusInAndScheduledAtIsNotNull(
                 SmsReferenceType.CLUB_RESULT,
                 RESTORE_TARGET_STATUSES
@@ -63,8 +61,14 @@ public class RebuildResultDurationQueueFromSmsHistoryService {
                 ).stream()
                 .collect(Collectors.toMap(Submission::getId, submission -> submission));
 
-        int restoredSmsCount = 0;
-        int restoredAlarmCount = 0;
+        String rebuildId = UUID.randomUUID().toString();
+        String smsTempKey = RESULT_DURATION_SMS_ZSET + ":rebuild:" + rebuildId;
+        String alarmTempKey = RESULT_DURATION_ALARM_ZSET + ":rebuild:" + rebuildId;
+
+        smsRedisTemplate.delete(smsTempKey);
+        alarmRedisTemplate.delete(alarmTempKey);
+
+        int restoredCount = 0;
         int skippedCount = 0;
 
         for (SmsHistory smsHistory : histories) {
@@ -97,26 +101,30 @@ public class RebuildResultDurationQueueFromSmsHistoryService {
                     .isPassed(isPassed)
                     .build();
 
-            smsRedisTemplate.opsForZSet().add(RESULT_DURATION_SMS_ZSET, smsPayload, score);
-            alarmRedisTemplate.opsForZSet().add(RESULT_DURATION_ALARM_ZSET, alarmPayload, score);
-            restoredSmsCount++;
-            restoredAlarmCount++;
+            smsRedisTemplate.opsForZSet().add(smsTempKey, smsPayload, score);
+            alarmRedisTemplate.opsForZSet().add(alarmTempKey, alarmPayload, score);
+            restoredCount++;
         }
 
+        // Build temp keys first and then swap atomically with RENAME to avoid empty-window races.
+        swapZset(smsRedisTemplate, smsTempKey, RESULT_DURATION_SMS_ZSET);
+        swapZset(alarmRedisTemplate, alarmTempKey, RESULT_DURATION_ALARM_ZSET);
+
         log.info(
-                "result duration queue rebuilt: deletedSms={}, deletedAlarm={}, restoredSms={}, restoredAlarm={}, skipped={}",
+                "result duration queue rebuilt: deletedSms={}, deletedAlarm={}, restoredSms={}, restoredAlarm={}, skipped={}, rebuildId={}",
                 deletedSmsZsetCount,
                 deletedAlarmZsetCount,
-                restoredSmsCount,
-                restoredAlarmCount,
-                skippedCount
+                restoredCount,
+                restoredCount,
+                skippedCount,
+                rebuildId
         );
 
         return RebuildResultDurationQueueResponse.builder()
                 .deletedSmsZsetCount(deletedSmsZsetCount)
                 .deletedAlarmZsetCount(deletedAlarmZsetCount)
-                .restoredSmsCount(restoredSmsCount)
-                .restoredAlarmCount(restoredAlarmCount)
+                .restoredSmsCount(restoredCount)
+                .restoredAlarmCount(restoredCount)
                 .skippedCount(skippedCount)
                 .build();
     }
@@ -136,5 +144,16 @@ public class RebuildResultDurationQueueFromSmsHistoryService {
     private <T> long zsetSize(RedisTemplate<String, T> redisTemplate, String key) {
         Long size = redisTemplate.opsForZSet().zCard(key);
         return size == null ? 0L : size;
+    }
+
+    private <T> void swapZset(RedisTemplate<String, T> redisTemplate, String tempKey, String targetKey) {
+        Long tempSize = redisTemplate.opsForZSet().zCard(tempKey);
+        if (tempSize == null || tempSize == 0L) {
+            redisTemplate.delete(targetKey);
+            redisTemplate.delete(tempKey);
+            return;
+        }
+
+        redisTemplate.rename(tempKey, targetKey);
     }
 }
