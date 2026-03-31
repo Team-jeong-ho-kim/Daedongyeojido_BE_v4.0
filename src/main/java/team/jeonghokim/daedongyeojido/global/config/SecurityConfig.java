@@ -173,7 +173,15 @@ public class SecurityConfig {
                         "https://dsm-stag.daedongyeojido.site",
                         "https://student-stag.daedongyeojido.site",
                         "https://admin-stag.daedongyeojido.site",
-                        "https://teacher-stag.daedongyeojido.site"
+                        "https://teacher-stag.daedongyeojido.site",
+                        "https://daedong-web-prod.dsmhs.kr",
+                        "https://daedong-student-prod.dsmhs.kr",
+                        "https://daedong-admin-prod.dsmhs.kr",
+                        "https://daedong-teacher-prod.dsmhs.kr",
+                        "https://daedong-web-stag.dsmhs.kr",
+                        "https://daedong-student-stag.dsmhs.kr",
+                        "https://daedong-admin-stag.dsmhs.kr",
+                        "https://daedong-teacher-stag.dsmhs.kr"
                 )
         );
         configuration.setAllowedMethods(Arrays.asList("OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"));
