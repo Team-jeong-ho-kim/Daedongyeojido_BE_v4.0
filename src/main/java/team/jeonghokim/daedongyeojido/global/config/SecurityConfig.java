@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -52,8 +53,12 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD).permitAll()
 
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/error/**").permitAll()
+                        .requestMatchers("/favicon.ico").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/actuator/prometheus").permitAll()
 
@@ -169,7 +174,15 @@ public class SecurityConfig {
                         "https://dsm-stag.daedongyeojido.site",
                         "https://student-stag.daedongyeojido.site",
                         "https://admin-stag.daedongyeojido.site",
-                        "https://teacher-stag.daedongyeojido.site"
+                        "https://teacher-stag.daedongyeojido.site",
+                        "https://daedong-web-prod.dsmhs.kr",
+                        "https://daedong-student-prod.dsmhs.kr",
+                        "https://daedong-admin-prod.dsmhs.kr",
+                        "https://daedong-teacher-prod.dsmhs.kr",
+                        "https://daedong-web-stag.dsmhs.kr",
+                        "https://daedong-student-stag.dsmhs.kr",
+                        "https://daedong-admin-stag.dsmhs.kr",
+                        "https://daedong-teacher-stag.dsmhs.kr"
                 )
         );
         configuration.setAllowedMethods(Arrays.asList("OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"));
