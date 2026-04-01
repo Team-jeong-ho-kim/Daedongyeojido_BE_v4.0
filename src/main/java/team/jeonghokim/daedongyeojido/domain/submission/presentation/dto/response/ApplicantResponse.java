@@ -8,6 +8,7 @@ public record ApplicantResponse(
         Long submissionId,
         String userName,
         String classNumber,
+        String phoneNumber,
         Major major,
         ApplicationStatus clubApplicationStatus
 ) {
@@ -17,12 +18,14 @@ public record ApplicantResponse(
             Long submissionId,
             String userName,
             String classNumber,
+            String phoneNumber,
             Major major,
             ApplicationStatus clubApplicationStatus
     ) {
         this.submissionId = submissionId;
         this.userName = userName;
         this.classNumber = classNumber;
+        this.phoneNumber = phoneNumber;
         this.major = major;
         this.clubApplicationStatus = clubApplicationStatus;
     }

@@ -29,6 +29,7 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                         submission.id,
                         submission.userName,
                         submission.classNumber,
+                        submission.user.phoneNumber,
                         submission.major,
                         submission.clubApplicationStatus
                 ))

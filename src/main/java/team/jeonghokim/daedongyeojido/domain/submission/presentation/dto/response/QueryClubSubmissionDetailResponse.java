@@ -11,6 +11,7 @@ import java.util.List;
 public record QueryClubSubmissionDetailResponse(
         String userName,
         String classNumber,
+        String phoneNumber,
         String introduction,
         Major major,
         List<SubmissionDto> answers,
@@ -24,6 +25,7 @@ public record QueryClubSubmissionDetailResponse(
         return QueryClubSubmissionDetailResponse.builder()
                 .userName(submission.getUserName())
                 .classNumber(submission.getClassNumber())
+                .phoneNumber(submission.getUser().getPhoneNumber())
                 .introduction(submission.getIntroduction())
                 .major(submission.getMajor())
                 .answers(submission.getApplicationAnswers().stream().map(SubmissionDto::from).toList())
