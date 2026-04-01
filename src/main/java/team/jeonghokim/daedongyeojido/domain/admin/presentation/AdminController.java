@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideResultDurationRequest;
+import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.response.RebuildResultDurationQueueResponse;
 import team.jeonghokim.daedongyeojido.domain.admin.service.*;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubDissolveService;
@@ -27,6 +28,7 @@ public class AdminController {
     private final DeleteResultDurationService deleteResultDurationService;
     private final CreateTeacherService createTeacherService;
     private final DownloadSmsHistoryExcelService downloadSmsHistoryExcelService;
+    private final RebuildResultDurationQueueFromSmsHistoryService rebuildResultDurationQueueFromSmsHistoryService;
 
     @DeleteMapping("/dissolution/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -66,5 +68,11 @@ public class AdminController {
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 ))
                 .body(downloadSmsHistoryExcelService.execute());
+    }
+
+    @PostMapping("/sms-histories/rebuild-result-duration-queues")
+    @ResponseStatus(HttpStatus.OK)
+    public RebuildResultDurationQueueResponse rebuildResultDurationQueues() {
+        return rebuildResultDurationQueueFromSmsHistoryService.execute();
     }
 }
