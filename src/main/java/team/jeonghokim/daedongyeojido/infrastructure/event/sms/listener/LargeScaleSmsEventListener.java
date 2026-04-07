@@ -13,8 +13,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.ResourceAccessException;
 import team.jeonghokim.daedongyeojido.domain.admin.service.DecideResultDurationService;
 import team.jeonghokim.daedongyeojido.domain.resultduration.domain.repository.ResultDurationRepository;
 import team.jeonghokim.daedongyeojido.domain.smshistory.service.SmsHistoryService;
@@ -71,8 +69,7 @@ public class LargeScaleSmsEventListener {
             decideResultDurationService.executeSmsScheduler(event.resultDuration());
             smsHistoryService.markSent(event.smsHistoryId());
 
-        } catch (HttpServerErrorException |
-                 ResourceAccessException e) {
+        } catch (Exception e) {
 
             log.error("유저 SMS 이벤트 실패: phoneNumber={} message={}",
                     event.phoneNumber(), event.message(), e);
