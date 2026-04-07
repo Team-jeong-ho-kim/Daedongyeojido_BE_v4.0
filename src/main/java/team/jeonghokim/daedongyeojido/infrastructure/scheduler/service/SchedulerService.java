@@ -45,9 +45,22 @@ public class SchedulerService {
             return;
         }
 
-        sendSMS(resultDuration);
+        sendSMS(resultDuration, false);
 
-        sendAlarm(resultDuration);
+        sendAlarm(resultDuration, false);
+    }
+
+    @Transactional
+    public void executeAllFromQueue() {
+        ResultDuration resultDuration = resolveExecutableResultDuration();
+        if (resultDuration == null) {
+            log.info("처리 가능한 발표 기간이 없어 수동 전량 발송을 진행하지 않습니다.");
+            return;
+        }
+
+        sendSMS(resultDuration, true);
+
+        sendAlarm(resultDuration, true);
     }
 
     @Scheduled(fixedDelay = 5000, initialDelay = 5000)
@@ -56,15 +69,14 @@ public class SchedulerService {
         execute();
     }
 
-    private void sendSMS(ResultDuration resultDuration) {
+    private void sendSMS(ResultDuration resultDuration, boolean sendAllFromQueue) {
 
-        long now = Instant.now().getEpochSecond();
+        Set<SchedulerSmsPayload> payloads = sendAllFromQueue
+                ? smsRedisTemplate.opsForZSet().range(RESULT_DURATION_SMS_ZSET, 0, -1)
+                : smsRedisTemplate.opsForZSet()
+                .rangeByScore(RESULT_DURATION_SMS_ZSET, 0, Instant.now().getEpochSecond() + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
 
-        Set<SchedulerSmsPayload> payloads =
-                smsRedisTemplate.opsForZSet()
-                        .rangeByScore(RESULT_DURATION_SMS_ZSET, 0, now + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
-
-        log.info("SMS 발송 대상 수 = {}", payloads == null ? 0 : payloads.size());
+        log.info("SMS 발송 대상 수 = {} (manualAll={})", payloads == null ? 0 : payloads.size(), sendAllFromQueue);
 
         if (payloads == null || payloads.isEmpty()) {
             return;
@@ -84,15 +96,14 @@ public class SchedulerService {
         });
     }
 
-    private void sendAlarm(ResultDuration resultDuration) {
+    private void sendAlarm(ResultDuration resultDuration, boolean sendAllFromQueue) {
 
-        long now = Instant.now().getEpochSecond();
+        Set<SchedulerAlarmPayload> payloads = sendAllFromQueue
+                ? alarmRedisTemplate.opsForZSet().range(RESULT_DURATION_ALARM_ZSET, 0, -1)
+                : alarmRedisTemplate.opsForZSet()
+                .rangeByScore(RESULT_DURATION_ALARM_ZSET, 0, Instant.now().getEpochSecond() + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
 
-        Set<SchedulerAlarmPayload> payloads =
-                alarmRedisTemplate.opsForZSet()
-                        .rangeByScore(RESULT_DURATION_ALARM_ZSET, 0, now + 5); // 대규모 데이터 처리로 인한 실행 시간 지연 고려 설정
-
-        log.info("알람 발송 대상 수 = {}", payloads == null ? 0 : payloads.size());
+        log.info("알람 발송 대상 수 = {} (manualAll={})", payloads == null ? 0 : payloads.size(), sendAllFromQueue);
 
         if (payloads == null || payloads.isEmpty()) {
             return;

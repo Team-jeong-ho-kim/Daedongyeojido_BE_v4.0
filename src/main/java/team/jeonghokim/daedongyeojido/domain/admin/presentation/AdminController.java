@@ -29,6 +29,7 @@ public class AdminController {
     private final CreateTeacherService createTeacherService;
     private final DownloadSmsHistoryExcelService downloadSmsHistoryExcelService;
     private final RebuildResultDurationQueueFromSmsHistoryService rebuildResultDurationQueueFromSmsHistoryService;
+    private final DispatchAllResultDurationQueueService dispatchAllResultDurationQueueService;
 
     @DeleteMapping("/dissolution/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -74,5 +75,11 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     public RebuildResultDurationQueueResponse rebuildResultDurationQueues() {
         return rebuildResultDurationQueueFromSmsHistoryService.execute();
+    }
+
+    @PostMapping("/result-duration/dispatch-queues")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void dispatchAllResultDurationQueues() {
+        dispatchAllResultDurationQueueService.execute();
     }
 }
