@@ -90,22 +90,6 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
     }
 
     @Override
-    public Optional<Submission> findByUserIdAndClubId(Long userId, Long clubId) {
-        return Optional.ofNullable(
-                jpaQueryFactory
-                        .selectFrom(submission)
-                        .join(submission.user, user).fetchJoin()
-                        .join(submission.applicationForm, applicationForm).fetchJoin()
-                        .join(applicationForm.club, club).fetchJoin()
-                        .where(
-                                submission.user.id.eq(userId),
-                                applicationForm.club.id.eq(clubId)
-                        )
-                        .fetchOne()
-        );
-    }
-
-    @Override
     public Optional<Submission> findSubmissionById(Long submissionId) {
         return Optional.ofNullable(
                 jpaQueryFactory

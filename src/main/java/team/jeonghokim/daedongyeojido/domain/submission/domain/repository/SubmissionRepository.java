@@ -1,11 +1,20 @@
 package team.jeonghokim.daedongyeojido.domain.submission.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import team.jeonghokim.daedongyeojido.domain.application.domain.enums.ApplicationStatus;
 import team.jeonghokim.daedongyeojido.domain.submission.domain.Submission;
 
 import java.util.Optional;
 
 public interface SubmissionRepository extends JpaRepository<Submission, Long>, SubmissionRepositoryCustom {
 
+    boolean existsByUserIdAndApplicationFormId(Long userId, Long applicationFormId);
+
     Optional<Submission> findTopByUserIdAndApplicationFormClubIdOrderByIdDesc(Long userId, Long clubId);
+
+    Optional<Submission> findTopByUserIdAndApplicationFormClubIdAndUserApplicationStatusOrderByIdDesc(
+            Long userId,
+            Long clubId,
+            ApplicationStatus userApplicationStatus
+    );
 }

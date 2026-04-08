@@ -38,7 +38,7 @@ public enum ErrorCode {
     CANNOT_CANCEL_APPLICATION_WITH_INTERVIEW_SCHEDULE(409, "면접 일정이 생성되어 지원 취소를 할 수 없습니다."),
     APPLICATION_NOT_SUBMITTED(400, "제출하지 않은 지원서입니다."),
     APPLICATION_NOT_ACCEPTED(400, "합격되지 않은 지원서입니다."),
-    ALREADY_APPLICATION_EXIST(409, "해당 동아리의 지원서가 이미 존재합니다."),
+    ALREADY_APPLICATION_EXIST(409, "해당 공고의 지원서가 이미 존재합니다."),
 
     // club
     ALREADY_EXISTS_CLUB(409, "해당 동아리가 이미 존재합니다."),

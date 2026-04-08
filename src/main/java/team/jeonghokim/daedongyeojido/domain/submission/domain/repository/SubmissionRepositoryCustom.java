@@ -16,7 +16,5 @@ public interface SubmissionRepositoryCustom {
 
     List<SubmissionListResponse> findAllSubmissionByUserId(Long userId);
 
-    Optional<Submission> findByUserIdAndClubId(Long userId, Long clubId);
-
     Optional<Submission> findSubmissionById(Long submissionId);
 }

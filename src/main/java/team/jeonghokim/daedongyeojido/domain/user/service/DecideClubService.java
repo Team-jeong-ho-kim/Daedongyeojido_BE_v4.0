@@ -40,7 +40,12 @@ public class DecideClubService {
 
         alarm.executed();
 
-        Submission submission = submissionRepository.findByUserIdAndClubId(applicant.getId(), alarm.getClub().getId())
+        Submission submission = submissionRepository
+                .findTopByUserIdAndApplicationFormClubIdAndUserApplicationStatusOrderByIdDesc(
+                        applicant.getId(),
+                        alarm.getClub().getId(),
+                        ApplicationStatus.ACCEPTED
+                )
                 .orElseThrow(() -> SubmissionNotFoundException.EXCEPTION);
 
         validate(applicant, submission, alarm);
