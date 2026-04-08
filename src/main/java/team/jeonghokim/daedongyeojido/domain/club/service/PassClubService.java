@@ -182,7 +182,8 @@ public class PassClubService {
         SchedulerAlarmPayload payload = SchedulerAlarmPayload.builder()
                 .alarmType(alarmType)
                 .clubId(submission.getApplicationForm().getClub().getId())
-                .submissionId(submission.getId())
+                // 즉시 경로는 서비스에서 상태를 먼저 반영하므로 리스너 중복 반영을 막기 위해 submissionId를 비워둔다.
+                .submissionId(null)
                 .userId(submission.getUser().getId())
                 .isPassed(isPassed)
                 .build();
