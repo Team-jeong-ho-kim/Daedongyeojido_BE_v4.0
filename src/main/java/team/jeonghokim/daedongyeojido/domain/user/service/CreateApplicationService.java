@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CreateApplicationService {
+    private static final String SUBMISSION_UNIQUE_CONSTRAINT = "unique_idx_submission_account_form";
+
     private final SubmissionRepository submissionRepository;
     private final UserFacade userFacade;
     private final ApplicationFormFacade applicationFormFacade;
@@ -49,8 +52,33 @@ public class CreateApplicationService {
                             .userApplicationStatus(ApplicationStatus.WRITING)
                     .build());
         } catch (DataIntegrityViolationException e) {
-            throw AlreadyApplicationExistException.EXCEPTION;
+            if (isSubmissionUniqueConstraintViolation(e)) {
+                throw AlreadyApplicationExistException.EXCEPTION;
+            }
+            throw e;
         }
+    }
+
+    private boolean isSubmissionUniqueConstraintViolation(DataIntegrityViolationException e) {
+        Throwable cause = e;
+
+        while (cause != null) {
+            if (cause instanceof ConstraintViolationException constraintViolationException) {
+                String constraintName = constraintViolationException.getConstraintName();
+                if (constraintName != null && constraintName.contains(SUBMISSION_UNIQUE_CONSTRAINT)) {
+                    return true;
+                }
+            }
+
+            String message = cause.getMessage();
+            if (message != null && message.contains(SUBMISSION_UNIQUE_CONSTRAINT)) {
+                return true;
+            }
+
+            cause = cause.getCause();
+        }
+
+        return false;
     }
 
     private List<ApplicationAnswer> createAnswer(SubmissionRequest request, ApplicationForm applicationForm) {
