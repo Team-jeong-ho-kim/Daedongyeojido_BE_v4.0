@@ -7,5 +7,7 @@ import java.util.Optional;
 
 public interface SubmissionRepository extends JpaRepository<Submission, Long>, SubmissionRepositoryCustom {
 
+    boolean existsByUserIdAndApplicationFormId(Long userId, Long applicationFormId);
+
     Optional<Submission> findTopByUserIdAndApplicationFormClubIdOrderByIdDesc(Long userId, Long clubId);
 }

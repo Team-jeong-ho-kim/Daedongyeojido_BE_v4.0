@@ -32,7 +32,7 @@ public class CreateApplicationService {
 
         ApplicationForm applicationForm = applicationFormFacade.getApplicationById(applicationFormId);
 
-        if (submissionRepository.findByUserIdAndClubId(user.getId(), applicationForm.getClub().getId()).isPresent()) {
+        if (submissionRepository.existsByUserIdAndApplicationFormId(user.getId(), applicationForm.getId())) {
             throw AlreadyApplicationExistException.EXCEPTION;
         }
 
