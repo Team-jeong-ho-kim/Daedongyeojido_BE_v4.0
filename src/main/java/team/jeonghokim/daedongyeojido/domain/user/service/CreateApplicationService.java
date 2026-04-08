@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.application.domain.ApplicationAnswer;
@@ -36,16 +37,20 @@ public class CreateApplicationService {
             throw AlreadyApplicationExistException.EXCEPTION;
         }
 
-        submissionRepository.save(Submission.builder()
-                        .userName(request.getUserName())
-                        .classNumber(request.getClassNumber())
-                        .introduction(request.getIntroduction())
-                        .answers(createAnswer(request, applicationForm))
-                        .major(request.getMajor())
-                        .user(user)
-                        .applicationForm(applicationForm)
-                        .userApplicationStatus(ApplicationStatus.WRITING)
-                .build());
+        try {
+            submissionRepository.saveAndFlush(Submission.builder()
+                            .userName(request.getUserName())
+                            .classNumber(request.getClassNumber())
+                            .introduction(request.getIntroduction())
+                            .answers(createAnswer(request, applicationForm))
+                            .major(request.getMajor())
+                            .user(user)
+                            .applicationForm(applicationForm)
+                            .userApplicationStatus(ApplicationStatus.WRITING)
+                    .build());
+        } catch (DataIntegrityViolationException e) {
+            throw AlreadyApplicationExistException.EXCEPTION;
+        }
     }
 
     private List<ApplicationAnswer> createAnswer(SubmissionRequest request, ApplicationForm applicationForm) {
