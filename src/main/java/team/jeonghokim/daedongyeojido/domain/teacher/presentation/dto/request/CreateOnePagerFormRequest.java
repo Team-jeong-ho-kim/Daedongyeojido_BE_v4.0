@@ -9,6 +9,9 @@ public record CreateOnePagerFormRequest(
         @NotBlank(message = "제목을 공백으로 둘 수 없습니다.")
         String title,
 
+        @NotBlank(message = "담당교사이름을 비워둘 순 없습니다.")
+        String teacherName,
+
         @NotBlank(message = "첨부할 파일을 선택해주세요.")
         MultipartFile onePagerFile,
 

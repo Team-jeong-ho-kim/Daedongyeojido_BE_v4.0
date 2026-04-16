@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.file.domain.File;
 import team.jeonghokim.daedongyeojido.domain.file.domain.repository.FileRepository;
 import team.jeonghokim.daedongyeojido.domain.file.exception.AlreadyFileExistsException;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.teacher.domain.repository.TeacherRepository;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerFormRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
@@ -35,7 +36,13 @@ public class CreateOnePagerFormService {
 
         fileRepository.save(file);
 
-
+        OnePager onePager = OnePager.builder()
+                .title(request.title())
+                .description(request.description())
+                .fileName(fileName)
+                .fileUrl(fileUrl)
+                .teacherName(request.)
+                .build();
 
     }
 }
