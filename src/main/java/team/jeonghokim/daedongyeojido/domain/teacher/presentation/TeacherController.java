@@ -2,12 +2,12 @@ package team.jeonghokim.daedongyeojido.domain.teacher.presentation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherListResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherMyInfoResponse;
+import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateOnePagerFormService;
 import team.jeonghokim.daedongyeojido.domain.teacher.service.QueryAvailableTeacherListService;
 import team.jeonghokim.daedongyeojido.domain.teacher.service.QueryTeacherMyInfoService;
 
@@ -18,6 +18,7 @@ public class TeacherController {
 
     private final QueryAvailableTeacherListService queryAvailableTeacherListService;
     private final QueryTeacherMyInfoService queryTeacherMyInfoService;
+    private final CreateOnePagerFormService createOnePagerFormService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -29,5 +30,11 @@ public class TeacherController {
     @ResponseStatus(HttpStatus.OK)
     public QueryTeacherMyInfoResponse queryTeacherMyInfo() {
         return queryTeacherMyInfoService.execute();
+    }
+
+    @PostMapping("/onepager/forms")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createOnePagerForm(@RequestBody CreateOnePagerFormRequest createOnePagerFormRequest) {
+        createOnePagerFormService.execute(createOnePagerFormRequest);
     }
 }
