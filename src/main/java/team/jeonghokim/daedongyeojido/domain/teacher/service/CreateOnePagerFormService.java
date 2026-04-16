@@ -12,6 +12,8 @@ import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.Cr
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.type.FileType;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class CreateOnePagerFormService {
@@ -28,6 +30,8 @@ public class CreateOnePagerFormService {
         }
 
         String fileUrl = s3Service.upload(request.onePagerFile(), FileType.DOCUMENT);
+        String dueDate =  request.onePagerDuration().toString();
+
 
         File file = File.builder()
                 .fileUrl(fileUrl)
@@ -41,8 +45,10 @@ public class CreateOnePagerFormService {
                 .description(request.description())
                 .fileName(fileName)
                 .fileUrl(fileUrl)
-                .teacherName(request.)
+                .teacherName(request.teacherName())
+                .onePagerDuration(dueDate)
                 .build();
+
 
     }
 }
