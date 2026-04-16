@@ -3,6 +3,7 @@ package team.jeonghokim.daedongyeojido.domain.teacher.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.file.domain.File;
 import team.jeonghokim.daedongyeojido.domain.file.domain.repository.FileRepository;
 import team.jeonghokim.daedongyeojido.domain.file.exception.AlreadyFileExistsException;
 import team.jeonghokim.daedongyeojido.domain.teacher.domain.repository.TeacherRepository;
@@ -19,11 +20,22 @@ public class CreateOnePagerFormService {
 
     @Transactional
     public void execute(CreateOnePagerFormRequest request) {
-        if (fileRepository.findByFileName(request.onePagerFile()).isPresent()) {
+        String fileName = request.onePagerFile().getOriginalFilename();
+
+        if (fileRepository.findByFileName(fileName).isPresent()) {
             throw AlreadyFileExistsException.EXCEPTION;
         }
 
         String fileUrl = s3Service.upload(request.onePagerFile(), FileType.DOCUMENT);
+
+        File file = File.builder()
+                .fileUrl(fileUrl)
+                .fileName(fileName)
+                .build();
+
+        fileRepository.save(file);
+
+
 
     }
 }
