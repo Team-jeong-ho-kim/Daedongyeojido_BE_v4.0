@@ -1,6 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +10,7 @@ public record CreateOnePagerFormRequest(
         String title,
 
         @NotBlank(message = "첨부할 파일을 선택해주세요.")
-        String onePagerFile,
+        MultipartFile onePagerFile,
 
         @NotBlank(message = "원페이져 마감일을 지정해주세요.")
         LocalDateTime onePagerDuration,

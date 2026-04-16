@@ -2,14 +2,28 @@ package team.jeonghokim.daedongyeojido.domain.teacher.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.file.domain.repository.FileRepository;
+import team.jeonghokim.daedongyeojido.domain.file.exception.AlreadyFileExistsException;
 import team.jeonghokim.daedongyeojido.domain.teacher.domain.repository.TeacherRepository;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerFormRequest;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.type.FileType;
 
 @Service
 @RequiredArgsConstructor
 public class CreateOnePagerFormService {
     private final TeacherRepository teacherRepository;
+    private final FileRepository fileRepository;
+    private final S3Service s3Service;
 
-    public void execute() {
+    @Transactional
+    public void execute(CreateOnePagerFormRequest request) {
+        if (fileRepository.findByFileName(request.onePagerFile()).isPresent()) {
+            throw AlreadyFileExistsException.EXCEPTION;
+        }
+
+        String fileUrl = s3Service.upload(request.onePagerFile(), FileType.DOCUMENT);
 
     }
 }
