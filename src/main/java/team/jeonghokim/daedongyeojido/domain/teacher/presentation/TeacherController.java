@@ -34,7 +34,7 @@ public class TeacherController {
 
     @PostMapping("/onepager/forms")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOnePagerForm(@RequestBody CreateOnePagerFormRequest createOnePagerFormRequest) {
+    public void createOnePagerForm(@ModelAttribute CreateOnePagerFormRequest createOnePagerFormRequest) {
         createOnePagerFormService.execute(createOnePagerFormRequest);
     }
 }
