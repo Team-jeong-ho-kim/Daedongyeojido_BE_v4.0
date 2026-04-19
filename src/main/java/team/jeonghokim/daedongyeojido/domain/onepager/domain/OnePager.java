@@ -7,7 +7,7 @@ import lombok.*;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 @Entity
-@Table(name = "tbl_file")
+@Table(name = "tbl_onepager")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
