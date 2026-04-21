@@ -10,7 +10,7 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OnePager extends BaseIdEntity {
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String title;
 
     @Column(nullable = false)
@@ -25,7 +25,7 @@ public class OnePager extends BaseIdEntity {
     @Column(nullable = false)
     private String teacherName;
 
-    @Column(nullable = false)
+    @Column(nullable = false,  length = 500)
     private String onePagerDuration;
 
     @Builder
