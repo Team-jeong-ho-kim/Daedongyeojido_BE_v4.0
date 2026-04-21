@@ -1,9 +1,9 @@
 package team.jeonghokim.daedongyeojido.domain.onepager.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import team.jeonghokim.daedongyeojido.domain.file.domain.File;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDuration;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 @Entity
@@ -19,15 +19,16 @@ public class OnePager extends BaseIdEntity {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false, unique = true)
-    private String fileName;
+    @OneToOne
+    @JoinColumn(name = "file_id", nullable = false, unique = true)
+    private File formFile;
 
     @Column(nullable = false, unique = true)
-    private String fileUrl;
+    private String formUrl;
 
     @Column(nullable = false)
     private String teacherName;
 
     @Column(nullable = false)
-    private String onePagerDuration;
+    private OnePagerDuration onePagerDuration;
 }
