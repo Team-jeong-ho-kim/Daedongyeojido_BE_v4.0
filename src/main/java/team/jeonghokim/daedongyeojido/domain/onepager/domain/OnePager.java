@@ -29,5 +29,5 @@ public class OnePager extends BaseIdEntity {
     private String teacherName;
 
     @Column(nullable = false)
-    private OnePagerDuration onePagerDuration;
+    private String onePagerDuration;
 }
