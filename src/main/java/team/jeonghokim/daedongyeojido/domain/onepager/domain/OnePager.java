@@ -3,15 +3,12 @@ package team.jeonghokim.daedongyeojido.domain.onepager.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import team.jeonghokim.daedongyeojido.domain.file.domain.File;
-import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDuration;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 @Entity
 @Table(name = "tbl_onepager")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 public class OnePager extends BaseIdEntity {
     @Column(nullable = false)
     private String title;
@@ -30,4 +27,21 @@ public class OnePager extends BaseIdEntity {
 
     @Column(nullable = false)
     private String onePagerDuration;
+
+    @Builder
+    public OnePager(
+            String title,
+            String description,
+            File formFile,
+            String formUrl,
+            String teacherName,
+            String onePagerDuration
+    ) {
+        this.title = title;
+        this.description = description;
+        this.formFile = formFile;
+        this.formUrl = formUrl;
+        this.teacherName = teacherName;
+        this.onePagerDuration = onePagerDuration;
+    }
 }
