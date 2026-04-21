@@ -50,13 +50,4 @@ public class CreateOnePagerFileFormService {
 
         onePagerRepository.save(onePager);
     }
-
-    private String getDueDate(
-            OnePagerDuration onePagerDurationType,
-            String onePagerDuration) {
-        if(onePagerDurationType.equals(OnePagerDuration.DATE)) {
-            return onePagerDuration;
-        }
-        return OnePagerDuration.INDEFINITE.getOnePagerDurationType();
-    }
 }
