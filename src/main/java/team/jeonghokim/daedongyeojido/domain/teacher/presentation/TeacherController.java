@@ -1,5 +1,6 @@
 package team.jeonghokim.daedongyeojido.domain.teacher.presentation;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,7 @@ public class TeacherController {
 
     @PostMapping("/onepager/forms-url")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOnePagerForm(@RequestBody CreateOnePagerUrlFormRequest createOnePagerUrlFormRequest) {
+    public void createOnePagerForm(@RequestBody @Valid CreateOnePagerUrlFormRequest createOnePagerUrlFormRequest) {
         createOnePagerUrlFormService.execute(createOnePagerUrlFormRequest);
     }
 }
