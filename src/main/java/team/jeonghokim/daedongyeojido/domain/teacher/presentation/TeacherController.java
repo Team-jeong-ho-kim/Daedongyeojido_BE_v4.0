@@ -3,7 +3,7 @@ package team.jeonghokim.daedongyeojido.domain.teacher.presentation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerFormRequest;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerFileFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherListResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherMyInfoResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateOnePagerFileFormService;
@@ -33,7 +33,7 @@ public class TeacherController {
 
     @PostMapping("/onepager/forms")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOnePagerForm(@ModelAttribute CreateOnePagerFormRequest createOnePagerFormRequest) {
+    public void createOnePagerForm(@ModelAttribute CreateOnePagerFileFormRequest createOnePagerFormRequest) {
         createOnePagerFormService.execute(createOnePagerFormRequest);
     }
 }

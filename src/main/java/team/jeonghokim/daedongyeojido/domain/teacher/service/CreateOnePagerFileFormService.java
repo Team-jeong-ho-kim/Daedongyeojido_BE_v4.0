@@ -8,7 +8,7 @@ import team.jeonghokim.daedongyeojido.domain.file.domain.repository.FileReposito
 import team.jeonghokim.daedongyeojido.domain.file.exception.AlreadyFileExistsException;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
-import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerFormRequest;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerFileFormRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.type.FileType;
 
@@ -20,7 +20,7 @@ public class CreateOnePagerFileFormService {
     private final OnePagerRepository onePagerRepository;
 
     @Transactional
-    public void execute(CreateOnePagerFormRequest request) {
+    public void execute(CreateOnePagerFileFormRequest request) {
         String fileName = request.formFile().getOriginalFilename();
 
         if (fileRepository.findByFileName(fileName).isPresent()) {

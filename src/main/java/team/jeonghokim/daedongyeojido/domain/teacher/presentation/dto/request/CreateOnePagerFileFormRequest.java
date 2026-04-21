@@ -3,11 +3,8 @@ package team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
-import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDuration;
 
-import java.time.LocalDateTime;
-
-public record CreateOnePagerFormRequest(
+public record CreateOnePagerFileFormRequest(
         @NotBlank(message = "제목을 공백으로 둘 수 없습니다.")
         String title,
 
