@@ -14,7 +14,7 @@ import team.jeonghokim.daedongyeojido.infrastructure.s3.type.FileType;
 
 @Service
 @RequiredArgsConstructor
-public class CreateOnePagerFormService {
+public class CreateOnePagerFileFormService {
     private final FileRepository fileRepository;
     private final S3Service s3Service;
     private final OnePagerRepository onePagerRepository;
