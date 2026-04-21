@@ -29,7 +29,7 @@ public class CreateOnePagerFileFormService {
         }
 
         String fileUrl = s3Service.upload(request.formFile(), FileType.DOCUMENT);
-        String dueDate =  request.onePagerDuration().toString();
+        String dueDate =  getDueDate(request.onePagerDurationType(), request.onePagerDuration());
 
 
         File file = File.builder()

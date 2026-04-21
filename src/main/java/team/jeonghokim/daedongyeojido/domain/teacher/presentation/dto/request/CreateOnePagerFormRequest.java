@@ -17,11 +17,8 @@ public record CreateOnePagerFormRequest(
         @NotNull(message = "첨부할 파일을 선택해주세요.")
         MultipartFile formFile,
 
-        @NotNull(message = "원페이져 마감일을 지정해주세요.")
-        OnePagerDuration onePagerDurationType,
-
         @NotBlank(message = "원페이져 마감일을 지정해주세요.")
-        LocalDateTime onePagerDuration,
+        String onePagerDuration,
 
         @NotBlank(message = "원페이져 설명을 기재해주세요.")
         String description
