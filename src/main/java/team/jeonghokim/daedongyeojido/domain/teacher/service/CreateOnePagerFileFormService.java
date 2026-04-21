@@ -19,7 +19,6 @@ public class CreateOnePagerFileFormService {
     private final S3Service s3Service;
     private final OnePagerRepository onePagerRepository;
 
-    @Transactional
     public void execute(CreateOnePagerFileFormRequest request) {
         String fileName = request.formFile().getOriginalFilename();
 
@@ -29,6 +28,11 @@ public class CreateOnePagerFileFormService {
 
         String fileUrl = s3Service.upload(request.formFile(), FileType.DOCUMENT);
 
+        saveData(request, fileName, fileUrl);
+    }
+
+    @Transactional
+    public void saveData(CreateOnePagerFileFormRequest request, String fileName, String fileUrl) {
         File file = File.builder()
                 .fileUrl(fileUrl)
                 .fileName(fileName)
