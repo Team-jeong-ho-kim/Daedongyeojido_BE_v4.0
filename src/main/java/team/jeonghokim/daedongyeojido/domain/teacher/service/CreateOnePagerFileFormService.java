@@ -7,6 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.file.domain.File;
 import team.jeonghokim.daedongyeojido.domain.file.domain.repository.FileRepository;
 import team.jeonghokim.daedongyeojido.domain.file.exception.AlreadyFileExistsException;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDuration;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerFormRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
@@ -21,15 +22,13 @@ public class CreateOnePagerFileFormService {
 
     @Transactional
     public void execute(CreateOnePagerFormRequest request) {
-        if(request.formFile())
+        String fileName = request.formFile().getOriginalFilename();
 
         if (fileRepository.findByFileName(fileName).isPresent()) {
             throw AlreadyFileExistsException.EXCEPTION;
         }
 
-        String fileName = request.onePagerFile().getOriginalFilename();
-
-        String fileUrl = s3Service.upload(request.onePagerFile(), FileType.DOCUMENT);
+        String fileUrl = s3Service.upload(request.formFile(), FileType.DOCUMENT);
         String dueDate =  request.onePagerDuration().toString();
 
 
@@ -44,11 +43,15 @@ public class CreateOnePagerFileFormService {
                 .title(request.title())
                 .description(request.description())
                 .formFile(file)
-                .formUrl(fileUrl)
+                .formUrl(null)
                 .teacherName(request.teacherName())
                 .onePagerDuration(dueDate)
                 .build();
 
         onePagerRepository.save(onePager);
+    }
+
+    private String getDueDate() {
+
     }
 }
