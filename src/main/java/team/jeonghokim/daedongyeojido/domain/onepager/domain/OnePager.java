@@ -20,10 +20,9 @@ public class OnePager extends BaseIdEntity {
     private String description;
 
     @OneToOne
-    @JoinColumn(name = "file_id", nullable = false, unique = true)
+    @JoinColumn(name = "file_id", unique = true)
     private File formFile;
 
-    @Column(nullable = false, unique = true)
     private String formUrl;
 
     @Column(nullable = false)

@@ -12,8 +12,8 @@ public record CreateOnePagerFormRequest(
         @NotBlank(message = "담당교사이름을 비워둘 순 없습니다.")
         String teacherName,
 
-        @NotBlank(message = "첨부할 파일을 선택해주세요.")
-        MultipartFile onePagerFile,
+        MultipartFile formFile,
+        String formUrl,
 
         @NotBlank(message = "원페이져 마감일을 지정해주세요.")
         LocalDateTime onePagerDuration,

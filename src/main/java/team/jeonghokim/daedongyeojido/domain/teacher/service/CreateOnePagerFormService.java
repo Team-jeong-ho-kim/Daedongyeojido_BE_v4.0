@@ -21,11 +21,13 @@ public class CreateOnePagerFormService {
 
     @Transactional
     public void execute(CreateOnePagerFormRequest request) {
-        String fileName = request.onePagerFile().getOriginalFilename();
+        if(request.formFile())
 
         if (fileRepository.findByFileName(fileName).isPresent()) {
             throw AlreadyFileExistsException.EXCEPTION;
         }
+
+        String fileName = request.onePagerFile().getOriginalFilename();
 
         String fileUrl = s3Service.upload(request.onePagerFile(), FileType.DOCUMENT);
         String dueDate =  request.onePagerDuration().toString();
@@ -41,8 +43,8 @@ public class CreateOnePagerFormService {
         OnePager onePager = OnePager.builder()
                 .title(request.title())
                 .description(request.description())
-                .fileName(fileName)
-                .fileUrl(fileUrl)
+                .formFile(file)
+                .formUrl(fileUrl)
                 .teacherName(request.teacherName())
                 .onePagerDuration(dueDate)
                 .build();
