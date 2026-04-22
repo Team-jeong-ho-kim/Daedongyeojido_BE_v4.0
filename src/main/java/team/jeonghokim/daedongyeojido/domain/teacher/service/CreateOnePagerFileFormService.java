@@ -26,9 +26,18 @@ public class CreateOnePagerFileFormService {
             throw AlreadyFileExistsException.EXCEPTION;
         }
 
-        String fileUrl = s3Service.upload(request.formFile(), FileType.DOCUMENT);
+        String fileUrl = "temp";
 
-        saveData(request, fileName, fileUrl);
+        try {
+            fileUrl = s3Service.upload(request.formFile(), FileType.DOCUMENT);
+            saveData(request, fileName, fileUrl);
+        }
+        catch (Exception e) {
+            if(fileUrl != null) {
+                s3Service.delete(fileUrl);
+            }
+        }
+
     }
 
     @Transactional
