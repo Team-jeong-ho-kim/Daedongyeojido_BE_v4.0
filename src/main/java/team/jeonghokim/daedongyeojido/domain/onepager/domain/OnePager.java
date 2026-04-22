@@ -22,7 +22,7 @@ public class OnePager extends BaseIdEntity {
 
     private String formUrl;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 4)
     private String teacherName;
 
     @Column(nullable = false)
