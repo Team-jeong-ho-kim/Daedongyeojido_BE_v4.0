@@ -13,7 +13,7 @@ public class OnePager extends BaseIdEntity {
     @Column(nullable = false, length = 50)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false,  length = 500)
     private String description;
 
     @OneToOne
@@ -25,7 +25,7 @@ public class OnePager extends BaseIdEntity {
     @Column(nullable = false)
     private String teacherName;
 
-    @Column(nullable = false,  length = 500)
+    @Column(nullable = false)
     private String onePagerDuration;
 
     @Builder
