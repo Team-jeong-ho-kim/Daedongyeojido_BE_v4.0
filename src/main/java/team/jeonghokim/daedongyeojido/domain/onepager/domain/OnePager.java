@@ -1,16 +1,15 @@
 package team.jeonghokim.daedongyeojido.domain.onepager.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Table;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.file.domain.File;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDurationType;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_onepager")
@@ -33,7 +32,11 @@ public class OnePager extends BaseIdEntity {
     private String teacherName;
 
     @Column(nullable = false)
-    private String onePagerDuration;
+    @Enumerated(EnumType.STRING)
+    private OnePagerDurationType onePagerDurationType;
+
+    @Column(nullable = true)
+    private LocalDateTime onePagerDuration;
 
     @Builder
     public OnePager(
@@ -42,13 +45,15 @@ public class OnePager extends BaseIdEntity {
             File formFile,
             String formUrl,
             String teacherName,
-            String onePagerDuration
+            OnePagerDurationType onePagerDurationType,
+            LocalDateTime onePagerDuration
     ) {
         this.title = title;
         this.description = description;
         this.formFile = formFile;
         this.formUrl = formUrl;
         this.teacherName = teacherName;
+        this.onePagerDurationType = onePagerDurationType;
         this.onePagerDuration = onePagerDuration;
     }
 }

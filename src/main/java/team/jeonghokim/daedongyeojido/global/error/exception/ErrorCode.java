@@ -85,6 +85,7 @@ public enum ErrorCode {
     // clubCreationForm
     ALREADY_FILE_EXISTS(409, "이미 해당 파일 양식이 존재합니다."),
     FILE_NOT_FOUND(404, "파일 양식을 찾을 수 없습니다."),
+    INVALID_DURATION_DATE(400, "마감 날짜는 현재 시간보다 이후여야 합니다."),
 
     // admin
     ADMIN_NOT_FOUND(404, "존재하지 않는 관리자입니다."),
