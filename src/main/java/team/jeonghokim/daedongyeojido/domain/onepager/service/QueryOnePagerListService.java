@@ -28,14 +28,12 @@ public class QueryOnePagerListService {
     public List<OnePagerListResponse> execute() {
 
         User user = userFacade.getCurrentUser();
-        Role userRole = user.getRole();
 
-        if (!ALLOWED_ROLES.contains(userRole)) {
+        if (!ALLOWED_ROLES.contains(user.getRole())) {
             throw InvalidRoleException.EXCEPTION;
         }
 
-        LocalDateTime now = LocalDateTime.now();
-        List<OnePager> onePagers = onePagerRepository.findByOnePagerDurationTypeOrOnePagerDurationAfter(OnePagerDurationType.INFINITY, now);
+        List<OnePager> onePagers = onePagerRepository.findByOnePagerDurationTypeOrOnePagerDurationAfter(OnePagerDurationType.INFINITY, LocalDateTime.now());
 
         return onePagers.stream().map(onePager -> new OnePagerListResponse(
                 onePager.getId(),
