@@ -7,7 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDurat
 
 import java.time.LocalDateTime;
 
-public record CreateOnePagerUrlFormRequest(
+public record OnePagerUrlFormRequest(
         @NotBlank(message = "제목을 공백으로 둘 수 없습니다.")
         @Size(max = 50, message = "제목을 50자 이하로 입력해주세요.")
         String title,

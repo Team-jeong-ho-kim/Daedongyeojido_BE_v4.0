@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerFileFormRequest;
-import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerUrlFormRequest;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerUrlFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherListResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherMyInfoResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateOnePagerFileFormService;
@@ -49,7 +49,7 @@ public class TeacherController {
 
     @PostMapping("/onepager/forms-url")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOnePagerUrlForm(@RequestBody @Valid CreateOnePagerUrlFormRequest createOnePagerUrlFormRequest) {
+    public void createOnePagerUrlForm(@RequestBody @Valid OnePagerUrlFormRequest createOnePagerUrlFormRequest) {
         createOnePagerUrlFormService.execute(createOnePagerUrlFormRequest);
     }
 }

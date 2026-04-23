@@ -7,7 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDurationType;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.InvalidDurationDateException;
-import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerUrlFormRequest;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerUrlFormRequest;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +17,7 @@ public class CreateOnePagerUrlFormService {
     private final OnePagerRepository onePagerRepository;
 
     @Transactional
-    public void execute(CreateOnePagerUrlFormRequest request) {
+    public void execute(OnePagerUrlFormRequest request) {
         if (request.onePagerDurationType() == OnePagerDurationType.DATE
                 && request.onePagerDuration().isBefore(LocalDateTime.now())) {
             throw InvalidDurationDateException.EXCEPTION;
