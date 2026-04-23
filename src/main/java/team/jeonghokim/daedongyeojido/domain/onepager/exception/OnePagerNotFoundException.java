@@ -7,6 +7,6 @@ public class OnePagerNotFoundException extends DaedongException {
   public static final DaedongException EXCEPTION = new OnePagerNotFoundException();
 
   private OnePagerNotFoundException() {
-    super(ErrorCode.INVALID_DURATION_DATE);
+    super(ErrorCode.ONE_PAGER_NOT_FOUND);
   }
 }
