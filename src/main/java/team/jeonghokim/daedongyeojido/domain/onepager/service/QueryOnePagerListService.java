@@ -1,8 +1,8 @@
 package team.jeonghokim.daedongyeojido.domain.onepager.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDurationType;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
@@ -24,7 +24,7 @@ public class QueryOnePagerListService {
     private final OnePagerRepository onePagerRepository;
     private final UserFacade userFacade;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<OnePagerListResponse> execute() {
         User user = userFacade.getCurrentUser();
         if (!ALLOWED_ROLES.contains(user.getRole())) {
