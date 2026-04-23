@@ -26,15 +26,12 @@ public class QueryOnePagerListService {
 
     @Transactional
     public List<OnePagerListResponse> execute() {
-
         User user = userFacade.getCurrentUser();
-
         if (!ALLOWED_ROLES.contains(user.getRole())) {
             throw InvalidRoleException.EXCEPTION;
         }
 
         List<OnePager> onePagers = onePagerRepository.findByOnePagerDurationTypeOrOnePagerDurationAfter(OnePagerDurationType.INFINITY, LocalDateTime.now());
-
         return onePagers.stream().map(onePager -> new OnePagerListResponse(
                 onePager.getId(),
                 onePager.getTitle(),
