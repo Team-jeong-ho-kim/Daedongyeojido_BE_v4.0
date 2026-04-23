@@ -14,10 +14,12 @@ import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class QueryOnePagerListService {
+    private static final Set<Role> ALLOWED_ROLES = Set.of(Role.TEACHER, Role.CLUB_LEADER, Role.CLUB_MEMBER);
 
     private final OnePagerRepository onePagerRepository;
     private final UserFacade userFacade;
@@ -28,7 +30,7 @@ public class QueryOnePagerListService {
         User user = userFacade.getCurrentUser();
         Role userRole = user.getRole();
 
-        if (userRole != Role.TEACHER && userRole != Role.CLUB_LEADER && userRole != Role.CLUB_MEMBER) {
+        if (!ALLOWED_ROLES.contains(userRole)) {
             throw InvalidRoleException.EXCEPTION;
         }
 
