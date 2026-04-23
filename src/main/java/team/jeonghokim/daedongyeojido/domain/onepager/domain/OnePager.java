@@ -56,4 +56,22 @@ public class OnePager extends BaseIdEntity {
         this.onePagerDurationType = onePagerDurationType;
         this.onePagerDuration = onePagerDuration;
     }
+
+    public void update(
+            String title,
+            String description,
+            File formFile,
+            String formUrl,
+            String teacherName,
+            OnePagerDurationType onePagerDurationType,
+            LocalDateTime onePagerDuration
+    ){
+        this.title = title;
+        this.description = description;
+        this.formFile = formFile;
+        this.formUrl = formUrl;
+        this.teacherName = teacherName;
+        this.onePagerDurationType = onePagerDurationType;
+        this.onePagerDuration = onePagerDuration;
+    }
 }
