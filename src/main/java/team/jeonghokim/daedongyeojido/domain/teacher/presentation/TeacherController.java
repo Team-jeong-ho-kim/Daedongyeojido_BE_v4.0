@@ -3,21 +3,12 @@ package team.jeonghokim.daedongyeojido.domain.teacher.presentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerFileFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerUrlFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherListResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherMyInfoResponse;
-import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateOnePagerFileFormService;
-import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateOnePagerUrlFormService;
-import team.jeonghokim.daedongyeojido.domain.teacher.service.QueryAvailableTeacherListService;
-import team.jeonghokim.daedongyeojido.domain.teacher.service.QueryTeacherMyInfoService;
+import team.jeonghokim.daedongyeojido.domain.teacher.service.*;
 
 @RestController
 @RequestMapping("/teachers")
@@ -28,6 +19,7 @@ public class TeacherController {
     private final QueryTeacherMyInfoService queryTeacherMyInfoService;
     private final CreateOnePagerFileFormService createOnePagerFileFormService;
     private final CreateOnePagerUrlFormService createOnePagerUrlFormService;
+    private final UpdateOnePagerFileService updateOnePagerFileService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -51,5 +43,13 @@ public class TeacherController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createOnePagerUrlForm(@RequestBody @Valid OnePagerUrlFormRequest createOnePagerUrlFormRequest) {
         createOnePagerUrlFormService.execute(createOnePagerUrlFormRequest);
+    }
+
+    @PatchMapping("/onepager/forms-file/{form-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateOnePagerFileForm(
+            @PathVariable("form-id") Long formId,
+            @RequestBody @Valid OnePagerFileFormRequest onePagerFileFormRequest                           ) {
+        updateOnePagerFileService.execute(onePagerFileFormRequest, formId);
     }
 }
