@@ -20,6 +20,7 @@ public class TeacherController {
     private final CreateOnePagerFileFormService createOnePagerFileFormService;
     private final CreateOnePagerUrlFormService createOnePagerUrlFormService;
     private final UpdateOnePagerFileService updateOnePagerFileService;
+    private final UpdateOnePagerUrlService updateOnePagerUrlService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -51,5 +52,13 @@ public class TeacherController {
             @PathVariable("form-id") Long formId,
             @RequestBody @Valid OnePagerFileFormRequest onePagerFileFormRequest                           ) {
         updateOnePagerFileService.execute(onePagerFileFormRequest, formId);
+    }
+
+    @PatchMapping("/onepager/forms-url/{form-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateOnePagerUrlForm(
+            @PathVariable("form-id") Long formId,
+            @RequestBody @Valid OnePagerUrlFormRequest onePagerUrlFormRequest                         ) {
+        updateOnePagerUrlService.execute(onePagerUrlFormRequest, formId);
     }
 }
