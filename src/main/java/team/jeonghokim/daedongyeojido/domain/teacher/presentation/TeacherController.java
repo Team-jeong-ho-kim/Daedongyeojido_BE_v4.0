@@ -26,7 +26,7 @@ public class TeacherController {
 
     private final QueryAvailableTeacherListService queryAvailableTeacherListService;
     private final QueryTeacherMyInfoService queryTeacherMyInfoService;
-    private final CreateOnePagerFileFormService createOnePagerFormService;
+    private final CreateOnePagerFileFormService createOnePagerFileFormService;
     private final CreateOnePagerUrlFormService createOnePagerUrlFormService;
 
     @GetMapping
@@ -43,13 +43,13 @@ public class TeacherController {
 
     @PostMapping("/onepager/forms-file")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOnePagerForm(@ModelAttribute @Valid CreateOnePagerFileFormRequest createOnePagerFormRequest) {
-        createOnePagerFormService.execute(createOnePagerFormRequest);
+    public void createOnePagerFileForm(@ModelAttribute @Valid CreateOnePagerFileFormRequest createOnePagerFormRequest) {
+        createOnePagerFileFormService.execute(createOnePagerFormRequest);
     }
 
     @PostMapping("/onepager/forms-url")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOnePagerForm(@RequestBody @Valid CreateOnePagerUrlFormRequest createOnePagerUrlFormRequest) {
+    public void createOnePagerUrlForm(@RequestBody @Valid CreateOnePagerUrlFormRequest createOnePagerUrlFormRequest) {
         createOnePagerUrlFormService.execute(createOnePagerUrlFormRequest);
     }
 }
