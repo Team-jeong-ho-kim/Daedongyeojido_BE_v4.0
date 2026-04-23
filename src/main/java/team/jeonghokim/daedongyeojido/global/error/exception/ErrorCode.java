@@ -117,7 +117,10 @@ public enum ErrorCode {
     // general
     BAD_REQUEST(400, "front fault"),
     NO_RESOURCE_FOUND(404, "No Resource Found"),
-    INTERNAL_SERVER_ERROR(500, "server fault");
+    INTERNAL_SERVER_ERROR(500, "server fault"),
+
+    // onpager
+    ONE_PAGER_NOT_FOUND(404, "해당 양식이 존재하지 않습니다.");
 
     private final int statusCode;
     private final String ErrorMessage;
