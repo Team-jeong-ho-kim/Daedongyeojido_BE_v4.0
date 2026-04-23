@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
-import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerFileFormRequest;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerFileFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerUrlFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherListResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherMyInfoResponse;
@@ -43,7 +43,7 @@ public class TeacherController {
 
     @PostMapping("/onepager/forms-file")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOnePagerFileForm(@ModelAttribute @Valid CreateOnePagerFileFormRequest createOnePagerFormRequest) {
+    public void createOnePagerFileForm(@ModelAttribute @Valid OnePagerFileFormRequest createOnePagerFormRequest) {
         createOnePagerFileFormService.execute(createOnePagerFormRequest);
     }
 

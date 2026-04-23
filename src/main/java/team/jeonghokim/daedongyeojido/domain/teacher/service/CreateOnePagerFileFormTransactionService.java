@@ -9,7 +9,7 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDurationType;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.InvalidDurationDateException;
-import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerFileFormRequest;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerFileFormRequest;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +20,7 @@ public class CreateOnePagerFileFormTransactionService {
     private final OnePagerRepository onePagerRepository;
 
     @Transactional
-    public void saveData(CreateOnePagerFileFormRequest request, String fileName, String fileUrl) {
+    public void saveData(OnePagerFileFormRequest request, String fileName, String fileUrl) {
         if (request.onePagerDurationType() == OnePagerDurationType.DATE
                 && request.onePagerDuration().isBefore(LocalDateTime.now())) {
             throw InvalidDurationDateException.EXCEPTION;
