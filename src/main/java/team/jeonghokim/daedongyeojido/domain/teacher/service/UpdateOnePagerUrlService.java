@@ -27,7 +27,5 @@ public class UpdateOnePagerUrlService {
                 onePagerUrlFormRequest.onePagerDurationType(),
                 onePagerUrlFormRequest.onePagerDuration()
         );
-
-        onePagerRepository.save(onePager);
     }
 }

@@ -35,7 +35,5 @@ public class UpdateOnePagerFileService {
                 onePagerFileFormRequest.onePagerDurationType(),
                 onePagerFileFormRequest.onePagerDuration()
         );
-
-        onePagerRepository.save(onePager);
     }
 }
