@@ -32,12 +32,8 @@ public class QueryOnePagerListService {
         }
 
         List<OnePager> onePagers = onePagerRepository.findByOnePagerDurationTypeOrOnePagerDurationAfter(OnePagerDurationType.INFINITY, LocalDateTime.now());
-        return onePagers.stream().map(onePager -> new OnePagerListResponse(
-                onePager.getId(),
-                onePager.getTitle(),
-                onePager.getTeacherName(),
-                onePager.getOnePagerDurationType(),
-                onePager.getOnePagerDuration()
-        )).toList();
+        return onePagers.stream()
+                .map(OnePagerListResponse::from)
+                .toList();
     }
 }
