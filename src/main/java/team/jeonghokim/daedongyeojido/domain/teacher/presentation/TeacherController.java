@@ -47,7 +47,7 @@ public class TeacherController {
     }
 
     @PatchMapping("/onepager/forms-file/{form-id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateOnePagerFileForm(
             @PathVariable("form-id") Long formId,
             @RequestBody @Valid OnePagerFileFormRequest onePagerFileFormRequest                           ) {
