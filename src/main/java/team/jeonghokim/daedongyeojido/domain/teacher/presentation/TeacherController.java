@@ -60,7 +60,8 @@ public class TeacherController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateOnePagerFileForm(
             @PathVariable("form-id") Long formId,
-            @RequestBody @Valid OnePagerFileFormRequest request                           ) {
+            @RequestBody @Valid OnePagerFileFormRequest request
+    ) {
         updateOnePagerFileService.execute(request, formId);
     }
 
@@ -68,7 +69,8 @@ public class TeacherController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateOnePagerUrlForm(
             @PathVariable("form-id") Long formId,
-            @RequestBody @Valid OnePagerUrlFormRequest request                         ) {
+            @RequestBody @Valid OnePagerUrlFormRequest request
+    ) {
         updateOnePagerUrlService.execute(request, formId);
     }
 }
