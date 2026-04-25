@@ -19,21 +19,21 @@ public class UpdateOnePagerFileService {
 
 
     @Transactional
-    public void execute(OnePagerFileFormRequest onePagerFileFormRequest, Long onePagerId) {
+    public void execute(OnePagerFileFormRequest request, Long onePagerId) {
         OnePager onePager = onePagerRepository.findById(onePagerId)
                 .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        File file = fileRepository.findByFileName(onePagerFileFormRequest.formFile().getOriginalFilename())
+        File file = fileRepository.findByFileName(request.formFile().getOriginalFilename())
                 .orElseThrow(() -> FileNotFoundException.EXCEPTION);
 
         onePager.update(
-                onePagerFileFormRequest.title(),
-                onePagerFileFormRequest.description(),
+                request.title(),
+                request.description(),
                 file,
                 null,
-                onePagerFileFormRequest.teacherName(),
-                onePagerFileFormRequest.onePagerDurationType(),
-                onePagerFileFormRequest.onePagerDuration()
+                request.teacherName(),
+                request.onePagerDurationType(),
+                request.onePagerDuration()
         );
     }
 }

@@ -14,18 +14,18 @@ public class UpdateOnePagerUrlService {
     private final OnePagerRepository onePagerRepository;
 
     @Transactional
-    public void execute(OnePagerUrlFormRequest onePagerUrlFormRequest, Long onePagerId) {
+    public void execute(OnePagerUrlFormRequest request, Long onePagerId) {
         OnePager onePager = onePagerRepository.findById(onePagerId)
                 .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
         onePager.update(
-                onePagerUrlFormRequest.title(),
-                onePagerUrlFormRequest.description(),
+                request.title(),
+                request.description(),
                 null,
-                onePagerUrlFormRequest.formUrl(),
-                onePagerUrlFormRequest.teacherName(),
-                onePagerUrlFormRequest.onePagerDurationType(),
-                onePagerUrlFormRequest.onePagerDuration()
+                request.formUrl(),
+                request.teacherName(),
+                request.onePagerDurationType(),
+                request.onePagerDuration()
         );
     }
 }

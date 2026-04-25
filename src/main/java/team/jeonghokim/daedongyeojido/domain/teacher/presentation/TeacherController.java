@@ -50,15 +50,15 @@ public class TeacherController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateOnePagerFileForm(
             @PathVariable("form-id") Long formId,
-            @RequestBody @Valid OnePagerFileFormRequest onePagerFileFormRequest                           ) {
-        updateOnePagerFileService.execute(onePagerFileFormRequest, formId);
+            @RequestBody @Valid OnePagerFileFormRequest request                           ) {
+        updateOnePagerFileService.execute(request, formId);
     }
 
     @PatchMapping("/onepager/forms-url/{form-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateOnePagerUrlForm(
             @PathVariable("form-id") Long formId,
-            @RequestBody @Valid OnePagerUrlFormRequest onePagerUrlFormRequest                         ) {
-        updateOnePagerUrlService.execute(onePagerUrlFormRequest, formId);
+            @RequestBody @Valid OnePagerUrlFormRequest request                         ) {
+        updateOnePagerUrlService.execute(request, formId);
     }
 }
