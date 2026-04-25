@@ -17,7 +17,6 @@ public class UpdateOnePagerFileService {
     private final OnePagerRepository onePagerRepository;
     private final FileRepository fileRepository;
 
-
     @Transactional
     public void execute(OnePagerFileFormRequest request, Long onePagerId) {
         OnePager onePager = onePagerRepository.findById(onePagerId)
