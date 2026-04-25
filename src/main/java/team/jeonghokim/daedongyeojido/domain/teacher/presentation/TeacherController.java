@@ -46,14 +46,14 @@ public class TeacherController {
 
     @PostMapping("/onepager/forms-file")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOnePagerFileForm(@ModelAttribute @Valid OnePagerFileFormRequest createOnePagerFormRequest) {
-        createOnePagerFileFormService.execute(createOnePagerFormRequest);
+    public void createOnePagerFileForm(@ModelAttribute @Valid OnePagerFileFormRequest request) {
+        createOnePagerFileFormService.execute(request);
     }
 
     @PostMapping("/onepager/forms-url")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOnePagerUrlForm(@RequestBody @Valid OnePagerUrlFormRequest createOnePagerUrlFormRequest) {
-        createOnePagerUrlFormService.execute(createOnePagerUrlFormRequest);
+    public void createOnePagerUrlForm(@RequestBody @Valid OnePagerUrlFormRequest request) {
+        createOnePagerUrlFormService.execute(request);
     }
 
     @PatchMapping("/onepager/forms-file/{form-id}")
