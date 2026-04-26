@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.jeonghokim.daedongyeojido.domain.file.domain.repository.FileRepository;
 import team.jeonghokim.daedongyeojido.domain.file.exception.AlreadyFileExistsException;
-import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
-import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CreateOnePagerFileFormRequest;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerFileFormRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.type.FileType;
 
@@ -16,7 +15,7 @@ public class CreateOnePagerFileFormService {
     private final FileRepository fileRepository;
     private final CreateOnePagerFileFormTransactionService createOnePagerFileFormTransactionService;
 
-    public void execute(CreateOnePagerFileFormRequest request) {
+    public void execute(OnePagerFileFormRequest request) {
         String fileName = request.formFile().getName();
 
         fileRepository.findByFileName(fileName).ifPresent(file -> {
