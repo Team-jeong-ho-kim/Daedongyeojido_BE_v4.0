@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerState;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerInvalidException;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerNotFoundException;
@@ -20,7 +21,8 @@ public class UpdateOnePagerStateService {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        if(onePager.getFormFile() == null) {
+
+        if(onePager.getFormFile() == null || onePager.getState() != OnePagerState.SUBMITTED) {
             throw OnePagerInvalidException.EXCEPTION;
         }
 
