@@ -38,6 +38,8 @@ public class OnePager extends BaseIdEntity {
     @Column(nullable = true)
     private LocalDateTime onePagerDuration;
 
+    private
+
     @Builder
     public OnePager(
             String title,
