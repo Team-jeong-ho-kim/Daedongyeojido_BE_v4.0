@@ -81,4 +81,8 @@ public class OnePager extends BaseIdEntity {
         this.onePagerDurationType = onePagerDurationType;
         this.onePagerDuration = onePagerDuration;
     }
+
+    public void changeOnePagerState(OnePagerState onePagerState) {
+        this.state = onePagerState;
+    }
 }
