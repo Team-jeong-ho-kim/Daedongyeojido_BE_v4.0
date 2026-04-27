@@ -16,6 +16,11 @@ public class UpdateOnePagerStateService {
         OnePager onePager = onePagerRepository.findById(request.onePagerId())
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
+        if(onePager.getFormFile() == null) {
+
+        }
+
+        onePager.changeOnePagerState(request.onePagerState());
 
     }
 }
