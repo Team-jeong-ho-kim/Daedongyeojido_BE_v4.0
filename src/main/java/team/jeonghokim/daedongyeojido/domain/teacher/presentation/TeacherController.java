@@ -89,9 +89,12 @@ public class TeacherController {
         deleteOnePagerService.execute(formId);
     }
 
-    @PatchMapping("/teachers/onepager/submissions/{submission-id}/status")
+    @PatchMapping("/onepager/submissions/{submission-id}/status")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateOnePagerStatus(ChangeOnePagerStateRequest request) {
-        updateOnePagerStateService.execute(request);
+    public void updateOnePagerStatus(
+        @RequestBody ChangeOnePagerStateRequest request,
+        @PathVariable("submission-id") Long onePagerId
+    ) {
+        updateOnePagerStateService.execute(request, onePagerId);
     }
 }

@@ -15,8 +15,9 @@ public class UpdateOnePagerStateService {
     private final OnePagerRepository onePagerRepository;
 
     @Transactional
-    public void execute(ChangeOnePagerStateRequest request) {
-        OnePager onePager = onePagerRepository.findById(request.onePagerId())
+    public void execute(ChangeOnePagerStateRequest request,
+                        Long onePagerId) {
+        OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
         if(onePager.getFormFile() == null) {
