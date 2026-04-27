@@ -7,8 +7,8 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePager
 
 @Service
 @RequiredArgsConstructor
-public class UpdateOnePagerState {
+public class UpdateOnePagerStateService {
     private final OnePagerRepository onePagerRepository;
 
-    public void execute(OnePagerState onePagerState) {}
+    public void execute(OnePagerState onePagerState) {  }
 }
