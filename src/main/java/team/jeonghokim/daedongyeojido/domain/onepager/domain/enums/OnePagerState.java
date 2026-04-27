@@ -1,8 +1,15 @@
 package team.jeonghokim.daedongyeojido.domain.onepager.domain.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum OnePagerState {
-    APPROVED,
-    REJECTED,
-    SUBMITTED,
-    CANCELED
+    APPROVED("승인됨"),
+    REJECTED("거절됨"),
+    SUBMITTED("제출됨"),
+    CANCELED("취소됨");
+
+    private final String description;
 }
