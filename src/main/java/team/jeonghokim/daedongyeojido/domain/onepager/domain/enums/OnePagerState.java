@@ -1,6 +1,6 @@
 package team.jeonghokim.daedongyeojido.domain.onepager.domain.enums;
 
-public enum OnePagerFileState {
+public enum OnePagerState {
     APPROVED,
     REJECTED,
     SUBMITTED,
