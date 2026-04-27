@@ -82,6 +82,7 @@ public class TeacherController {
 
 
     @DeleteMapping("/onepager/forms/{form-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOnePagerForm(@PathVariable("form-id") Long formId) {
         deleteOnePagerService.execute(formId);
     }
