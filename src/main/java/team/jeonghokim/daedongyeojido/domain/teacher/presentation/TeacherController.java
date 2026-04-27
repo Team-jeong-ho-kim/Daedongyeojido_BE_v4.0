@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.ChangeOnePagerStateRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerFileFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerUrlFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherListResponse;
@@ -24,6 +25,7 @@ import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateOnePagerUrlFo
 import team.jeonghokim.daedongyeojido.domain.teacher.service.UpdateOnePagerFileService;
 import team.jeonghokim.daedongyeojido.domain.teacher.service.UpdateOnePagerUrlService;
 import team.jeonghokim.daedongyeojido.domain.teacher.service.DeleteOnePagerService;
+import team.jeonghokim.daedongyeojido.domain.teacher.service.UpdateOnePagerStateService;
 
 @RestController
 @RequestMapping("/teachers")
@@ -37,6 +39,7 @@ public class TeacherController {
     private final UpdateOnePagerFileService updateOnePagerFileService;
     private final UpdateOnePagerUrlService updateOnePagerUrlService;
     private final DeleteOnePagerService deleteOnePagerService;
+    private final UpdateOnePagerStateService updateOnePagerStateService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -79,10 +82,16 @@ public class TeacherController {
     ) {
         updateOnePagerUrlService.execute(request, formId);
     }
-    
+
     @DeleteMapping("/onepager/forms/{form-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOnePagerForm(@PathVariable("form-id") Long formId) {
         deleteOnePagerService.execute(formId);
+    }
+
+    @PatchMapping("/teachers/onepager/submissions/{submission-id}/status")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateOnePagerStatus(ChangeOnePagerStateRequest request) {
+        updateOnePagerStateService.execute(request);
     }
 }
