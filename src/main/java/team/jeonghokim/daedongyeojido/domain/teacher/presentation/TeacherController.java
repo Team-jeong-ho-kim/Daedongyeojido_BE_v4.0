@@ -4,15 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerFileFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerUrlFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherListResponse;
@@ -23,6 +15,7 @@ import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateOnePagerFileF
 import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateOnePagerUrlFormService;
 import team.jeonghokim.daedongyeojido.domain.teacher.service.UpdateOnePagerFileService;
 import team.jeonghokim.daedongyeojido.domain.teacher.service.UpdateOnePagerUrlService;
+import team.jeonghokim.daedongyeojido.domain.teacher.service.DeleteOnePagerService;
 
 @RestController
 @RequestMapping("/teachers")
@@ -35,6 +28,7 @@ public class TeacherController {
     private final CreateOnePagerUrlFormService createOnePagerUrlFormService;
     private final UpdateOnePagerFileService updateOnePagerFileService;
     private final UpdateOnePagerUrlService updateOnePagerUrlService;
+    private final DeleteOnePagerService deleteOnePagerService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -76,5 +70,11 @@ public class TeacherController {
             @RequestBody @Valid OnePagerUrlFormRequest request
     ) {
         updateOnePagerUrlService.execute(request, formId);
+    }
+
+
+    @DeleteMapping("/onepager/forms/{form-id}")
+    public void deleteOnePagerForm(@PathVariable("form-id") Long formId) {
+        deleteOnePagerService.execute(formId);
     }
 }
