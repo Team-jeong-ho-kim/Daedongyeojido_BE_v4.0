@@ -18,6 +18,7 @@ import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.On
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerUrlFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherListResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherMyInfoResponse;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.UpdateStateReasonResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.service.QueryAvailableTeacherListService;
 import team.jeonghokim.daedongyeojido.domain.teacher.service.QueryTeacherMyInfoService;
 import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateOnePagerFileFormService;
@@ -90,11 +91,11 @@ public class TeacherController {
     }
 
     @PatchMapping("/onepager/submissions/{submission-id}/status")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateOnePagerStatus(
+    @ResponseStatus(HttpStatus.OK)
+    public UpdateStateReasonResponse updateOnePagerStatus(
         @RequestBody @Valid ChangeOnePagerStateRequest request,
         @PathVariable("submission-id") Long onePagerId
     ) {
-        updateOnePagerStateService.execute(request, onePagerId);
+        return updateOnePagerStateService.execute(request, onePagerId);
     }
 }
