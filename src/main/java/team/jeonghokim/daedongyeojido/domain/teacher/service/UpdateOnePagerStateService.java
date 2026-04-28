@@ -9,6 +9,7 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePager
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerInvalidException;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.ChangeOnePagerStateRequest;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.UpdateStateReasonResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -16,8 +17,8 @@ public class UpdateOnePagerStateService {
     private final OnePagerRepository onePagerRepository;
 
     @Transactional
-    public void execute(ChangeOnePagerStateRequest request,
-                        Long onePagerId) {
+    public UpdateStateReasonResponse execute(ChangeOnePagerStateRequest request,
+                                             Long onePagerId) {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
@@ -29,5 +30,17 @@ public class UpdateOnePagerStateService {
         }
 
         onePager.changeOnePagerState(request.onePagerState());
+
+        String reason = null;
+
+        if(onePager.getState() == OnePagerState.CANCELED
+            || onePager.getState() == OnePagerState.REJECTED) {
+            if(request.reason() == null) {
+                throw
+            }
+            reason = request.reason();
+        }
+
+        return UpdateStateReasonResponse.of(reason);
     }
 }
