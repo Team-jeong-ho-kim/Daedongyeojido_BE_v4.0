@@ -43,7 +43,7 @@ public class OnePager extends BaseIdEntity {
     @Column(nullable = true, length = 9)
     private OnePagerState state;
 
-    @Column(nullable = true)
+    @Column(nullable = true, length = 100)
     private String reason;
 
     @Builder
