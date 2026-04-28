@@ -21,10 +21,12 @@ public class UpdateOnePagerStateService {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        if(onePager.getFormFile() == null || onePager.getState() != OnePagerState.SUBMITTED) {
+        OnePagerState currentState = onePager.getState();
+
+        if (onePager.getFormFile() == null
+                || (currentState != OnePagerState.SUBMITTED && currentState != OnePagerState.REJECTED)) {
             throw OnePagerInvalidException.EXCEPTION;
         }
-        if(onePager.getState() != OnePagerState.) {}
 
         onePager.changeOnePagerState(request.onePagerState());
     }
