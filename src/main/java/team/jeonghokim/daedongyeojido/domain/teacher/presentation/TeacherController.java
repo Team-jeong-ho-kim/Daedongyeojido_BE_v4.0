@@ -92,7 +92,7 @@ public class TeacherController {
     @PatchMapping("/onepager/submissions/{submission-id}/status")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateOnePagerStatus(
-        @RequestBody ChangeOnePagerStateRequest request,
+        @RequestBody @Valid ChangeOnePagerStateRequest request,
         @PathVariable("submission-id") Long onePagerId
     ) {
         updateOnePagerStateService.execute(request, onePagerId);
