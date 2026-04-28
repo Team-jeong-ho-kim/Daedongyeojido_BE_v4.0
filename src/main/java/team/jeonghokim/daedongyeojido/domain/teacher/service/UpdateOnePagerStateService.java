@@ -18,8 +18,7 @@ public class UpdateOnePagerStateService {
     private final OnePagerRepository onePagerRepository;
 
     @Transactional
-    public UpdateStateReasonResponse execute(ChangeOnePagerStateRequest request,
-                                             Long onePagerId) {
+    public UpdateStateReasonResponse execute(ChangeOnePagerStateRequest request, Long onePagerId) {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
