@@ -88,4 +88,8 @@ public class OnePager extends BaseIdEntity {
     public void changeOnePagerState(OnePagerState onePagerState) {
         this.state = onePagerState;
     }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 }
