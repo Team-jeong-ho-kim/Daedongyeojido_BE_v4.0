@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.file.domain.File;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDurationType;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerState;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.time.LocalDateTime;
@@ -38,6 +39,10 @@ public class OnePager extends BaseIdEntity {
     @Column(nullable = true)
     private LocalDateTime onePagerDuration;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true, length = 9)
+    private OnePagerState state;
+
     @Builder
     public OnePager(
             String title,
@@ -46,7 +51,8 @@ public class OnePager extends BaseIdEntity {
             String formUrl,
             String teacherName,
             OnePagerDurationType onePagerDurationType,
-            LocalDateTime onePagerDuration
+            LocalDateTime onePagerDuration,
+            OnePagerState state
     ) {
         this.title = title;
         this.description = description;
@@ -55,6 +61,7 @@ public class OnePager extends BaseIdEntity {
         this.teacherName = teacherName;
         this.onePagerDurationType = onePagerDurationType;
         this.onePagerDuration = onePagerDuration;
+        this.state = state;
     }
 
     public void update(
@@ -73,5 +80,9 @@ public class OnePager extends BaseIdEntity {
         this.teacherName = teacherName;
         this.onePagerDurationType = onePagerDurationType;
         this.onePagerDuration = onePagerDuration;
+    }
+
+    public void changeOnePagerState(OnePagerState onePagerState) {
+        this.state = onePagerState;
     }
 }
