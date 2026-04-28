@@ -40,7 +40,7 @@ public class OnePager extends BaseIdEntity {
     private LocalDateTime onePagerDuration;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
+    @Column(nullable = true, length = 9)
     private OnePagerState state;
 
     @Builder
