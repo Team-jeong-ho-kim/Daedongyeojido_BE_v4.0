@@ -43,6 +43,9 @@ public class OnePager extends BaseIdEntity {
     @Column(nullable = true, length = 9)
     private OnePagerState state;
 
+    @Column(nullable = true, length = 100)
+    private String reason;
+
     @Builder
     public OnePager(
             String title,
@@ -84,5 +87,9 @@ public class OnePager extends BaseIdEntity {
 
     public void changeOnePagerState(OnePagerState onePagerState) {
         this.state = onePagerState;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }
