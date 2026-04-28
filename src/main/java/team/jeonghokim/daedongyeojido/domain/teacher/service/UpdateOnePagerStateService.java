@@ -20,8 +20,7 @@ public class UpdateOnePagerStateService {
                         Long onePagerId) {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
-
-
+        
         if(onePager.getFormFile() == null || onePager.getState() != OnePagerState.SUBMITTED) {
             throw OnePagerInvalidException.EXCEPTION;
         }
