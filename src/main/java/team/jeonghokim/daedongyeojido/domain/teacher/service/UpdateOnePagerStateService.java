@@ -30,6 +30,9 @@ public class UpdateOnePagerStateService {
         onePager.changeOnePagerState(targetState);
 
         String reason = requiresReason(targetState) ? request.reason() : null;
+
+        onePager.setReason(reason);
+
         return UpdateStateReasonResponse.of(reason);
     }
 
