@@ -27,8 +27,8 @@ public class CreateRejectedOnePagerCommentService {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        if(userRepository.findByUserName(request.commentWriter()).isPresent()
-            || teacherRepository.findByTeacherName(request.commentWriter()).isPresent()){
+        if(!userRepository.findByUserName(request.commentWriter()).isPresent()
+            || !teacherRepository.findByTeacherName(request.commentWriter()).isPresent()){
             throw UserNotFoundException.EXCEPTION;
         }
 
