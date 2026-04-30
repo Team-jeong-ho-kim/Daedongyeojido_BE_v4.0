@@ -15,5 +15,6 @@ public class OnePagerController {
     public void createComment(
         @RequestBody CommentRequest commentRequest,
         @PathVariable("submission-id") Long submissionId) {
+        createRejectedOnePagerCommentService.execute(commentRequest, submissionId);
     }
 }
