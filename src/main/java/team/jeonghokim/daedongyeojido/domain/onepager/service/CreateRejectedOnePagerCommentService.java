@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.domain.teacher.service;
+package team.jeonghokim.daedongyeojido.domain.onepager.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
