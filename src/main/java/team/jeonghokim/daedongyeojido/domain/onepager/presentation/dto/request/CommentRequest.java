@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request;
+package team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request;
 
 public record CommentRequest(
     Long onePagerId,

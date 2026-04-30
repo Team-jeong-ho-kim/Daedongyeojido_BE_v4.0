@@ -8,7 +8,7 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.RejectedOnePagerCom
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.RejectedOnePagerCommentRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerNotFoundException;
-import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.CommentRequest;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.CommentRequest;
 
 @Service
 @RequiredArgsConstructor
