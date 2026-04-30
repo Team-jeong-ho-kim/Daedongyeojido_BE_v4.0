@@ -11,12 +11,14 @@ import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerNotFound
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.CommentRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.domain.repository.TeacherRepository;
 import team.jeonghokim.daedongyeojido.domain.teacher.exception.TeacherNotFoundException;
+import team.jeonghokim.daedongyeojido.domain.user.domain.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class CreateRejectedOnePagerCommentService {
     private final OnePagerRepository onePagerRepository;
     private final TeacherRepository teacherRepository;
+    private final UserRepository userRepository;
     private final RejectedOnePagerCommentRepository rejectedOnePagerCommentRepository;
 
     @Transactional
@@ -24,8 +26,12 @@ public class CreateRejectedOnePagerCommentService {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        teacherRepository.findByAccountId(request.commentWriter())
+        teacherRepository.findByTeacherName(request.commentWriter())
             .orElseThrow(() -> TeacherNotFoundException.EXCEPTION);
+
+        if(
+            userRepository.
+        )
 
         RejectedOnePagerComment comment = RejectedOnePagerComment.builder()
             .comment(request.comment())
