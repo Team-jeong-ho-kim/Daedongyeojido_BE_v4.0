@@ -17,8 +17,8 @@ public class CreateRejectedOnePagerCommentService {
     private final RejectedOnePagerCommentRepository rejectedOnePagerCommentRepository;
 
     @Transactional
-    public void execute(CommentRequest request) {
-        OnePager onePager = onePagerRepository.findById(request.onePagerId())
+    public void execute(CommentRequest request, Long onePagerId) {
+        OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
         RejectedOnePagerComment comment = RejectedOnePagerComment.builder()
