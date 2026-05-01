@@ -1,5 +1,6 @@
 package team.jeonghokim.daedongyeojido.domain.onepager.presentation;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class OnePagerController {
     @PostMapping("/submissions/{submission-id}/comment")
     @ResponseStatus(HttpStatus.CREATED)
     public void createComment(
-        @RequestBody CommentRequest request,
+        @RequestBody @Valid CommentRequest request,
         @PathVariable("submission-id") Long submissionId
     ) {
         createRejectedOnePagerCommentService.execute(request, submissionId);
