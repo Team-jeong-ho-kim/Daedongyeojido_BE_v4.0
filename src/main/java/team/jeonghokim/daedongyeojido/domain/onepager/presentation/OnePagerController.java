@@ -13,9 +13,9 @@ public class OnePagerController {
 
     @PostMapping("/submissions/{submission-id}/comment")
     public void createComment(
-        @RequestBody CommentRequest commentRequest,
+        @RequestBody CommentRequest request,
         @PathVariable("submission-id") Long submissionId
     ) {
-        createRejectedOnePagerCommentService.execute(commentRequest, submissionId);
+        createRejectedOnePagerCommentService.execute(request, submissionId);
     }
 }
