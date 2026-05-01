@@ -17,5 +17,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByClub(Club club);
 
-    Optional<User> findByUserName(String userName);
+    Optional<User> existsByUserName(String userName);
 }
