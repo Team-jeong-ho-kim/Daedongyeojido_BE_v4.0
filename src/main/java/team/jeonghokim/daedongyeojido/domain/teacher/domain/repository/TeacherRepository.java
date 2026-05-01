@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface TeacherRepository extends JpaRepository<Teacher, Long>, TeacherRepositoryCustom {
 
     Optional<Teacher> findByAccountId(String accountId);
+
+    Boolean existsByTeacherName(String teacherName);
 }

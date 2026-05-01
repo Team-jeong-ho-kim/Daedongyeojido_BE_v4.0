@@ -151,6 +151,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/files/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/files/**").hasAnyRole(ADMIN, STUDENT, CLUB_MEMBER, CLUB_LEADER)
 
+                        // onepager
+                        .requestMatchers(HttpMethod.POST, "/onepager/submissions/**").hasAnyRole(CLUB_LEADER, TEACHER)
+
                         // monitoring
                         .requestMatchers("/actuator/prometheus")
                         .access(new WebExpressionAuthorizationManager(
