@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerListResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.QueryOnePagerListService;
 
 import java.util.List;
@@ -20,7 +21,8 @@ public class OnePagerController {
 
     @GetMapping("/forms")
     @ResponseStatus(HttpStatus.OK)
-    public List<OnePagerListResponse> queryOnePagerList() {
-        return queryOnePagerListService.execute();
+    public OnePagerListResponse queryOnePagerList() {
+        List<OnePagerResponse> onePagers = queryOnePagerListService.execute();
+        return OnePagerListResponse.from(onePagers);
     }
 }

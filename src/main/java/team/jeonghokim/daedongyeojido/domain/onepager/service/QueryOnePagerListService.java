@@ -7,7 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDurationType;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.InvalidRoleException;
-import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerListResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.domain.enums.Role;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
@@ -25,7 +25,7 @@ public class QueryOnePagerListService {
     private final UserFacade userFacade;
 
     @Transactional(readOnly = true)
-    public List<OnePagerListResponse> execute() {
+    public List<OnePagerResponse> execute() {
         User user = userFacade.getCurrentUser();
         if (!ALLOWED_ROLES.contains(user.getRole())) {
             throw InvalidRoleException.EXCEPTION;
@@ -33,7 +33,7 @@ public class QueryOnePagerListService {
 
         List<OnePager> onePagers = onePagerRepository.findByOnePagerDurationTypeOrOnePagerDurationAfter(OnePagerDurationType.INFINITY, LocalDateTime.now());
         return onePagers.stream()
-                .map(OnePagerListResponse::from)
+                .map(OnePagerResponse::from)
                 .toList();
     }
 }
