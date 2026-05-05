@@ -3,12 +3,11 @@ package team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.springframework.web.multipart.MultipartFile;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDurationType;
 
 import java.time.LocalDateTime;
 
-public record CreateOnePagerFileFormRequest(
+public record OnePagerUrlFormRequest(
         @NotBlank(message = "제목을 공백으로 둘 수 없습니다.")
         @Size(max = 50, message = "제목을 50자 이하로 입력해주세요.")
         String title,
@@ -17,8 +16,8 @@ public record CreateOnePagerFileFormRequest(
         @Size(min = 2, max = 4, message = "담당교사 이름을 2글자 이상 4글자 이하로 입력해주세요.")
         String teacherName,
 
-        @NotNull(message = "첨부할 파일을 선택해주세요.")
-        MultipartFile formFile,
+        @NotBlank(message = "구글 폼 링크를 첨부해주세요.")
+        String formUrl,
 
         @NotNull(message = "양식 마감 날짜를 설정해주세요.")
         OnePagerDurationType onePagerDurationType,

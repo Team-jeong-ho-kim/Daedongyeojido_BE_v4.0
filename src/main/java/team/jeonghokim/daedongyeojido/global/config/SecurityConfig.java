@@ -96,6 +96,7 @@ public class SecurityConfig {
                         // teacher
                         .requestMatchers(HttpMethod.GET, "/teachers").hasAnyRole(STUDENT, ADMIN)
                         .requestMatchers(HttpMethod.GET, "/teachers/my-info").hasAnyRole(TEACHER)
+                        .requestMatchers("/teachers/onepager/**").hasAnyRole(TEACHER)
 
                         // club
                         .requestMatchers(HttpMethod.POST, "/clubs/applications").hasRole(STUDENT)
@@ -149,6 +150,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/files").hasAnyRole(ADMIN, STUDENT, CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.GET, "/files/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/files/**").hasAnyRole(ADMIN, STUDENT, CLUB_MEMBER, CLUB_LEADER)
+
+                        // onepager
+                        .requestMatchers(HttpMethod.POST, "/onepager/submissions/**").hasAnyRole(CLUB_LEADER, TEACHER)
 
                         // monitoring
                         .requestMatchers("/actuator/prometheus")

@@ -114,6 +114,11 @@ public enum ErrorCode {
     ALARM_EVENT_FINAL_FAILED(500, "알람 이벤트 발송에 최종 실패했습니다."),
     SMS_EVENT_FINAL_FAILED(500, "SMS 이벤트 발송에 최종 실패했습니다."),
 
+    // onepager
+    ONE_PAGER_NOT_FOUND(404, "해당 양식이 존재하지 않습니다."),
+    ONE_PAGER_INVALID(400,"유효하지 않은 원페이져 형식입니다."),
+    ONE_PAGER_STATE_REASON_INVALID(400, "상태에 따른 사유를 기재해주세요."),
+
     // general
     BAD_REQUEST(400, "front fault"),
     NO_RESOURCE_FOUND(404, "No Resource Found"),
