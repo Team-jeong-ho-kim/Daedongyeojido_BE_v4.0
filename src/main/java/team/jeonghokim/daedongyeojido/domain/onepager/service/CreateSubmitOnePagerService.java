@@ -30,6 +30,7 @@ public class CreateSubmitOnePagerService {
         });
 
         String fileUrl = s3Service.upload(request.submitFile(), FileType.DOCUMENT);
+
         submitOnePagerFileUploadService.execute(fileName, fileUrl, formOnePager);
     }
 }
