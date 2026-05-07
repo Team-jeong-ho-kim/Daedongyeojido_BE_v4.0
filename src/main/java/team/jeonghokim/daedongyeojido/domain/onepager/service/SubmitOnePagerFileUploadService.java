@@ -34,6 +34,10 @@ public class SubmitOnePagerFileUploadService {
 
         String clubName = submitUser.getClub().getClubName();
 
+        if(clubName == null) {
+
+        }
+
         SubmitOnePager submitOnePager = SubmitOnePager.builder()
             .clubName(clubName)
             .onePagerState(OnePagerState.SUBMITTED)
