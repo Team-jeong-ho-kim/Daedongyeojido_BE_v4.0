@@ -10,7 +10,6 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerState;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.SubmitOnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.InvalidUserException;
-import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
@@ -27,6 +26,10 @@ public class SubmitOnePagerFileUploadService {
     public void execute(String fileName, String fileUrl, OnePager onePager) {
         User submitUser = userFacade.getCurrentUser();
 
+        if(submitUser.getClub().getClubName() == null) {
+            throw InvalidUserException.EXCEPTION;
+        }
+
         File file = File.builder()
             .fileUrl(fileUrl)
             .fileName(fileName)
@@ -35,10 +38,6 @@ public class SubmitOnePagerFileUploadService {
         fileRepository.save(file);
 
         String clubName = submitUser.getClub().getClubName();
-
-        if(clubName == null) {
-            throw InvalidUserException.EXCEPTION;
-        }
 
         SubmitOnePager submitOnePager = SubmitOnePager.builder()
             .clubName(clubName)
