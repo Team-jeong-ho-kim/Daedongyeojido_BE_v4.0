@@ -57,7 +57,6 @@ public class OnePager extends BaseIdEntity {
         this.teacherName = teacherName;
         this.onePagerDurationType = onePagerDurationType;
         this.onePagerDuration = onePagerDuration;
-        this.state = state;
     }
 
     public void update(
@@ -76,13 +75,5 @@ public class OnePager extends BaseIdEntity {
         this.teacherName = teacherName;
         this.onePagerDurationType = onePagerDurationType;
         this.onePagerDuration = onePagerDuration;
-    }
-
-    public void changeOnePagerState(OnePagerState onePagerState) {
-        this.state = onePagerState;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
     }
 }

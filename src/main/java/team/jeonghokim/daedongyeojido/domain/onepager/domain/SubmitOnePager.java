@@ -53,4 +53,12 @@ public class SubmitOnePager extends BaseIdEntity {
         this.formOnePager = formOnePager;
         this.reason = reason;
     }
+
+    public void changeOnePagerState(OnePagerState onePagerState) {
+        this.onePagerState = onePagerState;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 }
