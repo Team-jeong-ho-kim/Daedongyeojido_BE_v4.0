@@ -30,16 +30,22 @@ public class SubmitOnePager extends BaseIdEntity {
     @JoinColumn(name = "submit_file_id", unique = true)
     private File submitFile;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "form_onepager_id", nullable = false)
+    private OnePager formOnePager;
+
     @Builder
     public SubmitOnePager(
         String clubName,
         OnePagerState onePagerState,
         LocalDate submitDate,
-        File submitFile
+        File submitFile,
+        OnePager formOnePager
     ) {
         this.clubName = clubName;
         this.onePagerState = onePagerState;
         this.submitDate = submitDate;
         this.submitFile = submitFile;
+        this.formOnePager = formOnePager;
     }
 }
