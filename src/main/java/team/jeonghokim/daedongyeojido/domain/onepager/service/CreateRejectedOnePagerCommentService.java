@@ -1,9 +1,8 @@
 package team.jeonghokim.daedongyeojido.domain.onepager.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
+import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.RejectedOnePagerComment;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.RejectedOnePagerCommentRepository;
