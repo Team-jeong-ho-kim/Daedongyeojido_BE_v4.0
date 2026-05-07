@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerState;
-import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.SubmitOnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.SubmitOnePagerRequest;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Service
 @RequiredArgsConstructor
 public class CreateSubmitOnePagerService {
-    private final OnePagerRepository onePagerRepository;
+    private final SubmitOnePagerRepository submitOnePagerRepository;
     private final UserFacade userFacade;
 
     @Transactional
@@ -31,6 +31,6 @@ public class CreateSubmitOnePagerService {
             .submitDate(LocalDate.now())
             .build();
 
-
+        submitOnePagerRepository.save(submitOnePager);
     }
 }
