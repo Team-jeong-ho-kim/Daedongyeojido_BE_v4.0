@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.file.domain.File;
 import team.jeonghokim.daedongyeojido.domain.file.domain.repository.FileRepository;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerState;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.SubmitOnePagerRepository;
@@ -23,7 +24,7 @@ public class SubmitOnePagerFileUploadService {
     private final UserFacade userFacade;
 
     @Transactional
-    public void execute(String fileName, String fileUrl) {
+    public void execute(String fileName, String fileUrl, OnePager onePager) {
         User submitUser = userFacade.getCurrentUser();
 
         File file = File.builder()
@@ -40,6 +41,7 @@ public class SubmitOnePagerFileUploadService {
             .onePagerState(OnePagerState.SUBMITTED)
             .submitFile(file)
             .submitDate(LocalDate.now())
+            .formOnePager(onePager)
             .build();
 
         submitOnePagerRepository.save(submitOnePager);
