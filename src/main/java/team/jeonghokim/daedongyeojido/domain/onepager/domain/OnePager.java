@@ -39,13 +39,6 @@ public class OnePager extends BaseIdEntity {
     @Column(nullable = true)
     private LocalDateTime onePagerDuration;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = true, length = 9)
-    private OnePagerState state;
-
-    @Column(nullable = true, length = 100)
-    private String reason;
-
     @Builder
     public OnePager(
             String title,
