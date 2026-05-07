@@ -29,8 +29,8 @@ public class OnePagerController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createSubmission(
         @ModelAttribute @Valid SubmitOnePagerRequest request,
-        @PathVariable("form-id") Long submissionId
+        @PathVariable("form-id") Long formId
     ) {
-        createSubmitOnePagerService.execute(request, submissionId);
+        createSubmitOnePagerService.execute(request, formId);
     }
 }
