@@ -18,9 +18,10 @@ public class CreateOnePagerUrlFormService {
 
     @Transactional
     public void execute(OnePagerUrlFormRequest request) {
-        if (request.onePagerDurationType() == OnePagerDurationType.DATE
-                && request.onePagerDuration().isBefore(LocalDateTime.now())) {
-            throw InvalidDurationDateException.EXCEPTION;
+        if (request.onePagerDurationType() == OnePagerDurationType.DATE) {
+            if (request.onePagerDuration() == null || request.onePagerDuration().isBefore(LocalDateTime.now())) {
+                throw InvalidDurationDateException.EXCEPTION;
+            }
         }
 
         LocalDateTime date = request.onePagerDuration();
