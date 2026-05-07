@@ -36,6 +36,7 @@ public class SubmitOnePagerFileUploadService {
         if (club == null) {
             throw InvalidUserException.EXCEPTION;
         }
+
         String clubName = club.getClubName();
 
         String fileName = submitFile.getOriginalFilename();

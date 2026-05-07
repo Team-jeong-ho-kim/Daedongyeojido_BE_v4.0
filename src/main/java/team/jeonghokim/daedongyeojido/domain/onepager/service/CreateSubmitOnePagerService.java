@@ -21,6 +21,10 @@ public class CreateSubmitOnePagerService {
         OnePager formOnePager = onePagerRepository.findById(formOnePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
+        if (formOnePager.getFormFile() == null) {
+            throw InvalidSubmitOnePagerException.EXCEPTION;
+        }
+
         if (formOnePager.getOnePagerDurationType() == OnePagerDurationType.DATE
             && (formOnePager.getOnePagerDuration() == null
                 || formOnePager.getOnePagerDuration().isBefore(LocalDateTime.now()))) {
