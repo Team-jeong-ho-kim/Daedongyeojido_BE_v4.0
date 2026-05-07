@@ -23,7 +23,7 @@ public class CreateSubmitOnePagerService {
         OnePager formOnePager = onePagerRepository.findById(formOnePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        String fileName = request.submitFile().getName();
+        String fileName = request.submitFile().getOriginalFilename();
 
         fileRepository.findByFileName(fileName).ifPresent(file -> {
             throw AlreadyFileExistsException.EXCEPTION;

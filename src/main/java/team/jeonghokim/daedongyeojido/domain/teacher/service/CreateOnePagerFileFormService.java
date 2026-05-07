@@ -16,7 +16,7 @@ public class CreateOnePagerFileFormService {
     private final CreateOnePagerFileFormTransactionService createOnePagerFileFormTransactionService;
 
     public void execute(OnePagerFileFormRequest request) {
-        String fileName = request.formFile().getName();
+        String fileName = request.formFile().getOriginalFilename();
 
         fileRepository.findByFileName(fileName).ifPresent(file -> {
             throw AlreadyFileExistsException.EXCEPTION;
