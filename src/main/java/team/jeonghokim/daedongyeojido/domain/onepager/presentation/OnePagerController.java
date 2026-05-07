@@ -25,7 +25,7 @@ public class OnePagerController {
         createRejectedOnePagerCommentService.execute(request, submissionId);
     }
 
-    @PostMapping("/{form-id}/submissions")
+    @PostMapping("/submissions/{form-id}")
     @ResponseStatus(HttpStatus.CREATED)
     public void createSubmission(
         @ModelAttribute @Valid SubmitOnePagerRequest request,
