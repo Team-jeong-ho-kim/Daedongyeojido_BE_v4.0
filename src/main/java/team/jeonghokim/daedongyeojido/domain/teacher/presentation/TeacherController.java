@@ -94,8 +94,8 @@ public class TeacherController {
     @ResponseStatus(HttpStatus.OK)
     public UpdateStateReasonResponse updateOnePagerStatus(
         @RequestBody @Valid ChangeOnePagerStateRequest request,
-        @PathVariable("submission-id") Long onePagerId
+        @PathVariable("submission-id") Long submissionId
     ) {
-        return updateOnePagerStateService.execute(request, onePagerId);
+        return updateOnePagerStateService.execute(request, submissionId);
     }
 }
