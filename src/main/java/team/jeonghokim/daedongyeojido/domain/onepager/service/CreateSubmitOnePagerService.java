@@ -26,16 +26,8 @@ public class CreateSubmitOnePagerService {
     private final UserFacade userFacade;
 
     @Transactional
-    public void execute(SubmitOnePagerRequest request, Long onePagerId) {
+    public void execute(String fileName, String fileUrl) {
         User submitUser = userFacade.getCurrentUser();
-
-        String fileName = request.submitFile().getName();
-
-        fileRepository.findByFileName(fileName).ifPresent(file -> {
-            throw AlreadyFileExistsException.EXCEPTION;
-        });
-
-        String fileUrl = s3Service.upload(request.submitFile(), FileType.DOCUMENT);
 
         File file = File.builder()
             .fileUrl(fileUrl)
