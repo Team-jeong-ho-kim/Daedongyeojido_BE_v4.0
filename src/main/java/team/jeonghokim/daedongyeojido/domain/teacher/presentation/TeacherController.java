@@ -70,7 +70,7 @@ public class TeacherController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateOnePagerFileForm(
             @PathVariable("form-id") Long formId,
-            @RequestBody @Valid OnePagerFileFormRequest request
+            @ModelAttribute @Valid OnePagerFileFormRequest request
     ) {
         updateOnePagerFileService.execute(request, formId);
     }
