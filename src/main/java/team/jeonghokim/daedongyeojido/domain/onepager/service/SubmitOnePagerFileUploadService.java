@@ -3,8 +3,11 @@ package team.jeonghokim.daedongyeojido.domain.onepager.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.file.domain.File;
 import team.jeonghokim.daedongyeojido.domain.file.domain.repository.FileRepository;
+import team.jeonghokim.daedongyeojido.domain.file.exception.AlreadyFileExistsException;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerState;
@@ -12,6 +15,8 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.SubmitOn
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.InvalidUserException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
+import team.jeonghokim.daedongyeojido.infrastructure.s3.type.FileType;
 
 import java.time.LocalDate;
 
@@ -21,32 +26,46 @@ public class SubmitOnePagerFileUploadService {
     private final SubmitOnePagerRepository submitOnePagerRepository;
     private final FileRepository fileRepository;
     private final UserFacade userFacade;
+    private final S3Service s3Service;
 
     @Transactional
-    public void execute(String fileName, String fileUrl, OnePager onePager) {
+    public void execute(MultipartFile submitFile, OnePager onePager) {
         User submitUser = userFacade.getCurrentUser();
 
-        if(submitUser.getClub().getClubName() == null) {
+        Club club = submitUser.getClub();
+        if (club == null) {
             throw InvalidUserException.EXCEPTION;
         }
+        String clubName = club.getClubName();
 
-        File file = File.builder()
-            .fileUrl(fileUrl)
-            .fileName(fileName)
-            .build();
+        String fileName = submitFile.getOriginalFilename();
 
-        fileRepository.save(file);
+        fileRepository.findByFileName(fileName).ifPresent(f -> {
+            throw AlreadyFileExistsException.EXCEPTION;
+        });
 
-        String clubName = submitUser.getClub().getClubName();
+        String fileUrl = s3Service.upload(submitFile, FileType.DOCUMENT);
 
-        SubmitOnePager submitOnePager = SubmitOnePager.builder()
-            .clubName(clubName)
-            .onePagerState(OnePagerState.SUBMITTED)
-            .submitFile(file)
-            .submitDate(LocalDate.now())
-            .formOnePager(onePager)
-            .build();
+        try {
+            File file = File.builder()
+                .fileUrl(fileUrl)
+                .fileName(fileName)
+                .build();
 
-        submitOnePagerRepository.save(submitOnePager);
+            fileRepository.save(file);
+
+            SubmitOnePager submitOnePager = SubmitOnePager.builder()
+                .clubName(clubName)
+                .onePagerState(OnePagerState.SUBMITTED)
+                .submitFile(file)
+                .submitDate(LocalDate.now())
+                .formOnePager(onePager)
+                .build();
+
+            submitOnePagerRepository.save(submitOnePager);
+        } catch (Exception e) {
+            s3Service.delete(fileUrl);
+            throw e;
+        }
     }
 }
