@@ -58,6 +58,10 @@ public class SubmitOnePager extends BaseIdEntity {
         this.onePagerState = onePagerState;
     }
 
+    public void cancel() {
+        onePagerState = OnePagerState.CANCELED;
+    }
+
     public void setReason(String reason) {
         this.reason = reason;
     }
