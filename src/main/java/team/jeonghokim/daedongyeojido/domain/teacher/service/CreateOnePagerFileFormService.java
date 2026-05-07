@@ -23,6 +23,6 @@ public class CreateOnePagerFileFormService {
         });
 
         String fileUrl = s3Service.upload(request.formFile(), FileType.DOCUMENT);
-        createOnePagerFileFormTransactionService.saveData(request,  fileUrl, fileUrl);
+        createOnePagerFileFormTransactionService.saveData(request,  fileName, fileUrl);
     }
 }
