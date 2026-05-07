@@ -28,7 +28,7 @@ public class OnePagerController {
     @PostMapping("/{form-id}/submissions")
     @ResponseStatus(HttpStatus.CREATED)
     public void createSubmission(
-        @RequestBody @Valid SubmitOnePagerRequest request,
+        @ModelAttribute @Valid SubmitOnePagerRequest request,
         @PathVariable("form-id") Long submissionId
     ) {
         createSubmitOnePagerService.execute(request, submissionId);
