@@ -5,11 +5,15 @@ import org.springframework.stereotype.Service;
 import team.jeonghokim.daedongyeojido.domain.file.domain.repository.FileRepository;
 import team.jeonghokim.daedongyeojido.domain.file.exception.AlreadyFileExistsException;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDurationType;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
+import team.jeonghokim.daedongyeojido.domain.onepager.exception.InvalidDurationDateException;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.SubmitOnePagerRequest;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 import team.jeonghokim.daedongyeojido.infrastructure.s3.type.FileType;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +26,11 @@ public class CreateSubmitOnePagerService {
     public void execute(SubmitOnePagerRequest request, Long formOnePagerId) {
         OnePager formOnePager = onePagerRepository.findById(formOnePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
+
+        if(formOnePager.getOnePagerDurationType() == OnePagerDurationType.DATE
+            && formOnePager.getOnePagerDuration().isBefore(LocalDateTime.now())) {
+            throw InvalidDurationDateException.EXCEPTION;
+        }
 
         String fileName = request.submitFile().getOriginalFilename();
 
