@@ -17,7 +17,7 @@ public class CreateSubmitOnePagerService {
     private final FileRepository fileRepository;
     private final OnePagerRepository onePagerRepository;
     private final S3Service s3Service;
-    private final SubmitOnePagerFileUploadService createSubmitOnePagerService;
+    private final SubmitOnePagerFileUploadService submitOnePagerFileUploadService;
 
     public void execute(SubmitOnePagerRequest request, Long formOnePagerId) {
         OnePager formOnePager = onePagerRepository.findById(formOnePagerId)
@@ -30,6 +30,6 @@ public class CreateSubmitOnePagerService {
         });
 
         String fileUrl = s3Service.upload(request.submitFile(), FileType.DOCUMENT);
-        createSubmitOnePagerService.execute(fileName, fileUrl, formOnePager);
+        submitOnePagerFileUploadService.execute(fileName, fileUrl, formOnePager);
     }
 }

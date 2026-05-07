@@ -11,7 +11,6 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerState
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.SubmitOnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
-import team.jeonghokim.daedongyeojido.infrastructure.s3.service.S3Service;
 
 import java.time.LocalDate;
 
@@ -20,7 +19,6 @@ import java.time.LocalDate;
 public class SubmitOnePagerFileUploadService {
     private final SubmitOnePagerRepository submitOnePagerRepository;
     private final FileRepository fileRepository;
-    private final S3Service s3Service;
     private final UserFacade userFacade;
 
     @Transactional
