@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto;
+package team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response;
 
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDurationType;
