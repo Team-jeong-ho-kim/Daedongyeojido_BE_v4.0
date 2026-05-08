@@ -22,7 +22,7 @@ public class SubmitOnePager extends BaseIdEntity {
     private Club club;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 9)
     private OnePagerState onePagerState;
 
     @Column(nullable = false)
