@@ -11,6 +11,7 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.SubmitOn
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.QueryListSubmitOnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.SubmitCommentResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.SubmitOnePagerResponse;
 
 import java.util.List;
 
@@ -25,9 +26,33 @@ public class QuerySubmitOnePagerService {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        List<SubmitOnePager> submitOnePagerList = submitOnePagerRepository.findByFormOnePager(onePager);
-        List<RejectedOnePagerComment> rejectedOnePagerCommentList = rejectedOnePagerCommentRepository
+        List<SubmitOnePager> submitOnePagers = submitOnePagerRepository.findByFormOnePager(onePager);
 
-        List<SubmitCommentResponse> submitCommentResponses =
+        List<SubmitOnePagerResponse> responses = submitOnePagers.stream()
+            .map(submit -> {
+                List<RejectedOnePagerComment> comments = rejectedOnePagerCommentRepository.findByOnePager(submit);
+                List<SubmitCommentResponse> commentResponses = comments.stream()
+                    .map(comment -> SubmitCommentResponse.of(comment.getCommentWriter(), comment.getComment()))
+                    .toList();
+
+                return SubmitOnePagerResponse.of(
+                    submit.getClub().getClubName(),
+                    submit.getOnePagerState(),
+                    submit.getSubmitFile() != null ? submit.getSubmitFile().getFileUrl() : null,
+                    submit.getSubmitDate().atStartOfDay(),
+                    commentResponses
+                );
+            })
+            .toList();
+
+        String fileUrl = onePager.getFormFile() != null ? onePager.getFormFile().getFileUrl() : onePager.getFormUrl();
+
+        return QueryListSubmitOnePagerResponse.from(
+            onePager.getTitle(),
+            onePager.getDescription(),
+            onePager.getOnePagerDuration(),
+            fileUrl,
+            responses
+        );
     }
 }
