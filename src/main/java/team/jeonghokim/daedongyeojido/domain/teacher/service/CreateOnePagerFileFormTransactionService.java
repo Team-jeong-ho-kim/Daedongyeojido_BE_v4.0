@@ -21,9 +21,10 @@ public class CreateOnePagerFileFormTransactionService {
 
     @Transactional
     public void saveData(OnePagerFileFormRequest request, String fileName, String fileUrl) {
-        if (request.onePagerDurationType() == OnePagerDurationType.DATE
-                && request.onePagerDuration().isBefore(LocalDateTime.now())) {
-            throw InvalidDurationDateException.EXCEPTION;
+        if (request.onePagerDurationType() == OnePagerDurationType.DATE) {
+            if (request.onePagerDuration() == null || request.onePagerDuration().isBefore(LocalDateTime.now())) {
+                throw InvalidDurationDateException.EXCEPTION;
+            }
         }
 
         File file = File.builder()

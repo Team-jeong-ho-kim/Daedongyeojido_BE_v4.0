@@ -70,7 +70,7 @@ public class TeacherController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateOnePagerFileForm(
             @PathVariable("form-id") Long formId,
-            @RequestBody @Valid OnePagerFileFormRequest request
+            @ModelAttribute @Valid OnePagerFileFormRequest request
     ) {
         updateOnePagerFileService.execute(request, formId);
     }
@@ -94,8 +94,8 @@ public class TeacherController {
     @ResponseStatus(HttpStatus.OK)
     public UpdateStateReasonResponse updateOnePagerStatus(
         @RequestBody @Valid ChangeOnePagerStateRequest request,
-        @PathVariable("submission-id") Long onePagerId
+        @PathVariable("submission-id") Long submissionId
     ) {
-        return updateOnePagerStateService.execute(request, onePagerId);
+        return updateOnePagerStateService.execute(request, submissionId);
     }
 }

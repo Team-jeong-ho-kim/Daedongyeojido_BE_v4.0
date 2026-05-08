@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerListResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.CommentRequest;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.SubmitOnePagerRequest;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.CreateRejectedOnePagerCommentService;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.QueryOnePagerListService;
 
 import java.util.List;
+import team.jeonghokim.daedongyeojido.domain.onepager.service.CreateSubmitOnePagerService;
 
 @RestController
 @RequestMapping("/onepager")
@@ -18,6 +20,7 @@ import java.util.List;
 public class OnePagerController {
     private final CreateRejectedOnePagerCommentService createRejectedOnePagerCommentService;
     private final QueryOnePagerListService queryOnePagerListService;
+    private final CreateSubmitOnePagerService createSubmitOnePagerService;
 
     @GetMapping("/forms")
     @ResponseStatus(HttpStatus.OK)
@@ -33,5 +36,14 @@ public class OnePagerController {
         @PathVariable("submission-id") Long submissionId
     ) {
         createRejectedOnePagerCommentService.execute(request, submissionId);
+    }
+
+    @PostMapping("/submissions/{form-id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createSubmission(
+        @ModelAttribute @Valid SubmitOnePagerRequest request,
+        @PathVariable("form-id") Long formId
+    ) {
+        createSubmitOnePagerService.execute(request, formId);
     }
 }
