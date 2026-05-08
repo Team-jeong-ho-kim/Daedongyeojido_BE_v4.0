@@ -20,7 +20,7 @@ public class CancelSubmitService {
                 .orElseThrow(() -> new IllegalArgumentException());
 
         User user = userFacade.getCurrentUser();
-        if (!submission.getClubName().equals(user.getClub().getClubName())) {
+        if (!submission.getClub().equals(user.getClub())) {
             throw new RuntimeException();
         }
 
