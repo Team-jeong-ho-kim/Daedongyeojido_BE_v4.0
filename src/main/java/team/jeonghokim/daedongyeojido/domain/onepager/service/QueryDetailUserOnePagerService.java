@@ -16,6 +16,11 @@ public class QueryDetailUserOnePagerService {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        return UserOnePagerDetailResponse.from(onePager);
+        return UserOnePagerDetailResponse.from(
+            onePager.getTitle(),
+            onePager.getDescription(),
+            onePager.getOnePagerDuration(),
+            onePager.getFormFile().getFileUrl()
+        );
     }
 }
