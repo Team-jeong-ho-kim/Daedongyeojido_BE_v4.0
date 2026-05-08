@@ -1,19 +1,20 @@
 package team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response;
 
-import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
-
 import java.time.LocalDateTime;
 
 public record UserOnePagerDetailResponse(
     String title,
     String description,
-    LocalDateTime onePagerDuration
+    LocalDateTime onePagerDuration,
+    String fileUrl
 ) {
-    public static UserOnePagerDetailResponse from(OnePager onePager) {
+    public static UserOnePagerDetailResponse from(
+        String title,
+        String description,
+        LocalDateTime onePagerDuration,
+        String fileUrl
+    ) {
         return new UserOnePagerDetailResponse(
-            onePager.getTitle(),
-            onePager.getDescription(),
-            onePager.getOnePagerDuration()
-        );
+            title, description, onePagerDuration, fileUrl);
     }
 }

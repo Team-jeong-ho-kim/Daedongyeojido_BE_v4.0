@@ -47,8 +47,7 @@ public class OnePager extends BaseIdEntity {
             String formUrl,
             String teacherName,
             OnePagerDurationType onePagerDurationType,
-            LocalDateTime onePagerDuration,
-            OnePagerState state
+            LocalDateTime onePagerDuration
     ) {
         this.title = title;
         this.description = description;
