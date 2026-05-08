@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerSubmissionListResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerListResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.service.CancelSubmitService;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.CommentRequest;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.SubmitOnePagerRequest;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.CreateRejectedOnePagerCommentService;
@@ -23,6 +24,7 @@ public class OnePagerController {
     private final CreateRejectedOnePagerCommentService createRejectedOnePagerCommentService;
     private final QueryOnePagerListService queryOnePagerListService;
     private final CreateSubmitOnePagerService createSubmitOnePagerService;
+    private final CancelSubmitService cancelSubmitService;
     private final QuerySubmitOnePagerListService querySubmitOnePagerListService;
 
     @GetMapping("/forms")
@@ -54,5 +56,11 @@ public class OnePagerController {
     @ResponseStatus(HttpStatus.OK)
     public OnePagerSubmissionListResponse queryMyOnePagerSubmission() {
         return querySubmitOnePagerListService.execute();
+    }
+
+    @PatchMapping("/submissions/{submission-id}/cancel")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancelSubmit(@PathVariable(name = "submission-id") Long submissionId) {
+        cancelSubmitService.execute(submissionId);
     }
 }
