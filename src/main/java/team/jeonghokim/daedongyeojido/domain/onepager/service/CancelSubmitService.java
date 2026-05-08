@@ -22,7 +22,7 @@ public class CancelSubmitService {
                 .orElseThrow(() -> SubmitOnePagerNotFoundException.EXCEPTION);
 
         User user = userFacade.getCurrentUser();
-        if (!submission.getClub().equals(user.getClub())) {
+        if (!submission.getClub().getId().equals(user.getClub().getId())) {
             throw SubmitOnePagerAccessDeniedException.EXCEPTION;
         }
 
