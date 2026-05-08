@@ -50,6 +50,7 @@ public class OnePagerController {
     }
 
     @PatchMapping("/submissions/{submission-id}/cancel")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void cancelSubmit(@PathVariable(name = "submission-id") Long submissionId) {
         cancelSubmitService.execute(submissionId);
     }
