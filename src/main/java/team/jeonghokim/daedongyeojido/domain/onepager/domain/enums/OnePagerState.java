@@ -4,5 +4,5 @@ public enum OnePagerState {
     APPROVED,
     REJECTED,
     SUBMITTED,
-    CANCELED;
+    CANCELED
 }
