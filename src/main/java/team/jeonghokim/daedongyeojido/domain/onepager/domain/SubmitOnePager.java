@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.file.domain.File;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerState;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
@@ -16,11 +17,12 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SubmitOnePager extends BaseIdEntity {
-    @Column(nullable = false)
-    private String clubName;
+    @JoinColumn(name = "submit_club_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Club club;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 9)
     private OnePagerState onePagerState;
 
     @Column(nullable = false)
@@ -39,14 +41,14 @@ public class SubmitOnePager extends BaseIdEntity {
 
     @Builder
     public SubmitOnePager(
-        String clubName,
+        Club club,
         OnePagerState onePagerState,
         LocalDate submitDate,
         File submitFile,
         OnePager formOnePager,
         String reason
     ) {
-        this.clubName = clubName;
+        this.club = club;
         this.onePagerState = onePagerState;
         this.submitDate = submitDate;
         this.submitFile = submitFile;
