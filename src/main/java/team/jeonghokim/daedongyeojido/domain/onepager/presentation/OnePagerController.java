@@ -68,6 +68,7 @@ public class OnePagerController {
     }
 
     @GetMapping("/submissions/{submission-id}")
+    @ResponseStatus(HttpStatus.OK)
     public QueryOnePagerSubmissionResponse queryMyOnePagerSubmissionDetail(@PathVariable(name = "submission-id") Long submissionId) {
         return queryMyOnePagerSubmissionDetailService.execute(submissionId);
     }
