@@ -153,6 +153,7 @@ public class SecurityConfig {
 
                         // onepager
                         .requestMatchers(HttpMethod.POST, "/onepager/submissions/**").hasAnyRole(CLUB_LEADER, TEACHER)
+                        .requestMatchers(HttpMethod.GET, "/onepager/submissions/my").hasAnyRole(CLUB_LEADER)
 
                         // monitoring
                         .requestMatchers("/actuator/prometheus")
