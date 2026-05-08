@@ -12,7 +12,7 @@ public record QueryOnePagerSubmissionResponse(
         String fileName,
         String myFileUrl,
         String myFileName,
-        OnePagerState Status,
+        OnePagerState status,
         List<RejectedOnePagerCommentResponse> comments
 ) {
     public static QueryOnePagerSubmissionResponse of(SubmitOnePager submission, List<RejectedOnePagerCommentResponse> commentsResponse) {
