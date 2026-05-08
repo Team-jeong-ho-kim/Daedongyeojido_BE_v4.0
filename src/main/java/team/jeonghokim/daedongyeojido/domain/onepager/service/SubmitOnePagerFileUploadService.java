@@ -37,8 +37,6 @@ public class SubmitOnePagerFileUploadService {
             throw InvalidUserException.EXCEPTION;
         }
 
-        String clubName = club.getClubName();
-
         String fileName = submitFile.getOriginalFilename();
 
         fileRepository.findByFileName(fileName).ifPresent(f -> {
@@ -56,7 +54,7 @@ public class SubmitOnePagerFileUploadService {
             fileRepository.save(file);
 
             SubmitOnePager submitOnePager = SubmitOnePager.builder()
-                .clubName(clubName)
+                .club(club)
                 .onePagerState(OnePagerState.SUBMITTED)
                 .submitFile(file)
                 .submitDate(LocalDate.now())
