@@ -29,9 +29,7 @@ public class UpdateOnePagerStateService {
         SubmitOnePager submitOnePager = submitOnePagerRepository.findById(submitId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        Club submitClub = submitOnePager.getClub();
-
-        if(teacher != submitClub.getTeacher()){
+        if(teacher.getTeacherName().equals(submitOnePager.getFormOnePager().getTeacherName())){
             throw InvalidUserException.EXCEPTION;
         }
 
