@@ -3,42 +3,55 @@ package team.jeonghokim.daedongyeojido.domain.teacher.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
+import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerState;
-import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.SubmitOnePagerRepository;
+import team.jeonghokim.daedongyeojido.domain.onepager.exception.InvalidUserException;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerInvalidException;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerStateReasonInvalidException;
+import team.jeonghokim.daedongyeojido.domain.teacher.domain.Teacher;
+import team.jeonghokim.daedongyeojido.domain.teacher.facade.TeacherFacade;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.ChangeOnePagerStateRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.UpdateStateReasonResponse;
 
 @Service
 @RequiredArgsConstructor
 public class UpdateOnePagerStateService {
-    private final OnePagerRepository onePagerRepository;
+    private final SubmitOnePagerRepository submitOnePagerRepository;
+    private final TeacherFacade teacherFacade;
 
     @Transactional
-    public UpdateStateReasonResponse execute(ChangeOnePagerStateRequest request, Long onePagerId) {
-        OnePager onePager = onePagerRepository.findById(onePagerId)
+    public UpdateStateReasonResponse execute(ChangeOnePagerStateRequest request, Long submitId) {
+        Teacher teacher = teacherFacade.getCurrentTeacher();
+
+        SubmitOnePager submitOnePager = submitOnePagerRepository.findById(submitId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
+        Club submitClub = submitOnePager.getClub();
+
+        if(teacher != submitClub.getTeacher()){
+            throw InvalidUserException.EXCEPTION;
+        }
+
         OnePagerState targetState = request.onePagerState();
-        validateUpdatable(onePager);
+        validateUpdatable(submitOnePager);
         validateReason(targetState, request.reason());
 
-        onePager.changeOnePagerState(targetState);
+        submitOnePager.changeOnePagerState(targetState);
 
         String reason = requiresReason(targetState) ? request.reason() : null;
 
-        onePager.setReason(reason);
+        submitOnePager.setReason(reason);
 
         return UpdateStateReasonResponse.of(reason);
     }
 
-    private void validateUpdatable(OnePager onePager) { // 요청의 상태 검증
-        OnePagerState currentState = onePager.getState();
+    private void validateUpdatable(SubmitOnePager submitOnePager) { // 요청의 상태 검증
+        OnePagerState currentState = submitOnePager.getOnePagerState();
 
-        if (onePager.getFormFile() == null
+        if (submitOnePager.getOnePagerState() == null
                 || (currentState != OnePagerState.SUBMITTED && currentState != OnePagerState.REJECTED)) {
             throw OnePagerInvalidException.EXCEPTION;
         }

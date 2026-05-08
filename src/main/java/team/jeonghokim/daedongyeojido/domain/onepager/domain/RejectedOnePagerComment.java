@@ -21,8 +21,8 @@ public class RejectedOnePagerComment extends BaseIdEntity {
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "onepager_id", nullable = false)
-    private OnePager onePager;
+    @JoinColumn(name = "submit_onepager_id", nullable = false)
+    private SubmitOnePager onePager;
 
     @Column(nullable = false, length = 4)
     private String commentWriter;
@@ -30,7 +30,7 @@ public class RejectedOnePagerComment extends BaseIdEntity {
     @Builder
     public RejectedOnePagerComment(
         String comment,
-        OnePager onePager,
+        SubmitOnePager onePager,
         String commentWriter
     ) {
         this.comment = comment;
