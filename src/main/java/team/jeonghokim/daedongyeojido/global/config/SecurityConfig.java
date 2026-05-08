@@ -152,9 +152,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/files/**").hasAnyRole(ADMIN, STUDENT, CLUB_MEMBER, CLUB_LEADER)
 
                         // onepager
+                        .requestMatchers(HttpMethod.PATCH, "/onepager/submissions/*/cancel").hasAnyRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.POST, "/onepager/submissions/**").hasAnyRole(CLUB_LEADER, TEACHER)
                         .requestMatchers(HttpMethod.GET, "/onepager/forms").hasAnyRole(TEACHER, CLUB_LEADER, CLUB_MEMBER)
-                        .requestMatchers(HttpMethod.PATCH, "/onepager/submissions/*/cancel").hasAnyRole(CLUB_LEADER)
 
                         // monitoring
                         .requestMatchers("/actuator/prometheus")
