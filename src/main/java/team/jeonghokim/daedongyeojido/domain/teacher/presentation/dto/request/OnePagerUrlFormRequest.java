@@ -12,10 +12,6 @@ public record OnePagerUrlFormRequest(
         @Size(max = 50, message = "제목을 50자 이하로 입력해주세요.")
         String title,
 
-        @NotBlank(message = "담당교사이름을 비워둘 순 없습니다.")
-        @Size(min = 2, max = 4, message = "담당교사 이름을 2글자 이상 4글자 이하로 입력해주세요.")
-        String teacherName,
-
         @NotBlank(message = "구글 폼 링크를 첨부해주세요.")
         String formUrl,
 
