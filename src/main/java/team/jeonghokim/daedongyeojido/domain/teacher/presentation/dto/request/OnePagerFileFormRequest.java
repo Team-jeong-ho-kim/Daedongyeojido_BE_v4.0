@@ -13,10 +13,6 @@ public record OnePagerFileFormRequest(
         @Size(max = 50, message = "제목을 50자 이하로 입력해주세요.")
         String title,
 
-        @NotBlank(message = "담당교사이름을 비워둘 순 없습니다.")
-        @Size(min = 2, max = 4, message = "담당교사 이름을 2글자 이상 4글자 이하로 입력해주세요.")
-        String teacherName,
-
         @NotNull(message = "첨부할 파일을 선택해주세요.")
         MultipartFile formFile,
 

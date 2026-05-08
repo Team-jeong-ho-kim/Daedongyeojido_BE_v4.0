@@ -9,12 +9,16 @@ import team.jeonghokim.daedongyeojido.domain.file.exception.FileNotFoundExceptio
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerNotFoundException;
+import team.jeonghokim.daedongyeojido.domain.teacher.domain.Teacher;
+import team.jeonghokim.daedongyeojido.domain.teacher.domain.repository.TeacherRepository;
+import team.jeonghokim.daedongyeojido.domain.teacher.facade.TeacherFacade;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerFileFormRequest;
 
 @Service
 @RequiredArgsConstructor
 public class UpdateOnePagerFileService {
     private final OnePagerRepository onePagerRepository;
+    private final TeacherFacade teacherFacade;
     private final FileRepository fileRepository;
 
     @Transactional
@@ -25,12 +29,14 @@ public class UpdateOnePagerFileService {
         File file = fileRepository.findByFileName(request.formFile().getOriginalFilename())
                 .orElseThrow(() -> FileNotFoundException.EXCEPTION);
 
+        Teacher teacher = teacherFacade.getCurrentTeacher();
+
         onePager.update(
                 request.title(),
                 request.description(),
                 file,
                 null,
-                request.teacherName(),
+                teacher,
                 request.onePagerDurationType(),
                 request.onePagerDuration()
         );
