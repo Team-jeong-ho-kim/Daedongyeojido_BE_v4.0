@@ -10,12 +10,9 @@ import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.C
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.SubmitOnePagerRequest;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.QueryListSubmitOnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.UserOnePagerDetailResponse;
-import team.jeonghokim.daedongyeojido.domain.onepager.service.CreateRejectedOnePagerCommentService;
-import team.jeonghokim.daedongyeojido.domain.onepager.service.QueryDetailUserOnePagerService;
-import team.jeonghokim.daedongyeojido.domain.onepager.service.QueryOnePagerListService;
+import team.jeonghokim.daedongyeojido.domain.onepager.service.*;
 
 import java.util.List;
-import team.jeonghokim.daedongyeojido.domain.onepager.service.CreateSubmitOnePagerService;
 
 @RestController
 @RequestMapping("/onepager")
@@ -25,7 +22,7 @@ public class OnePagerController {
     private final QueryOnePagerListService queryOnePagerListService;
     private final CreateSubmitOnePagerService createSubmitOnePagerService;
     private final QueryDetailUserOnePagerService queryDetailUserOnePagerService;
-    private final QueryListSubmitOnePagerResponse queryListSubmitOnePagerResponse;
+    private final QuerySubmitOnePagerService querySubmitOnePagerService;
 
     @GetMapping("/forms")
     @ResponseStatus(HttpStatus.OK)
@@ -62,9 +59,9 @@ public class OnePagerController {
 
     @GetMapping("/submissions/{form-id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserOnePagerDetailResponse queryListOnePager(
+    public QueryListSubmitOnePagerResponse queryListOnePager(
         @PathVariable("form-id") Long formId
     ) {
-        return queryDetailUserOnePagerService.execute(formId);
+        return querySubmitOnePagerService.execute(formId);
     }
 }
