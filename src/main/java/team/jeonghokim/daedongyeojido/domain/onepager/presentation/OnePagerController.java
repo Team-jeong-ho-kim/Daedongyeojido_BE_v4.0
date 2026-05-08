@@ -5,9 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerSubmissionListResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerListResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.CommentRequest;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.SubmitOnePagerRequest;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.CreateRejectedOnePagerCommentService;
+import team.jeonghokim.daedongyeojido.domain.onepager.service.QueryOnePagerListService;
+
+import java.util.List;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.CreateSubmitOnePagerService;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.QuerySubmitOnePagerListService;
 
@@ -16,8 +21,16 @@ import team.jeonghokim.daedongyeojido.domain.onepager.service.QuerySubmitOnePage
 @RequiredArgsConstructor
 public class OnePagerController {
     private final CreateRejectedOnePagerCommentService createRejectedOnePagerCommentService;
+    private final QueryOnePagerListService queryOnePagerListService;
     private final CreateSubmitOnePagerService createSubmitOnePagerService;
     private final QuerySubmitOnePagerListService querySubmitOnePagerListService;
+
+    @GetMapping("/forms")
+    @ResponseStatus(HttpStatus.OK)
+    public OnePagerListResponse queryOnePagerList() {
+        List<OnePagerResponse> onePagers = queryOnePagerListService.execute();
+        return OnePagerListResponse.from(onePagers);
+    }
 
     @PostMapping("/submissions/{submission-id}/comment")
     @ResponseStatus(HttpStatus.CREATED)
