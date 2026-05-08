@@ -1,5 +1,6 @@
 package team.jeonghokim.daedongyeojido.domain.onepager.presentation;
 
+import com.solapi.shadow.retrofit2.http.Path;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,7 +9,9 @@ import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.CommentRequest;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.SubmitOnePagerRequest;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.UserOnePagerDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.CreateRejectedOnePagerCommentService;
+import team.jeonghokim.daedongyeojido.domain.onepager.service.QueryDetailUserOnePagerService;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.QueryOnePagerListService;
 
 import java.util.List;
@@ -21,6 +24,7 @@ public class OnePagerController {
     private final CreateRejectedOnePagerCommentService createRejectedOnePagerCommentService;
     private final QueryOnePagerListService queryOnePagerListService;
     private final CreateSubmitOnePagerService createSubmitOnePagerService;
+    private final QueryDetailUserOnePagerService queryDetailUserOnePagerService;
 
     @GetMapping("/forms")
     @ResponseStatus(HttpStatus.OK)
@@ -46,4 +50,13 @@ public class OnePagerController {
     ) {
         createSubmitOnePagerService.execute(request, formId);
     }
+
+    @GetMapping("/forms/{form-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserOnePagerDetailResponse queryUserOnePager(
+        @PathVariable("form-id") Long formId
+    ) {
+        return queryDetailUserOnePagerService.execute(formId);
+    }
+
 }
