@@ -63,4 +63,12 @@ public class SubmitOnePager extends BaseIdEntity {
     public void setReason(String reason) {
         this.reason = reason;
     }
+
+    public String getSubmitFileUrl() {
+        return (submitFile == null) ? null : submitFile.getFileUrl();
+    }
+
+    public String getSubmitFileName() {
+        return (submitFile == null) ? null : submitFile.getFileName();
+    }
 }

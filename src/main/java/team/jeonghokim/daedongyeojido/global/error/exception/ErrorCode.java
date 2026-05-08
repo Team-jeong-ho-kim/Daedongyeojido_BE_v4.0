@@ -119,6 +119,8 @@ public enum ErrorCode {
     ONE_PAGER_INVALID(400,"유효하지 않은 원페이져 형식입니다."),
     ONE_PAGER_STATE_REASON_INVALID(400, "상태에 따른 사유를 기재해주세요."),
     INVALID_SUBMIT_ONE_PAGER(400, "제출기한이 지난 폼입니다."),
+    SUBMIT_ONE_PAGER_NOT_FOUND(404, "해당 제출이 존재하지 않습니다."),
+    SUBMIT_ONE_PAGER_ACCESS_DENIED(403, "해당 제출에 접근할 수 없습니다."),
 
     // general
     BAD_REQUEST(400, "front fault"),
