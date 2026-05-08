@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.SubmitOnePagerRepository;
+import team.jeonghokim.daedongyeojido.domain.onepager.exception.SubmitOnePagerAccessDeniedException;
+import team.jeonghokim.daedongyeojido.domain.onepager.exception.SubmitOnePagerNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.user.domain.User;
 import team.jeonghokim.daedongyeojido.domain.user.facade.UserFacade;
 
@@ -17,11 +19,11 @@ public class CancelSubmitService {
     @Transactional
     public void execute(Long submissionId) {
         SubmitOnePager submission = submitOnePagerRepository.findById(submissionId)
-                .orElseThrow(() -> new IllegalArgumentException());
+                .orElseThrow(() -> SubmitOnePagerNotFoundException.EXCEPTION);
 
         User user = userFacade.getCurrentUser();
         if (!submission.getClub().equals(user.getClub())) {
-            throw new RuntimeException();
+            throw SubmitOnePagerAccessDeniedException.EXCEPTION;
         }
 
         submission.cancel();
