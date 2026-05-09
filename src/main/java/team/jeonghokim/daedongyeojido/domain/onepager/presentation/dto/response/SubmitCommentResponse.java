@@ -6,7 +6,7 @@ public record SubmitCommentResponse(
     String commentWriter,
     String comment
 ) {
-    public static SubmitCommentResponse of(RejectedOnePagerComment comment) {
+    public static SubmitCommentResponse from(RejectedOnePagerComment comment) {
         return new SubmitCommentResponse(comment.getCommentWriter(), comment.getComment());
     }
 }

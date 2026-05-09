@@ -13,7 +13,7 @@ public record QueryListSubmitOnePagerResponse(
     List<SubmitOnePagerResponse> submitOnePagers
 
 ) {
-    public static QueryListSubmitOnePagerResponse from(
+    public static QueryListSubmitOnePagerResponse of(
         OnePager onePager,
         String fileUrl,
         List<SubmitOnePagerResponse> submitOnePagers
