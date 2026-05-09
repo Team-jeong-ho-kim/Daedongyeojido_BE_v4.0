@@ -18,7 +18,7 @@ public class QueryDetailUserOnePagerService {
 
         String fileUrl = onePager.getFormFile() != null ? onePager.getFormFile().getFileUrl() : onePager.getFormUrl();
 
-        return UserOnePagerDetailResponse.from(
+        return UserOnePagerDetailResponse.of(
             onePager.getTitle(),
             onePager.getDescription(),
             onePager.getOnePagerDuration(),

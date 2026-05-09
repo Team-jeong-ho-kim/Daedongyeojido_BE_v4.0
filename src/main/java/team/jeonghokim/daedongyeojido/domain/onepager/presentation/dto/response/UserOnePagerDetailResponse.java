@@ -8,7 +8,7 @@ public record UserOnePagerDetailResponse(
     LocalDateTime onePagerDuration,
     String fileUrl
 ) {
-    public static UserOnePagerDetailResponse from(
+    public static UserOnePagerDetailResponse of(
         String title,
         String description,
         LocalDateTime onePagerDuration,
