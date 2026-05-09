@@ -4,14 +4,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerListResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerSubmissionListResponse;
-import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerListResponse;
-import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.CancelSubmitService;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.CommentRequest;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.SubmitOnePagerRequest;
-import team.jeonghokim.daedongyeojido.domain.onepager.service.CreateRejectedOnePagerCommentService;
-import team.jeonghokim.daedongyeojido.domain.onepager.service.QueryOnePagerListService;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.QueryListSubmitOnePagerResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.UserOnePagerDetailResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.service.*;
 
 import java.util.List;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.CreateSubmitOnePagerService;
@@ -24,6 +25,8 @@ public class OnePagerController {
     private final CreateRejectedOnePagerCommentService createRejectedOnePagerCommentService;
     private final QueryOnePagerListService queryOnePagerListService;
     private final CreateSubmitOnePagerService createSubmitOnePagerService;
+    private final QueryDetailUserOnePagerService queryDetailUserOnePagerService;
+    private final QuerySubmitOnePagerService querySubmitOnePagerService;
     private final CancelSubmitService cancelSubmitService;
     private final QuerySubmitOnePagerListService querySubmitOnePagerListService;
 
@@ -50,6 +53,22 @@ public class OnePagerController {
         @PathVariable("form-id") Long formId
     ) {
         createSubmitOnePagerService.execute(request, formId);
+    }
+
+    @GetMapping("/forms/{form-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserOnePagerDetailResponse queryUserOnePager(
+        @PathVariable("form-id") Long formId
+    ) {
+        return queryDetailUserOnePagerService.execute(formId);
+    }
+
+    @GetMapping("/submissions/{form-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryListSubmitOnePagerResponse queryListOnePager(
+        @PathVariable("form-id") Long formId
+    ) {
+        return querySubmitOnePagerService.execute(formId);
     }
 
     @GetMapping("/submissions/my")

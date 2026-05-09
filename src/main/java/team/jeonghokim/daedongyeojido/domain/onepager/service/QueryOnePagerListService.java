@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
-import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.OnePagerResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerResponse;
 
 import java.util.List;
 
