@@ -14,6 +14,8 @@ import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.SubmitOnePagerResponse;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,15 +30,18 @@ public class QuerySubmitOnePagerService {
 
         List<SubmitOnePager> submitOnePagers = submitOnePagerRepository.findByFormOnePager(onePager);
 
-        List<SubmitOnePagerResponse> responses = submitOnePagers.stream()
-            .map(submit -> {
-                List<RejectedOnePagerComment> comments = rejectedOnePagerCommentRepository.findByOnePager(submit);
-                List<SubmitCommentResponse> commentResponses = comments.stream()
-                    .map(SubmitCommentResponse::from)
-                    .toList();
+        List<RejectedOnePagerComment> allComments = rejectedOnePagerCommentRepository.findByOnePagerIn(submitOnePagers);
 
-                return SubmitOnePagerResponse.of(submit, commentResponses);
-            })
+        Map<Long, List<SubmitCommentResponse>> commentsBySubmitId = allComments.stream()
+            .collect(Collectors.groupingBy(
+                comment -> comment.getOnePager().getId(),
+                Collectors.mapping(SubmitCommentResponse::from, Collectors.toList())
+            ));
+
+        List<SubmitOnePagerResponse> responses = submitOnePagers.stream()
+            .map(submit -> SubmitOnePagerResponse.of(
+                submit, commentsBySubmitId.getOrDefault(submit.getId(), List.of())
+            ))
             .toList();
 
         String fileUrl = onePager.getFormFile() != null ? onePager.getFormFile().getFileUrl() : onePager.getFormUrl();
