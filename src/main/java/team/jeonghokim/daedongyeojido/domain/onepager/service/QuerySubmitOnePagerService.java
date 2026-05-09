@@ -32,27 +32,15 @@ public class QuerySubmitOnePagerService {
             .map(submit -> {
                 List<RejectedOnePagerComment> comments = rejectedOnePagerCommentRepository.findByOnePager(submit);
                 List<SubmitCommentResponse> commentResponses = comments.stream()
-                    .map(comment -> SubmitCommentResponse.of(comment.getCommentWriter(), comment.getComment()))
+                    .map(SubmitCommentResponse::of)
                     .toList();
 
-                return SubmitOnePagerResponse.of(
-                    submit.getClub().getClubName(),
-                    submit.getOnePagerState(),
-                    submit.getSubmitFile() != null ? submit.getSubmitFile().getFileUrl() : null,
-                    submit.getSubmitDate().atStartOfDay(),
-                    commentResponses
-                );
+                return SubmitOnePagerResponse.of(submit, commentResponses);
             })
             .toList();
 
         String fileUrl = onePager.getFormFile() != null ? onePager.getFormFile().getFileUrl() : onePager.getFormUrl();
 
-        return QueryListSubmitOnePagerResponse.from(
-            onePager.getTitle(),
-            onePager.getDescription(),
-            onePager.getOnePagerDuration(),
-            fileUrl,
-            responses
-        );
+        return QueryListSubmitOnePagerResponse.from(onePager, fileUrl, responses);
     }
 }

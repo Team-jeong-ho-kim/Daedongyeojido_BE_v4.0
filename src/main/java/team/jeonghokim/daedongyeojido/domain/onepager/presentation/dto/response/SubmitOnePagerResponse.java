@@ -1,25 +1,27 @@
 package team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response;
 
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerState;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public record SubmitOnePagerResponse(
     String clubName,
     OnePagerState onePagerState,
     String submitFileUrl,
-    LocalDateTime submitDate,
+    LocalDate submitDate,
     List<SubmitCommentResponse> submitComments
 ) {
     public static SubmitOnePagerResponse of(
-        String clubName,
-        OnePagerState onePagerState,
-        String submitFileUrl,
-        LocalDateTime submitDate,
+        SubmitOnePager submitOnePager,
         List<SubmitCommentResponse> submitComments
     ) {
         return new SubmitOnePagerResponse(
-            clubName, onePagerState, submitFileUrl, submitDate, submitComments);
+            submitOnePager.getClub().getClubName(),
+            submitOnePager.getOnePagerState(),
+            submitOnePager.getSubmitFile().getFileUrl(),
+            submitOnePager.getSubmitDate(),
+            submitComments);
     }
 }

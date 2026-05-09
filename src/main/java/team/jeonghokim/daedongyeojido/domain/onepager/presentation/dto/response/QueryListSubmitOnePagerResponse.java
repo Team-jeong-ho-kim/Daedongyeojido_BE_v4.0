@@ -1,5 +1,7 @@
 package team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response;
 
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,16 +14,14 @@ public record QueryListSubmitOnePagerResponse(
 
 ) {
     public static QueryListSubmitOnePagerResponse from(
-        String title,
-        String description,
-        LocalDateTime onePagerDuration,
+        OnePager onePager,
         String fileUrl,
         List<SubmitOnePagerResponse> submitOnePagers
     ) {
         return new QueryListSubmitOnePagerResponse(
-            title,
-            description,
-            onePagerDuration,
+            onePager.getTitle(),
+            onePager.getDescription(),
+            onePager.getOnePagerDuration(),
             fileUrl,
             submitOnePagers
         );
