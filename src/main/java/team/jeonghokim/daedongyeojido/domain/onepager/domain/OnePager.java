@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import team.jeonghokim.daedongyeojido.domain.file.domain.File;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDurationType;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerState;
+import team.jeonghokim.daedongyeojido.domain.teacher.domain.Teacher;
 import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 
 import java.time.LocalDateTime;
@@ -29,8 +30,9 @@ public class OnePager extends BaseIdEntity {
 
     private String formUrl;
 
-    @Column(nullable = false, length = 4)
-    private String teacherName;
+    @JoinColumn(name = "one_pager_teacher_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Teacher teacher;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -45,7 +47,7 @@ public class OnePager extends BaseIdEntity {
             String description,
             File formFile,
             String formUrl,
-            String teacherName,
+            Teacher teacher,
             OnePagerDurationType onePagerDurationType,
             LocalDateTime onePagerDuration
     ) {
@@ -53,7 +55,7 @@ public class OnePager extends BaseIdEntity {
         this.description = description;
         this.formFile = formFile;
         this.formUrl = formUrl;
-        this.teacherName = teacherName;
+        this.teacher = teacher;
         this.onePagerDurationType = onePagerDurationType;
         this.onePagerDuration = onePagerDuration;
     }
@@ -63,7 +65,7 @@ public class OnePager extends BaseIdEntity {
             String description,
             File formFile,
             String formUrl,
-            String teacherName,
+            Teacher teacher,
             OnePagerDurationType onePagerDurationType,
             LocalDateTime onePagerDuration
     ){
@@ -71,7 +73,7 @@ public class OnePager extends BaseIdEntity {
         this.description = description;
         this.formFile = formFile;
         this.formUrl = formUrl;
-        this.teacherName = teacherName;
+        this.teacher = teacher;
         this.onePagerDurationType = onePagerDurationType;
         this.onePagerDuration = onePagerDuration;
     }

@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerListResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerSubmissionListResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.service.CancelSubmitService;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.CommentRequest;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.SubmitOnePagerRequest;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.QueryListSubmitOnePagerResponse;
@@ -13,6 +15,8 @@ import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.
 import team.jeonghokim.daedongyeojido.domain.onepager.service.*;
 
 import java.util.List;
+import team.jeonghokim.daedongyeojido.domain.onepager.service.CreateSubmitOnePagerService;
+import team.jeonghokim.daedongyeojido.domain.onepager.service.QuerySubmitOnePagerListService;
 
 @RestController
 @RequestMapping("/onepager")
@@ -23,6 +27,8 @@ public class OnePagerController {
     private final CreateSubmitOnePagerService createSubmitOnePagerService;
     private final QueryDetailUserOnePagerService queryDetailUserOnePagerService;
     private final QuerySubmitOnePagerService querySubmitOnePagerService;
+    private final CancelSubmitService cancelSubmitService;
+    private final QuerySubmitOnePagerListService querySubmitOnePagerListService;
 
     @GetMapping("/forms")
     @ResponseStatus(HttpStatus.OK)
@@ -63,5 +69,17 @@ public class OnePagerController {
         @PathVariable("form-id") Long formId
     ) {
         return querySubmitOnePagerService.execute(formId);
+    }
+
+    @GetMapping("/submissions/my")
+    @ResponseStatus(HttpStatus.OK)
+    public OnePagerSubmissionListResponse queryMyOnePagerSubmission() {
+        return querySubmitOnePagerListService.execute();
+    }
+
+    @PatchMapping("/submissions/{submission-id}/cancel")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancelSubmit(@PathVariable(name = "submission-id") Long submissionId) {
+        cancelSubmitService.execute(submissionId);
     }
 }

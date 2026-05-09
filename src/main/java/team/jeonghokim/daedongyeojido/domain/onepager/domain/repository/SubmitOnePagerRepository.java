@@ -6,6 +6,6 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
 
 import java.util.List;
 
-public interface SubmitOnePagerRepository extends JpaRepository<SubmitOnePager, Long> {
+public interface SubmitOnePagerRepository extends JpaRepository<SubmitOnePager, Long>, SubmitOnePagerRepositoryCustom {
     List<SubmitOnePager> findByFormOnePager(OnePager formOnePager);
 }

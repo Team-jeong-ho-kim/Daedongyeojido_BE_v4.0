@@ -28,7 +28,7 @@ public class UpdateOnePagerStateService {
         SubmitOnePager submitOnePager = submitOnePagerRepository.findById(submitId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        if(teacher.getTeacherName().equals(submitOnePager.getFormOnePager().getTeacherName())){
+        if(teacher != submitOnePager.getFormOnePager().getTeacher()){
             throw InvalidUserException.EXCEPTION;
         }
 

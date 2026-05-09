@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public record OnePagerResponse(
     Long onePagerFormId,
     String title,
-    String teacher,
+    String teacherName,
     OnePagerDurationType onePagerDurationType,
     LocalDateTime onePagerDuration
 ) {
@@ -16,7 +16,7 @@ public record OnePagerResponse(
         return new OnePagerResponse(
                 onePager.getId(),
                 onePager.getTitle(),
-                onePager.getTeacherName(),
+                onePager.getTeacher().getTeacherName(),
                 onePager.getOnePagerDurationType(),
                 onePager.getOnePagerDuration()
         );
