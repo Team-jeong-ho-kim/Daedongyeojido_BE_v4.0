@@ -11,7 +11,6 @@ public record QueryListSubmitOnePagerResponse(
     LocalDateTime onePagerDuration,
     String fileUrl,
     List<SubmitOnePagerResponse> submitOnePagers
-
 ) {
     public static QueryListSubmitOnePagerResponse of(
         OnePager onePager,

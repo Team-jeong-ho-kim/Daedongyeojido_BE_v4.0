@@ -16,11 +16,13 @@ public class QueryDetailUserOnePagerService {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
+        String fileUrl = onePager.getFormFile() != null ? onePager.getFormFile().getFileUrl() : onePager.getFormUrl();
+
         return UserOnePagerDetailResponse.from(
             onePager.getTitle(),
             onePager.getDescription(),
             onePager.getOnePagerDuration(),
-            onePager.getFormFile().getFileUrl()
+            fileUrl
         );
     }
 }
