@@ -3,9 +3,12 @@ package team.jeonghokim.daedongyeojido.domain.onepager.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerDurationType;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.UserOnePagerDetailResponse;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -16,13 +19,26 @@ public class QueryDetailUserOnePagerService {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        String fileUrl = onePager.getFormFile() != null ? onePager.getFormFile().getFileUrl() : onePager.getFormUrl();
+        String fileUrl = null;
+        String formUrl = null;
+        if (onePager.getFormFile() != null) {
+            fileUrl = onePager.getFormFile().getFileUrl();
+        } else {
+            formUrl = onePager.getFormUrl();
+        }
+
+        LocalDateTime duration = null;
+        if (onePager.getOnePagerDurationType() == OnePagerDurationType.DATE) {
+            duration = onePager.getOnePagerDuration();
+        }
 
         return UserOnePagerDetailResponse.of(
             onePager.getTitle(),
             onePager.getDescription(),
-            onePager.getOnePagerDuration(),
-            fileUrl
+            duration,
+            fileUrl,
+            formUrl,
+            onePager.getOnePagerDurationType()
         );
     }
 }
