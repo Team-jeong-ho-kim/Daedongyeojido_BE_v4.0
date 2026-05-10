@@ -20,7 +20,7 @@ public class CreateOnePagerUrlFormService {
     private final TeacherFacade teacherFacade;
 
     @Transactional
-    public void execute(OnePagerUrlFormRequest request) {
+    public Long execute(OnePagerUrlFormRequest request) {
         Teacher teacher = teacherFacade.getCurrentTeacher();
 
         if (request.onePagerDurationType() == OnePagerDurationType.DATE) {
@@ -46,5 +46,7 @@ public class CreateOnePagerUrlFormService {
                 .build();
 
         onePagerRepository.save(onePager);
+        
+        return onePager.getId();
     }
 }
