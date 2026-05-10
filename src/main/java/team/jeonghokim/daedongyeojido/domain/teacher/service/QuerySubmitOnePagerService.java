@@ -1,4 +1,4 @@
-package team.jeonghokim.daedongyeojido.domain.onepager.service;
+package team.jeonghokim.daedongyeojido.domain.teacher.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +39,7 @@ public class QuerySubmitOnePagerService {
             ));
 
         List<SubmitOnePagerResponse> responses = submitOnePagers.stream()
+            .filter(submit -> submit.getSubmitFile() != null)
             .map(submit -> SubmitOnePagerResponse.of(
                 submit, commentsBySubmitId.getOrDefault(submit.getId(), List.of())
             ))

@@ -20,7 +20,7 @@ public record SubmitOnePagerResponse(
         return new SubmitOnePagerResponse(
             submitOnePager.getClub().getClubName(),
             submitOnePager.getOnePagerState(),
-            submitOnePager.getSubmitFile().getFileUrl(),
+            submitOnePager.getSubmitFile() != null ? submitOnePager.getSubmitFile().getFileUrl() : null,
             submitOnePager.getSubmitDate(),
             submitComments);
     }

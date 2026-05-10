@@ -13,20 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.QueryListSubmitOnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.ChangeOnePagerStateRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerFileFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerUrlFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherListResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherMyInfoResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.UpdateStateReasonResponse;
-import team.jeonghokim.daedongyeojido.domain.teacher.service.QueryAvailableTeacherListService;
-import team.jeonghokim.daedongyeojido.domain.teacher.service.QueryTeacherMyInfoService;
-import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateOnePagerFileFormService;
-import team.jeonghokim.daedongyeojido.domain.teacher.service.CreateOnePagerUrlFormService;
-import team.jeonghokim.daedongyeojido.domain.teacher.service.UpdateOnePagerFileService;
-import team.jeonghokim.daedongyeojido.domain.teacher.service.UpdateOnePagerUrlService;
-import team.jeonghokim.daedongyeojido.domain.teacher.service.DeleteOnePagerService;
-import team.jeonghokim.daedongyeojido.domain.teacher.service.UpdateOnePagerStateService;
+import team.jeonghokim.daedongyeojido.domain.teacher.service.*;
 
 @RestController
 @RequestMapping("/teachers")
@@ -41,6 +35,7 @@ public class TeacherController {
     private final UpdateOnePagerUrlService updateOnePagerUrlService;
     private final DeleteOnePagerService deleteOnePagerService;
     private final UpdateOnePagerStateService updateOnePagerStateService;
+    private final QuerySubmitOnePagerService querySubmitOnePagerService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -97,5 +92,14 @@ public class TeacherController {
         @PathVariable("submission-id") Long submissionId
     ) {
         return updateOnePagerStateService.execute(request, submissionId);
+    }
+
+
+    @GetMapping("/onepager/my/{form-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryListSubmitOnePagerResponse queryListOnePager(
+        @PathVariable("form-id") Long formId
+    ) {
+        return querySubmitOnePagerService.execute(formId);
     }
 }
