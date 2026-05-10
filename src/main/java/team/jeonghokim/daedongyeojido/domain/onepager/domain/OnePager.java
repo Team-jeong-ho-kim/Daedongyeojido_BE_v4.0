@@ -77,4 +77,12 @@ public class OnePager extends BaseIdEntity {
         this.onePagerDurationType = onePagerDurationType;
         this.onePagerDuration = onePagerDuration;
     }
+
+    public String getFormFileUrl() {
+        return (formFile == null) ? null : formFile.getFileUrl();
+    }
+
+    public String getFormFileName() {
+        return (formFile == null) ? null : formFile.getFileName();
+    }
 }

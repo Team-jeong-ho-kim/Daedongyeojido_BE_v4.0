@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerListResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerSubmissionListResponse;
-import team.jeonghokim.daedongyeojido.domain.onepager.service.CancelSubmitService;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.CommentRequest;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.SubmitOnePagerRequest;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.QueryOnePagerSubmissionResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.QueryListSubmitOnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.UserOnePagerDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.*;
@@ -29,6 +29,7 @@ public class OnePagerController {
     private final QuerySubmitOnePagerService querySubmitOnePagerService;
     private final CancelSubmitService cancelSubmitService;
     private final QuerySubmitOnePagerListService querySubmitOnePagerListService;
+    private final QueryMyOnePagerSubmissionDetailService queryMyOnePagerSubmissionDetailService;
 
     @GetMapping("/forms")
     @ResponseStatus(HttpStatus.OK)
@@ -81,5 +82,11 @@ public class OnePagerController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void cancelSubmit(@PathVariable(name = "submission-id") Long submissionId) {
         cancelSubmitService.execute(submissionId);
+    }
+
+    @GetMapping("/submissions/{submission-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public QueryOnePagerSubmissionResponse queryMyOnePagerSubmissionDetail(@PathVariable(name = "submission-id") Long submissionId) {
+        return queryMyOnePagerSubmissionDetailService.execute(submissionId);
     }
 }
