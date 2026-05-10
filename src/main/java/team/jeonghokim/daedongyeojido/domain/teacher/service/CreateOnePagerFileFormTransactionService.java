@@ -23,7 +23,7 @@ public class CreateOnePagerFileFormTransactionService {
     private final OnePagerRepository onePagerRepository;
 
     @Transactional
-    public void saveData(OnePagerFileFormRequest request, String fileName, String fileUrl) {
+    public Long saveData(OnePagerFileFormRequest request, String fileName, String fileUrl) {
         Teacher teacher = teacherFacade.getCurrentTeacher();
 
         if (request.onePagerDurationType() == OnePagerDurationType.DATE) {
@@ -56,5 +56,7 @@ public class CreateOnePagerFileFormTransactionService {
                 .build();
 
         onePagerRepository.save(onePager);
+
+        return onePager.getId();
     }
 }
