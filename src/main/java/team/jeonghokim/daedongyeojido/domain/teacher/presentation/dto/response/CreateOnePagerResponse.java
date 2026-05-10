@@ -1,9 +1,9 @@
 package team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response;
 
 public record CreateOnePagerResponse(
-    Long id
+    Long onePagerId
 ) {
-    public static CreateOnePagerResponse of(Long id) {
-        return new CreateOnePagerResponse(id);
+    public static CreateOnePagerResponse of(Long onePagerId) {
+        return new CreateOnePagerResponse(onePagerId);
     }
 }
