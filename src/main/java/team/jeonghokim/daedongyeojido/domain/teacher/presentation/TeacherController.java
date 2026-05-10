@@ -54,13 +54,13 @@ public class TeacherController {
     @PostMapping("/onepager/forms-file")
     public ResponseEntity<CreateOnePagerResponse> createOnePagerFileForm(@ModelAttribute @Valid OnePagerFileFormRequest request) {
         Long id = createOnePagerFileFormService.execute(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(CreateOnePagerResponse.of(id));
+        return ResponseEntity.status(HttpStatus.OK).body(CreateOnePagerResponse.of(id));
     }
 
     @PostMapping("/onepager/forms-url")
     public ResponseEntity<CreateOnePagerResponse> createOnePagerUrlForm(@RequestBody @Valid OnePagerUrlFormRequest request) {
         Long id = createOnePagerUrlFormService.execute(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(CreateOnePagerResponse.of(id));
+        return ResponseEntity.status(HttpStatus.OK).body(CreateOnePagerResponse.of(id));
     }
 
     @PatchMapping("/onepager/forms-file/{form-id}")
