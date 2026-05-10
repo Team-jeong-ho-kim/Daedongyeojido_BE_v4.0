@@ -96,7 +96,10 @@ public class SecurityConfig {
                         // teacher
                         .requestMatchers(HttpMethod.GET, "/teachers").hasAnyRole(STUDENT, ADMIN)
                         .requestMatchers(HttpMethod.GET, "/teachers/my-info").hasAnyRole(TEACHER)
-                        .requestMatchers("/teachers/onepager/**").hasAnyRole(TEACHER)
+                        .requestMatchers(HttpMethod.GET, "/teachers/onepager/**").hasAnyRole(TEACHER)
+                        .requestMatchers(HttpMethod.POST, "/teachers/onepager/**").hasAnyRole(TEACHER)
+                        .requestMatchers(HttpMethod.PATCH, "/teachers/onepager/**").hasAnyRole(TEACHER)
+                        .requestMatchers(HttpMethod.DELETE, "/teachers/onepager/**").hasAnyRole(TEACHER)
 
                         // club
                         .requestMatchers(HttpMethod.POST, "/clubs/applications").hasRole(STUDENT)
