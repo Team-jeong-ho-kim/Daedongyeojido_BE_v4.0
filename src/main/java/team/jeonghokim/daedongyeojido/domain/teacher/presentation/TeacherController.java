@@ -18,6 +18,7 @@ import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.ChangeOnePagerStateRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerFileFormRequest;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.request.OnePagerUrlFormRequest;
+import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.CreateOnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherListResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.QueryTeacherMyInfoResponse;
 import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.UpdateStateReasonResponse;
@@ -51,15 +52,15 @@ public class TeacherController {
     }
 
     @PostMapping("/onepager/forms-file")
-    public ResponseEntity<Long> createOnePagerFileForm(@ModelAttribute @Valid OnePagerFileFormRequest request) {
+    public ResponseEntity<CreateOnePagerResponse> createOnePagerFileForm(@ModelAttribute @Valid OnePagerFileFormRequest request) {
         Long id = createOnePagerFileFormService.execute(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CreateOnePagerResponse.of(id));
     }
 
     @PostMapping("/onepager/forms-url")
-    public ResponseEntity<Long> createOnePagerUrlForm(@RequestBody @Valid OnePagerUrlFormRequest request) {
+    public ResponseEntity<CreateOnePagerResponse> createOnePagerUrlForm(@RequestBody @Valid OnePagerUrlFormRequest request) {
         Long id = createOnePagerUrlFormService.execute(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CreateOnePagerResponse.of(id));
     }
 
     @PatchMapping("/onepager/forms-file/{form-id}")

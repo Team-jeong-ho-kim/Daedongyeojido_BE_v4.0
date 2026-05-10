@@ -2,6 +2,7 @@ package team.jeonghokim.daedongyeojido.domain.teacher.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.RejectedOnePagerComment;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
@@ -12,6 +13,8 @@ import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerNotFound
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.QueryListSubmitOnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.SubmitCommentResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.SubmitOnePagerResponse;
+import team.jeonghokim.daedongyeojido.domain.teacher.domain.Teacher;
+import team.jeonghokim.daedongyeojido.domain.teacher.facade.TeacherFacade;
 
 import java.util.List;
 import java.util.Map;
@@ -23,10 +26,17 @@ public class QuerySubmitOnePagerService {
     private final OnePagerRepository onePagerRepository;
     private final SubmitOnePagerRepository submitOnePagerRepository;
     private final RejectedOnePagerCommentRepository rejectedOnePagerCommentRepository;
+    private final TeacherFacade teacherFacade;
 
+    @Transactional(readOnly = true)
     public QueryListSubmitOnePagerResponse execute(Long onePagerId) {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
+
+        Teacher currentTeacher = teacherFacade.getCurrentTeacher();
+        if (!onePager.getTeacher().getId().equals(currentTeacher.getId())) {
+            throw OnePagerNotFoundException.EXCEPTION;
+        }
 
         List<SubmitOnePager> submitOnePagers = submitOnePagerRepository.findByFormOnePager(onePager);
 
