@@ -46,7 +46,7 @@ public class CreateOnePagerUrlFormService {
                 .build();
 
         onePagerRepository.save(onePager);
-        
+
         return onePager.getId();
     }
 }

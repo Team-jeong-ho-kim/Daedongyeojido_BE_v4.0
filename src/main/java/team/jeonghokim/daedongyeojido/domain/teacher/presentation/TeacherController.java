@@ -3,6 +3,7 @@ package team.jeonghokim.daedongyeojido.domain.teacher.presentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -50,15 +51,15 @@ public class TeacherController {
     }
 
     @PostMapping("/onepager/forms-file")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Long createOnePagerFileForm(@ModelAttribute @Valid OnePagerFileFormRequest request) {
-        return createOnePagerFileFormService.execute(request);
+    public ResponseEntity<Long> createOnePagerFileForm(@ModelAttribute @Valid OnePagerFileFormRequest request) {
+        Long id = createOnePagerFileFormService.execute(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
     @PostMapping("/onepager/forms-url")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Long createOnePagerUrlForm(@RequestBody @Valid OnePagerUrlFormRequest request) {
-        return createOnePagerUrlFormService.execute(request);
+    public ResponseEntity<Long> createOnePagerUrlForm(@RequestBody @Valid OnePagerUrlFormRequest request) {
+        Long id = createOnePagerUrlFormService.execute(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
     @PatchMapping("/onepager/forms-file/{form-id}")
