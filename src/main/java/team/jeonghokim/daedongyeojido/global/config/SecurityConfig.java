@@ -66,7 +66,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/auth/logout").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/auth/reissue").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/admin/temp/promote-ohyemin-admin").permitAll()
 
                         // user
                         .requestMatchers(HttpMethod.PATCH, "/users/my-info").hasAnyRole(STUDENT, CLUB_MEMBER, CLUB_LEADER)

@@ -130,8 +130,4 @@ public class User extends BaseIdEntity {
         this.club = club;
         this.role = Role.CLUB_MEMBER;
     }
-
-    public void promoteToAdmin() {
-        this.role = Role.ADMIN;
-    }
 }
