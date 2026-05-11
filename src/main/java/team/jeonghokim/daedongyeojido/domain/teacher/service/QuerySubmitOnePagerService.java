@@ -9,6 +9,7 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.OnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.RejectedOnePagerCommentRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.SubmitOnePagerRepository;
+import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerInvalidException;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerNotFoundException;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.QueryListSubmitOnePagerResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.SubmitCommentResponse;
@@ -33,9 +34,15 @@ public class QuerySubmitOnePagerService {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
+        if(onePager.getFormUrl() != null){
+            throw OnePagerInvalidException.EXCEPTION;
+        }
+
+        String fileUrl = onePager.getFormFile().getFileUrl();
+
         Teacher currentTeacher = teacherFacade.getCurrentTeacher();
         if (!onePager.getTeacher().getId().equals(currentTeacher.getId())) {
-            throw OnePagerNotFoundException.EXCEPTION;
+            return QueryListSubmitOnePagerResponse.of( onePager, fileUrl, List.of());
         }
 
         List<SubmitOnePager> submitOnePagers = submitOnePagerRepository.findByFormOnePager(onePager);
@@ -55,7 +62,6 @@ public class QuerySubmitOnePagerService {
             ))
             .toList();
 
-        String fileUrl = onePager.getFormFile() != null ? onePager.getFormFile().getFileUrl() : onePager.getFormUrl();
 
         return QueryListSubmitOnePagerResponse.of(onePager, fileUrl, responses);
     }

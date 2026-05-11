@@ -157,7 +157,7 @@ public class SecurityConfig {
                         // onepager
                         .requestMatchers(HttpMethod.PATCH, "/onepager/submissions/*/cancel").hasAnyRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.POST, "/onepager/submissions/**").hasAnyRole(CLUB_LEADER, TEACHER)
-                        .requestMatchers(HttpMethod.GET, "/onepager/forms").hasAnyRole(TEACHER, CLUB_LEADER, CLUB_MEMBER)
+                        .requestMatchers(HttpMethod.GET, "/onepager/forms/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER)
                         .requestMatchers(HttpMethod.GET, "/onepager/submissions/my").hasAnyRole(CLUB_LEADER)
                         .requestMatchers(HttpMethod.GET, "/onepager/submissions/*").hasAnyRole(CLUB_LEADER)
 
