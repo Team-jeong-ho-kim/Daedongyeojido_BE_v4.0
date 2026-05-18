@@ -15,15 +15,17 @@ public record QueryListSubmitOnePagerResponse(
 ) {
     public static QueryListSubmitOnePagerResponse of(
         OnePager onePager,
-        String fileUrl,
         List<SubmitOnePagerResponse> submitOnePagers
     ) {
+        String fileUrl = onePager.getFormFile() != null ? onePager.getFormFileUrl() : null;
+        String formUrl = onePager.getFormFile() == null ? onePager.getFormUrl() : null;
+
         return new QueryListSubmitOnePagerResponse(
             onePager.getTitle(),
             onePager.getDescription(),
             onePager.getOnePagerDuration(),
             fileUrl,
-            onePager.getFormUrl(),
+            formUrl,
             submitOnePagers
         );
     }
