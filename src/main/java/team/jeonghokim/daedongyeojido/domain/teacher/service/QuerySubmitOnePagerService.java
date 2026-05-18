@@ -34,15 +34,11 @@ public class QuerySubmitOnePagerService {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        if(onePager.getFormUrl() != null){
-            throw OnePagerInvalidException.EXCEPTION;
-        }
-
         String fileUrl = onePager.getFormFile().getFileUrl();
 
         Teacher currentTeacher = teacherFacade.getCurrentTeacher();
         if (!onePager.getTeacher().getId().equals(currentTeacher.getId())) {
-            return QueryListSubmitOnePagerResponse.of( onePager, fileUrl, List.of());
+            return QueryListSubmitOnePagerResponse.of(onePager, fileUrl, List.of());
         }
 
         List<SubmitOnePager> submitOnePagers = submitOnePagerRepository.findByFormOnePager(onePager);
