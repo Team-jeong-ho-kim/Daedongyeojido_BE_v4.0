@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.request.DecideResultDurationRequest;
 import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.response.RebuildResultDurationQueueResponse;
-import team.jeonghokim.daedongyeojido.domain.admin.presentation.dto.response.TemporarySeedDevelopDataResponse;
 import team.jeonghokim.daedongyeojido.domain.admin.service.*;
 import team.jeonghokim.daedongyeojido.domain.club.presentation.dto.request.DecideClubDissolveRequest;
 import team.jeonghokim.daedongyeojido.domain.club.service.DecideClubDissolveService;
@@ -31,7 +30,6 @@ public class AdminController {
     private final DownloadSmsHistoryExcelService downloadSmsHistoryExcelService;
     private final RebuildResultDurationQueueFromSmsHistoryService rebuildResultDurationQueueFromSmsHistoryService;
     private final DispatchAllResultDurationQueueService dispatchAllResultDurationQueueService;
-    private final TemporarySeedDevelopDataService temporarySeedDevelopDataService;
 
     @DeleteMapping("/dissolution/{club-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -83,11 +81,5 @@ public class AdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void dispatchAllResultDurationQueues() {
         dispatchAllResultDurationQueueService.execute();
-    }
-
-    @PostMapping("/temp/seed-develop-data")
-    @ResponseStatus(HttpStatus.OK)
-    public TemporarySeedDevelopDataResponse seedDevelopData() {
-        return temporarySeedDevelopDataService.execute();
     }
 }
