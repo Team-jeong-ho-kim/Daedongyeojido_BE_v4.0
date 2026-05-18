@@ -19,13 +19,8 @@ public class QueryDetailUserOnePagerService {
         OnePager onePager = onePagerRepository.findById(onePagerId)
             .orElseThrow(() -> OnePagerNotFoundException.EXCEPTION);
 
-        String fileUrl = null;
-        String formUrl = null;
-        if (onePager.getFormFile() != null) {
-            fileUrl = onePager.getFormFile().getFileUrl();
-        } else {
-            formUrl = onePager.getFormUrl();
-        }
+        String fileUrl = onePager.getFormFileUrl();
+        String formUrl = onePager.getFormFile() == null ? onePager.getFormUrl() : null;
 
         LocalDateTime duration = null;
         if (onePager.getOnePagerDurationType() == OnePagerDurationType.DATE) {
