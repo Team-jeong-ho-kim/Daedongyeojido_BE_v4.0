@@ -96,6 +96,10 @@ public class SecurityConfig {
                         // teacher
                         .requestMatchers(HttpMethod.GET, "/teachers").hasAnyRole(STUDENT, ADMIN)
                         .requestMatchers(HttpMethod.GET, "/teachers/my-info").hasAnyRole(TEACHER)
+                        .requestMatchers(HttpMethod.GET, "/teachers/onepager/**").hasAnyRole(TEACHER)
+                        .requestMatchers(HttpMethod.POST, "/teachers/onepager/**").hasAnyRole(TEACHER)
+                        .requestMatchers(HttpMethod.PATCH, "/teachers/onepager/**").hasAnyRole(TEACHER)
+                        .requestMatchers(HttpMethod.DELETE, "/teachers/onepager/**").hasAnyRole(TEACHER)
 
                         // club
                         .requestMatchers(HttpMethod.POST, "/clubs/applications").hasRole(STUDENT)
@@ -149,6 +153,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/files").hasAnyRole(ADMIN, STUDENT, CLUB_MEMBER, CLUB_LEADER)
                         .requestMatchers(HttpMethod.GET, "/files/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/files/**").hasAnyRole(ADMIN, STUDENT, CLUB_MEMBER, CLUB_LEADER)
+
+                        // onepager
+                        .requestMatchers(HttpMethod.PATCH, "/onepager/submissions/*/cancel").hasAnyRole(CLUB_LEADER)
+                        .requestMatchers(HttpMethod.POST, "/onepager/submissions/**").hasAnyRole(CLUB_LEADER, TEACHER)
+                        .requestMatchers(HttpMethod.GET, "/onepager/forms/**").hasAnyRole(CLUB_LEADER, CLUB_MEMBER, TEACHER)
+                        .requestMatchers(HttpMethod.GET, "/onepager/submissions/my").hasAnyRole(CLUB_LEADER)
+                        .requestMatchers(HttpMethod.GET, "/onepager/submissions/*").hasAnyRole(CLUB_LEADER)
 
                         // monitoring
                         .requestMatchers("/actuator/prometheus")

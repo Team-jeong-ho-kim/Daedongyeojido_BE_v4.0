@@ -85,6 +85,7 @@ public enum ErrorCode {
     // clubCreationForm
     ALREADY_FILE_EXISTS(409, "이미 해당 파일 양식이 존재합니다."),
     FILE_NOT_FOUND(404, "파일 양식을 찾을 수 없습니다."),
+    INVALID_DURATION_DATE(400, "마감 날짜는 현재 시간보다 이후여야 합니다."),
 
     // admin
     ADMIN_NOT_FOUND(404, "존재하지 않는 관리자입니다."),
@@ -112,6 +113,14 @@ public enum ErrorCode {
     // event
     ALARM_EVENT_FINAL_FAILED(500, "알람 이벤트 발송에 최종 실패했습니다."),
     SMS_EVENT_FINAL_FAILED(500, "SMS 이벤트 발송에 최종 실패했습니다."),
+
+    // onepager
+    ONE_PAGER_NOT_FOUND(404, "해당 양식이 존재하지 않습니다."),
+    ONE_PAGER_INVALID(400,"유효하지 않은 원페이져 형식입니다."),
+    ONE_PAGER_STATE_REASON_INVALID(400, "상태에 따른 사유를 기재해주세요."),
+    INVALID_SUBMIT_ONE_PAGER(400, "제출기한이 지난 폼입니다."),
+    SUBMIT_ONE_PAGER_NOT_FOUND(404, "해당 제출이 존재하지 않습니다."),
+    SUBMIT_ONE_PAGER_ACCESS_DENIED(403, "해당 제출에 접근할 수 없습니다."),
 
     // general
     BAD_REQUEST(400, "front fault"),
