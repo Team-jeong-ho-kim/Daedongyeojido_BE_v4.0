@@ -31,7 +31,7 @@ public class CreateRejectedOnePagerCommentService {
         String commentWriter = getCurrentCommentWriter();
 
         RejectedOnePagerComment comment = RejectedOnePagerComment.builder()
-            .comment(request.comment())
+            .comment(request.feedback())
             .commentWriter(commentWriter)
             .onePager(submitOnePager)
             .build();
