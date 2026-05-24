@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record QueryListSubmitOnePagerResponse(
+    Long id,
     String title,
     String description,
     LocalDateTime onePagerDuration,
@@ -21,6 +22,7 @@ public record QueryListSubmitOnePagerResponse(
         String formUrl = onePager.getFormFile() == null ? onePager.getFormUrl() : null;
 
         return new QueryListSubmitOnePagerResponse(
+            onePager.getId(),
             onePager.getTitle(),
             onePager.getDescription(),
             onePager.getOnePagerDuration(),
