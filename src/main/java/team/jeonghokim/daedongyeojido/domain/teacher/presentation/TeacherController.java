@@ -97,7 +97,7 @@ public class TeacherController {
     }
 
 
-    @GetMapping("/onepager/form/{form-id}")
+    @GetMapping("/onepager/forms/{form-id}")
     @ResponseStatus(HttpStatus.OK)
     public QueryListSubmitOnePagerResponse queryListOnePager(
         @PathVariable("form-id") Long formId

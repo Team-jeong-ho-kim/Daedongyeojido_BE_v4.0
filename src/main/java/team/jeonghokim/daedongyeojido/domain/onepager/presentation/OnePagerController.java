@@ -9,9 +9,8 @@ import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerSubmissionListResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.CommentRequest;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.request.SubmitOnePagerRequest;
-import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.QueryOnePagerSubmissionResponse;
+import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.OnePagerFormDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.QueryListSubmitOnePagerResponse;
-import team.jeonghokim.daedongyeojido.domain.onepager.presentation.dto.response.UserOnePagerDetailResponse;
 import team.jeonghokim.daedongyeojido.domain.onepager.service.*;
 
 import java.util.List;
@@ -26,10 +25,9 @@ public class OnePagerController {
     private final CreateRejectedOnePagerCommentService createRejectedOnePagerCommentService;
     private final QueryOnePagerListService queryOnePagerListService;
     private final CreateSubmitOnePagerService createSubmitOnePagerService;
-    private final QueryDetailUserOnePagerService queryDetailUserOnePagerService;
     private final CancelSubmitService cancelSubmitService;
     private final QuerySubmitOnePagerListService querySubmitOnePagerListService;
-    private final QueryMyOnePagerSubmissionDetailService queryMyOnePagerSubmissionDetailService;
+    private final QueryOnePagerFormDetailService queryOnePagerFormDetailService;
 
     @GetMapping("/forms")
     @ResponseStatus(HttpStatus.OK)
@@ -56,12 +54,12 @@ public class OnePagerController {
         createSubmitOnePagerService.execute(request, formId);
     }
 
-    @GetMapping("/forms/{form-id}")
+    @GetMapping("/form/{form-id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserOnePagerDetailResponse queryUserOnePager(
+    public OnePagerFormDetailResponse queryOnePagerFormDetail(
         @PathVariable("form-id") Long formId
     ) {
-        return queryDetailUserOnePagerService.execute(formId);
+        return queryOnePagerFormDetailService.execute(formId);
     }
 
     @GetMapping("/submissions/my")
@@ -76,9 +74,4 @@ public class OnePagerController {
         cancelSubmitService.execute(submissionId);
     }
 
-    @GetMapping("/submissions/{submission-id}")
-    @ResponseStatus(HttpStatus.OK)
-    public QueryOnePagerSubmissionResponse queryMyOnePagerSubmissionDetail(@PathVariable(name = "submission-id") Long submissionId) {
-        return queryMyOnePagerSubmissionDetailService.execute(submissionId);
-    }
 }
