@@ -32,7 +32,7 @@ public class UpdateOnePagerStateService {
             throw InvalidUserException.EXCEPTION;
         }
 
-        OnePagerState targetState = request.state();
+        OnePagerState targetState = request.status();
         validateUpdatable(submitOnePager);
         validateReason(targetState, request.reason());
 
