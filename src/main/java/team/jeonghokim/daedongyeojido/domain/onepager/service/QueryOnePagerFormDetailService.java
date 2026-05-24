@@ -42,7 +42,7 @@ public class QueryOnePagerFormDetailService {
         }
 
         List<RejectedOnePagerCommentResponse> comments = rejectedOnePagerCommentRepository
-                .findAllByOnePagerId(submission.getId()).stream()
+                .findAllByOnePagerIdOrderByIdAsc(submission.getId()).stream()
                 .map(RejectedOnePagerCommentResponse::from)
                 .toList();
 

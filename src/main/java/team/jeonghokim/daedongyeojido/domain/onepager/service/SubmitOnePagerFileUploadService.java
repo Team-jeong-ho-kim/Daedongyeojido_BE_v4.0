@@ -88,6 +88,7 @@ public class SubmitOnePagerFileUploadService {
             return null;
         }
 
+        // FK 순서: 댓글 → 제출 → 파일
         List<RejectedOnePagerComment> comments = rejectedOnePagerCommentRepository.findByOnePager(existing);
         rejectedOnePagerCommentRepository.deleteAll(comments);
         rejectedOnePagerCommentRepository.flush();

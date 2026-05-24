@@ -22,7 +22,6 @@ public record OnePagerFormDetailResponse(
         String myFileUrl,
         String myFileName,
         OnePagerState status,
-        String reason,
         List<RejectedOnePagerCommentResponse> comments
 ) {
     public static OnePagerFormDetailResponse ofFormOnly(OnePager form) {
@@ -36,7 +35,6 @@ public record OnePagerFormDetailResponse(
                 form.getFormFileName(),
                 resolveFormUrl(form),
                 false,
-                null,
                 null,
                 null,
                 null,
@@ -64,7 +62,6 @@ public record OnePagerFormDetailResponse(
                 submission.getSubmitFileUrl(),
                 submission.getSubmitFileName(),
                 submission.getOnePagerState(),
-                submission.getReason(),
                 comments
         );
     }

@@ -3,8 +3,10 @@ package team.jeonghokim.daedongyeojido.domain.teacher.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.RejectedOnePagerComment;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.enums.OnePagerState;
+import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.RejectedOnePagerCommentRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.repository.SubmitOnePagerRepository;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.InvalidUserException;
 import team.jeonghokim.daedongyeojido.domain.onepager.exception.OnePagerInvalidException;
@@ -19,6 +21,7 @@ import team.jeonghokim.daedongyeojido.domain.teacher.presentation.dto.response.U
 @RequiredArgsConstructor
 public class UpdateOnePagerStateService {
     private final SubmitOnePagerRepository submitOnePagerRepository;
+    private final RejectedOnePagerCommentRepository rejectedOnePagerCommentRepository;
     private final TeacherFacade teacherFacade;
 
     @Transactional
@@ -40,7 +43,15 @@ public class UpdateOnePagerStateService {
 
         String reason = requiresReason(targetState) ? request.reason() : null;
 
-        submitOnePager.setReason(reason);
+        if (reason != null) {
+            // 사유는 제출의 별도 필드가 아니라 댓글(첫 댓글)로 저장한다.
+            RejectedOnePagerComment reasonComment = RejectedOnePagerComment.builder()
+                .comment(reason)
+                .commentWriter(teacher.getTeacherName())
+                .onePager(submitOnePager)
+                .build();
+            rejectedOnePagerCommentRepository.save(reasonComment);
+        }
 
         return UpdateStateReasonResponse.of(reason);
     }
