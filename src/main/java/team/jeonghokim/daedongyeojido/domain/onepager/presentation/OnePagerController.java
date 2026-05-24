@@ -54,7 +54,7 @@ public class OnePagerController {
         createSubmitOnePagerService.execute(request, formId);
     }
 
-    @GetMapping("/form/{form-id}")
+    @GetMapping("/forms/{form-id}")
     @ResponseStatus(HttpStatus.OK)
     public OnePagerFormDetailResponse queryOnePagerFormDetail(
         @PathVariable("form-id") Long formId
