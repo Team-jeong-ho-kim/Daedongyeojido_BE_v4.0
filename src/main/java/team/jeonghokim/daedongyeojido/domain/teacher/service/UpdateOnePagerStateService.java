@@ -36,7 +36,6 @@ public class UpdateOnePagerStateService {
         }
 
         OnePagerState targetState = request.status();
-        validateUpdatable(submitOnePager);
         validateReason(targetState, request.reason());
 
         submitOnePager.changeOnePagerState(targetState);
@@ -54,15 +53,6 @@ public class UpdateOnePagerStateService {
         }
 
         return UpdateStateReasonResponse.of(reason);
-    }
-
-    private void validateUpdatable(SubmitOnePager submitOnePager) { // 요청의 상태 검증
-        OnePagerState currentState = submitOnePager.getOnePagerState();
-
-        if (submitOnePager.getOnePagerState() == null
-                || (currentState != OnePagerState.SUBMITTED && currentState != OnePagerState.REJECTED)) {
-            throw OnePagerInvalidException.EXCEPTION;
-        }
     }
 
     private void validateReason(OnePagerState targetState, String reason) { // 반려됨, 거절됨의 상태일때 사유 미기재 검증
