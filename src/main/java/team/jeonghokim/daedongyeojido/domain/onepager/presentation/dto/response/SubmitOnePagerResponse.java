@@ -11,6 +11,7 @@ public record SubmitOnePagerResponse(
     String clubName,
     OnePagerState onePagerState,
     String submitFileUrl,
+    String submitFileName,
     LocalDate submitDate,
     List<SubmitCommentResponse> submitComments
 ) {
@@ -23,6 +24,7 @@ public record SubmitOnePagerResponse(
             submitOnePager.getClub().getClubName(),
             submitOnePager.getOnePagerState(),
             submitOnePager.getSubmitFile() != null ? submitOnePager.getSubmitFile().getFileUrl() : null,
+            submitOnePager.getSubmitFileName(),
             submitOnePager.getSubmitDate(),
             submitComments);
     }

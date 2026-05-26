@@ -11,6 +11,7 @@ public record QueryListSubmitOnePagerResponse(
     String description,
     LocalDateTime onePagerDuration,
     String fileUrl,
+    String fileName,
     String formUrl,
     List<SubmitOnePagerResponse> submitOnePagers
 ) {
@@ -27,6 +28,7 @@ public record QueryListSubmitOnePagerResponse(
             onePager.getDescription(),
             onePager.getOnePagerDuration(),
             fileUrl,
+            onePager.getFormFileName(),
             formUrl,
             submitOnePagers
         );
