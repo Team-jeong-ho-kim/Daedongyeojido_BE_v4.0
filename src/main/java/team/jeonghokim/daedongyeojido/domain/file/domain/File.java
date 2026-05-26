@@ -26,4 +26,9 @@ public class File extends BaseIdEntity {
         this.fileName = fileName;
         this.fileUrl = fileUrl;
     }
+
+    public void update(String fileName, String fileUrl) {
+        this.fileName = fileName;
+        this.fileUrl = fileUrl;
+    }
 }

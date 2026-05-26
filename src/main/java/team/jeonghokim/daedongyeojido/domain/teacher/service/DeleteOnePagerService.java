@@ -65,9 +65,12 @@ public class DeleteOnePagerService {
         onePagerRepository.flush();
 
         if (formFile != null) {
-            fileRepository.delete(formFile);
-            fileRepository.flush();
-            if (formFileUrl != null) {
+            long remainingReferences = onePagerRepository.countByFormFileAndIdNot(formFile, onePagerId);
+            if (remainingReferences == 0) {
+                fileRepository.delete(formFile);
+                fileRepository.flush();
+            }
+            if (formFileUrl != null && remainingReferences == 0) {
                 s3UrlsToDelete.add(formFileUrl);
             }
         }
