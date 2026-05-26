@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 import team.jeonghokim.daedongyeojido.domain.club.domain.Club;
 import team.jeonghokim.daedongyeojido.domain.file.domain.File;
 import team.jeonghokim.daedongyeojido.domain.file.domain.repository.FileRepository;
-import team.jeonghokim.daedongyeojido.domain.file.exception.AlreadyFileExistsException;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.OnePager;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.RejectedOnePagerComment;
 import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
@@ -45,11 +44,6 @@ public class SubmitOnePagerFileUploadService {
         String oldSubmitFileUrl = deleteExistingSubmission(club, onePager);
 
         String fileName = submitFile.getOriginalFilename();
-
-        fileRepository.findByFileName(fileName).ifPresent(f -> {
-            throw AlreadyFileExistsException.EXCEPTION;
-        });
-
         String fileUrl = s3Service.upload(submitFile, FileType.DOCUMENT);
 
         try {
