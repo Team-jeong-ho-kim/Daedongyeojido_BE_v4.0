@@ -15,7 +15,7 @@ import team.jeonghokim.daedongyeojido.global.entity.BaseIdEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class File extends BaseIdEntity {
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String fileName;
 
     @Column(nullable = false)
@@ -23,6 +23,11 @@ public class File extends BaseIdEntity {
 
     @Builder
     public File(String fileName, String fileUrl) {
+        this.fileName = fileName;
+        this.fileUrl = fileUrl;
+    }
+
+    public void update(String fileName, String fileUrl) {
         this.fileName = fileName;
         this.fileUrl = fileUrl;
     }

@@ -7,7 +7,7 @@ import team.jeonghokim.daedongyeojido.domain.onepager.domain.SubmitOnePager;
 import java.util.List;
 
 public interface RejectedOnePagerCommentRepository extends JpaRepository<RejectedOnePagerComment, Long> {
-    List<RejectedOnePagerComment> findAllByOnePagerId(Long submissionId);
+    List<RejectedOnePagerComment> findAllByOnePagerIdOrderByIdAsc(Long submissionId);
 
     List<RejectedOnePagerComment> findByOnePager(SubmitOnePager submitOnePager);
 
